@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Disengagement Protocol | Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-break { page-break-before: always; }
+            body { font-size: 11pt; }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <div class="bg-empower-blue text-white px-8 py-6 no-print">
+        <div class="max-w-7xl mx-auto mx-auto">
+            <p class="text-sm text-white/70 mb-1">Empower Playbook Template</p>
+            <h1 class="text-2xl font-bold">Family Disengagement Protocol</h1>
+            <p class="text-white/80 mt-2">Standard procedures for when families reduce or stop engagement</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mx-auto px-8 py-8">
+        <!-- Philosophy Box -->
+        <div class="bg-tps-green/20 border border-tps-green rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-tps-dark mb-3">Our Philosophy on Disengagement</h2>
+            <p class="text-gray-700 mb-3">Disengagement is not failure—it's information. Families disengage for many valid reasons: life crises, changing circumstances, the program not meeting their needs, or readiness timing. Our role is to:</p>
+            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                <li>Understand the reason without judgment</li>
+                <li>Honor family autonomy and self-determination</li>
+                <li>Keep the door open for re-engagement</li>
+                <li>Learn from patterns to improve the program</li>
+            </ul>
+        </div>
+
+        <!-- Case Information -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Case Information</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Family Name</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Navigator</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date Protocol Initiated</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Enrollment Date</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Known Contact</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Date and type (phone, text, meeting, etc.)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning Signs Section -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Step 1: Identify Warning Signs</h2>
+            <p class="text-gray-600 text-sm mb-6">Check all that apply. These often precede full disengagement.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Missed appointments</p>
+                        <p class="text-sm text-gray-500">2+ consecutive no-shows</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Communication decline</p>
+                        <p class="text-sm text-gray-500">Not responding to texts/calls</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Emotional withdrawal</p>
+                        <p class="text-sm text-gray-500">Less engaged in conversations</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Life crisis occurred</p>
+                        <p class="text-sm text-gray-500">Job loss, health issue, housing, etc.</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Goal progress stalled</p>
+                        <p class="text-sm text-gray-500">No movement on action items</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Expressed frustration</p>
+                        <p class="text-sm text-gray-500">With program, barriers, or situation</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Family dynamics changed</p>
+                        <p class="text-sm text-gray-500">Partner, custody, household changes</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" class="mt-1">
+                    <div>
+                        <p class="font-medium">Other warning signs</p>
+                        <p class="text-sm text-gray-500">Document below</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Additional Notes on Warning Signs</label>
+                <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+            </div>
+        </div>
+
+        <!-- Outreach Sequence -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6 print-break">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Step 2: Graduated Outreach Sequence</h2>
+            <p class="text-gray-600 text-sm mb-6">Follow this sequence over 4 weeks. Document each attempt.</p>
+
+            <!-- Week 1 -->
+            <div class="border border-amber-200 rounded-xl p-5 mb-4 bg-amber-50">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold">Week 1</span>
+                    <span class="font-semibold">Gentle Check-In</span>
+                </div>
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 1-2: Send warm text message</p>
+                            <p class="text-sm text-gray-600">"Hi [Name], I noticed we haven't connected in a bit. Just checking in—hope everything is okay! Let me know if you'd like to reschedule or if there's anything you need."</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Date sent:">
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 4-5: Phone call attempt</p>
+                            <p class="text-sm text-gray-600">Leave warm voicemail if no answer. Keep tone caring, not administrative.</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Date called, outcome:">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Week 2 -->
+            <div class="border border-orange-200 rounded-xl p-5 mb-4 bg-orange-50">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">Week 2</span>
+                    <span class="font-semibold">Express Concern</span>
+                </div>
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 8-9: Different communication channel</p>
+                            <p class="text-sm text-gray-600">Try a different method (email if usually text, text if usually call). Message: "I'm thinking about you and your family. If something has changed or you're dealing with a crisis, I want you to know I'm here to help however I can—no judgment."</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Method and date:">
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 10-12: Phone call with specific offer</p>
+                            <p class="text-sm text-gray-600">"I'd love to connect—even just 10 minutes. Would a phone call work better than meeting? Is there a time this week that's easier for you?"</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Date called, outcome:">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Week 3 -->
+            <div class="border border-red-200 rounded-xl p-5 mb-4 bg-red-50">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">Week 3</span>
+                    <span class="font-semibold">Supervisor Consultation</span>
+                </div>
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 15-16: Discuss with supervisor</p>
+                            <p class="text-sm text-gray-600">Review case history, warning signs, outreach attempts. Brainstorm alternative approaches or whether a different navigator might be better fit.</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Supervisor consulted, notes:">
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 17-19: Final outreach with options</p>
+                            <p class="text-sm text-gray-600">"I want to respect your time and decisions. If the program isn't working for you right now, that's okay. If you'd like to pause and reconnect later, the door is always open. If there's something we could do differently, I'd love to hear it."</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Date and method:">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Week 4 -->
+            <div class="border border-gray-300 rounded-xl p-5 bg-gray-50">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-bold">Week 4</span>
+                    <span class="font-semibold">Formal Pause / Close</span>
+                </div>
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 22-24: Send closing letter/message</p>
+                            <p class="text-sm text-gray-600">"I'm placing your case on pause for now, but please know you can always reach back out when the timing is right. I believe in you and your family's goals. Here's my contact info: [info]. Wishing you all the best."</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Date sent:">
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" class="mt-1">
+                        <div class="flex-1">
+                            <p class="font-medium">Day 25-28: Update case status in system</p>
+                            <p class="text-sm text-gray-600">Change status to "Inactive - Door Open" with detailed notes for any future navigator.</p>
+                            <input type="text" class="mt-2 w-full border border-gray-300 rounded-lg px-3 py-1 text-sm" placeholder="Date completed:">
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reason Categories -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Step 3: Document Reason Category</h2>
+            <p class="text-gray-600 text-sm mb-6">Select the primary reason for disengagement (for program learning).</p>
+
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Life Crisis / Circumstances Changed</p>
+                        <p class="text-sm text-gray-500">Health, housing, family emergency, domestic situation, legal issues</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Employment Conflict</p>
+                        <p class="text-sm text-gray-500">Work schedule changes, new job demands, transportation to meetings</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Childcare / Family Care Barriers</p>
+                        <p class="text-sm text-gray-500">Can't attend meetings, care responsibilities increased</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Transportation Barriers</p>
+                        <p class="text-sm text-gray-500">Car issues, no access to meetings/services, rural distance</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Program Not Meeting Needs</p>
+                        <p class="text-sm text-gray-500">Goals not aligned, services not helpful, pace too fast/slow</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Achieved Self-Sufficiency</p>
+                        <p class="text-sm text-gray-500">Met goals, no longer needs support (positive exit)</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Moved Out of Service Area</p>
+                        <p class="text-sm text-gray-500">Relocated, referred to another program if applicable</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="reason" class="mt-1">
+                    <div>
+                        <p class="font-medium">Unknown / No Contact</p>
+                        <p class="text-sm text-gray-500">Unable to determine reason despite outreach</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Additional Context</label>
+                <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Any additional details about the disengagement..."></textarea>
+            </div>
+        </div>
+
+        <!-- Re-engagement Plan -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Step 4: Re-engagement Provisions</h2>
+            <p class="text-gray-600 text-sm mb-6">Set follow-up reminders and document re-engagement terms.</p>
+
+            <div class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">30-Day Check-In Reminder</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">90-Day Check-In Reminder</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Re-engagement Terms</label>
+                    <p class="text-sm text-gray-500 mb-2">What would need to change for the family to re-engage?</p>
+                    <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 'When childcare situation stabilizes' or 'When new work schedule is set'"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Referrals Made</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="List any referrals to other services provided during closing..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Program Learning -->
+        <div class="bg-tps-green/10 rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-lg mb-4 text-tps-dark">Step 5: Program Learning (Supervisor Review)</h2>
+            <p class="text-gray-600 text-sm mb-4">Complete during monthly case reviews to identify systemic patterns.</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Could we have prevented this disengagement?</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="preventable" value="yes">
+                            <span>Yes</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="preventable" value="no">
+                            <span>No</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="preventable" value="unclear">
+                            <span>Unclear</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">If yes, what would have helped?</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Recommendations for program improvement</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="e.g., 'Need more flexible meeting times' or 'Transportation fund was depleted'"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signatures -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Sign-Off</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Navigator Signature</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    <input type="date" class="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Supervisor Signature</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    <input type="date" class="mt-2 w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-4 no-print">
+            <button onclick="window.print()" class="bg-empower-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-empower-blue/90 transition">
+                Print / Save as PDF
+            </button>
+            <a href="../chapters/chapter-13.html" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                Back to Templates
+            </a>
+        </div>
+    </div>
+</body>
+</html>

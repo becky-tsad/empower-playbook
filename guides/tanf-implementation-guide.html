@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TANF & Human Services Implementation Guide | The Empower Playbook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+        @media print {
+            body { font-size: 10pt; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+            @page { margin: 0.75in; }
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Cover Page */
+        .cover {
+            min-height: 10in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            color: white;
+            padding: 1in;
+            margin: -0.5in;
+            margin-bottom: 0.5in;
+        }
+
+        .cover-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2in;
+        }
+
+        .cover-logo-box {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .cover-logo-box span {
+            color: #a3c520;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .cover-brand {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .cover-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a3c520;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .cover-tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 500px;
+            margin-bottom: 60px;
+        }
+
+        .cover-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cover-contact p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .cover-version {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        h1 { font-size: 28px; font-weight: 800; color: #1e3a5f; margin-bottom: 20px; }
+        h2 { font-size: 20px; font-weight: 700; color: #1e3a5f; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #a3c520; }
+        h3 { font-size: 16px; font-weight: 600; color: #333; margin-top: 25px; margin-bottom: 10px; }
+        h4 { font-size: 13px; font-weight: 600; color: #444; margin-top: 20px; margin-bottom: 8px; }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 6px; }
+
+        strong { color: #111; }
+
+        /* Boxes */
+        .key-insight {
+            background: #f0f9e8;
+            border-left: 4px solid #a3c520;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-insight-title {
+            font-weight: 700;
+            color: #3d6b0d;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box-title {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dark-box {
+            background: #111;
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .dark-box h3 {
+            color: #a3c520;
+            margin-top: 0;
+        }
+
+        .dark-box ul {
+            color: #fff;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .checklist-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1e3a5f;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist-text strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .checklist-text span {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 25px 0;
+        }
+
+        .timeline-phase {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: #1e3a5f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: #e5e5e5;
+            margin-left: 11px;
+            height: calc(100% - 24px);
+            margin-top: 5px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 15px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .timeline-period {
+            font-size: 11px;
+            color: #a3c520;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e3a5f;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+
+        th {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Four Non-Negotiables */
+        .non-negotiable {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .non-negotiable-num {
+            width: 32px;
+            height: 32px;
+            background: #a3c520;
+            color: #111;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .non-negotiable-content h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #1e3a5f;
+        }
+
+        .non-negotiable-content p {
+            margin-bottom: 0;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            font-size: 10px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #a3c520;
+            color: #111;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background: #8fb31a;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover">
+            <div class="cover-logo">
+                <div class="cover-logo-box"><span>E</span></div>
+                <div>
+                    <div class="cover-brand">The Empower Playbook</div>
+                </div>
+            </div>
+
+            <div class="cover-subtitle">Implementation Guide</div>
+            <h1>TANF & Human Services<br>Implementation Guide</h1>
+            <p class="cover-tagline">A comprehensive guide to transforming TANF programs from compliance-focused case management to career advancement and sustainable self-sufficiency.</p>
+
+            <div class="cover-footer">
+                <div class="cover-contact">
+                    <p><strong>The Poverty Solution</strong></p>
+                    <p>info@thepovertysolution.com</p>
+                    <p>thepovertysolution.com</p>
+                </div>
+                <div class="cover-version">
+                    Version 1.0 | 2026
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Executive Summary -->
+        <div class="page-break"></div>
+
+        <h1>Executive Summary</h1>
+
+        <p>Traditional TANF programs focus on meeting federal work participation rates and moving families off assistance as quickly as possible. The result: families cycle between low-wage jobs and benefits, never achieving true economic stability.</p>
+
+        <p><strong>The Empower Method transforms TANF from a compliance exercise into a pathway to sustainable self-sufficiency—meeting federal requirements while building family economic mobility.</strong></p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">+47%</div>
+                <div class="stat-label">Higher Wage Growth</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">-62%</div>
+                <div class="stat-label">Return-to-TANF Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3.2x</div>
+                <div class="stat-label">Income at 24 Months</div>
+            </div>
+        </div>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Core Insight</div>
+            <p style="margin-bottom: 0;">Meeting work participation rates through quality employment—not just any employment—creates sustainable outcomes that exceed federal requirements while ending generational poverty.</p>
+        </div>
+
+        <h2>The Four Non-Negotiables for TANF</h2>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Benefits Cliff Navigation → Strategic Income Growth</h4>
+                <p>Map every participant's cliff points across all benefits. Create income growth strategies that avoid catastrophic benefit loss while building toward self-sufficiency.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Navigator Model → Career Mobility Coach</h4>
+                <p>One dedicated coach per 25-30 families. Same person from intake through 12+ months post-exit. Focus on career pathways, not just job placement.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>Wraparound Coordination → Barrier Removal System</h4>
+                <p>Coordinate childcare, transportation, mental health, domestic violence services, and housing. Remove barriers before they derail employment success.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Data Dashboard → Mobility Metrics</h4>
+                <p>Track income growth, benefit transitions, career progression, and family stability—not just work participation rates and case closures.</p>
+            </div>
+        </div>
+
+        <!-- Page 3: Beyond Compliance -->
+        <div class="page-break"></div>
+
+        <h2>Moving Beyond Compliance to Career Advancement</h2>
+
+        <p>Federal work participation requirements can be met while also building long-term economic mobility. The key is reframing countable activities around career advancement:</p>
+
+        <h3>Traditional Approach vs. Empower Approach</h3>
+        <table>
+            <tr>
+                <th>Traditional TANF</th>
+                <th>Empower Approach</th>
+            </tr>
+            <tr>
+                <td>Any job counts for WPR</td>
+                <td>Jobs on career pathways with growth potential</td>
+            </tr>
+            <tr>
+                <td>12-month vocational training limit</td>
+                <td>Stackable credentials across multiple years</td>
+            </tr>
+            <tr>
+                <td>Case closed = success</td>
+                <td>Sustained income growth = success</td>
+            </tr>
+            <tr>
+                <td>Compliance monitoring</td>
+                <td>Career coaching and support</td>
+            </tr>
+            <tr>
+                <td>Sanction-focused engagement</td>
+                <td>Incentive-based motivation</td>
+            </tr>
+            <tr>
+                <td>Exit at minimum wage</td>
+                <td>Exit at self-sufficiency wage</td>
+            </tr>
+        </table>
+
+        <h3>Meeting WPR Through Quality Activities</h3>
+        <p>Countable work activities that also build career mobility:</p>
+        <ul>
+            <li><strong>Subsidized employment</strong> in career-pathway sectors (healthcare, IT, skilled trades)</li>
+            <li><strong>On-the-job training</strong> with employers committed to advancement</li>
+            <li><strong>Vocational education</strong> in high-demand credential programs</li>
+            <li><strong>Work experience</strong> that builds transferable skills and references</li>
+            <li><strong>Job readiness</strong> combined with sector-specific skills training</li>
+            <li><strong>Community service</strong> in organizations that hire participants</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Strategic Insight</div>
+            <p style="margin-bottom: 0;">Use the 12-month vocational education allowance strategically—stack short-term credentials that each take 3-4 months. A CNA certificate in month 1-4, phlebotomy in months 5-8, and medical assistant in months 9-12 creates a healthcare career pathway within federal limits.</p>
+        </div>
+
+        <h3>Two-Generation Strategies</h3>
+        <p>Sustainable family mobility requires addressing parent and child needs simultaneously:</p>
+        <ul>
+            <li><strong>Aligned schedules:</strong> Parent work/training hours match children's school/childcare hours</li>
+            <li><strong>Co-located services:</strong> Adult education at Head Start sites</li>
+            <li><strong>Family financial coaching:</strong> Parents and teens learn together</li>
+            <li><strong>Career exposure:</strong> Children see parents' workplaces and career growth</li>
+            <li><strong>Educational expectations:</strong> Link parent advancement to child academic support</li>
+        </ul>
+
+        <!-- Page 4: Work Participation Rate Strategies -->
+        <div class="page-break"></div>
+
+        <h2>TANF Work Participation Rate Strategies</h2>
+
+        <p>Meeting the federal 50% all-families and 90% two-parent WPR while building quality outcomes requires strategic caseload management:</p>
+
+        <h3>WPR Calculation Optimization</h3>
+        <table>
+            <tr>
+                <th>Strategy</th>
+                <th>Impact on WPR</th>
+                <th>Implementation</th>
+            </tr>
+            <tr>
+                <td><strong>Caseload Reduction Credit</strong></td>
+                <td>Reduces target rate</td>
+                <td>Document all case closures due to earnings</td>
+            </tr>
+            <tr>
+                <td><strong>Excess MOE Credit</strong></td>
+                <td>Further reduces target</td>
+                <td>Maximize MOE spending documentation</td>
+            </tr>
+            <tr>
+                <td><strong>Child-Only Cases</strong></td>
+                <td>Excluded from WPR</td>
+                <td>Proper categorization at intake</td>
+            </tr>
+            <tr>
+                <td><strong>SSI Pending Cases</strong></td>
+                <td>Can be excluded</td>
+                <td>Track disability applications</td>
+            </tr>
+            <tr>
+                <td><strong>Domestic Violence Waivers</strong></td>
+                <td>Temporary exclusion</td>
+                <td>Implement FVO screening at intake</td>
+            </tr>
+        </table>
+
+        <h3>Participation Hour Strategies</h3>
+        <p>Maximize countable hours while maintaining quality:</p>
+        <ul>
+            <li><strong>Core + Non-Core Balance:</strong> Use full 20 hours of non-core activities for job skills training and education</li>
+            <li><strong>Paid Work Experience:</strong> Counts as core activity, provides income, builds employer relationships</li>
+            <li><strong>Supervised Job Search:</strong> Up to 6 weeks per 12-month period (12 weeks for states exceeding WPR)</li>
+            <li><strong>Vocational Education:</strong> Counts as core for 12 months lifetime—use strategically</li>
+            <li><strong>Work Study:</strong> Countable at actual hours, keeps participants engaged in education</li>
+        </ul>
+
+        <div class="warning-box">
+            <div class="warning-box-title">Critical: Time Limit Planning</div>
+            <p style="margin-bottom: 0;">Federal 60-month lifetime limit requires proactive planning. Begin career pathway development at intake—not month 48. State time limits may be shorter. Track each family's remaining months and accelerate advancement accordingly.</p>
+        </div>
+
+        <h3>Engagement Over Sanctions</h3>
+        <p>Sanction-heavy approaches damage outcomes and don't improve WPR long-term:</p>
+        <ul>
+            <li>Replace sanction warnings with barrier assessment conversations</li>
+            <li>Implement "good cause" reviews before any sanction</li>
+            <li>Use conciliation periods to address underlying issues</li>
+            <li>Track sanction-to-engagement conversion rates</li>
+            <li>Measure long-term outcomes for sanctioned vs. supported families</li>
+        </ul>
+
+        <!-- Page 5: Benefits Cliff Navigation -->
+        <div class="page-break"></div>
+
+        <h2>Benefits Cliff Navigation</h2>
+
+        <p>Benefits cliffs are the hidden force that keeps TANF families trapped. When a $1/hour raise costs a family $500/month in lost benefits, rational people don't take the raise—or they cycle back onto assistance.</p>
+
+        <h3>Critical Cliff Points for TANF Families</h3>
+        <table>
+            <tr>
+                <th>Benefit</th>
+                <th>Typical Cliff Point</th>
+                <th>Impact of Loss</th>
+            </tr>
+            <tr>
+                <td><strong>TANF Cash</strong></td>
+                <td>Varies by state (often 30-50% FPL)</td>
+                <td>$200-500/month cash loss</td>
+            </tr>
+            <tr>
+                <td><strong>Medicaid (Adult)</strong></td>
+                <td>138% FPL (expansion states)</td>
+                <td>$400-800/month healthcare value</td>
+            </tr>
+            <tr>
+                <td><strong>SNAP</strong></td>
+                <td>130% FPL (gross income)</td>
+                <td>$300-600/month food benefit</td>
+            </tr>
+            <tr>
+                <td><strong>Childcare Subsidy</strong></td>
+                <td>Often 200-250% FPL</td>
+                <td>$800-1,500/month childcare cost</td>
+            </tr>
+            <tr>
+                <td><strong>Housing Assistance</strong></td>
+                <td>Often 50-80% AMI</td>
+                <td>$500-1,200/month rent increase</td>
+            </tr>
+            <tr>
+                <td><strong>EITC Phase-Out</strong></td>
+                <td>$40-50K (varies by children)</td>
+                <td>Up to $7,000/year tax credit loss</td>
+            </tr>
+        </table>
+
+        <h3>Cliff Navigation Process</h3>
+        <ol>
+            <li><strong>Map Current Benefits:</strong> Document every benefit the family receives with exact income thresholds</li>
+            <li><strong>Calculate Total Benefit Value:</strong> Many families don't realize their full benefit package value ($15-25K annually)</li>
+            <li><strong>Identify Cliff Points:</strong> Create visual map of where each benefit phases out</li>
+            <li><strong>Model Income Scenarios:</strong> Calculate net resources at different wage levels</li>
+            <li><strong>Find the "Clear Zone":</strong> Identify income level where work truly pays more than benefits</li>
+            <li><strong>Create Transition Plan:</strong> Sequence wage increases and benefit transitions strategically</li>
+        </ol>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Clear Zone</div>
+            <p style="margin-bottom: 0;">For most TANF families, the "clear zone" where earned income truly exceeds benefit value is around $45,000-55,000 annually. Career pathways must aim for this target—not just minimum wage exit.</p>
+        </div>
+
+        <h3>Transitional Benefits Coordination</h3>
+        <p>Leverage every transitional benefit to smooth the cliff:</p>
+        <ul>
+            <li><strong>Transitional Medicaid:</strong> 12 months guaranteed coverage after TANF exit</li>
+            <li><strong>Transitional Childcare:</strong> Many states offer 12-24 months post-TANF</li>
+            <li><strong>SNAP Transitional Benefits:</strong> Earned income disregards, 12-month recertification</li>
+            <li><strong>Earned Income Disregards:</strong> Maximize TANF income disregards to extend benefits</li>
+            <li><strong>Individual Development Accounts:</strong> Build assets while on TANF without affecting eligibility</li>
+        </ul>
+
+        <!-- Page 6: Implementation Timeline -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Timeline</h2>
+
+        <div class="timeline">
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Foundation Phase</div>
+                    <div class="timeline-period">Month 1</div>
+                    <ul>
+                        <li>Secure leadership commitment from TANF director and county/state leadership</li>
+                        <li>Analyze current WPR performance and caseload composition</li>
+                        <li>Identify pilot caseload (50-100 families) or pilot county</li>
+                        <li>Hire Career Mobility Coaches (1 per 25-30 families)</li>
+                        <li>Map community partner landscape for barrier removal</li>
+                        <li>Select benefits cliff navigation tool/software</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Training & Setup Phase</div>
+                    <div class="timeline-period">Month 2</div>
+                    <ul>
+                        <li>Train Career Mobility Coaches on Empower methodology</li>
+                        <li>Train on benefits cliff navigation tools and modeling</li>
+                        <li>Establish career pathway partnerships with employers and training providers</li>
+                        <li>Finalize MOUs with community partners</li>
+                        <li>Configure data dashboard for mobility metrics</li>
+                        <li>Develop assessment and planning templates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Pilot Launch</div>
+                    <div class="timeline-period">Months 3-4</div>
+                    <ul>
+                        <li>Conduct comprehensive assessments with pilot families</li>
+                        <li>Create career pathway and benefits cliff navigation plans</li>
+                        <li>Begin barrier removal (childcare, transportation, etc.)</li>
+                        <li>Connect families to career-pathway employment and training</li>
+                        <li>Establish regular coaching cadence (weekly minimum)</li>
+                        <li>Track participation hours and engagement</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Refinement Phase</div>
+                    <div class="timeline-period">Months 5-6</div>
+                    <ul>
+                        <li>Analyze early outcome data and adjust interventions</li>
+                        <li>Refine career pathway partnerships based on results</li>
+                        <li>Document success stories and lessons learned</li>
+                        <li>Prepare expansion plan and budget</li>
+                        <li>Present results to leadership for scale-up approval</li>
+                        <li>Begin planning for agency-wide implementation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Navigator Integration -->
+        <div class="page-break"></div>
+
+        <h2>Navigator Integration with Case Management</h2>
+
+        <p>The Career Mobility Coach role transforms traditional TANF case management from compliance monitoring to career advancement support:</p>
+
+        <h3>Career Mobility Coach Model</h3>
+        <p><strong>Caseload Ratio:</strong> 1 coach per 25-30 families (maximum)</p>
+        <p><strong>Duration:</strong> Same coach from intake through 12+ months post-exit</p>
+
+        <h4>Key Responsibilities:</h4>
+        <ul>
+            <li>Conduct comprehensive family assessment beyond standard eligibility</li>
+            <li>Create career pathway plan aligned with family goals and labor market</li>
+            <li>Map benefits cliff points and develop navigation strategy</li>
+            <li>Coordinate barrier removal with community partners</li>
+            <li>Connect to employment and training in career-pathway sectors</li>
+            <li>Provide ongoing coaching (weekly minimum during active phase)</li>
+            <li>Monitor progress and adjust plans based on results</li>
+            <li>Continue support through transition off TANF and post-exit</li>
+        </ul>
+
+        <h4>Required Skills:</h4>
+        <ul>
+            <li>Understanding of TANF rules and work participation requirements</li>
+            <li>Knowledge of career pathways and local labor market</li>
+            <li>Benefits cliff navigation expertise</li>
+            <li>Trauma-informed engagement techniques</li>
+            <li>Motivational interviewing skills</li>
+            <li>Crisis intervention capabilities</li>
+            <li>Strong relationship-building with employers and partners</li>
+        </ul>
+
+        <h3>Integration with Existing Case Management</h3>
+        <table>
+            <tr>
+                <th>Function</th>
+                <th>Eligibility Worker</th>
+                <th>Career Mobility Coach</th>
+            </tr>
+            <tr>
+                <td>Eligibility Determination</td>
+                <td>Primary responsibility</td>
+                <td>Coordinate timing with career plan</td>
+            </tr>
+            <tr>
+                <td>WPR Documentation</td>
+                <td>Verify and report</td>
+                <td>Ensure quality activities are documented</td>
+            </tr>
+            <tr>
+                <td>Career Planning</td>
+                <td>Refer to coach</td>
+                <td>Primary responsibility</td>
+            </tr>
+            <tr>
+                <td>Barrier Removal</td>
+                <td>Basic referrals</td>
+                <td>Active coordination and follow-up</td>
+            </tr>
+            <tr>
+                <td>Employment Connection</td>
+                <td>Compliance focus</td>
+                <td>Career-pathway focus</td>
+            </tr>
+            <tr>
+                <td>Post-Exit Support</td>
+                <td>Case closed</td>
+                <td>Continues 12+ months</td>
+            </tr>
+        </table>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Critical Success Factor</div>
+            <p style="margin-bottom: 0;">Career Mobility Coaches must have protected time for family engagement. They cannot also carry eligibility determination responsibilities. Quality coaching requires focused relationship-building, not paperwork.</p>
+        </div>
+
+        <!-- Page 8: Community Partner Integration -->
+        <div class="page-break"></div>
+
+        <h2>Community Partner Integration</h2>
+
+        <p>Sustainable TANF outcomes require coordinated community resources. Establish formal partnerships with providers in each barrier category:</p>
+
+        <h3>Essential Partner Network</h3>
+        <table>
+            <tr>
+                <th>Barrier Category</th>
+                <th>Partner Types</th>
+                <th>Services Needed</th>
+            </tr>
+            <tr>
+                <td><strong>Employment</strong></td>
+                <td>Workforce boards, temp agencies, sector employers</td>
+                <td>Career-pathway jobs, on-the-job training, subsidized employment</td>
+            </tr>
+            <tr>
+                <td><strong>Childcare</strong></td>
+                <td>Head Start, childcare subsidy office, providers</td>
+                <td>Subsidy navigation, non-traditional hours care, backup care</td>
+            </tr>
+            <tr>
+                <td><strong>Transportation</strong></td>
+                <td>Transit authority, car programs, ride services</td>
+                <td>Bus passes, car repair/purchase, ride coordination</td>
+            </tr>
+            <tr>
+                <td><strong>Education/Training</strong></td>
+                <td>Community colleges, CTE programs, workforce training</td>
+                <td>Short-term credentials, occupational skills, GED</td>
+            </tr>
+            <tr>
+                <td><strong>Mental Health</strong></td>
+                <td>Community mental health, counseling services</td>
+                <td>Assessment, counseling, medication management</td>
+            </tr>
+            <tr>
+                <td><strong>Domestic Violence</strong></td>
+                <td>DV shelters, advocacy organizations</td>
+                <td>Safety planning, housing, legal advocacy</td>
+            </tr>
+            <tr>
+                <td><strong>Housing</strong></td>
+                <td>Housing authority, rapid rehousing, shelters</td>
+                <td>Rental assistance, eviction prevention, placement</td>
+            </tr>
+            <tr>
+                <td><strong>Substance Use</strong></td>
+                <td>Treatment providers, recovery programs</td>
+                <td>Assessment, treatment, recovery support</td>
+            </tr>
+        </table>
+
+        <h3>Partner Coordination Protocols</h3>
+        <p>Each partner MOU should specify:</p>
+        <ul>
+            <li><strong>Designated contact:</strong> Named person for TANF referrals</li>
+            <li><strong>Response time:</strong> 48-hour maximum for acknowledgment, 5 days to service</li>
+            <li><strong>Priority access:</strong> TANF families get priority enrollment/service</li>
+            <li><strong>Information sharing:</strong> Consent-based updates on service status</li>
+            <li><strong>Coordination meetings:</strong> Monthly partner convenings</li>
+            <li><strong>Outcome reporting:</strong> Quarterly data on referral completion rates</li>
+        </ul>
+
+        <h3>Employer Partner Development</h3>
+        <p>Quality employment requires employer partnerships beyond job fairs:</p>
+        <ul>
+            <li>Identify employers with career ladders and advancement opportunities</li>
+            <li>Negotiate on-the-job training agreements that count toward WPR</li>
+            <li>Create subsidized employment placements in career-pathway roles</li>
+            <li>Establish work experience sites that lead to hiring</li>
+            <li>Build relationships with sector-specific employer networks (healthcare, manufacturing, IT)</li>
+            <li>Develop employer commitment to benefits-friendly scheduling</li>
+        </ul>
+
+        <!-- Page 9: Data Dashboard -->
+        <div class="page-break"></div>
+
+        <h2>Data Dashboard: TANF Outcomes and Mobility Metrics</h2>
+
+        <h3>Required Data Elements</h3>
+
+        <h4>Federal Compliance Metrics</h4>
+        <ul>
+            <li>Work participation rate (all families and two-parent)</li>
+            <li>Countable activity hours by type</li>
+            <li>Sanction rates and reasons</li>
+            <li>Case closure reasons (employment, time limit, sanction, other)</li>
+            <li>Time-on-assistance tracking</li>
+        </ul>
+
+        <h4>Mobility Metrics (Beyond Compliance)</h4>
+        <ul>
+            <li>Starting wage at employment vs. wage at 6/12/24 months</li>
+            <li>Career credential attainment</li>
+            <li>Income growth trajectory (% increase from baseline)</li>
+            <li>Benefits cliff events navigated</li>
+            <li>Total family resources (earnings + remaining benefits)</li>
+            <li>Return-to-TANF rate at 12 and 24 months post-exit</li>
+        </ul>
+
+        <h4>Family Stability Indicators</h4>
+        <ul>
+            <li>Housing stability (moves, eviction risk)</li>
+            <li>Childcare stability (arrangement changes, disruptions)</li>
+            <li>Child school attendance and performance</li>
+            <li>Healthcare coverage continuity</li>
+            <li>Food security status</li>
+        </ul>
+
+        <h3>Key Performance Indicators</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Measurement</th>
+            </tr>
+            <tr>
+                <td>Work Participation Rate</td>
+                <td>Meet/exceed federal requirement</td>
+                <td>Monthly</td>
+            </tr>
+            <tr>
+                <td>Median Starting Wage</td>
+                <td>$15+/hour</td>
+                <td>At job start</td>
+            </tr>
+            <tr>
+                <td>Wage Growth at 12 Months</td>
+                <td>25%+ increase</td>
+                <td>Quarterly follow-up</td>
+            </tr>
+            <tr>
+                <td>Career Credential Rate</td>
+                <td>60% earn credential</td>
+                <td>Within 12 months</td>
+            </tr>
+            <tr>
+                <td>Employment Retention</td>
+                <td>70% at 6 months</td>
+                <td>Post-placement follow-up</td>
+            </tr>
+            <tr>
+                <td>Return-to-TANF Rate</td>
+                <td>&lt;15% at 24 months</td>
+                <td>Administrative data</td>
+            </tr>
+            <tr>
+                <td>Self-Sufficiency Rate</td>
+                <td>40% reach clear zone</td>
+                <td>Income + benefits analysis</td>
+            </tr>
+        </table>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Data Integration</div>
+            <p style="margin-bottom: 0;">Connect TANF data systems with UI wage records, SNAP, Medicaid, and childcare databases. Integrated data enables real-time cliff navigation and long-term outcome tracking.</p>
+        </div>
+
+        <!-- Page 10: Budget Framework -->
+        <div class="page-break"></div>
+
+        <h2>Budget Framework: TANF and MOE Funds</h2>
+
+        <h3>Allowable TANF Expenditures for Empower Model</h3>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>TANF Allowable?</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Career Mobility Coach Salaries</td>
+                <td>Yes</td>
+                <td>Case management/employment services</td>
+            </tr>
+            <tr>
+                <td>Training/Certification for Staff</td>
+                <td>Yes</td>
+                <td>Capacity building</td>
+            </tr>
+            <tr>
+                <td>Benefits Cliff Navigation Tools</td>
+                <td>Yes</td>
+                <td>Technology for service delivery</td>
+            </tr>
+            <tr>
+                <td>Subsidized Employment Wages</td>
+                <td>Yes</td>
+                <td>Work participation activity</td>
+            </tr>
+            <tr>
+                <td>Supportive Services (transport, etc.)</td>
+                <td>Yes</td>
+                <td>Barrier removal</td>
+            </tr>
+            <tr>
+                <td>Childcare During Work Activities</td>
+                <td>Yes</td>
+                <td>Or use CCDF coordination</td>
+            </tr>
+            <tr>
+                <td>Emergency Assistance</td>
+                <td>Yes</td>
+                <td>Crisis stabilization</td>
+            </tr>
+            <tr>
+                <td>Post-Exit Support Services</td>
+                <td>Yes</td>
+                <td>Retention and advancement support</td>
+            </tr>
+        </table>
+
+        <h3>Per-Caseload Budget (Annual)</h3>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>Career Mobility Coach Salary + Benefits</td>
+                <td>$60,000</td>
+                <td>4 (for 100-120 families)</td>
+                <td>$240,000</td>
+            </tr>
+            <tr>
+                <td>Program Supervisor</td>
+                <td>$75,000</td>
+                <td>1</td>
+                <td>$75,000</td>
+            </tr>
+            <tr>
+                <td>Training & Professional Development</td>
+                <td>$4,000/person</td>
+                <td>5</td>
+                <td>$20,000</td>
+            </tr>
+            <tr>
+                <td>Benefits Cliff Navigation Software</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$15,000</td>
+            </tr>
+            <tr>
+                <td>Data Dashboard/Tracking System</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$12,000</td>
+            </tr>
+            <tr>
+                <td>Supportive Services Fund</td>
+                <td>$500/family</td>
+                <td>120</td>
+                <td>$60,000</td>
+            </tr>
+            <tr>
+                <td>Subsidized Employment Fund</td>
+                <td>$3,000/placement</td>
+                <td>30</td>
+                <td>$90,000</td>
+            </tr>
+            <tr>
+                <td>Emergency Assistance Reserve</td>
+                <td>$300/family</td>
+                <td>120</td>
+                <td>$36,000</td>
+            </tr>
+            <tr>
+                <td><strong>Total Annual Budget</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$548,000</strong></td>
+            </tr>
+        </table>
+
+        <h3>Cost Per Family: $4,567 annually</h3>
+
+        <h3>MOE Considerations</h3>
+        <ul>
+            <li>Third-party MOE from community partners can count toward state requirement</li>
+            <li>In-kind contributions from employers (training, supervision) are countable</li>
+            <li>Childcare and transportation provided by partners can count as MOE</li>
+            <li>Document all qualifying expenditures to maximize MOE credit and reduce WPR target</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">ROI Calculation</div>
+            <p style="margin-bottom: 0;">Average TANF family costs $8,000-12,000/year in benefits. If the Empower Model moves 40% of families to sustainable self-sufficiency (vs. 15% in traditional programs), the 5-year ROI exceeds 300%.</p>
+        </div>
+
+        <!-- Page 11: Readiness Checklist -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Readiness Checklist</h2>
+
+        <div class="checklist">
+            <div class="checklist-title">Leadership & Authority</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>TANF Director commitment secured</strong>
+                    <span>Written support for pilot and methodology shift</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>State/County leadership aligned</strong>
+                    <span>Understanding that outcomes matter more than compliance alone</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Policy flexibility confirmed</strong>
+                    <span>State policy allows career-pathway and cliff navigation approaches</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Staffing & Capacity</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Career Mobility Coach positions created</strong>
+                    <span>Job descriptions, qualifications, and salary determined</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Caseload ratios established</strong>
+                    <span>Maximum 25-30 families per coach</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Training plan scheduled</strong>
+                    <span>Empower methodology, benefits cliff tools, trauma-informed care</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Systems & Tools</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Benefits cliff navigation tool selected</strong>
+                    <span>Software for modeling income scenarios and cliff points</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Data dashboard configured</strong>
+                    <span>Mobility metrics beyond WPR compliance</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Wage record access established</strong>
+                    <span>UI data for tracking employment outcomes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Partner Network</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Employment partners identified</strong>
+                    <span>Career-pathway employers and training providers</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Barrier removal partners confirmed</strong>
+                    <span>Childcare, transportation, mental health, DV services</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>MOUs drafted</strong>
+                    <span>Response times, coordination protocols, outcome reporting</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Funding</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>TANF allocation secured for pilot</strong>
+                    <span>Budget approved for staffing, tools, and supportive services</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>MOE documentation plan created</strong>
+                    <span>System for capturing third-party and in-kind MOE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 12: Technical Assistance -->
+        <div class="page-break"></div>
+
+        <div class="dark-box">
+            <h3>Ready for Full Implementation Support?</h3>
+            <p>This guide provides the framework. For the highest probability of success, partner with The Poverty Solution team for:</p>
+            <ul>
+                <li><strong>Career Mobility Coach Certification</strong> — 40-hour intensive training on Empower methodology</li>
+                <li><strong>Leadership Alignment Sessions</strong> — Move leadership from compliance to outcomes mindset</li>
+                <li><strong>Benefits Cliff Tool Training</strong> — Master cliff navigation software and modeling</li>
+                <li><strong>WPR Optimization Analysis</strong> — Maximize credits and strategic activity counting</li>
+                <li><strong>Implementation Coaching</strong> — Monthly calls and quarterly site visits</li>
+                <li><strong>Data Dashboard Configuration</strong> — Set up mobility metrics tracking</li>
+                <li><strong>Employer Partnership Development</strong> — Build career-pathway employer network</li>
+                <li><strong>Peer Learning Network</strong> — Connect with other transforming TANF programs</li>
+            </ul>
+            <p style="margin-top: 20px; margin-bottom: 0;">
+                <strong style="color: #a3c520;">Contact:</strong> info@thepovertysolution.com | thepovertysolution.com
+            </p>
+        </div>
+
+        <h2>The Transformation Imperative</h2>
+        <p>TANF was designed to be temporary assistance—a bridge to self-sufficiency. But traditional compliance-focused implementation has created a revolving door where families cycle between low-wage work and benefits without ever achieving true economic stability.</p>
+
+        <p><strong>The Empower Model delivers what TANF was always meant to achieve:</strong></p>
+        <ul>
+            <li>Families moving to sustainable wages above the benefits cliff</li>
+            <li>Children seeing parents build careers, not just jobs</li>
+            <li>Communities gaining skilled workers in high-demand sectors</li>
+            <li>Programs meeting federal requirements through quality outcomes</li>
+            <li>Generational poverty giving way to generational mobility</li>
+        </ul>
+
+        <p>The question isn't whether your TANF program can afford to transform. It's whether it can afford not to.</p>
+
+        <div class="page-footer">
+            <div>The Empower Playbook | TANF & Human Services Implementation Guide</div>
+            <div>© 2026 The Poverty Solution</div>
+        </div>
+
+    </div>
+</body>
+</html>

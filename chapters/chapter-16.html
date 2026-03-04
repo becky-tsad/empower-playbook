@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 16: The Competitive Landscape | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                        'part5-research': '#2d5a7b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus { top: 0; }
+
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #2d5a7b, #4a7a9b);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f3f4f6; color: #545454; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .prose h2 {
+            font-size: 1.625rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a5f;
+            letter-spacing: -0.025em;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #374151;
+        }
+        .prose ul, .prose ol {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+        }
+        .prose ul { list-style-type: disc; }
+        .prose li {
+            margin-bottom: 0.625rem;
+            line-height: 1.7;
+            color: #374151;
+        }
+        .prose blockquote {
+            border-left: 4px solid #2d5a7b;
+            padding: 1rem 1.25rem;
+            font-style: italic;
+            color: #4b5563;
+            margin: 1.75rem 0;
+            background: linear-gradient(to right, #f3f4f6, transparent);
+            border-radius: 0 8px 8px 0;
+        }
+        .prose strong { color: #111827; }
+        .prose hr {
+            border: none;
+            border-top: 1px solid #e5e5e5;
+            margin: 2.5rem 0;
+        }
+
+        .prose-lead {
+            font-size: 1.25rem;
+            line-height: 1.75;
+            color: #4b5563;
+        }
+
+        .competitor-card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .competitor-card:hover {
+            border-color: #2d5a7b;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .comparison-table th {
+            background: #2d5a7b;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .comparison-table th:first-child {
+            border-top-left-radius: 12px;
+        }
+        .comparison-table th:last-child {
+            border-top-right-radius: 12px;
+        }
+        .comparison-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 14px;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .comparison-table tr:last-child td:first-child {
+            border-bottom-left-radius: 12px;
+        }
+        .comparison-table tr:last-child td:last-child {
+            border-bottom-right-radius: 12px;
+        }
+        .comparison-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .floating-nav a:hover {
+            background: #2d5a7b;
+            border-color: #2d5a7b;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* TOC Styles */
+        .toc { position: sticky; top: 100px; }
+        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
+        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
+        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
+        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile_overlay.show { display: block; }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="reading-progress" id="readingProgress"></div>
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <nav class="py-4">
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 1 — The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item"><span class="num bg-empower-blue text-white">1</span>Why Rural Needs Different</a>
+                <a href="chapter-2.html" class="nav-item"><span class="num bg-empower-blue text-white">2</span>The Problem We're Solving</a>
+                <a href="chapter-3.html" class="nav-item"><span class="num bg-empower-blue text-white">3</span>The Proof</a>
+            </div>
+
+            <p class="nav-section-title">Part 2 — The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">4</span>Four Non-Negotiables</a>
+                <a href="chapter-5.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">5</span>Adaptable Components</a>
+                <a href="chapter-6.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">6</span>Certified Employer Program</a>
+            </div>
+
+            <p class="nav-section-title">Part 3 — Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item"><span class="num bg-part3-blue text-white">7</span>The Phased Approach</a>
+                <a href="chapter-8.html" class="nav-item"><span class="num bg-part3-blue text-white">8</span>Building Your Team</a>
+                <a href="chapter-9.html" class="nav-item"><span class="num bg-red-700 text-white">9</span>What Kills Programs</a>
+            </div>
+
+            <p class="nav-section-title">Part 4 — Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item"><span class="num bg-part4-grey text-white">10</span>Funding</a>
+                <a href="chapter-11.html" class="nav-item"><span class="num bg-part4-grey text-white">11</span>Adapting the Model</a>
+                <a href="chapter-12.html" class="nav-item"><span class="num bg-part4-grey text-white">12</span>Scaling Beyond</a>
+            </div>
+
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item"><span class="num bg-part4-grey text-white">15</span>The Evidence Base</a>
+                <a href="chapter-16.html" class="nav-item active"><span class="num bg-part4-grey text-white">16</span>Competitive Landscape</a>
+                <a href="chapter-17.html" class="nav-item"><span class="num bg-part4-grey text-white">17</span>Scaling with Fidelity</a>
+            </div>
+
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content min-h-screen" id="main-content">
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 5 — Research</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-part5-research/20 text-part5-research px-2 py-1 rounded font-medium">RESEARCH</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Header -->
+        <div class="bg-gradient-to-br from-[#2d5a7b] to-[#1e3a5f] text-white px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-4">
+                    <p class="text-white/80 text-sm font-medium">Chapter 16</p>
+                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">15 min read</span>
+                    <span class="text-xs bg-tps-green text-tps-dark px-2 py-1 rounded-full font-semibold">COMPETITIVE ANALYSIS</span>
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                    The Competitive Landscape
+                </h1>
+                <p class="text-white/90 text-xl max-w-2xl">
+                    How Empower compares to other economic mobility models—and what makes our approach uniquely positioned for rural communities.
+                </p>
+            </div>
+        </div>
+
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+            <div class="prose">
+
+                <p class="prose-lead mb-8">
+                    Economic mobility programs have evolved dramatically over the past two decades. From coaching models to peer support networks, from cash transfer programs to benefits cliff tools, the field is rich with innovation. Understanding where Empower fits—and what makes it different—is essential for funders, partners, and communities considering implementation.
+                </p>
+
+                <!-- Core Insight Box -->
+                <div class="bg-black p-8 rounded-2xl mb-12 not-prose">
+                    <h3 style="color: #a3c520;" class="font-bold text-xl mb-4">The Field at a Glance</h3>
+                    <p style="color: rgba(255,255,255,0.9);" class="text-lg mb-6">Economic mobility programs generally emphasize one or two key elements. Empower's differentiation comes from integrating <strong style="color: #a3c520;">all five</strong> into a single, coherent model:</p>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-3 rounded-xl">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-1">1</p>
+                            <p style="color: #ffffff;" class="font-medium text-sm">Benefits Cliff</p>
+                        </div>
+                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-3 rounded-xl">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-1">2</p>
+                            <p style="color: #ffffff;" class="font-medium text-sm">Professional Navigator</p>
+                        </div>
+                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-3 rounded-xl">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-1">3</p>
+                            <p style="color: #ffffff;" class="font-medium text-sm">Wraparound</p>
+                        </div>
+                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-3 rounded-xl">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-1">4</p>
+                            <p style="color: #ffffff;" class="font-medium text-sm">Real-Time Data</p>
+                        </div>
+                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-3 rounded-xl">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-1">5</p>
+                            <p style="color: #ffffff;" class="font-medium text-sm">Rural Design</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="major-models">16.1 Major Economic Mobility Models</h2>
+
+                <p>
+                    The economic mobility field includes several well-established models, each with demonstrated outcomes and distinct approaches. Understanding their strengths helps clarify where Empower fills gaps in the current landscape.
+                </p>
+
+                <!-- EMPath Card -->
+                <div class="competitor-card my-8 not-prose">
+                    <div class="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white p-5">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Mobility Mentoring</span>
+                                <h3 class="font-bold text-xl">EMPath (Economic Mobility Pathways)</h3>
+                            </div>
+                            <a href="https://www.empathways.org/" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition">
+                                Visit Website
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-5">EMPath pioneered the Mobility Mentoring approach, using brain science and economic frameworks to help families build economic stability across five domains.</p>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-indigo-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-indigo-900 mb-2">Model Highlights</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* 5-domain assessment (financial, education, employment, health, housing)</li>
+                                    <li>* Brain science-informed coaching</li>
+                                    <li>* Executive function skill-building</li>
+                                    <li>* Mobility Mentoring licensed nationally</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-green-900 mb-2">Reported Outcomes</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* 97% employed at program exit</li>
+                                    <li>* $32,548 average income at exit</li>
+                                    <li>* 25:1 caseload early, 60:1 later phases</li>
+                                    <li>* 18-24 month program duration</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                            <h5 class="font-semibold text-amber-800 mb-2">Gap Analysis</h5>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>* No explicit benefits cliff focus as entry point</li>
+                                <li>* Primarily urban-centric implementation</li>
+                                <li>* Licensed model requires significant training investment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIFT Card -->
+                <div class="competitor-card my-8 not-prose">
+                    <div class="bg-gradient-to-r from-orange-500 to-red-600 text-white p-5">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Coaching + Cash</span>
+                                <h3 class="font-bold text-xl">LIFT</h3>
+                            </div>
+                            <a href="https://www.whywelift.org/" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition">
+                                Visit Website
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-5">LIFT combines goal-based coaching with direct cash transfers to help parents build economic stability and break the cycle of intergenerational poverty.</p>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-orange-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-orange-900 mb-2">Model Highlights</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* Parent-focused (2-generation approach)</li>
+                                    <li>* $150/quarter direct cash transfers</li>
+                                    <li>* 2-year program duration</li>
+                                    <li>* Monthly contact with coaches</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-green-900 mb-2">Reported Outcomes</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* $21,325 average income increase</li>
+                                    <li>* 94% report improved financial situation</li>
+                                    <li>* 73% achieve primary goal</li>
+                                    <li>* Strong parent satisfaction scores</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                            <h5 class="font-semibold text-amber-800 mb-2">Gap Analysis</h5>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>* Monthly contact (not intensive navigation)</li>
+                                <li>* No specific benefits cliff expertise</li>
+                                <li>* Urban locations only (Chicago, DC, LA, NYC)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Circles USA Card -->
+                <div class="competitor-card my-8 not-prose">
+                    <div class="bg-gradient-to-r from-teal-500 to-cyan-600 text-white p-5">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Peer Volunteer Model</span>
+                                <h3 class="font-bold text-xl">Circles USA</h3>
+                            </div>
+                            <a href="https://www.circlesusa.org/" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition">
+                                Visit Website
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-5">Circles builds intentional cross-class relationships between families working to increase income ("Circle Leaders") and middle-income volunteers ("Allies") who provide support and accountability.</p>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-teal-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-teal-900 mb-2">Model Highlights</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* Cross-class relationship building</li>
+                                    <li>* Weekly community meetings</li>
+                                    <li>* Peer support + volunteer "Allies"</li>
+                                    <li>* 18-month minimum commitment</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-green-900 mb-2">Reported Outcomes</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* 71% income increase at 18 months</li>
+                                    <li>* Strong social capital gains</li>
+                                    <li>* Community cohesion benefits</li>
+                                    <li>* 80+ communities nationwide</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                            <h5 class="font-semibold text-amber-800 mb-2">Gap Analysis</h5>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>* Volunteer-based (not professional navigators)</li>
+                                <li>* Less specialized benefits cliff knowledge</li>
+                                <li>* Relies on consistent volunteer recruitment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FII/UpTogether Card -->
+                <div class="competitor-card my-8 not-prose">
+                    <div class="bg-gradient-to-r from-purple-500 to-violet-600 text-white p-5">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Trust-Based Investment</span>
+                                <h3 class="font-bold text-xl">Family Independence Initiative (UpTogether)</h3>
+                            </div>
+                            <a href="https://www.uptogether.org/" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition">
+                                Visit Website
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-5">UpTogether (formerly FII) trusts families to drive their own solutions through unrestricted cash, peer support networks, and tracking tools—without prescribed interventions or case management.</p>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-purple-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-purple-900 mb-2">Model Highlights</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* Unrestricted cash transfers</li>
+                                    <li>* Self-determination philosophy</li>
+                                    <li>* Peer groups (no professional staff)</li>
+                                    <li>* Digital platform for tracking</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-green-900 mb-2">Reported Outcomes</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* $200M+ distributed to 200,000+ households</li>
+                                    <li>* Significant income and savings gains</li>
+                                    <li>* Strong evidence for cash transfers</li>
+                                    <li>* High family satisfaction</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                            <h5 class="font-semibold text-amber-800 mb-2">Gap Analysis</h5>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>* Peer-only (no professional navigation)</li>
+                                <li>* No benefits cliff expertise or modeling</li>
+                                <li>* Cash alone doesn't address cliff barriers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atlanta Fed CLIFF Card -->
+                <div class="competitor-card my-8 not-prose">
+                    <div class="bg-gradient-to-r from-emerald-600 to-green-700 text-white p-5">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Benefits Cliff Tool</span>
+                                <h3 class="font-bold text-xl">Atlanta Fed CLIFF Tools</h3>
+                            </div>
+                            <a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families" target="_blank" class="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full transition">
+                                Visit Website
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600 mb-5">The Federal Reserve Bank of Atlanta developed CLIFF (Career Ladder Identifier and Financial Forecaster) tools to help workforce professionals and job seekers understand how income changes affect benefits.</p>
+
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-emerald-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-emerald-900 mb-2">Model Highlights</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* Benefits cliff modeling calculators</li>
+                                    <li>* State-specific cliff data</li>
+                                    <li>* Free public tools</li>
+                                    <li>* Integration with workforce systems</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-xl">
+                                <h5 class="font-semibold text-green-900 mb-2">Reported Outcomes</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>* 90% of users made action plans after coaching with tools</li>
+                                    <li>* Widely adopted by workforce boards</li>
+                                    <li>* Growing national awareness of cliffs</li>
+                                    <li>* Policy advocacy impact</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4">
+                            <h5 class="font-semibold text-amber-800 mb-2">Gap Analysis</h5>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>* Tool-only (no integrated program model)</li>
+                                <li>* No navigator relationship component</li>
+                                <li>* Requires separate implementation infrastructure</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2 id="differentiation">16.2 The Empower Differentiation Matrix</h2>
+
+                <p>
+                    When we map Empower against existing models across key dimensions, a clear pattern emerges: most programs excel in one or two areas but leave critical gaps. Empower integrates all dimensions into a single, coherent approach.
+                </p>
+
+                <!-- Comparison Table -->
+                <div class="my-8 not-prose overflow-x-auto">
+                    <table class="comparison-table border border-gray-200 rounded-xl overflow-hidden">
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Empower</th>
+                                <th>EMPath</th>
+                                <th>LIFT</th>
+                                <th>Circles</th>
+                                <th>UpTogether</th>
+                                <th>CLIFF Tools</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            <tr>
+                                <td class="font-semibold text-gray-900">Benefits Cliff Focus</td>
+                                <td class="bg-tps-green/20"><span class="font-bold text-tps-dark">PRIMARY</span></td>
+                                <td>Secondary</td>
+                                <td>None</td>
+                                <td>None</td>
+                                <td>None</td>
+                                <td class="bg-tps-green/10">Tool Only</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold text-gray-900">Navigator Model</td>
+                                <td class="bg-tps-green/20"><span class="font-bold text-tps-dark">Professional 1:25</span></td>
+                                <td>Professional 25-60:1</td>
+                                <td>Monthly Coach</td>
+                                <td>Volunteer</td>
+                                <td>Peer Only</td>
+                                <td>N/A</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold text-gray-900">Wraparound Services</td>
+                                <td class="bg-tps-green/20"><span class="font-bold text-tps-dark">Economic Mobility</span></td>
+                                <td>5-Domain</td>
+                                <td>Goal-Based</td>
+                                <td>Community</td>
+                                <td>Self-Directed</td>
+                                <td>N/A</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold text-gray-900">Data Dashboard</td>
+                                <td class="bg-tps-green/20"><span class="font-bold text-tps-dark">Real-Time</span></td>
+                                <td>Assessment</td>
+                                <td>Tracking</td>
+                                <td>Limited</td>
+                                <td>Self-Report</td>
+                                <td>Calculator</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold text-gray-900">Geographic Design</td>
+                                <td class="bg-tps-green/20"><span class="font-bold text-tps-dark">Rural-Specific</span></td>
+                                <td>Urban</td>
+                                <td>Urban</td>
+                                <td>Mixed</td>
+                                <td>Urban</td>
+                                <td>Universal</td>
+                            </tr>
+                            <tr>
+                                <td class="font-semibold text-gray-900">Duration</td>
+                                <td class="bg-tps-green/20"><span class="font-bold text-tps-dark">18-24 mo Intensive</span></td>
+                                <td>18-24 mo</td>
+                                <td>24 mo Monthly</td>
+                                <td>18+ mo</td>
+                                <td>Variable</td>
+                                <td>One-Time</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-part5-research/10 border-2 border-part5-research rounded-xl p-6 my-8 not-prose">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-part5-research rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-part5-research text-lg mb-2">The Matrix Tells the Story</h3>
+                            <p class="text-gray-600">No other model combines PRIMARY benefits cliff focus with professional intensive navigation, economic mobility wraparound, real-time data, AND rural-specific design. This isn't about being "better"—it's about filling a specific gap that existing models don't address.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2 id="convergence">16.3 The Five-Part Convergence</h2>
+
+                <p>
+                    What makes Empower unique isn't any single element—it's the convergence of five elements that other programs treat as separate. Here's why each matters and why combining them creates something new.
+                </p>
+
+                <!-- Convergence Cards -->
+                <div class="space-y-6 my-8 not-prose">
+                    <div class="bg-black p-6 rounded-2xl">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-tps-green rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-tps-dark font-bold text-xl">1</span>
+                            </div>
+                            <div>
+                                <h4 style="color: #a3c520;" class="font-bold text-lg mb-2">Benefits Cliff as ENTRY POINT (Not Afterthought)</h4>
+                                <p style="color: rgba(255,255,255,0.9);" class="mb-3">Most programs discover cliff barriers after placement fails. Empower starts with cliff analysis—mapping every benefit, modeling income scenarios, and planning transitions BEFORE making employment decisions.</p>
+                                <p style="color: rgba(255,255,255,0.7);" class="text-sm"><strong style="color: #a3c520;">Why it matters:</strong> A $2/hour raise that triggers $8,000 in childcare loss isn't a success—it's a trap. Starting with cliffs prevents "successful" placements that actually hurt families.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-black p-6 rounded-2xl">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-tps-green rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-tps-dark font-bold text-xl">2</span>
+                            </div>
+                            <div>
+                                <h4 style="color: #a3c520;" class="font-bold text-lg mb-2">Professional Navigators (Not Peer Volunteers)</h4>
+                                <p style="color: rgba(255,255,255,0.9);" class="mb-3">Peer models build social capital. Professional navigators build systems knowledge. ALICE families facing cliff barriers need someone who understands Medicaid redetermination timing, childcare subsidy income calculations, and employer benefit negotiation.</p>
+                                <p style="color: rgba(255,255,255,0.7);" class="text-sm"><strong style="color: #a3c520;">Why it matters:</strong> Navigating benefits requires technical expertise. A caring volunteer who doesn't understand 12-month lookback periods can give advice that costs families thousands.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-black p-6 rounded-2xl">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-tps-green rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-tps-dark font-bold text-xl">3</span>
+                            </div>
+                            <div>
+                                <h4 style="color: #a3c520;" class="font-bold text-lg mb-2">Wraparound for Economic Mobility (Not Just Crisis or Child Welfare)</h4>
+                                <p style="color: rgba(255,255,255,0.9);" class="mb-3">Traditional wraparound focuses on child welfare or behavioral health crises. Empower applies the same coordination intensity to economic mobility—treating poverty as the interconnected system it is.</p>
+                                <p style="color: rgba(255,255,255,0.7);" class="text-sm"><strong style="color: #a3c520;">Why it matters:</strong> You can't solve transportation in isolation when transportation connects to childcare connects to employment connects to benefits. Economic mobility requires the same systems coordination that crisis intervention receives.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-black p-6 rounded-2xl">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-tps-green rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-tps-dark font-bold text-xl">4</span>
+                            </div>
+                            <div>
+                                <h4 style="color: #a3c520;" class="font-bold text-lg mb-2">Real-Time Data Dashboard (Not Retrospective)</h4>
+                                <p style="color: rgba(255,255,255,0.9);" class="mb-3">Most programs report outcomes annually. Empower tracks metrics in real-time—so navigators see when a family is approaching a cliff, when engagement drops, when intervention is needed NOW.</p>
+                                <p style="color: rgba(255,255,255,0.7);" class="text-sm"><strong style="color: #a3c520;">Why it matters:</strong> Finding out a family fell off a cliff six months later doesn't help. Real-time visibility enables proactive intervention before crises become catastrophes.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-black p-6 rounded-2xl">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-tps-green rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="text-tps-dark font-bold text-xl">5</span>
+                            </div>
+                            <div>
+                                <h4 style="color: #a3c520;" class="font-bold text-lg mb-2">Rural-Specific Design (Not Urban-Adapted)</h4>
+                                <p style="color: rgba(255,255,255,0.9);" class="mb-3">Most economic mobility programs were built in cities and "scaled" to rural areas. Empower was built IN rural Tennessee, FOR rural communities—addressing transportation deserts, service scarcity, and the relationship-based trust that rural culture requires.</p>
+                                <p style="color: rgba(255,255,255,0.7);" class="text-sm"><strong style="color: #a3c520;">Why it matters:</strong> Urban solutions assume public transit, multiple service providers, and anonymity. Rural communities operate on personal relationships, geographic distances, and limited options. Different contexts require different designs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2 id="positioning">16.4 Positioning Statement</h2>
+
+                <div class="bg-gradient-to-br from-part5-research to-empower-blue rounded-2xl p-8 my-8 not-prose">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                            </svg>
+                        </div>
+                        <span style="color: rgba(255,255,255,0.8);" class="text-sm font-semibold uppercase tracking-wide">Empower Positioning</span>
+                    </div>
+
+                    <blockquote style="color: #ffffff;" class="text-2xl font-medium leading-relaxed mb-6 border-l-4 border-tps-green pl-6">
+                        "Empower combines intensive professional navigation through benefits cliff barriers with wraparound service coordination and real-time outcome tracking—specifically designed for rural communities where transportation, service scarcity, and benefit complexity create unique obstacles to economic mobility."
+                    </blockquote>
+
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div style="border: 1px solid rgba(255,255,255,0.3);" class="p-4 rounded-xl">
+                            <p style="color: #a3c520;" class="font-bold text-lg mb-1">What We Do</p>
+                            <p style="color: rgba(255,255,255,0.8);" class="text-sm">Navigate families through benefits cliff barriers to sustainable self-sufficiency</p>
+                        </div>
+                        <div style="border: 1px solid rgba(255,255,255,0.3);" class="p-4 rounded-xl">
+                            <p style="color: #a3c520;" class="font-bold text-lg mb-1">How We're Different</p>
+                            <p style="color: rgba(255,255,255,0.8);" class="text-sm">Professional navigators + wraparound + real-time data + rural design</p>
+                        </div>
+                        <div style="border: 1px solid rgba(255,255,255,0.3);" class="p-4 rounded-xl">
+                            <p style="color: #a3c520;" class="font-bold text-lg mb-1">Who We Serve</p>
+                            <p style="color: rgba(255,255,255,0.8);" class="text-sm">ALICE families in rural communities facing benefits cliff barriers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Key Takeaway Box -->
+                <div class="bg-black p-8 rounded-2xl not-prose">
+                    <h3 style="color: #a3c520;" class="font-bold text-2xl mb-4">Key Takeaway</h3>
+                    <p style="color: rgba(255,255,255,0.9);" class="text-lg leading-relaxed mb-6">
+                        The economic mobility field has strong models—but none designed specifically for rural communities facing benefits cliff barriers. Empower doesn't replace these models; it fills the gap they leave:
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-3 mb-6">
+                        <div style="color: #ffffff;" class="flex items-center">
+                            <span style="color: #a3c520;" class="mr-2">*</span>
+                            <span><strong>EMPath</strong> provides coaching frameworks—Empower adds cliff expertise</span>
+                        </div>
+                        <div style="color: #ffffff;" class="flex items-center">
+                            <span style="color: #a3c520;" class="mr-2">*</span>
+                            <span><strong>LIFT</strong> provides cash + coaching—Empower adds intensive navigation</span>
+                        </div>
+                        <div style="color: #ffffff;" class="flex items-center">
+                            <span style="color: #a3c520;" class="mr-2">*</span>
+                            <span><strong>Circles</strong> builds community—Empower adds professional expertise</span>
+                        </div>
+                        <div style="color: #ffffff;" class="flex items-center">
+                            <span style="color: #a3c520;" class="mr-2">*</span>
+                            <span><strong>UpTogether</strong> trusts families—Empower adds systems knowledge</span>
+                        </div>
+                        <div style="color: #ffffff;" class="flex items-center">
+                            <span style="color: #a3c520;" class="mr-2">*</span>
+                            <span><strong>CLIFF Tools</strong> models cliffs—Empower adds full program infrastructure</span>
+                        </div>
+                    </div>
+                    <p style="color: #a3c520;" class="font-bold text-xl">
+                        Rural communities need a model built for them, not adapted to them. That's Empower.
+                    </p>
+                </div>
+
+                <!-- Sources Section -->
+                <div class="mt-12 pt-8 border-t border-gray-200 not-prose">
+                    <h3 class="font-bold text-gray-900 text-lg mb-4">Sources & Program Information</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>* <strong>EMPath (Economic Mobility Pathways):</strong> <a href="https://www.empathways.org/" target="_blank" class="text-part5-research hover:underline">https://www.empathways.org/</a></li>
+                        <li>* <strong>LIFT:</strong> <a href="https://www.whywelift.org/" target="_blank" class="text-part5-research hover:underline">https://www.whywelift.org/</a></li>
+                        <li>* <strong>Circles USA:</strong> <a href="https://www.circlesusa.org/" target="_blank" class="text-part5-research hover:underline">https://www.circlesusa.org/</a></li>
+                        <li>* <strong>UpTogether (Family Independence Initiative):</strong> <a href="https://www.uptogether.org/" target="_blank" class="text-part5-research hover:underline">https://www.uptogether.org/</a></li>
+                        <li>* <strong>Atlanta Fed CLIFF Tools:</strong> <a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families" target="_blank" class="text-part5-research hover:underline">https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- On This Page TOC -->
+            <aside class="hidden xl:block">
+                <div class="toc">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
+                    <nav>
+                        <a href="#major-models" class="toc-link active">Mobility Models</a>
+                        <a href="#differentiation" class="toc-link">Differentiation Matrix</a>
+                        <a href="#convergence" class="toc-link">Five-Part Convergence</a>
+                        <a href="#positioning" class="toc-link">Positioning Statement</a>
+                    </nav>
+                </div>
+            </aside>
+            </div>
+
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-12.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
+                    ← Previous: Scaling Beyond
+                </a>
+                <a href="../index.html" class="bg-part5-research text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-empower-blue transition">
+                    Back to Overview →
+                </a>
+            </div>
+        </div>
+
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <div class="floating-nav">
+        <a href="chapter-12.html" title="Previous: Scaling Beyond">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="../index.html" title="Back to Overview">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        });
+
+        // TOC Active State
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id]');
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'ArrowLeft') window.location.href = 'chapter-12.html';
+            else if (e.key === 'ArrowRight') window.location.href = '../index.html';
+        });
+    </script>
+</body>
+</html>

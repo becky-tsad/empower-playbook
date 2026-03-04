@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 9: What Kills Programs | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#3d4f5f',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #991b1b, #dc2626);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #fee2e2; color: #991b1b; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Enhanced Prose styling */
+        .prose-enhanced h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #991b1b;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #fee2e2;
+        }
+        .prose-enhanced h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose-enhanced p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .prose-enhanced ul {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+            list-style-type: disc;
+        }
+        .prose-enhanced li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .prose-enhanced blockquote {
+            border-left: 4px solid #991b1b;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #666;
+            margin: 1.5rem 0;
+            background: #fef2f2;
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose-enhanced strong { color: #222; }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        /* TOC Styles */
+        .toc { position: sticky; top: 100px; }
+        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
+        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
+        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
+        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 - The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 - The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 - Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item active">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 - Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 -->
+            <p class="nav-section-title">Part 5 - Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Literature Review
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Evidence Tables
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Methodology Notes
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="main-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 3 - Implementation</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Gradient Chapter Header -->
+        <div class="bg-gradient-to-br from-red-800 to-red-700 text-white px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-4">
+                    <p class="text-white/70 text-sm font-medium">Chapter 9</p>
+                    <span class="bg-white/20 text-white/90 text-xs px-2 py-1 rounded-full">12 min read</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    What Kills Programs
+                </h1>
+                <p class="text-white/80 mt-3 text-lg">(And How to Avoid It)</p>
+            </div>
+        </div>
+
+        <!-- Chapter Content -->
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+            <div class="prose-enhanced">
+
+                <p class="text-xl text-gray-500 mb-8 leading-relaxed">
+                    Most playbooks tell you what to do. This chapter tells you what NOT to do. These are the failure patterns we've seen kill promising programs—and the specific actions that prevent them.
+                </p>
+
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 not-prose">
+                    <p class="text-sm text-red-800">
+                        <strong>Why this matters:</strong> Programs rarely fail dramatically. Research shows 91% lose effectiveness gradually—through drift, dysfunction, and accumulated small mistakes. The difference between programs that survive and those that fail is recognizing these patterns early and having the courage to intervene.
+                    </p>
+                </div>
+
+                <!-- Program Failure By The Numbers -->
+                <div style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #ffffff; font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem;">Program Failure By The Numbers</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="font-size: 2rem; font-weight: 700; color: #fca5a5; margin: 0;">30-65%</p>
+                            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.8); margin: 0.25rem 0 0 0;">fail within 10 years</p>
+                        </div>
+                        <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="font-size: 2rem; font-weight: 700; color: #fca5a5; margin: 0;">52%</p>
+                            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.8); margin: 0.25rem 0 0 0;">modify programs to chase funding</p>
+                        </div>
+                        <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="font-size: 2rem; font-weight: 700; color: #fca5a5; margin: 0;">2-3x</p>
+                            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.8); margin: 0.25rem 0 0 0;">outcome difference: high vs. low fidelity</p>
+                        </div>
+                        <div style="text-align: center; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="font-size: 2rem; font-weight: 700; color: #fca5a5; margin: 0;">$54K</p>
+                            <p style="font-size: 0.75rem; color: rgba(255,255,255,0.8); margin: 0.25rem 0 0 0;">cost per staff departure</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin: 1rem 0 0 0; font-style: italic;">Sources: NCCS, Nonprofit Finance Fund, Durlak & DuPre (2008), National Child Welfare Workforce Institute</p>
+                </div>
+
+                <!-- Research Evidence Box -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #f87171; font-weight: 700; margin-bottom: 0.75rem;">Research on Program Failure</h4>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; margin-bottom: 1rem;">Studies of evidence-based program implementation reveal consistent patterns in what causes programs to fail:</p>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="background: rgba(248,113,113,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #f87171;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Funding-Driven Drift</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;"><strong style="color: #ffffff;">52% of nonprofits</strong> modify their programs to fit available funding—often abandoning core components that produce outcomes in favor of activities funders prefer to fund.</p>
+                        </div>
+                        <div style="background: rgba(248,113,113,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #f87171;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Caseload Violations</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;">Caseloads exceeding <strong style="color: #ffffff;">1:30 correlate with poor outcomes</strong> across virtually all navigation program metrics. The navigator-participant relationship becomes transactional rather than transformational.</p>
+                        </div>
+                        <div style="background: rgba(248,113,113,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #f87171;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Relationship Duration</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;">Navigator-participant relationships lasting <strong style="color: #ffffff;">under 6 months actually produce negative outcomes</strong>—worse than no intervention. Trust takes time to build.</p>
+                        </div>
+                        <div style="background: rgba(248,113,113,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #f87171;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Fidelity Monitoring Gaps</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;">Programs without ongoing fidelity monitoring lose effectiveness within 12-18 months, then lose funding 6-12 months after that when outcomes data reveals the decline.</p>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-top: 1rem; margin-bottom: 0;"><strong style="color: #ffffff;">Common drift patterns:</strong> Quality reduction (cutting corners), fewer participant interactions, navigator reassignments to administrative tasks, and elimination of "expensive" components like supervision.</p>
+                </div>
+
+                <h2 id="coordination">9.1 Coordination Collapse</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">Agencies working in silos. Families falling through gaps. Partner meetings become status updates where nothing changes. "That's not our department."</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Coordination is hard work that no one gets credit for. Each agency has its own reporting requirements, funding streams, and incentives. Without intentional effort, the default is silos.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Weekly coordination meetings (not monthly—weekly)</li>
+                                <li>Shared data dashboard that everyone can see</li>
+                                <li>Named point person for each family—one navigator owns the outcome</li>
+                                <li>Agreements that include coordination commitments, not just service delivery</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Victoria Climbié Case Study -->
+                <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #991b1b; font-weight: 700; margin: 0 0 0.75rem 0; font-size: 0.95rem;">Case Study: When Coordination Fails Catastrophically</h4>
+                    <p style="font-size: 0.9rem; color: #7f1d1d; line-height: 1.7; margin: 0;">Victoria Climbié was seen by <strong>3 housing authorities, 4 social services departments, 2 police child protection teams, an NSPCC specialist centre, and 2 hospitals</strong>. Despite all this contact, she died with 128 separate injuries on her body. The subsequent inquiry found that agencies failed to communicate, share information, or coordinate care. Each agency assumed someone else was handling it. This is what coordination collapse looks like at its worst—and why weekly coordination meetings, shared data, and named point persons aren't optional. <span style="font-style: italic; color: #991b1b;">Source: UK Victoria Climbié Inquiry</span></p>
+                </div>
+
+                <h2 id="communication">9.2 Communication Breakdown</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">Information dies in inboxes. No shared language across agencies. Updates happen but don't reach the people who need them. "I didn't know that changed."</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Everyone's busy. Communication takes effort. Without clear protocols, messages get lost. People assume someone else will share the update.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Shared terminology document—everyone uses the same words</li>
+                                <li>Central communication channel (Slack, Teams, or similar)</li>
+                                <li>Communication protocols: who needs to know what, when</li>
+                                <li>Regular touchpoints that aren't optional</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="duplication">9.3 Duplicate Programs</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">Three agencies offer the same workshop. Four organizations provide food assistance. Everyone competes for the same grant dollars while critical gaps go unaddressed.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Each organization builds programs based on available funding, not community need. Grant requirements often reward new programs over coordination. "We've always done it this way."</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Complete service mapping in Phase 1—know what exists</li>
+                                <li>Consolidate or specialize: "You do childcare, we do workforce"</li>
+                                <li>Joint grant applications instead of competing</li>
+                                <li>Courage to shut down programs that duplicate others</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="funding">9.4 Funding as Afterthought</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">Constant survival mode. Grant deadlines are crises. Leadership spends more time fundraising than leading. "We'll figure out funding later."</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Program people want to do program work, not fundraising. Grant writing is skilled work that often falls to whoever has time. No one is dedicated to it.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li><strong>Dedicated grant researcher/writer from Day 1</strong></li>
+                                <li>Pipeline math: pursue $4-5M to close $2.5M</li>
+                                <li>15-18 simultaneous foundation relationships</li>
+                                <li>12+ month funding runway at all times</li>
+                                <li>Diversified funding (government + foundation + local)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Starvation Cycle Research -->
+                <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0;" class="not-prose">
+                    <p style="font-weight: 700; color: #92400e; margin: 0 0 0.5rem 0;">The Nonprofit Starvation Cycle</p>
+                    <p style="font-size: 0.9rem; color: #78350f; line-height: 1.7; margin: 0;">Research from Stanford Social Innovation Review documents a vicious cycle: Funders cap overhead at 15%, but actual operating costs run 25-35%. Organizations cut infrastructure to maximize "program spending," which undermines organizational effectiveness, which weakens programs, which loses funders. <strong>76% of nonprofits recover less than 10% in indirect costs.</strong> This math doesn't work—and it kills programs slowly. The solution isn't just "more funding"—it's diversified funding and explicit policies against chasing grants that compromise your model.</p>
+                </div>
+
+                <h2 id="vision-drift">9.5 Vision Drift</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">Leadership starts aligned, then pulls in different directions. Each partner pursues their own interpretation. "That's not how I understood it."</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Verbal agreements fade. Pressure creates shortcuts. New people join and don't get the original vision. Time passes and priorities shift.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Documented shared vision—written, signed, referenced</li>
+                                <li>Quarterly re-alignment sessions (not just status updates)</li>
+                                <li>Decision framework that ties back to vision</li>
+                                <li>Onboarding that includes vision immersion for new staff</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="training">9.6 Training-and-Forget</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">One onboarding session, then back to old habits. Staff can't remember the methodology. New hires learn from peers who learned from peers who learned from... someone who was trained.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Training takes time away from "real work." Once people are "trained," that box is checked. The model evolves but training doesn't.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Ongoing training calendar (not just onboarding)</li>
+                                <li>Return to shared vision as model evolves</li>
+                                <li>Refresher sessions when methodology updates</li>
+                                <li>Training is part of performance, not extra</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fidelity Research Callout -->
+                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #0ea5e9; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #0369a1; font-weight: 700; margin: 0 0 0.75rem 0; font-size: 0.95rem;">The Research is Clear: Fidelity = Outcomes</h4>
+                    <p style="font-size: 0.9rem; color: #0c4a6e; line-height: 1.7; margin: 0 0 0.75rem 0;">A comprehensive review of 500+ studies found that programs with <strong>high implementation fidelity produce outcomes 2-3x higher</strong> than those with poor fidelity (Durlak & DuPre, 2008). Yet only 3.5% of interventions adequately monitor fidelity.</p>
+                    <p style="font-size: 0.9rem; color: #0c4a6e; line-height: 1.7; margin: 0;"><strong>The 12-month window:</strong> Research shows the biggest fidelity gains happen in months 1-12. After that, without ongoing training and supervision, programs plateau and drift begins. The Nurse-Family Partnership assumes a <strong>21.8% effectiveness decline</strong> whenever programs reduce service intensity. Training isn't a one-time event—it's infrastructure.</p>
+                </div>
+
+                <h2 id="checkbox">9.7 Checkbox Culture</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">Staff complete tasks but don't solve problems. Reports are filed but nothing changes. Compliance over outcomes. "I did what I was supposed to do."</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Systems reward completion over creativity. Risk-taking is punished. People optimize for what's measured—usually activities, not outcomes.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Hire for problem-solvers, not box-checkers</li>
+                                <li>Interview question: "Tell me about a time you broke a rule to help someone"</li>
+                                <li>Celebrate problem-solving in team meetings</li>
+                                <li>Measure outcomes, not activities</li>
+                                <li>Give navigators authority to make decisions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="understaffed">9.8 Understaffed Leadership</h2>
+
+                <div class="bg-white rounded-xl shadow-sm p-6 my-6 not-prose border border-gray-100">
+                    <div class="flex items-start mb-4">
+                        <span class="bg-red-100 text-red-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">!</span>
+                        <div>
+                            <h4 class="font-bold text-red-700">The Symptom</h4>
+                            <p class="text-sm text-gray-600">Everything bottlenecks at one or two people. Decisions wait weeks. Leaders burn out. Good ideas die in the queue.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start mb-4">
+                        <span class="bg-yellow-100 text-yellow-700 w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">?</span>
+                        <div>
+                            <h4 class="font-bold text-yellow-700">Why It Happens</h4>
+                            <p class="text-sm text-gray-600">Programs staff for service delivery, not for leadership. "We'll add management capacity later when we grow." Leaders try to do it all.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-tps-green text-tps-dark w-10 h-10 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">+</span>
+                        <div>
+                            <h4 class="font-bold text-tps-dark">The Prevention</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>Right-size leadership BEFORE launch</li>
+                                <li>You need enough people who can actually MOVE things</li>
+                                <li>Distribute decision-making authority</li>
+                                <li>Staff for leadership, not just delivery</li>
+                                <li>Build leadership depth—not a single point of failure</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="lessons">9.9 Lessons Learned from the Empower Pilot</h2>
+
+                <p class="text-base text-gray-600 mb-6">
+                    The Empower pilot revealed critical insights about program implementation. These aren't theoretical—they're hard-won lessons from actual experience that directly shaped how we recommend building and sustaining programs.
+                </p>
+
+                <h3>Data Capture is Critical from Day One</h3>
+
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem;">The Lesson</p>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">If you have the wrong data being captured from the start, your pilot will be confusing and you won't be able to get more funding. This isn't a minor problem—it's a program killer.</p>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520; margin-bottom: 1rem;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">What We Did Wrong Initially</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;">Didn't define outcome metrics before launch</li>
+                            <li style="margin-bottom: 0.5rem;">Control group design was muddled—support payments and coaching weren't cleanly separated</li>
+                            <li style="margin-bottom: 0.5rem;">Built data infrastructure as an afterthought, not as foundational</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">What You Must Do</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">Define outcome metrics BEFORE launching</strong>—not after six months when you realize you're measuring the wrong things</li>
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">Design control groups with intention</strong>—keep support payments equal while isolating navigator coaching, so you can actually measure the navigator's impact</li>
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">Build data infrastructure first</strong>—this is foundational, not an afterthought. This is why we developed our own navigator data tool.</li>
+                            <li style="margin-bottom: 0.5rem;">Work with a data expert from the design phase forward</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Funding Cannot Be an Afterthought</h3>
+
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem;">The Hard Truth</p>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">Empower is facing staff layoffs because funding wasn't secured in advance. A program with proof of concept and positive outcomes is cutting staff because the leadership didn't plan for sustainability. This is tragic and preventable.</p>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520; margin-bottom: 1rem;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">What Not to Do</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;">Treat funding as "Phase 3" work when proof exists</li>
+                            <li style="margin-bottom: 0.5rem;">Rely on a single funding stream</li>
+                            <li style="margin-bottom: 0.5rem;">Wait until the grant is running out to start fundraising</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">What You Must Do</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">Build sustainability planning into Phase 1</strong>—this is when you design outcomes, it's when you design funding</li>
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">Diversify funding sources from the beginning</strong>—government + foundation + local/private</li>
+                            <li style="margin-bottom: 0.5rem;">Start grant relationship building simultaneously with program launch</li>
+                            <li style="margin-bottom: 0.5rem;">Never let funding runway drop below 12 months</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Leadership Alignment Takes Constant Work</h3>
+
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem;">The Reality Check</p>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">Vision drift happens when leadership isn't regularly aligned. You can have a brilliant shared vision statement, but if you don't continuously reinforce it, people drift back to their own interpretations and incentives.</p>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">Your Action Plan</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">Quarterly re-alignment sessions</strong>—not status updates, but real conversations about whether decisions align with vision</li>
+                            <li style="margin-bottom: 0.5rem;">Shared vision requires ongoing reinforcement, not one-time agreement</li>
+                            <li style="margin-bottom: 0.5rem;">Tie every major decision back to the vision statement</li>
+                            <li style="margin-bottom: 0.5rem;">When new leadership joins, immersion in the vision is non-negotiable</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Navigator Caseloads Creep Up</h3>
+
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem;">The Silent Killer</p>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">Without monitoring, caseloads slowly increase beyond effective ratios. It happens gradually: one more participant here, a partner referral there. Before anyone notices, your navigators are drowning and outcomes are declining.</p>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">How to Prevent It</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">Build caseload caps into policy, not just guidelines</strong></li>
+                            <li style="margin-bottom: 0.5rem;">Monitor actual caseloads monthly (not quarterly)</li>
+                            <li style="margin-bottom: 0.5rem;">When caseloads hit 85% of maximum, pause new enrollment until you hire</li>
+                            <li style="margin-bottom: 0.5rem;">Make caseload targets part of navigator performance metrics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Partner Coordination Requires Infrastructure</h3>
+
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem;">Infrastructure Isn't Boring</p>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">Informal partnerships break down under stress. You can have great relationships at launch, but when budgets tighten or leadership changes, those informal agreements evaporate. What worked during the honeymoon fails when it matters.</p>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">Build This Now</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;"><strong style="color: #a3c520;">MOUs (Memoranda of Understanding) are non-negotiable</strong>—not bureaucratic busywork, but protection</li>
+                            <li style="margin-bottom: 0.5rem;">Regular coordination meetings (weekly, not as-needed) to maintain relationships and address problems early</li>
+                            <li style="margin-bottom: 0.5rem;">Shared data protocols so information flows reliably</li>
+                            <li style="margin-bottom: 0.5rem;">Named point person at each partner organization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>The Control Group Challenge</h3>
+
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 1rem; font-size: 1.1rem;">Theory vs. Reality</p>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">Original design: keep support payments equal, isolate navigator coaching as the variable you're testing. Sound reasonable? The reality was much harder to maintain than expected.</p>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520; margin-bottom: 1rem;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">What Happened</p>
+                        <p style="color: rgba(255,255,255,0.85); margin: 0;">The control group design eroded over time. Unpredictable contamination: some control group members got ad hoc navigator help, some treatment group members disengaged. Trying to maintain pristine separation was nearly impossible in a real community environment.</p>
+                    </div>
+                    <div style="background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                        <p style="color: #ffffff; font-weight: 700; margin: 0 0 0.5rem 0;">Our Workaround</p>
+                        <ul style="color: rgba(255,255,255,0.85); margin: 1rem 0 0 1.5rem; font-size: 0.95rem;">
+                            <li style="margin-bottom: 0.5rem;">Create categories based on actual navigator session frequency</li>
+                            <li style="margin-bottom: 0.5rem;">Correlate session intensity with outcomes</li>
+                            <li style="margin-bottom: 0.5rem;">Accept natural variation rather than fighting it</li>
+                            <li style="margin-bottom: 0.5rem;">This gives you the data you need without unrealistic control group purity</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(248,113,113,0.15); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #f87171;">
+                        <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.5rem 0;">Critical Lesson</p>
+                        <p style="color: rgba(255,255,255,0.85); margin: 0;"><strong style="color: #ffffff;">Design evaluation methodology with a data expert from the start.</strong> This isn't something you figure out mid-pilot. Get research and evaluation expertise in the room when you're designing Phase 1.</p>
+                    </div>
+                </div>
+
+                <!-- Early Warning Signs Section -->
+                <h2 id="warning-signs">Early Warning Signs</h2>
+                <p>Research identifies predictive indicators that allow early intervention before failure becomes entrenched. If you see 3+ of these signs, intervene immediately:</p>
+
+                <div style="background: #fef2f2; border: 2px solid #fecaca; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #991b1b; font-weight: 700; margin: 0 0 1rem 0;">Early Warning Checklist</h4>
+                    <div style="display: grid; gap: 0.5rem;">
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Attendance/engagement declining</strong> at program activities or coordination meetings</p>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Staff turnover accelerating</strong> (especially key positions in year 1)</p>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Caseloads creeping above 1:25</strong> without anyone raising the alarm</p>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Supervision meetings becoming irregular</strong> or getting cancelled</p>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Data collection becoming inconsistent</strong> or incomplete</p>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Partners missing coordination meetings</strong> or sending substitutes</p>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Funding conversations dominating strategy discussions</strong></p>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                            <span style="color: #dc2626; font-size: 1.25rem;">□</span>
+                            <p style="margin: 0; color: #7f1d1d; font-size: 0.9rem;"><strong>Staff saying "that's not how we do it anymore"</strong> about core model elements</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Programs That Turned It Around -->
+                <h2 id="turnarounds">Programs That Turned It Around</h2>
+                <p>Not every struggling program fails. Here's what successful turnarounds look like:</p>
+
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #22c55e; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #166534; font-weight: 700; margin: 0 0 1rem 0;">Alcohol and Drug Council of Middle Tennessee</h4>
+                    <p style="font-size: 0.9rem; color: #166534; line-height: 1.7; margin: 0 0 1rem 0;"><strong>The crisis:</strong> Declining program quality, poor staff morale, organizational drift from previous leadership.</p>
+                    <p style="font-size: 0.9rem; color: #166534; line-height: 1.7; margin: 0 0 1rem 0;"><strong>The turnaround:</strong></p>
+                    <ul style="margin: 0 0 1rem 1.5rem; color: #166534; font-size: 0.9rem;">
+                        <li style="margin-bottom: 0.5rem;">New director interviewed every staff member individually</li>
+                        <li style="margin-bottom: 0.5rem;">Adopted explicit <strong>"no mission-drift" funding policy</strong>—turned down grants that would compromise the model</li>
+                        <li style="margin-bottom: 0.5rem;">Divested from programs that didn't fit core mission</li>
+                        <li style="margin-bottom: 0.5rem;">Created visible quick wins (renovated meeting room in 2 months vs. year of committee debate)</li>
+                    </ul>
+                    <p style="font-size: 0.9rem; color: #166534; line-height: 1.7; margin: 0;"><strong>Result:</strong> Organization survived, thrived, and became more mission-focused than ever.</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #22c55e; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #166534; font-weight: 700; margin: 0 0 1rem 0;">Housing First Programs (National Scale)</h4>
+                    <p style="font-size: 0.9rem; color: #166534; line-height: 1.7; margin: 0 0 1rem 0;"><strong>The challenge:</strong> Funder requirements conflicted with core Housing First principles (requiring psychiatric assessment before housing).</p>
+                    <p style="font-size: 0.9rem; color: #166534; line-height: 1.7; margin: 0 0 1rem 0;"><strong>The solution:</strong></p>
+                    <ul style="margin: 0 0 1rem 1.5rem; color: #166534; font-size: 0.9rem;">
+                        <li style="margin-bottom: 0.5rem;">"Rule-bent" by shifting psychiatric assessment from first contact to after engagement—meeting compliance while protecting client choice</li>
+                        <li style="margin-bottom: 0.5rem;">Daily team meetings reinforced Housing First philosophy</li>
+                        <li style="margin-bottom: 0.5rem;">Mobile supervision and real-time team support</li>
+                    </ul>
+                    <p style="font-size: 0.9rem; color: #166534; line-height: 1.7; margin: 0;"><strong>Result:</strong> Maintained 3.62/4 fidelity scores across diverse sites while meeting funder requirements. <em>Source: PMC Housing First Fidelity Research</em></p>
+                </div>
+
+                <div style="background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0;" class="not-prose">
+                    <p style="font-weight: 700; color: #92400e; margin: 0 0 0.5rem 0;">The Common Thread</p>
+                    <p style="font-size: 0.9rem; color: #78350f; line-height: 1.7; margin: 0;">Programs that turn around share three traits: <strong>(1)</strong> Leadership willing to make hard decisions, <strong>(2)</strong> Explicit policies protecting the model over chasing funding, and <strong>(3)</strong> Investment in fidelity monitoring and staff support. They don't drift—they course-correct.</p>
+                </div>
+
+                <!-- The Bottom Line -->
+                <div style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); color: #ffffff; padding: 2rem; border-radius: 0.75rem; margin: 2rem 0;" class="not-prose">
+                    <h3 style="color: #ffffff; font-weight: 700; margin: 0 0 1rem 0; font-size: 1.25rem;">The Bottom Line: Why Programs Really Fail</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin-bottom: 1rem;">Programs fail not from lack of good intentions but from:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Structural Misalignment</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin: 0;">Different rules, eligibility, and funding streams pulling partners apart</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Perverse Incentives</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin: 0;">Budgets and metrics that punish collaboration and reward silos</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Fidelity Neglect</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin: 0;">No one monitors whether the model is being followed (only 3.5% do)</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Staff Instability</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin: 0;">$54K per departure, 19% annual turnover—everything else breaks down</p>
+                        </div>
+                    </div>
+                    <p style="color: #ffffff; font-weight: 600; font-size: 1.1rem; margin: 0; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem;">The programs that survive do three things differently: They monitor fidelity obsessively (weekly, not annually). They protect the model over chasing funding. They invest in staff retention as mission-critical infrastructure.</p>
+                </div>
+
+                <div class="bg-tps-dark text-white p-6 rounded-xl mt-10 not-prose">
+                    <h3 style="color: #a3c520;" class="font-bold text-lg mb-3">The Pattern Behind the Patterns</h3>
+                    <p style="color: rgba(255,255,255,0.8);" class="mb-4">
+                        Notice what all these killers have in common: they're invisible until it's almost too late. Programs don't die from one catastrophic failure—they die from accumulated drift.
+                    </p>
+                    <p style="color: rgba(255,255,255,0.8);" class="mb-4">
+                        The prevention isn't heroic intervention. It's:
+                    </p>
+                    <ul style="color: #ffffff;" class="space-y-2 mb-4 text-sm">
+                        <li>Regular check-ins against each pattern</li>
+                        <li>Honest assessment of current state</li>
+                        <li>Willingness to course-correct early</li>
+                        <li>Leadership that watches for these signs</li>
+                    </ul>
+                    <p style="color: #ffffff;" class="font-semibold">
+                        Use this chapter as a quarterly diagnostic. Are any of these patterns emerging? Address them now, not later.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- On This Page TOC -->
+            <aside class="hidden xl:block">
+                <div class="toc">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
+                    <nav>
+                        <a href="#coordination" class="toc-link active">Coordination Collapse</a>
+                        <a href="#communication" class="toc-link">Communication Breakdown</a>
+                        <a href="#duplication" class="toc-link">Duplicate Programs</a>
+                        <a href="#funding" class="toc-link">Funding as Afterthought</a>
+                        <a href="#vision-drift" class="toc-link">Vision Drift</a>
+                        <a href="#training" class="toc-link">Training-and-Forget</a>
+                        <a href="#checkbox" class="toc-link">Checkbox Culture</a>
+                        <a href="#understaffed" class="toc-link">Understaffed Leadership</a>
+                        <a href="#lessons" class="toc-link">Lessons Learned</a>
+                        <a href="#warning-signs" class="toc-link">Early Warning Signs</a>
+                        <a href="#turnarounds" class="toc-link">Turnaround Examples</a>
+                    </nav>
+                </div>
+            </aside>
+            </div>
+
+            <!-- Chapter Navigation -->
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-8.html" class="text-gray-500 hover:text-red-800 transition text-sm">
+                    ← Previous: Building Your Team
+                </a>
+                <a href="chapter-10.html" class="bg-red-800 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-red-900 transition">
+                    Next: Funding Your Implementation →
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-8.html" title="Previous: Building Your Team" class="text-gray-600 hover:text-red-800">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="chapter-10.html" title="Next: Funding" class="text-gray-600 hover:text-red-800">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', function() {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPos = window.scrollY;
+            const progress = (scrollPos / docHeight) * 100;
+            document.getElementById('readingProgress').style.width = progress + '%';
+        });
+
+        // TOC Active State
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id], h3[id]');
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Don't trigger if user is typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            if (e.key === 'ArrowLeft') {
+                window.location.href = 'chapter-8.html';
+            } else if (e.key === 'ArrowRight') {
+                window.location.href = 'chapter-10.html';
+            }
+        });
+    </script>
+</body>
+</html>

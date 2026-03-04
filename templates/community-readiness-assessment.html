@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Readiness Assessment | Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-break { page-break-before: always; }
+            body { font-size: 11pt; }
+            .print-compact { padding: 0.5rem !important; }
+        }
+        .score-radio:checked + label {
+            background-color: #a3c520;
+            color: #111;
+            border-color: #a3c520;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <div class="bg-empower-blue text-white px-8 py-6 no-print">
+        <div class="max-w-7xl mx-auto mx-auto">
+            <p class="text-sm text-white/70 mb-1">Empower Playbook Template</p>
+            <h1 class="text-2xl font-bold">Community Readiness Assessment</h1>
+            <p class="text-white/80 mt-2">Evaluate whether your community has the foundations for successful Empower implementation</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mx-auto px-8 py-8">
+        <!-- Instructions -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8 no-print">
+            <h2 class="font-bold text-lg mb-3">Instructions</h2>
+            <ul class="space-y-2 text-gray-600">
+                <li>1. Complete this assessment with your core planning team (3-5 people recommended)</li>
+                <li>2. Score each item honestly - this is a diagnostic tool, not a test</li>
+                <li>3. Discuss any items where team members disagree significantly</li>
+                <li>4. Use results to identify areas needing development before launch</li>
+                <li>5. Reassess quarterly during planning phase</li>
+            </ul>
+        </div>
+
+        <!-- Assessment Info -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Assessment Information</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Community/Region Name</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent" placeholder="e.g., Upper Cumberland, TN">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Assessment Date</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Completed By</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent" placeholder="Names and roles">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Lead Organization</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent" placeholder="Organization name">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Political Will & Leadership -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 1: Political Will & Leadership</h2>
+            <p class="text-gray-600 text-sm mb-6">Assess the level of support and commitment from key decision-makers.</p>
+
+            <div class="space-y-6">
+                <!-- Question 1.1 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">1.1 Do you have a champion in a position of authority who is committed to this initiative?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q1_1" id="q1_1_1" value="1" class="sr-only score-radio">
+                        <label for="q1_1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No champion identified</label>
+                        <input type="radio" name="q1_1" id="q1_1_2" value="2" class="sr-only score-radio">
+                        <label for="q1_1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Potential champion, not committed</label>
+                        <input type="radio" name="q1_1" id="q1_1_3" value="3" class="sr-only score-radio">
+                        <label for="q1_1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Champion identified, moderate authority</label>
+                        <input type="radio" name="q1_1" id="q1_1_4" value="4" class="sr-only score-radio">
+                        <label for="q1_1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Strong champion, significant authority</label>
+                        <input type="radio" name="q1_1" id="q1_1_5" value="5" class="sr-only score-radio">
+                        <label for="q1_1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Multiple champions at executive level</label>
+                    </div>
+                </div>
+
+                <!-- Question 1.2 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">1.2 Is there alignment between community leadership and organizational leadership on the need for this program?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q1_2" id="q1_2_1" value="1" class="sr-only score-radio">
+                        <label for="q1_2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No awareness or alignment</label>
+                        <input type="radio" name="q1_2" id="q1_2_2" value="2" class="sr-only score-radio">
+                        <label for="q1_2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Some awareness, no alignment</label>
+                        <input type="radio" name="q1_2" id="q1_2_3" value="3" class="sr-only score-radio">
+                        <label for="q1_2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Awareness with emerging alignment</label>
+                        <input type="radio" name="q1_2" id="q1_2_4" value="4" class="sr-only score-radio">
+                        <label for="q1_2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Strong alignment, documented</label>
+                        <input type="radio" name="q1_2" id="q1_2_5" value="5" class="sr-only score-radio">
+                        <label for="q1_2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Full alignment with shared vision</label>
+                    </div>
+                </div>
+
+                <!-- Question 1.3 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">1.3 Is there political stability to sustain a 3-5 year initiative?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q1_3" id="q1_3_1" value="1" class="sr-only score-radio">
+                        <label for="q1_3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - Major leadership changes expected</label>
+                        <input type="radio" name="q1_3" id="q1_3_2" value="2" class="sr-only score-radio">
+                        <label for="q1_3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Some instability concerns</label>
+                        <input type="radio" name="q1_3" id="q1_3_3" value="3" class="sr-only score-radio">
+                        <label for="q1_3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Moderate stability expected</label>
+                        <input type="radio" name="q1_3" id="q1_3_4" value="4" class="sr-only score-radio">
+                        <label for="q1_3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Good stability, succession planning</label>
+                        <input type="radio" name="q1_3" id="q1_3_5" value="5" class="sr-only score-radio">
+                        <label for="q1_3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Strong stability, bipartisan support</label>
+                    </div>
+                </div>
+
+                <!-- Question 1.4 -->
+                <div>
+                    <p class="font-medium mb-3">1.4 Do key leaders understand and accept the 18-24 month timeline for participant outcomes?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q1_4" id="q1_4_1" value="1" class="sr-only score-radio">
+                        <label for="q1_4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - Expect quick results (6 months)</label>
+                        <input type="radio" name="q1_4" id="q1_4_2" value="2" class="sr-only score-radio">
+                        <label for="q1_4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Understand but uncomfortable</label>
+                        <input type="radio" name="q1_4" id="q1_4_3" value="3" class="sr-only score-radio">
+                        <label for="q1_4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Accept timeline conceptually</label>
+                        <input type="radio" name="q1_4" id="q1_4_4" value="4" class="sr-only score-radio">
+                        <label for="q1_4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Committed to long-term approach</label>
+                        <input type="radio" name="q1_4" id="q1_4_5" value="5" class="sr-only score-radio">
+                        <label for="q1_4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Championing long-term investment</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Partner Ecosystem -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6 print-break">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 2: Partner Ecosystem</h2>
+            <p class="text-gray-600 text-sm mb-6">Evaluate the strength of your potential partner network.</p>
+
+            <div class="space-y-6">
+                <!-- Question 2.1 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">2.1 Do you have relationships with employers willing to participate?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q2_1" id="q2_1_1" value="1" class="sr-only score-radio">
+                        <label for="q2_1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No employer relationships</label>
+                        <input type="radio" name="q2_1" id="q2_1_2" value="2" class="sr-only score-radio">
+                        <label for="q2_1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - 1-2 interested employers</label>
+                        <input type="radio" name="q2_1" id="q2_1_3" value="3" class="sr-only score-radio">
+                        <label for="q2_1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - 3-5 interested employers</label>
+                        <input type="radio" name="q2_1" id="q2_1_4" value="4" class="sr-only score-radio">
+                        <label for="q2_1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - 5+ employers, some committed</label>
+                        <input type="radio" name="q2_1" id="q2_1_5" value="5" class="sr-only score-radio">
+                        <label for="q2_1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Strong employer coalition ready</label>
+                    </div>
+                </div>
+
+                <!-- Question 2.2 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">2.2 Do you have access to childcare resources for participants?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q2_2" id="q2_2_1" value="1" class="sr-only score-radio">
+                        <label for="q2_2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - Major childcare desert</label>
+                        <input type="radio" name="q2_2" id="q2_2_2" value="2" class="sr-only score-radio">
+                        <label for="q2_2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Very limited options</label>
+                        <input type="radio" name="q2_2" id="q2_2_3" value="3" class="sr-only score-radio">
+                        <label for="q2_2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Some options, waitlists exist</label>
+                        <input type="radio" name="q2_2" id="q2_2_4" value="4" class="sr-only score-radio">
+                        <label for="q2_2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Good options with subsidy access</label>
+                        <input type="radio" name="q2_2" id="q2_2_5" value="5" class="sr-only score-radio">
+                        <label for="q2_2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Strong childcare partnership</label>
+                    </div>
+                </div>
+
+                <!-- Question 2.3 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">2.3 Do you have access to transportation solutions?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q2_3" id="q2_3_1" value="1" class="sr-only score-radio">
+                        <label for="q2_3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No public transit, no solutions</label>
+                        <input type="radio" name="q2_3" id="q2_3_2" value="2" class="sr-only score-radio">
+                        <label for="q2_3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Very limited options</label>
+                        <input type="radio" name="q2_3" id="q2_3_3" value="3" class="sr-only score-radio">
+                        <label for="q2_3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Some options (limited transit)</label>
+                        <input type="radio" name="q2_3" id="q2_3_4" value="4" class="sr-only score-radio">
+                        <label for="q2_3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Multiple options available</label>
+                        <input type="radio" name="q2_3" id="q2_3_5" value="5" class="sr-only score-radio">
+                        <label for="q2_3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Comprehensive transportation plan</label>
+                    </div>
+                </div>
+
+                <!-- Question 2.4 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">2.4 Do you have workforce development/training partners identified?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q2_4" id="q2_4_1" value="1" class="sr-only score-radio">
+                        <label for="q2_4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No partners identified</label>
+                        <input type="radio" name="q2_4" id="q2_4_2" value="2" class="sr-only score-radio">
+                        <label for="q2_4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Awareness of potential partners</label>
+                        <input type="radio" name="q2_4" id="q2_4_3" value="3" class="sr-only score-radio">
+                        <label for="q2_4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Initial conversations underway</label>
+                        <input type="radio" name="q2_4" id="q2_4_4" value="4" class="sr-only score-radio">
+                        <label for="q2_4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Partners committed</label>
+                        <input type="radio" name="q2_4" id="q2_4_5" value="5" class="sr-only score-radio">
+                        <label for="q2_4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Integrated workforce system</label>
+                    </div>
+                </div>
+
+                <!-- Question 2.5 -->
+                <div>
+                    <p class="font-medium mb-3">2.5 Do you have relationships with benefits administrators (DHS, SNAP, Medicaid)?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q2_5" id="q2_5_1" value="1" class="sr-only score-radio">
+                        <label for="q2_5_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No relationships</label>
+                        <input type="radio" name="q2_5" id="q2_5_2" value="2" class="sr-only score-radio">
+                        <label for="q2_5_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Know who to contact</label>
+                        <input type="radio" name="q2_5" id="q2_5_3" value="3" class="sr-only score-radio">
+                        <label for="q2_5_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Working relationship exists</label>
+                        <input type="radio" name="q2_5" id="q2_5_4" value="4" class="sr-only score-radio">
+                        <label for="q2_5_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Strong partnership</label>
+                        <input type="radio" name="q2_5" id="q2_5_5" value="5" class="sr-only score-radio">
+                        <label for="q2_5_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Integrated data sharing</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Funding & Resources -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 3: Funding & Resources</h2>
+            <p class="text-gray-600 text-sm mb-6">Assess your capacity to fund and resource the program.</p>
+
+            <div class="space-y-6">
+                <!-- Question 3.1 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">3.1 Do you have seed funding for Year 1 operations ($150K-$250K)?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q3_1" id="q3_1_1" value="1" class="sr-only score-radio">
+                        <label for="q3_1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No funding identified</label>
+                        <input type="radio" name="q3_1" id="q3_1_2" value="2" class="sr-only score-radio">
+                        <label for="q3_1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Potential sources identified</label>
+                        <input type="radio" name="q3_1" id="q3_1_3" value="3" class="sr-only score-radio">
+                        <label for="q3_1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Applications in progress</label>
+                        <input type="radio" name="q3_1" id="q3_1_4" value="4" class="sr-only score-radio">
+                        <label for="q3_1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Partial funding secured</label>
+                        <input type="radio" name="q3_1" id="q3_1_5" value="5" class="sr-only score-radio">
+                        <label for="q3_1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Full Year 1 funding secured</label>
+                    </div>
+                </div>
+
+                <!-- Question 3.2 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">3.2 Is there a sustainability plan for Years 2-3?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q3_2" id="q3_2_1" value="1" class="sr-only score-radio">
+                        <label for="q3_2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No plan exists</label>
+                        <input type="radio" name="q3_2" id="q3_2_2" value="2" class="sr-only score-radio">
+                        <label for="q3_2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - General ideas discussed</label>
+                        <input type="radio" name="q3_2" id="q3_2_3" value="3" class="sr-only score-radio">
+                        <label for="q3_2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Preliminary plan drafted</label>
+                        <input type="radio" name="q3_2" id="q3_2_4" value="4" class="sr-only score-radio">
+                        <label for="q3_2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Detailed plan with prospects</label>
+                        <input type="radio" name="q3_2" id="q3_2_5" value="5" class="sr-only score-radio">
+                        <label for="q3_2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Multi-year funding committed</label>
+                    </div>
+                </div>
+
+                <!-- Question 3.3 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">3.3 Do you have access to emergency/barrier removal funds?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q3_3" id="q3_3_1" value="1" class="sr-only score-radio">
+                        <label for="q3_3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No funds available</label>
+                        <input type="radio" name="q3_3" id="q3_3_2" value="2" class="sr-only score-radio">
+                        <label for="q3_3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Very limited funds</label>
+                        <input type="radio" name="q3_3" id="q3_3_3" value="3" class="sr-only score-radio">
+                        <label for="q3_3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Some partner funds available</label>
+                        <input type="radio" name="q3_3" id="q3_3_4" value="4" class="sr-only score-radio">
+                        <label for="q3_3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Designated barrier fund</label>
+                        <input type="radio" name="q3_3" id="q3_3_5" value="5" class="sr-only score-radio">
+                        <label for="q3_3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Robust flexible fund pool</label>
+                    </div>
+                </div>
+
+                <!-- Question 3.4 -->
+                <div>
+                    <p class="font-medium mb-3">3.4 Do you have or can you acquire navigator capacity?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q3_4" id="q3_4_1" value="1" class="sr-only score-radio">
+                        <label for="q3_4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No capacity, no plan</label>
+                        <input type="radio" name="q3_4" id="q3_4_2" value="2" class="sr-only score-radio">
+                        <label for="q3_4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Limited capacity identified</label>
+                        <input type="radio" name="q3_4" id="q3_4_3" value="3" class="sr-only score-radio">
+                        <label for="q3_4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Hiring plan in development</label>
+                        <input type="radio" name="q3_4" id="q3_4_4" value="4" class="sr-only score-radio">
+                        <label for="q3_4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Staff identified or committed</label>
+                        <input type="radio" name="q3_4" id="q3_4_5" value="5" class="sr-only score-radio">
+                        <label for="q3_4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Navigator team ready</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Data & Technology -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6 print-break">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 4: Data & Technology Infrastructure</h2>
+            <p class="text-gray-600 text-sm mb-6">Assess your capacity to track outcomes and manage data. This is critical - poor data infrastructure kills programs.</p>
+
+            <div class="space-y-6">
+                <!-- Question 4.1 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">4.1 Do you have a case management/data tracking system?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q4_1" id="q4_1_1" value="1" class="sr-only score-radio">
+                        <label for="q4_1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - Paper-based only</label>
+                        <input type="radio" name="q4_1" id="q4_1_2" value="2" class="sr-only score-radio">
+                        <label for="q4_1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Basic spreadsheets</label>
+                        <input type="radio" name="q4_1" id="q4_1_3" value="3" class="sr-only score-radio">
+                        <label for="q4_1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Generic CRM system</label>
+                        <input type="radio" name="q4_1" id="q4_1_4" value="4" class="sr-only score-radio">
+                        <label for="q4_1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Purpose-built case management</label>
+                        <input type="radio" name="q4_1" id="q4_1_5" value="5" class="sr-only score-radio">
+                        <label for="q4_1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Integrated economic mobility platform</label>
+                    </div>
+                </div>
+
+                <!-- Question 4.2 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">4.2 Can you track family-level (not just individual) outcomes?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q4_2" id="q4_2_1" value="1" class="sr-only score-radio">
+                        <label for="q4_2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No capability</label>
+                        <input type="radio" name="q4_2" id="q4_2_2" value="2" class="sr-only score-radio">
+                        <label for="q4_2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Very limited</label>
+                        <input type="radio" name="q4_2" id="q4_2_3" value="3" class="sr-only score-radio">
+                        <label for="q4_2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Can link family members</label>
+                        <input type="radio" name="q4_2" id="q4_2_4" value="4" class="sr-only score-radio">
+                        <label for="q4_2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Family-level tracking exists</label>
+                        <input type="radio" name="q4_2" id="q4_2_5" value="5" class="sr-only score-radio">
+                        <label for="q4_2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Comprehensive family dashboard</label>
+                    </div>
+                </div>
+
+                <!-- Question 4.3 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">4.3 Do you have capacity for benefits cliff modeling/tracking?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q4_3" id="q4_3_1" value="1" class="sr-only score-radio">
+                        <label for="q4_3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No capability</label>
+                        <input type="radio" name="q4_3" id="q4_3_2" value="2" class="sr-only score-radio">
+                        <label for="q4_3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Manual calculations only</label>
+                        <input type="radio" name="q4_3" id="q4_3_3" value="3" class="sr-only score-radio">
+                        <label for="q4_3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Use external tools (Atlanta Fed)</label>
+                        <input type="radio" name="q4_3" id="q4_3_4" value="4" class="sr-only score-radio">
+                        <label for="q4_3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - State-specific calculator access</label>
+                        <input type="radio" name="q4_3" id="q4_3_5" value="5" class="sr-only score-radio">
+                        <label for="q4_3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Integrated cliff modeling</label>
+                    </div>
+                </div>
+
+                <!-- Question 4.4 -->
+                <div>
+                    <p class="font-medium mb-3">4.4 Do you have reporting capacity for funders and partners?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q4_4" id="q4_4_1" value="1" class="sr-only score-radio">
+                        <label for="q4_4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No reporting capability</label>
+                        <input type="radio" name="q4_4" id="q4_4_2" value="2" class="sr-only score-radio">
+                        <label for="q4_4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Manual report generation</label>
+                        <input type="radio" name="q4_4" id="q4_4_3" value="3" class="sr-only score-radio">
+                        <label for="q4_4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Basic automated reports</label>
+                        <input type="radio" name="q4_4" id="q4_4_4" value="4" class="sr-only score-radio">
+                        <label for="q4_4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Custom dashboards available</label>
+                        <input type="radio" name="q4_4" id="q4_4_5" value="5" class="sr-only score-radio">
+                        <label for="q4_4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Real-time multi-stakeholder access</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Community Context -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 5: Community Context</h2>
+            <p class="text-gray-600 text-sm mb-6">Understand your community's specific characteristics and needs.</p>
+
+            <div class="space-y-6">
+                <!-- Question 5.1 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">5.1 What is your ALICE population estimate?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q5_1" id="q5_1_1" value="1" class="sr-only score-radio">
+                        <label for="q5_1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - Unknown</label>
+                        <input type="radio" name="q5_1" id="q5_1_2" value="2" class="sr-only score-radio">
+                        <label for="q5_1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - General estimate only</label>
+                        <input type="radio" name="q5_1" id="q5_1_3" value="3" class="sr-only score-radio">
+                        <label for="q5_1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - County-level data available</label>
+                        <input type="radio" name="q5_1" id="q5_1_4" value="4" class="sr-only score-radio">
+                        <label for="q5_1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Detailed demographic analysis</label>
+                        <input type="radio" name="q5_1" id="q5_1_5" value="5" class="sr-only score-radio">
+                        <label for="q5_1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Comprehensive needs assessment</label>
+                    </div>
+                </div>
+
+                <!-- Question 5.2 -->
+                <div class="border-b border-gray-100 pb-6">
+                    <p class="font-medium mb-3">5.2 Do you understand your community's benefits cliff exposure?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q5_2" id="q5_2_1" value="1" class="sr-only score-radio">
+                        <label for="q5_2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No awareness</label>
+                        <input type="radio" name="q5_2" id="q5_2_2" value="2" class="sr-only score-radio">
+                        <label for="q5_2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Conceptual understanding</label>
+                        <input type="radio" name="q5_2" id="q5_2_3" value="3" class="sr-only score-radio">
+                        <label for="q5_2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Used CLIFF tools to estimate</label>
+                        <input type="radio" name="q5_2" id="q5_2_4" value="4" class="sr-only score-radio">
+                        <label for="q5_2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Detailed cliff analysis complete</label>
+                        <input type="radio" name="q5_2" id="q5_2_5" value="5" class="sr-only score-radio">
+                        <label for="q5_2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Quantified economic impact</label>
+                    </div>
+                </div>
+
+                <!-- Question 5.3 -->
+                <div>
+                    <p class="font-medium mb-3">5.3 Is there existing community trust and engagement with target population?</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="q5_3" id="q5_3_1" value="1" class="sr-only score-radio">
+                        <label for="q5_3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">1 - No existing relationships</label>
+                        <input type="radio" name="q5_3" id="q5_3_2" value="2" class="sr-only score-radio">
+                        <label for="q5_3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">2 - Limited historical engagement</label>
+                        <input type="radio" name="q5_3" id="q5_3_3" value="3" class="sr-only score-radio">
+                        <label for="q5_3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">3 - Some trusted partners exist</label>
+                        <input type="radio" name="q5_3" id="q5_3_4" value="4" class="sr-only score-radio">
+                        <label for="q5_3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">4 - Strong community connections</label>
+                        <input type="radio" name="q5_3" id="q5_3_5" value="5" class="sr-only score-radio">
+                        <label for="q5_3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">5 - Deep trusted relationships</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scoring Summary -->
+        <div class="bg-empower-blue text-white rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-xl mb-4">Scoring Summary</h2>
+            <div class="grid md:grid-cols-5 gap-4 mb-6">
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <p class="text-sm text-white/70">Section 1</p>
+                    <p class="text-2xl font-bold" id="section1Score">0</p>
+                    <p class="text-xs text-white/60">/ 20</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <p class="text-sm text-white/70">Section 2</p>
+                    <p class="text-2xl font-bold" id="section2Score">0</p>
+                    <p class="text-xs text-white/60">/ 25</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <p class="text-sm text-white/70">Section 3</p>
+                    <p class="text-2xl font-bold" id="section3Score">0</p>
+                    <p class="text-xs text-white/60">/ 20</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <p class="text-sm text-white/70">Section 4</p>
+                    <p class="text-2xl font-bold" id="section4Score">0</p>
+                    <p class="text-xs text-white/60">/ 20</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <p class="text-sm text-white/70">Section 5</p>
+                    <p class="text-2xl font-bold" id="section5Score">0</p>
+                    <p class="text-xs text-white/60">/ 15</p>
+                </div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-6 text-center">
+                <p class="text-sm text-white/70 mb-2">Total Readiness Score</p>
+                <p class="text-4xl font-bold" id="totalScore">0</p>
+                <p class="text-sm text-white/70">/ 100 points</p>
+            </div>
+        </div>
+
+        <!-- Interpretation Guide -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Score Interpretation</h2>
+            <div class="space-y-4">
+                <div class="border-l-4 border-red-500 pl-4">
+                    <p class="font-semibold">0-40 Points: Not Ready</p>
+                    <p class="text-gray-600 text-sm">Significant foundational work needed. Focus on building partnerships, securing leadership commitment, and addressing critical infrastructure gaps before proceeding.</p>
+                </div>
+                <div class="border-l-4 border-yellow-500 pl-4">
+                    <p class="font-semibold">41-60 Points: Emerging Readiness</p>
+                    <p class="text-gray-600 text-sm">Some foundations in place but gaps remain. Use this assessment to prioritize development areas. Consider a 6-12 month readiness phase before launch.</p>
+                </div>
+                <div class="border-l-4 border-tps-green pl-4">
+                    <p class="font-semibold">61-80 Points: Ready with Caveats</p>
+                    <p class="text-gray-600 text-sm">Strong foundations with some areas for improvement. Can proceed with implementation while actively addressing weaker areas. Monitor low-scoring items closely.</p>
+                </div>
+                <div class="border-l-4 border-green-600 pl-4">
+                    <p class="font-semibold">81-100 Points: Launch Ready</p>
+                    <p class="text-gray-600 text-sm">Excellent foundations in place. Ready to proceed with full implementation. Continue building on strengths while maintaining momentum.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Planning -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Priority Action Items</h2>
+            <p class="text-gray-600 text-sm mb-4">Based on your lowest-scoring areas, identify 3-5 priority actions:</p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Priority 1</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent" placeholder="Describe action, owner, and target date"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Priority 2</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent" placeholder="Describe action, owner, and target date"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Priority 3</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent" placeholder="Describe action, owner, and target date"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Print/Export Button -->
+        <div class="flex justify-center gap-4 no-print">
+            <button onclick="window.print()" class="bg-empower-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-empower-blue/90 transition">
+                Print / Save as PDF
+            </button>
+            <a href="../chapters/chapter-13.html" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                Back to Templates
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Calculate scores when radio buttons are clicked
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', calculateScores);
+        });
+
+        function calculateScores() {
+            let section1 = 0, section2 = 0, section3 = 0, section4 = 0, section5 = 0;
+
+            // Section 1 (q1_1 to q1_4)
+            for (let i = 1; i <= 4; i++) {
+                const checked = document.querySelector(`input[name="q1_${i}"]:checked`);
+                if (checked) section1 += parseInt(checked.value);
+            }
+
+            // Section 2 (q2_1 to q2_5)
+            for (let i = 1; i <= 5; i++) {
+                const checked = document.querySelector(`input[name="q2_${i}"]:checked`);
+                if (checked) section2 += parseInt(checked.value);
+            }
+
+            // Section 3 (q3_1 to q3_4)
+            for (let i = 1; i <= 4; i++) {
+                const checked = document.querySelector(`input[name="q3_${i}"]:checked`);
+                if (checked) section3 += parseInt(checked.value);
+            }
+
+            // Section 4 (q4_1 to q4_4)
+            for (let i = 1; i <= 4; i++) {
+                const checked = document.querySelector(`input[name="q4_${i}"]:checked`);
+                if (checked) section4 += parseInt(checked.value);
+            }
+
+            // Section 5 (q5_1 to q5_3)
+            for (let i = 1; i <= 3; i++) {
+                const checked = document.querySelector(`input[name="q5_${i}"]:checked`);
+                if (checked) section5 += parseInt(checked.value);
+            }
+
+            document.getElementById('section1Score').textContent = section1;
+            document.getElementById('section2Score').textContent = section2;
+            document.getElementById('section3Score').textContent = section3;
+            document.getElementById('section4Score').textContent = section4;
+            document.getElementById('section5Score').textContent = section5;
+            document.getElementById('totalScore').textContent = section1 + section2 + section3 + section4 + section5;
+        }
+    </script>
+</body>
+</html>

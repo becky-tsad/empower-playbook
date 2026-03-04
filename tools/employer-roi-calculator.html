@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer ROI Calculator | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus { top: 0; }
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f3f4f6; color: #a3c520; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s;
+            background: white;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #a3c520;
+            box-shadow: 0 0 0 3px rgba(163, 197, 32, 0.15);
+        }
+        .input-field:hover {
+            border-color: #d1d5db;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .result-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.2s;
+        }
+        .result-card:hover {
+            border-color: #a3c520;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .print-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .print-btn:hover {
+            border-color: #a3c520;
+            background: #f9fafb;
+        }
+
+        @media print {
+            .sidebar, .no-print { display: none !important; }
+            .main-content { margin-left: 0 !important; }
+            body { background: white; }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <nav class="py-4">
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 1 - The Case</p>
+            <div class="nav-section">
+                <a href="../chapters/chapter-1.html" class="nav-item"><span class="num bg-empower-blue text-white">1</span>Why Rural Needs Different</a>
+                <a href="../chapters/chapter-2.html" class="nav-item"><span class="num bg-empower-blue text-white">2</span>The Problem We're Solving</a>
+                <a href="../chapters/chapter-3.html" class="nav-item"><span class="num bg-empower-blue text-white">3</span>The Proof</a>
+            </div>
+
+            <p class="nav-section-title">Part 2 - The Method</p>
+            <div class="nav-section">
+                <a href="../chapters/chapter-4.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">4</span>Four Non-Negotiables</a>
+                <a href="../chapters/chapter-5.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">5</span>Adaptable Components</a>
+                <a href="../chapters/chapter-6.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">6</span>Certified Employer Program</a>
+            </div>
+
+            <p class="nav-section-title">Part 3 - Implementation</p>
+            <div class="nav-section">
+                <a href="../chapters/chapter-7.html" class="nav-item"><span class="num bg-part3-blue text-white">7</span>The Phased Approach</a>
+                <a href="../chapters/chapter-8.html" class="nav-item"><span class="num bg-part3-blue text-white">8</span>Building Your Team</a>
+                <a href="../chapters/chapter-9.html" class="nav-item"><span class="num bg-red-700 text-white">9</span>What Kills Programs</a>
+            </div>
+
+            <p class="nav-section-title">Part 4 - Scale</p>
+            <div class="nav-section">
+                <a href="../chapters/chapter-10.html" class="nav-item"><span class="num bg-part4-grey text-white">10</span>Funding</a>
+                <a href="../chapters/chapter-11.html" class="nav-item"><span class="num bg-part4-grey text-white">11</span>Adapting the Model</a>
+                <a href="../chapters/chapter-12.html" class="nav-item"><span class="num bg-part4-grey text-white">12</span>Scaling Beyond</a>
+            </div>
+
+            <p class="nav-section-title">Tools & Resources</p>
+            <div class="nav-section">
+                <a href="employer-roi-calculator.html" class="nav-item active">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    ROI Calculator
+                </a>
+                <a href="../chapters/chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content min-h-screen" id="main-content">
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3 no-print">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Tools & Resources</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-tps-green/20 text-tps-dark px-2 py-1 rounded font-medium">INTERACTIVE</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Header -->
+        <div class="bg-gradient-to-br from-empower-blue to-[#0f2544] text-white px-6 lg:px-12 py-16">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-xs bg-tps-green text-tps-dark px-3 py-1 rounded-full font-semibold">EMPLOYER TOOL</span>
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                    Employer ROI Calculator
+                </h1>
+                <p class="text-white/90 text-xl mb-6">
+                    Calculate your return on investment for employee economic mobility support programs.
+                </p>
+                <div class="bg-white/10 border border-white/20 rounded-xl p-5 lg:max-w-7xl mx-auto">
+                    <h3 class="font-semibold text-tps-green mb-2">The Business Case</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">
+                        Financial stress among employees costs U.S. businesses over $250 billion annually in lost productivity. Research shows that supporting employee economic stability reduces turnover by 25-31%, improves productivity, and delivers ROI of 300%+ on program investments. Use this calculator to estimate your potential savings.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto">
+
+                <!-- Calculator Section -->
+                <div class="grid lg:grid-cols-2 gap-8 mb-12">
+
+                    <!-- Input Section -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-empower-blue mb-6">Your Workforce Data</h2>
+                        <div class="bg-white border border-gray-200 rounded-2xl p-6 space-y-6">
+
+                            <div>
+                                <label for="employees" class="input-label">Number of Employees</label>
+                                <input type="number" id="employees" class="input-field" value="100" min="1">
+                                <p class="input-hint">Total headcount in your organization or department</p>
+                            </div>
+
+                            <div>
+                                <label for="hourlyWage" class="input-label">Average Hourly Wage ($)</label>
+                                <input type="number" id="hourlyWage" class="input-field" value="15" min="1" step="0.50">
+                                <p class="input-hint">Average wage for hourly/frontline workers</p>
+                            </div>
+
+                            <div>
+                                <label for="turnoverRate" class="input-label">Current Annual Turnover Rate (%)</label>
+                                <input type="number" id="turnoverRate" class="input-field" value="30" min="0" max="100">
+                                <p class="input-hint">Industry average for hourly workers: 25-40%</p>
+                            </div>
+
+                            <div>
+                                <label for="financiallyStressed" class="input-label">Estimated % of Workforce Financially Stressed</label>
+                                <input type="number" id="financiallyStressed" class="input-field" value="40" min="0" max="100">
+                                <p class="input-hint">National average: 40-60% of hourly workers</p>
+                            </div>
+
+                            <div>
+                                <label for="costPerHire" class="input-label">Average Cost Per Hire ($)</label>
+                                <input type="number" id="costPerHire" class="input-field" value="4700" min="0" step="100">
+                                <p class="input-hint">Includes recruiting, training, onboarding (avg: $3,500-$5,000)</p>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-100 no-print">
+                                <button onclick="window.print()" class="print-btn">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                                    </svg>
+                                    Print Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-empower-blue mb-6">Your ROI Analysis</h2>
+
+                        <!-- Current Costs -->
+                        <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-6 mb-6">
+                            <h3 class="text-lg font-semibold text-red-800 mb-4">Current Annual Costs</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700">Turnover Cost</span>
+                                    <span id="turnoverCost" class="text-xl font-bold text-red-700">$0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700">Productivity Loss</span>
+                                    <span id="productivityLoss" class="text-xl font-bold text-red-700">$0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700">Absenteeism Cost</span>
+                                    <span id="absenteeismCost" class="text-xl font-bold text-red-700">$0</span>
+                                </div>
+                                <div class="pt-4 border-t border-red-300 flex justify-between items-center">
+                                    <span class="font-semibold text-red-800">Total Current Costs</span>
+                                    <span id="totalCurrentCosts" class="text-2xl font-bold text-red-800">$0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Program Investment -->
+                        <div class="bg-gray-100 border border-gray-200 rounded-2xl p-6 mb-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Estimated Program Investment</h3>
+                            <p class="text-sm text-gray-600 mb-4">$500 per financially stressed employee for comprehensive support</p>
+                            <span id="programInvestment" class="text-3xl font-bold text-gray-800">$0</span>
+                        </div>
+
+                        <!-- Projected Savings -->
+                        <div class="bg-tps-green/10 border-2 border-tps-green rounded-2xl p-6 mb-6">
+                            <h3 class="text-lg font-semibold text-tps-dark mb-4">Projected Annual Savings</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700">Turnover Reduction (25%)</span>
+                                    <span id="turnoverSavings" class="text-xl font-bold text-tps-dark">$0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700">Productivity Improvement (15%)</span>
+                                    <span id="productivitySavings" class="text-xl font-bold text-tps-dark">$0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700">Absenteeism Reduction (15%)</span>
+                                    <span id="absenteeismSavings" class="text-xl font-bold text-tps-dark">$0</span>
+                                </div>
+                                <div class="pt-4 border-t border-tps-green flex justify-between items-center">
+                                    <span class="font-semibold text-tps-dark">Total Projected Savings</span>
+                                    <span id="totalSavings" class="text-2xl font-bold text-tps-dark">$0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Net Benefit & ROI -->
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="result-card text-center">
+                                <p id="netBenefit" class="result-value text-empower-blue">$0</p>
+                                <p class="result-label">Net Benefit</p>
+                            </div>
+                            <div class="result-card text-center bg-tps-green/5 border-tps-green">
+                                <p id="roiPercent" class="result-value text-tps-dark">0%</p>
+                                <p class="result-label">ROI</p>
+                            </div>
+                            <div class="result-card text-center">
+                                <p id="paybackPeriod" class="result-value text-empower-blue">0</p>
+                                <p class="result-label">Payback (months)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evidence Section -->
+                <div class="bg-gradient-to-br from-tps-dark to-gray-900 rounded-2xl p-8 mb-12">
+                    <h2 class="text-2xl font-bold text-white mb-6">Research-Backed Evidence</h2>
+                    <p class="text-white/70 mb-8">These calculations are based on peer-reviewed research and documented employer case studies.</p>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="stat-card">
+                            <p class="text-3xl font-bold text-empower-blue mb-2">$250B</p>
+                            <p class="text-sm text-gray-700">Lost annually in U.S. productivity from employee financial stress</p>
+                            <p class="text-xs text-gray-500 mt-2">Source: PwC Financial Wellness Survey</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="text-3xl font-bold text-empower-blue mb-2">2.2x</p>
+                            <p class="text-sm text-gray-700">Higher turnover among financially stressed employees compared to financially stable</p>
+                            <p class="text-xs text-gray-500 mt-2">Source: SHRM Research</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="text-3xl font-bold text-tps-dark mb-2">25-31%</p>
+                            <p class="text-sm text-gray-700">Turnover reduction documented with economic stability support programs</p>
+                            <p class="text-xs text-gray-500 mt-2">Source: PayActiv Studies</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="text-3xl font-bold text-empower-blue mb-2">$15,000</p>
+                            <p class="text-sm text-gray-700">Average full replacement cost per employee (recruiting, training, lost productivity)</p>
+                            <p class="text-xs text-gray-500 mt-2">Source: Society for Human Resource Management</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="text-3xl font-bold text-tps-dark mb-2">425%</p>
+                            <p class="text-sm text-gray-700">ROI documented for employer childcare support programs</p>
+                            <p class="text-xs text-gray-500 mt-2">Source: ReadyNation Research</p>
+                        </div>
+                        <div class="stat-card">
+                            <p class="text-3xl font-bold text-empower-blue mb-2">69% to 96%</p>
+                            <p class="text-sm text-gray-700">UPS pilot retention improvement with stability support navigator program</p>
+                            <p class="text-xs text-gray-500 mt-2">Source: UPS Case Study</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="bg-gradient-to-r from-tps-green/10 to-empower-blue/10 border-2 border-tps-green/30 rounded-2xl p-8 mb-8">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-empower-blue mb-2">Ready to Implement?</h2>
+                            <p class="text-gray-600 max-w-xl">Partner with The Poverty Solution to implement economic mobility support for your workforce. Our team provides training, implementation support, and ongoing coaching.</p>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="mailto:info@thepovertysolution.com?subject=Employer%20Implementation%20Inquiry" class="inline-flex items-center justify-center px-6 py-3 bg-tps-green text-tps-dark rounded-xl font-semibold hover:bg-tps-green/90 transition">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                Contact Us
+                            </a>
+                            <a href="../guides/employer-implementation-guide.html" class="inline-flex items-center justify-center px-6 py-3 bg-empower-blue text-white rounded-xl font-semibold hover:bg-empower-blue/90 transition">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                </svg>
+                                Employer Guide
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Methodology Note -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+                    <h3 class="font-semibold text-gray-800 mb-3">Calculation Methodology</h3>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <p><strong>Turnover Cost:</strong> Employees x Turnover Rate x Cost Per Hire</p>
+                        <p><strong>Productivity Loss:</strong> Financially Stressed Employees x $3,000/year (research-backed average)</p>
+                        <p><strong>Absenteeism Cost:</strong> Financially Stressed Employees x 3.5 extra days x Hourly Wage x 8 hours</p>
+                        <p><strong>Program Investment:</strong> $500 per financially stressed employee (comprehensive support estimate)</p>
+                        <p><strong>Savings Projections:</strong> 25% turnover reduction, 15% productivity improvement, 15% absenteeism reduction (conservative estimates)</p>
+                        <p class="text-gray-500 italic mt-4">Note: Actual results may vary based on program implementation, workforce composition, and organizational factors.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">&copy; 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <script>
+        // Calculator Logic
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function formatPercent(value) {
+            return Math.round(value) + '%';
+        }
+
+        function calculate() {
+            // Get input values
+            const employees = parseFloat(document.getElementById('employees').value) || 0;
+            const hourlyWage = parseFloat(document.getElementById('hourlyWage').value) || 0;
+            const turnoverRate = parseFloat(document.getElementById('turnoverRate').value) / 100 || 0;
+            const financiallyStressedPercent = parseFloat(document.getElementById('financiallyStressed').value) / 100 || 0;
+            const costPerHire = parseFloat(document.getElementById('costPerHire').value) || 0;
+
+            // Calculate derived values
+            const financiallyStressedEmployees = employees * financiallyStressedPercent;
+
+            // Current Costs
+            const turnoverCost = employees * turnoverRate * costPerHire;
+            const productivityLoss = financiallyStressedEmployees * 3000; // $3,000/year per stressed employee
+            const absenteeismCost = financiallyStressedEmployees * 3.5 * hourlyWage * 8; // 3.5 extra days per stressed employee
+            const totalCurrentCosts = turnoverCost + productivityLoss + absenteeismCost;
+
+            // Program Investment
+            const programInvestment = financiallyStressedEmployees * 500;
+
+            // Projected Savings (conservative estimates)
+            const turnoverReduction = 0.25; // 25% reduction
+            const productivityImprovement = 0.15; // 15% improvement
+            const absenteeismReduction = 0.15; // 15% reduction
+
+            const turnoverSavings = turnoverCost * turnoverReduction;
+            const productivitySavings = productivityLoss * productivityImprovement;
+            const absenteeismSavings = absenteeismCost * absenteeismReduction;
+            const totalSavings = turnoverSavings + productivitySavings + absenteeismSavings;
+
+            // Net Benefit & ROI
+            const netBenefit = totalSavings - programInvestment;
+            const roi = programInvestment > 0 ? (netBenefit / programInvestment) * 100 : 0;
+            const paybackMonths = totalSavings > 0 ? Math.ceil((programInvestment / totalSavings) * 12) : 0;
+
+            // Update display
+            document.getElementById('turnoverCost').textContent = formatCurrency(turnoverCost);
+            document.getElementById('productivityLoss').textContent = formatCurrency(productivityLoss);
+            document.getElementById('absenteeismCost').textContent = formatCurrency(absenteeismCost);
+            document.getElementById('totalCurrentCosts').textContent = formatCurrency(totalCurrentCosts);
+
+            document.getElementById('programInvestment').textContent = formatCurrency(programInvestment);
+
+            document.getElementById('turnoverSavings').textContent = formatCurrency(turnoverSavings);
+            document.getElementById('productivitySavings').textContent = formatCurrency(productivitySavings);
+            document.getElementById('absenteeismSavings').textContent = formatCurrency(absenteeismSavings);
+            document.getElementById('totalSavings').textContent = formatCurrency(totalSavings);
+
+            document.getElementById('netBenefit').textContent = formatCurrency(netBenefit);
+            document.getElementById('roiPercent').textContent = formatPercent(roi);
+            document.getElementById('paybackPeriod').textContent = paybackMonths;
+        }
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+
+        // Initial calculation
+        calculate();
+
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

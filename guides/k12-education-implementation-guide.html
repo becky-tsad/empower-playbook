@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-12 Education Implementation Guide | The Empower Playbook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+        @media print {
+            body { font-size: 10pt; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+            @page { margin: 0.75in; }
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Cover Page */
+        .cover {
+            min-height: 10in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            color: white;
+            padding: 1in;
+            margin: -0.5in;
+            margin-bottom: 0.5in;
+        }
+
+        .cover-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2in;
+        }
+
+        .cover-logo-box {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .cover-logo-box span {
+            color: #a3c520;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .cover-brand {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .cover-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a3c520;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .cover-tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 500px;
+            margin-bottom: 60px;
+        }
+
+        .cover-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cover-contact p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .cover-version {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        h1 { font-size: 28px; font-weight: 800; color: #1e3a5f; margin-bottom: 20px; }
+        h2 { font-size: 20px; font-weight: 700; color: #1e3a5f; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #a3c520; }
+        h3 { font-size: 16px; font-weight: 600; color: #333; margin-top: 25px; margin-bottom: 10px; }
+        h4 { font-size: 13px; font-weight: 600; color: #444; margin-top: 20px; margin-bottom: 8px; }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 6px; }
+
+        strong { color: #111; }
+
+        /* Boxes */
+        .key-insight {
+            background: #f0f9e8;
+            border-left: 4px solid #a3c520;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-insight-title {
+            font-weight: 700;
+            color: #3d6b0d;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .dark-box {
+            background: #111;
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .dark-box h3 {
+            color: #a3c520;
+            margin-top: 0;
+        }
+
+        .dark-box ul {
+            color: #fff;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .checklist-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1e3a5f;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist-text strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .checklist-text span {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 25px 0;
+        }
+
+        .timeline-phase {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: #1e3a5f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: #e5e5e5;
+            margin-left: 11px;
+            height: calc(100% - 24px);
+            margin-top: 5px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 15px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .timeline-period {
+            font-size: 11px;
+            color: #a3c520;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e3a5f;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+
+        th {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Four Non-Negotiables */
+        .non-negotiable {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .non-negotiable-num {
+            width: 32px;
+            height: 32px;
+            background: #a3c520;
+            color: #111;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .non-negotiable-content h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #1e3a5f;
+        }
+
+        .non-negotiable-content p {
+            margin-bottom: 0;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            font-size: 10px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #a3c520;
+            color: #111;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background: #8fb31a;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover">
+            <div class="cover-logo">
+                <div class="cover-logo-box"><span>E</span></div>
+                <div>
+                    <div class="cover-brand">The Empower Playbook</div>
+                </div>
+            </div>
+
+            <div class="cover-subtitle">Implementation Guide</div>
+            <h1>K-12 Education<br>Student Success Navigator</h1>
+            <p class="cover-tagline">A step-by-step guide to implementing the Empower Method in schools for improved graduation rates and college readiness.</p>
+
+            <div class="cover-footer">
+                <div class="cover-contact">
+                    <p><strong>The Poverty Solution</strong></p>
+                    <p>info@thepovertysolution.com</p>
+                    <p>thepovertysolution.com</p>
+                </div>
+                <div class="cover-version">
+                    Version 1.0 | 2026
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Executive Summary -->
+        <div class="page-break"></div>
+
+        <h1>Executive Summary</h1>
+
+        <p>Family economic instability is the #1 predictor of dropout risk—more than academic performance. When parents face eviction, lose childcare for siblings, or work multiple jobs, students miss school, can't focus, and eventually disengage.</p>
+
+        <p><strong>The Empower Method addresses student success by wrapping support around the entire family—not just the student.</strong></p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">+23%</div>
+                <div class="stat-label">Graduation Rate Improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">-40%</div>
+                <div class="stat-label">Chronic Absenteeism Reduction</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2.5x</div>
+                <div class="stat-label">Higher College Enrollment</div>
+            </div>
+        </div>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Core Insight</div>
+            <p style="margin-bottom: 0;">Addressing family economic barriers IS addressing student success. Students whose families receive navigator support are 2.5x more likely to enroll in post-secondary education.</p>
+        </div>
+
+        <h2>The Four Non-Negotiables in Education</h2>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Benefits Cliff Navigation → Family Stability Planning</h4>
+                <p>When families face benefits cliffs, students face attendance cliffs. Help parents navigate income changes so children don't become collateral damage.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Navigator Model → Family Success Coach</h4>
+                <p>One Family Success Coach per 30-40 at-risk families. Same person for 4+ years—elementary through middle school transition, or middle through high school.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>Wraparound Coordination → Community Schools Model</h4>
+                <p>Coordinate housing, food security, healthcare, mental health, after-school care, transportation, parent employment. School becomes the hub.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Data Dashboard → Early Warning System</h4>
+                <p>Track attendance patterns, grade trends, behavior incidents, family stability indicators. Predict dropout risk 2-3 years before it happens.</p>
+            </div>
+        </div>
+
+        <!-- Page 3: Implementation Timeline -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Timeline</h2>
+
+        <div class="timeline">
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Foundation Phase</div>
+                    <div class="timeline-period">Months 1-3</div>
+                    <ul>
+                        <li>Secure leadership buy-in from superintendent and principals</li>
+                        <li>Identify pilot schools (start with 1-2 high-need schools)</li>
+                        <li>Hire Family Success Coaches (1 per 30-40 families)</li>
+                        <li>Establish community partner agreements</li>
+                        <li>Set up early warning data system</li>
+                        <li>Train coaches on Empower methodology and benefits cliff navigation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Pilot Launch</div>
+                    <div class="timeline-period">Months 4-6</div>
+                    <ul>
+                        <li>Identify at-risk students using early warning indicators</li>
+                        <li>Conduct family intake assessments</li>
+                        <li>Create family stability plans with benefits cliff maps</li>
+                        <li>Begin regular home visits and school check-ins</li>
+                        <li>Connect families to community resources</li>
+                        <li>Establish weekly coordination meetings with teachers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Scale & Refine</div>
+                    <div class="timeline-period">Months 7-12</div>
+                    <ul>
+                        <li>Track attendance, grades, and family stability outcomes</li>
+                        <li>Refine intervention protocols based on data</li>
+                        <li>Document success stories for expansion case</li>
+                        <li>Plan expansion to additional schools</li>
+                        <li>Develop sustainability funding strategy</li>
+                        <li>Create peer learning network across schools</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">4</div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">District-Wide Implementation</div>
+                    <div class="timeline-period">Year 2+</div>
+                    <ul>
+                        <li>Expand to all high-need schools</li>
+                        <li>Integrate with district strategic plan</li>
+                        <li>Build college/career pipeline connections</li>
+                        <li>Pursue state and federal funding streams</li>
+                        <li>Measure long-term graduation and enrollment outcomes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Early Warning Indicators -->
+        <div class="page-break"></div>
+
+        <h2>Early Warning System: Key Indicators</h2>
+
+        <p>Effective dropout prevention requires identifying at-risk students 2-3 years before crisis. Track these indicators to identify families needing support:</p>
+
+        <h3>Attendance Indicators</h3>
+        <table>
+            <tr>
+                <th>Indicator</th>
+                <th>Yellow Flag</th>
+                <th>Red Flag</th>
+            </tr>
+            <tr>
+                <td>Chronic Absenteeism</td>
+                <td>Missing 10-15% of school days</td>
+                <td>Missing 15%+ of school days</td>
+            </tr>
+            <tr>
+                <td>Pattern Changes</td>
+                <td>New Monday/Friday absences</td>
+                <td>Week+ consecutive absences</td>
+            </tr>
+            <tr>
+                <td>Tardiness</td>
+                <td>Late 2+ times per week</td>
+                <td>Late daily; missing first period</td>
+            </tr>
+        </table>
+
+        <h3>Academic Indicators</h3>
+        <table>
+            <tr>
+                <th>Indicator</th>
+                <th>Yellow Flag</th>
+                <th>Red Flag</th>
+            </tr>
+            <tr>
+                <td>Grade Decline</td>
+                <td>Drop of one letter grade</td>
+                <td>Failing 2+ core subjects</td>
+            </tr>
+            <tr>
+                <td>Homework Completion</td>
+                <td>Missing 30%+ assignments</td>
+                <td>Missing 50%+ assignments</td>
+            </tr>
+            <tr>
+                <td>Course Failures</td>
+                <td>Failed 1 course last year</td>
+                <td>Failed 2+ courses; off-track for graduation</td>
+            </tr>
+        </table>
+
+        <h3>Behavioral Indicators</h3>
+        <table>
+            <tr>
+                <th>Indicator</th>
+                <th>Yellow Flag</th>
+                <th>Red Flag</th>
+            </tr>
+            <tr>
+                <td>Discipline Incidents</td>
+                <td>2-3 referrals per semester</td>
+                <td>5+ referrals; suspension history</td>
+            </tr>
+            <tr>
+                <td>Engagement</td>
+                <td>Withdrawn from activities</td>
+                <td>Social isolation; disengagement</td>
+            </tr>
+            <tr>
+                <td>Behavior Change</td>
+                <td>New concerning behaviors</td>
+                <td>Signs of trauma, substance use</td>
+            </tr>
+        </table>
+
+        <h3>Family Stability Indicators</h3>
+        <table>
+            <tr>
+                <th>Indicator</th>
+                <th>Yellow Flag</th>
+                <th>Red Flag</th>
+            </tr>
+            <tr>
+                <td>Housing</td>
+                <td>Recent move; doubled-up</td>
+                <td>Eviction notice; homeless</td>
+            </tr>
+            <tr>
+                <td>Parent Employment</td>
+                <td>Job change; reduced hours</td>
+                <td>Job loss; multiple jobs</td>
+            </tr>
+            <tr>
+                <td>Benefits Changes</td>
+                <td>Benefits cliff approaching</td>
+                <td>Lost childcare, healthcare, or food benefits</td>
+            </tr>
+        </table>
+
+        <!-- Page 5: Staffing & Roles -->
+        <div class="page-break"></div>
+
+        <h2>Staffing Model</h2>
+
+        <h3>Family Success Coach</h3>
+        <p><strong>Ratio:</strong> 1 coach per 30-40 at-risk families</p>
+        <p><strong>Commitment:</strong> Same families for 4+ years (through key transitions)</p>
+
+        <h4>Key Responsibilities:</h4>
+        <ul>
+            <li>Conduct comprehensive family assessments</li>
+            <li>Create family stability plans with benefits cliff maps</li>
+            <li>Regular home visits (monthly minimum)</li>
+            <li>Weekly school check-ins with teachers</li>
+            <li>Connect families to housing, food, healthcare, employment resources</li>
+            <li>Navigate benefits transitions with parents</li>
+            <li>Advocate for students in school meetings</li>
+            <li>Track outcomes in data dashboard</li>
+        </ul>
+
+        <h4>Required Skills:</h4>
+        <ul>
+            <li>Experience working with low-income families</li>
+            <li>Understanding of poverty dynamics and benefits systems</li>
+            <li>Relationship-building and trust development</li>
+            <li>Cultural competency</li>
+            <li>Data management and documentation</li>
+            <li>Crisis intervention capabilities</li>
+        </ul>
+
+        <h4>Training Requirements:</h4>
+        <ul>
+            <li>Empower Navigator Certification (40 hours)</li>
+            <li>Benefits Cliff Tool Training (8 hours)</li>
+            <li>Trauma-Informed Care (8 hours)</li>
+            <li>Motivational Interviewing (16 hours)</li>
+            <li>Local Resource Network Orientation (8 hours)</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Critical Success Factor</div>
+            <p style="margin-bottom: 0;">The same coach must stay with families through transitions—elementary to middle, middle to high school. Trust takes time. Handoffs destroy progress.</p>
+        </div>
+
+        <h3>Program Coordinator</h3>
+        <p><strong>Ratio:</strong> 1 coordinator per 4-6 Family Success Coaches</p>
+
+        <h4>Key Responsibilities:</h4>
+        <ul>
+            <li>Supervise and support Family Success Coaches</li>
+            <li>Manage community partner relationships</li>
+            <li>Oversee data dashboard and reporting</li>
+            <li>Coordinate with school administration</li>
+            <li>Lead weekly team meetings</li>
+            <li>Manage program budget and resources</li>
+        </ul>
+
+        <!-- Page 6: Community Partners -->
+        <div class="page-break"></div>
+
+        <h2>Community Partner Network</h2>
+
+        <p>The school becomes the hub connecting families to community resources. Establish formal agreements with partners in each category:</p>
+
+        <h3>Essential Partners</h3>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Partner Types</th>
+                <th>Services Provided</th>
+            </tr>
+            <tr>
+                <td><strong>Housing</strong></td>
+                <td>Housing Authority, Emergency Shelters, Rapid Rehousing</td>
+                <td>Housing assistance, eviction prevention, utility assistance</td>
+            </tr>
+            <tr>
+                <td><strong>Food Security</strong></td>
+                <td>Food Banks, SNAP Offices, School Nutrition</td>
+                <td>Emergency food, benefits enrollment, backpack programs</td>
+            </tr>
+            <tr>
+                <td><strong>Healthcare</strong></td>
+                <td>FQHCs, Medicaid Office, Mental Health Providers</td>
+                <td>Medical care, insurance enrollment, counseling</td>
+            </tr>
+            <tr>
+                <td><strong>Childcare</strong></td>
+                <td>Head Start, Childcare Providers, Subsidy Office</td>
+                <td>Before/after school care, sibling care, subsidy navigation</td>
+            </tr>
+            <tr>
+                <td><strong>Employment</strong></td>
+                <td>Workforce Development, Job Centers, Employers</td>
+                <td>Job training, placement, benefits cliff navigation</td>
+            </tr>
+            <tr>
+                <td><strong>Transportation</strong></td>
+                <td>Transit Authority, Car Programs, Ride Services</td>
+                <td>Bus passes, car repair, ride coordination</td>
+            </tr>
+        </table>
+
+        <h3>Partner Agreement Template</h3>
+        <p>Each partner agreement should include:</p>
+        <ul>
+            <li>Designated point of contact for referrals</li>
+            <li>Response time expectations (within 48 hours)</li>
+            <li>Information sharing protocols (with family consent)</li>
+            <li>Regular coordination meeting participation</li>
+            <li>Outcome reporting requirements</li>
+        </ul>
+
+        <!-- Page 7: Data Dashboard -->
+        <div class="page-break"></div>
+
+        <h2>Data Dashboard Requirements</h2>
+
+        <h3>Student-Level Data (from School Systems)</h3>
+        <ul>
+            <li>Daily attendance records</li>
+            <li>Course grades and GPA</li>
+            <li>Discipline incidents</li>
+            <li>Special education status</li>
+            <li>Free/reduced lunch eligibility</li>
+            <li>McKinney-Vento (homeless) status</li>
+            <li>English Learner status</li>
+        </ul>
+
+        <h3>Family-Level Data (from Navigator Assessments)</h3>
+        <ul>
+            <li>Household income and employment status</li>
+            <li>Benefits received (SNAP, Medicaid, childcare, housing)</li>
+            <li>Benefits cliff proximity</li>
+            <li>Housing stability status</li>
+            <li>Transportation access</li>
+            <li>Childcare needs (for siblings)</li>
+            <li>Parent education and employment goals</li>
+        </ul>
+
+        <h3>Intervention Tracking</h3>
+        <ul>
+            <li>Home visits completed</li>
+            <li>Resource referrals made and completed</li>
+            <li>Benefits transitions navigated</li>
+            <li>Crisis interventions</li>
+            <li>Parent employment changes</li>
+        </ul>
+
+        <h3>Outcome Metrics</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Data Source</th>
+            </tr>
+            <tr>
+                <td>Chronic Absenteeism Rate</td>
+                <td>Reduce by 40%</td>
+                <td>Attendance system</td>
+            </tr>
+            <tr>
+                <td>On-Track to Graduate</td>
+                <td>85% of participants</td>
+                <td>Credits/GPA tracking</td>
+            </tr>
+            <tr>
+                <td>Graduation Rate</td>
+                <td>Increase by 20%+</td>
+                <td>Graduation records</td>
+            </tr>
+            <tr>
+                <td>Post-Secondary Enrollment</td>
+                <td>2x comparison group</td>
+                <td>National Clearinghouse</td>
+            </tr>
+            <tr>
+                <td>Family Stability</td>
+                <td>80% maintain housing</td>
+                <td>Navigator records</td>
+            </tr>
+            <tr>
+                <td>Parent Employment</td>
+                <td>50% income increase</td>
+                <td>Family assessments</td>
+            </tr>
+        </table>
+
+        <!-- Page 8: Budget -->
+        <div class="page-break"></div>
+
+        <h2>Budget Framework</h2>
+
+        <h3>Per-School Costs (Estimated Annual)</h3>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>Family Success Coach Salary + Benefits</td>
+                <td>$55,000</td>
+                <td>2</td>
+                <td>$110,000</td>
+            </tr>
+            <tr>
+                <td>Program Coordinator (shared across 3 schools)</td>
+                <td>$70,000</td>
+                <td>0.33</td>
+                <td>$23,100</td>
+            </tr>
+            <tr>
+                <td>Training & Professional Development</td>
+                <td>$3,000/person</td>
+                <td>2</td>
+                <td>$6,000</td>
+            </tr>
+            <tr>
+                <td>Data System & Technology</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$8,000</td>
+            </tr>
+            <tr>
+                <td>Emergency Assistance Fund</td>
+                <td>$200/family</td>
+                <td>70</td>
+                <td>$14,000</td>
+            </tr>
+            <tr>
+                <td>Transportation & Supplies</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$5,000</td>
+            </tr>
+            <tr>
+                <td><strong>Total Per School</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$166,100</strong></td>
+            </tr>
+        </table>
+
+        <h3>Cost Per Student Served</h3>
+        <p>With 2 coaches serving 70 families (approximately 100 students): <strong>$1,661 per student annually</strong></p>
+
+        <h3>Potential Funding Sources</h3>
+        <ul>
+            <li><strong>Title I:</strong> Supplemental support for low-income students</li>
+            <li><strong>21st Century Community Learning Centers:</strong> Extended learning and family engagement</li>
+            <li><strong>Full-Service Community Schools Grants:</strong> Federal wraparound coordination funding</li>
+            <li><strong>State Education Funding:</strong> At-risk student support allocations</li>
+            <li><strong>Medicaid Administrative Claiming:</strong> Reimbursement for health-related coordination</li>
+            <li><strong>Foundation Grants:</strong> Education, poverty alleviation, and youth development funders</li>
+            <li><strong>United Way:</strong> Community impact investments</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">ROI Calculation</div>
+            <p style="margin-bottom: 0;">The lifetime earnings difference between a high school dropout and graduate is $500,000+. Increasing graduation rates by just 10 students per school generates $5M+ in lifetime economic impact.</p>
+        </div>
+
+        <!-- Page 9: Readiness Checklist -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Readiness Checklist</h2>
+
+        <div class="checklist">
+            <div class="checklist-title">Leadership & Buy-In</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Superintendent commitment secured</strong>
+                    <span>Written support for pilot and potential expansion</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Principal(s) identified and committed</strong>
+                    <span>Pilot school leadership engaged and supportive</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>School board briefed</strong>
+                    <span>Board aware of initiative and timeline</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Staffing</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Family Success Coach positions approved</strong>
+                    <span>Job descriptions created, salary determined</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Hiring process initiated</strong>
+                    <span>Recruitment, interviews, background checks</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Training curriculum scheduled</strong>
+                    <span>Navigator certification, benefits cliff tools, trauma-informed care</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Data Systems</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Early warning indicators defined</strong>
+                    <span>Attendance, grades, behavior thresholds set</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Data sharing agreements in place</strong>
+                    <span>School data accessible to coaches (with FERPA compliance)</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Dashboard/tracking system selected</strong>
+                    <span>System for tracking interventions and outcomes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Community Partners</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Key partners identified</strong>
+                    <span>Housing, food, healthcare, childcare, employment contacts</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Partner agreements drafted</strong>
+                    <span>MOUs with referral protocols and response times</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Resource guide created</strong>
+                    <span>Contact information for all community resources</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Funding</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Year 1 funding secured</strong>
+                    <span>Full budget for pilot year committed</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Sustainability plan drafted</strong>
+                    <span>Multi-year funding strategy identified</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 10: Technical Assistance -->
+        <div class="page-break"></div>
+
+        <div class="dark-box">
+            <h3>Ready for Full Implementation Support?</h3>
+            <p>This guide provides the roadmap. For the highest probability of success, partner with The Poverty Solution team for:</p>
+            <ul>
+                <li><strong>Navigator Certification Training</strong> — 40-hour intensive for Family Success Coaches</li>
+                <li><strong>Leadership Alignment Workshops</strong> — Get all stakeholders on the same page</li>
+                <li><strong>Benefits Cliff Tool Training</strong> — Mastery of cliff navigation software</li>
+                <li><strong>Implementation Coaching</strong> — Monthly calls and quarterly site visits</li>
+                <li><strong>Data Dashboard Setup</strong> — Configure tracking systems for your context</li>
+                <li><strong>Peer Learning Network</strong> — Connect with other implementing districts</li>
+            </ul>
+            <p style="margin-top: 20px; margin-bottom: 0;">
+                <strong style="color: #a3c520;">Contact:</strong> info@thepovertysolution.com | thepovertysolution.com
+            </p>
+        </div>
+
+        <div class="page-footer">
+            <div>The Empower Playbook | K-12 Education Implementation Guide</div>
+            <div>© 2026 The Poverty Solution</div>
+        </div>
+
+    </div>
+</body>
+</html>

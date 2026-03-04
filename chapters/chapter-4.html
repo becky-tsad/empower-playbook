@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: The Four Non-Negotiables | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #a3c520, #7a9c10);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 200;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f0f9e8; color: #3d6b0d; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Enhanced Prose Styling */
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a5f;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .prose h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: #a3c520;
+            border-radius: 2px;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .prose ul, .prose ol {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+        }
+        .prose ul { list-style-type: disc; }
+        .prose ol { list-style-type: decimal; }
+        .prose li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .prose blockquote {
+            border-left: 4px solid #a3c520;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #555;
+            margin: 1.5rem 0;
+            background: linear-gradient(90deg, rgba(163,197,32,0.05), transparent);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose strong { color: #222; }
+        .prose hr {
+            border: none;
+            border-top: 1px solid #e5e5e5;
+            margin: 2.5rem 0;
+        }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        /* In-page TOC */
+        .toc {
+            position: sticky;
+            top: 100px;
+        }
+        .toc-link {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #666;
+            border-left: 2px solid #eee;
+            transition: all 0.15s;
+        }
+        .toc-link:hover {
+            color: #1e3a5f;
+            border-color: #1e3a5f;
+        }
+        .toc-link.active {
+            color: #1e3a5f;
+            border-color: #a3c520;
+            font-weight: 500;
+        }
+
+        /* Content with TOC grid */
+        @media (min-width: 1280px) {
+            .content-with-toc {
+                display: grid;
+                grid-template-columns: 1fr 220px;
+                gap: 48px;
+            }
+        }
+
+        /* Gradient Chapter Header */
+        .chapter-header {
+            background: linear-gradient(135deg, #a3c520 0%, #8ab218 50%, #7a9c10 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .chapter-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1));
+        }
+
+        /* Read Time Badge */
+        .read-time-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: rgba(17,17,17,0.8);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <nav class="py-4">
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 1 - The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 2 - The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item active">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 3 - Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 4 - Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Benefits Cliff Research
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Two-Generation Evidence
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Navigation Model Research
+                </a>
+            </div>
+
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content min-h-screen" id="main-content">
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 2 - The Method</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-tps-green/20 text-tps-dark px-2 py-1 rounded font-medium">CORE</span>
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-tps-green/20 text-tps-dark px-2 py-1 rounded font-medium">P</span>
+                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Gradient Chapter Header -->
+        <div class="chapter-header text-tps-dark px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="text-tps-dark/70 text-sm font-medium">Chapter 4</p>
+                    <span class="read-time-badge">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        12 min read
+                    </span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    The Four Non-Negotiables
+                </h1>
+                <p class="text-tps-dark/70 mt-3 text-lg">The DNA of the model—four elements that must be present for results</p>
+            </div>
+        </div>
+
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+                <div class="prose">
+
+                <p class="text-xl text-gray-500 mb-8 leading-relaxed">
+                    These four elements must be present to call your implementation "Empower." They are the DNA of the model--the core components that drive results. Everything else can be adapted to your context.
+                </p>
+
+                <div style="background: linear-gradient(135deg, #111111 0%, #0a0a0a 50%, #111111 100%); padding: 3rem; border-radius: 1.5rem; margin-bottom: 2.5rem; border: 2px solid rgba(163, 197, 32, 0.5); box-shadow: 0 0 60px rgba(163, 197, 32, 0.15), inset 0 0 60px rgba(163, 197, 32, 0.05);" class="not-prose">
+                    <!-- DNA Icon and Title -->
+                    <div style="text-align: center; margin-bottom: 2.5rem;">
+                        <div style="display: inline-flex; align-items: center; justify-content: center; gap: 1rem; background: linear-gradient(90deg, transparent, rgba(163, 197, 32, 0.1), transparent); padding: 1rem 2rem; border-radius: 100px;">
+                            <svg style="width: 2.5rem; height: 2.5rem; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                            </svg>
+                            <h3 style="color: #a3c520; font-size: 2rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; text-shadow: 0 0 30px rgba(163, 197, 32, 0.5); margin: 0;">The Empower DNA</h3>
+                            <svg style="width: 2.5rem; height: 2.5rem; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                            </svg>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 0.75rem;">The four non-negotiable elements that drive results</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 text-center">
+                        <div style="background: linear-gradient(180deg, rgba(163, 197, 32, 0.2) 0%, rgba(163, 197, 32, 0.05) 100%); border-radius: 1rem; padding: 1.75rem 1rem; border: 1px solid rgba(163, 197, 32, 0.3); transition: all 0.3s;" class="hover:scale-105">
+                            <div style="background: linear-gradient(135deg, #a3c520 0%, #8ab218 100%); color: #111111; width: 5rem; height: 5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; font-size: 2.25rem; font-weight: 900; box-shadow: 0 0 30px rgba(163, 197, 32, 0.6), 0 4px 15px rgba(0,0,0,0.3);">1</div>
+                            <p style="color: #ffffff; font-size: 1.1rem; font-weight: 700; line-height: 1.3;">Benefits Cliff Navigation</p>
+                            <p style="color: rgba(163, 197, 32, 0.8); font-size: 0.75rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Map the cliffs</p>
+                        </div>
+                        <div style="background: linear-gradient(180deg, rgba(163, 197, 32, 0.2) 0%, rgba(163, 197, 32, 0.05) 100%); border-radius: 1rem; padding: 1.75rem 1rem; border: 1px solid rgba(163, 197, 32, 0.3); transition: all 0.3s;" class="hover:scale-105">
+                            <div style="background: linear-gradient(135deg, #a3c520 0%, #8ab218 100%); color: #111111; width: 5rem; height: 5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; font-size: 2.25rem; font-weight: 900; box-shadow: 0 0 30px rgba(163, 197, 32, 0.6), 0 4px 15px rgba(0,0,0,0.3);">2</div>
+                            <p style="color: #ffffff; font-size: 1.1rem; font-weight: 700; line-height: 1.3;">Navigator<br>Model</p>
+                            <p style="color: rgba(163, 197, 32, 0.8); font-size: 0.75rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">One trusted guide</p>
+                        </div>
+                        <div style="background: linear-gradient(180deg, rgba(163, 197, 32, 0.2) 0%, rgba(163, 197, 32, 0.05) 100%); border-radius: 1rem; padding: 1.75rem 1rem; border: 1px solid rgba(163, 197, 32, 0.3); transition: all 0.3s;" class="hover:scale-105">
+                            <div style="background: linear-gradient(135deg, #a3c520 0%, #8ab218 100%); color: #111111; width: 5rem; height: 5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; font-size: 2.25rem; font-weight: 900; box-shadow: 0 0 30px rgba(163, 197, 32, 0.6), 0 4px 15px rgba(0,0,0,0.3);">3</div>
+                            <p style="color: #ffffff; font-size: 1.1rem; font-weight: 700; line-height: 1.3;">Wraparound Coordination</p>
+                            <p style="color: rgba(163, 197, 32, 0.8); font-size: 0.75rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Connect services</p>
+                        </div>
+                        <div style="background: linear-gradient(180deg, rgba(163, 197, 32, 0.2) 0%, rgba(163, 197, 32, 0.05) 100%); border-radius: 1rem; padding: 1.75rem 1rem; border: 1px solid rgba(163, 197, 32, 0.3); transition: all 0.3s;" class="hover:scale-105">
+                            <div style="background: linear-gradient(135deg, #a3c520 0%, #8ab218 100%); color: #111111; width: 5rem; height: 5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto; font-size: 2.25rem; font-weight: 900; box-shadow: 0 0 30px rgba(163, 197, 32, 0.6), 0 4px 15px rgba(0,0,0,0.3);">4</div>
+                            <p style="color: #ffffff; font-size: 1.1rem; font-weight: 700; line-height: 1.3;">Data<br>Dashboard</p>
+                            <p style="color: rgba(163, 197, 32, 0.8); font-size: 0.75rem; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Track outcomes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="benefits-cliff">Non-Negotiable #1: Benefits Cliff Navigation</h2>
+
+                <h3>What It Is</h3>
+
+                <p>
+                    Benefits cliff navigation is <strong>proactive modeling of benefit transitions BEFORE families accept raises or new jobs</strong>. It's the difference between reacting to a crisis ("I just lost my childcare subsidy!") and preventing one ("If you take this raise, you'll lose $6,800--let's plan for that").
+                </p>
+
+                <h3>Why It's Non-Negotiable</h3>
+
+                <p>
+                    The benefits cliff is the #1 reason working families stay trapped in poverty. Without explicit navigation:
+                </p>
+
+                <ul>
+                    <li>Families unknowingly accept raises that make them poorer</li>
+                    <li>Employers don't know how to promote people without hurting them</li>
+                    <li>Well-meaning career advancement becomes a penalty</li>
+                </ul>
+
+                <!-- Fear of Cliff Box -->
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 my-6 not-prose">
+                    <p class="font-bold text-amber-800 mb-1">The Fear of the Cliff Is Just as Damaging</p>
+                    <p class="text-amber-900 text-sm">Many families <strong>refuse promotions or extra hours</strong> because they're afraid of hitting a cliff—even when the math would actually work in their favor. This fear-based paralysis keeps people stuck just as effectively as an actual cliff. Benefits cliff navigation isn't just about avoiding real cliffs; it's about helping families <em>see</em> when it's safe to climb and when to wait.</p>
+                </div>
+
+                <p>
+                    You cannot move families to self-sufficiency without addressing the cliff. Period.
+                </p>
+
+                <h3>How It Works</h3>
+
+                <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 2rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #1e3a5f; font-weight: 700; font-size: 1.125rem; margin-bottom: 1.5rem;">The Benefits Cliff Navigation Process</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0;">
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">1</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Map Current Benefits</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">Document every benefit the family receives: SNAP, Medicaid/TennCare, childcare subsidy, housing assistance, TANF, etc.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">2</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Identify Cliff Points</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">Calculate exactly where each benefit phases out or drops off entirely. Create a visual map of the danger zones.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">3</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Model Scenarios</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">When a job offer or raise comes, model the net impact: "This $3/hour raise will cost you $4,200 in childcare subsidy."</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">4</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Create Transition Plan</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">Sequence income increases strategically. Maybe accept a smaller raise now, build savings, then make a bigger jump that clears multiple cliffs at once.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">5</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Coordinate with Employer</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">Work with certified employers to time raises, structure compensation, or provide benefits that offset cliff losses.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Minimum Requirement</h3>
+
+                <p>
+                    <strong>Access to a benefits cliff calculator and trained staff who know how to use it.</strong> Every participant should have their personal cliff map before making any job or income decisions.
+                </p>
+
+                <hr>
+
+                <h2 id="navigator">Non-Negotiable #2: The Navigator Model</h2>
+
+                <h3>What It Is</h3>
+
+                <p>
+                    <strong>18-24 month relationships with dedicated coordinators who stay with families through their entire journey.</strong> Navigators are not case managers who refer; they are coordinators who stay.
+                </p>
+
+                <h3>Why It's Non-Negotiable</h3>
+
+                <p>
+                    Trust takes time. Systems change takes longer.
+                </p>
+
+                <p>
+                    When families have been failed by institutions before--and most have--they don't open up in the first meeting. They test you. They see if you'll disappear like everyone else. The relationship IS the intervention.
+                </p>
+
+                <!-- Trust-Based Relationships Box -->
+                <div class="bg-tps-green/10 border-2 border-tps-green p-6 rounded-xl my-6 not-prose">
+                    <h4 class="font-bold text-tps-dark mb-3">The Research on Trust-Based Relationships</h4>
+                    <p class="text-gray-700 mb-3">Trust-based relationships produce an <strong>"amplifying effect"</strong> on outcomes. When participants trust their navigator:</p>
+                    <ul class="text-gray-700 text-sm space-y-2 ml-4 list-disc">
+                        <li>They disclose real barriers (not just the ones they think won't be judged)</li>
+                        <li>They follow through on difficult steps (because someone believes in them)</li>
+                        <li>They weather setbacks without dropping out (the relationship provides stability)</li>
+                        <li>They advocate for themselves with other systems (because they've seen it modeled)</li>
+                    </ul>
+                </div>
+
+                <p>
+                    Additionally, moving from crisis to stability to self-sufficiency isn't a 90-day process. It takes 18-24 months to:
+                </p>
+
+                <ul>
+                    <li>Stabilize immediate crises (housing, childcare, transportation)</li>
+                    <li>Address benefits cliffs strategically</li>
+                    <li>Build skills and pursue better employment</li>
+                    <li>Weather setbacks without falling back to square one</li>
+                    <li>Reach true self-sufficiency (above ALICE threshold)</li>
+                </ul>
+
+                <h3>Navigator vs. Case Manager</h3>
+
+                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                    <div class="bg-gray-100 p-6 rounded-xl">
+                        <h4 class="font-bold text-gray-600 mb-3">Case Manager (Traditional)</h4>
+                        <ul class="text-sm space-y-2 text-gray-600">
+                            <li>x Rotating caseloads</li>
+                            <li>x Refers to other agencies</li>
+                            <li>x 3-6 month program cycles</li>
+                            <li>x Owns one service area</li>
+                            <li>x Measures referrals made</li>
+                        </ul>
+                    </div>
+                    <div class="bg-tps-green/10 border-2 border-tps-green p-6 rounded-xl">
+                        <h4 class="font-bold text-tps-dark mb-3">Navigator (Empower)</h4>
+                        <ul class="text-sm space-y-2 text-gray-700">
+                            <li>&#10003; Same navigator, full journey</li>
+                            <li>&#10003; Coordinates across systems</li>
+                            <li>&#10003; 18-24 month commitment</li>
+                            <li>&#10003; Sees the whole picture</li>
+                            <li>&#10003; Measures outcomes achieved</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Key Principle</h3>
+
+                <blockquote>
+                    Same navigator, same family, full journey.
+                </blockquote>
+
+                <!-- Research-Based Caseload Requirements -->
+                <div class="bg-gradient-to-br from-tps-dark to-gray-900 text-white p-6 rounded-xl my-8 not-prose">
+                    <h4 style="color: #a3c520;" class="font-bold text-lg mb-4">Research-Based Caseload Requirements</h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="text-center p-4 border border-gray-700 rounded-lg">
+                            <p style="color: #a3c520;" class="text-4xl font-bold">1:25</p>
+                            <p style="color: #ffffff;" class="font-semibold mt-2">Navigator-to-family ratio</p>
+                            <p style="color: rgba(255,255,255,0.7);" class="text-sm mt-1">for intensive economic mobility work</p>
+                        </div>
+                        <div class="text-center p-4 border border-gray-700 rounded-lg">
+                            <p style="color: #a3c520;" class="text-4xl font-bold">1:15</p>
+                            <p style="color: #ffffff;" class="font-semibold mt-2">or lower for complex cases</p>
+                            <p style="color: rgba(255,255,255,0.7);" class="text-sm mt-1">multiple barriers, crisis situations</p>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8);" class="text-sm mt-4 text-center italic">Source: EMPath research on Mobility Mentoring caseload effectiveness</p>
+                </div>
+
+                <!-- Duration Warning -->
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 my-6 not-prose">
+                    <p class="font-bold text-red-800 mb-1">Critical: 18-24 Months Minimum</p>
+                    <p class="text-red-900 text-sm">Research consistently shows that <strong>18-24 months is the minimum duration</strong> for economic mobility impact. Shorter programs fail to produce lasting change—and relationships under 6 months can actually produce <em>negative outcomes</em> by creating dependency without building capacity.</p>
+                </div>
+
+                <h3>Minimum Requirement</h3>
+
+                <p>
+                    <strong>A dedicated navigator role (not split with case management duties).</strong> If your "navigators" are also doing traditional case management on a rotating basis, you don't have navigators--you have overloaded case managers with a new title.
+                </p>
+
+                <hr>
+
+                <h2 id="wraparound">Non-Negotiable #3: Wraparound Coordination</h2>
+
+                <h3>What It Is</h3>
+
+                <p>
+                    <strong>Simultaneous support across housing, childcare, transportation, healthcare, and employment.</strong> Not sequential referrals--coordinated action on multiple fronts at once.
+                </p>
+
+                <h3>Why It's Non-Negotiable</h3>
+
+                <p>
+                    Poverty isn't one problem. It's an interconnected system of barriers, and one unsolved barrier can collapse everything:
+                </p>
+
+                <ul>
+                    <li>Get a job, but childcare falls through -> lose the job</li>
+                    <li>Stabilize housing, but car breaks down -> can't get to work -> lose housing</li>
+                    <li>Get a raise, but lose Medicaid -> medical bill -> spiral</li>
+                </ul>
+
+                <p>
+                    Sequential approaches ("let's handle housing first, then we'll work on employment") fail because life doesn't wait. You need to address multiple barriers simultaneously.
+                </p>
+
+                <h3>How It Works</h3>
+
+                <div class="bg-white rounded-xl p-6 my-6 border border-gray-200 not-prose">
+                    <h4 class="font-bold text-empower-blue mb-4">The Coordination Hub Model</h4>
+                    <p class="text-sm text-gray-600 mb-4">The navigator sits at the center, coordinating across all partner agencies:</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-center text-sm">
+                        <div class="bg-empower-blue/10 p-3 rounded-lg border border-empower-blue/20">
+                            <p class="font-semibold text-empower-blue">Housing</p>
+                            <p class="text-xs text-gray-500">Housing authority, landlords</p>
+                        </div>
+                        <div class="bg-tps-green/10 p-3 rounded-lg border border-tps-green/20">
+                            <p class="font-semibold text-tps-dark">Childcare</p>
+                            <p class="text-xs text-gray-500">Subsidy programs, providers</p>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded-lg border border-gray-200">
+                            <p class="font-semibold text-gray-700">Transportation</p>
+                            <p class="text-xs text-gray-500">Transit, car repair, rideshare</p>
+                        </div>
+                        <div class="bg-empower-blue/10 p-3 rounded-lg border border-empower-blue/20">
+                            <p class="font-semibold text-empower-blue">Healthcare</p>
+                            <p class="text-xs text-gray-500">Medicaid, clinics, mental health</p>
+                        </div>
+                        <div class="bg-tps-green/10 p-3 rounded-lg border border-tps-green/20">
+                            <p class="font-semibold text-tps-dark">Employment</p>
+                            <p class="text-xs text-gray-500">Certified employers, training</p>
+                        </div>
+                        <div class="bg-gray-100 p-3 rounded-lg border border-gray-200">
+                            <p class="font-semibold text-gray-700">Financial</p>
+                            <p class="text-xs text-gray-500">Coaching, banking, benefits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Key Principle</h3>
+
+                <blockquote>
+                    Solve the whole problem, not just your piece.
+                </blockquote>
+
+                <h3>Minimum Requirement</h3>
+
+                <p>
+                    <strong>Active coordination protocols with partner agencies.</strong> You need formal agreements, regular communication channels, and shared data (see Non-Negotiable #4) with at least the core partners: housing, childcare, healthcare, and employers.
+                </p>
+
+                <hr>
+
+                <h2 id="dashboard">Non-Negotiable #4: Data Dashboard</h2>
+
+                <h3>What It Is</h3>
+
+                <p>
+                    <strong>Unified intake, tracking, and outcomes in one system accessible to all team members.</strong> Real-time visibility for navigators plus leadership reporting for strategic decisions.
+                </p>
+
+                <h3>Why It's Non-Negotiable</h3>
+
+                <p>
+                    What gets measured gets managed. What gets shared gets coordinated.
+                </p>
+
+                <p>
+                    Without unified data:
+                </p>
+
+                <ul>
+                    <li>Navigators don't know what other agencies are doing with their families</li>
+                    <li>Leadership can't see patterns or make strategic adjustments</li>
+                    <li>Success stories get lost; failures repeat</li>
+                    <li>Funders can't see ROI; funding disappears</li>
+                </ul>
+
+                <h3>What the Dashboard Includes</h3>
+
+                <div class="bg-white rounded-xl p-6 my-6 border border-gray-200 not-prose">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <h5 class="font-bold text-empower-blue mb-2">Intake Data</h5>
+                            <ul class="text-sm space-y-1 text-gray-600 list-disc ml-4">
+                                <li>Family composition</li>
+                                <li>Current income</li>
+                                <li>Benefits received</li>
+                                <li>Barriers identified</li>
+                                <li>Goals set</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-tps-dark mb-2">Tracking Data</h5>
+                            <ul class="text-sm space-y-1 text-gray-600 list-disc ml-4">
+                                <li>Navigator interactions</li>
+                                <li>Services accessed</li>
+                                <li>Progress toward goals</li>
+                                <li>Barriers encountered</li>
+                                <li>Benefits cliff status</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-tps-dark mb-2">Outcomes Data</h5>
+                            <ul class="text-sm space-y-1 text-gray-600 list-disc ml-4">
+                                <li>Income changes</li>
+                                <li>Employment status</li>
+                                <li>Benefits transitions</li>
+                                <li>ALICE threshold progress</li>
+                                <li>Graduation status</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Key Principle</h3>
+
+                <blockquote>
+                    Data for decisions, not just compliance.
+                </blockquote>
+
+                <p>
+                    The dashboard isn't for quarterly reports to funders (though it enables those). It's a daily tool for navigators and leadership to make better decisions in real time.
+                </p>
+
+                <h3>Minimum Requirement</h3>
+
+                <p>
+                    <strong>A central tracking system accessible to all team members.</strong> This can start simple--even a well-structured spreadsheet--but it must be unified and shared. Siloed data defeats the purpose.
+                </p>
+
+                <!-- Data Dashboard Promo -->
+                <div style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%); border: 2px solid #a3c520; border-radius: 1rem; padding: 2rem; margin: 2rem 0;" class="not-prose">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <div style="background: #a3c520; width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                            <svg style="width: 1.5rem; height: 1.5rem; color: #111111;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <h4 style="color: #a3c520; font-weight: 800; font-size: 1.25rem;">The Poverty Solution Data Dashboard</h4>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.25rem;">The Poverty Solution is developing a purpose-built data dashboard designed to support the Empower model. It tracks family progress in real time across all four non-negotiables—benefits cliff navigation, navigator touchpoints, wraparound services, and outcome metrics—in one unified platform. No more spreadsheets, no more siloed data.</p>
+                    <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #a3c520; color: #111111; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.95rem;">
+                        View a Demo
+                        <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                    </a>
+                </div>
+
+                <hr>
+
+                <!-- Non-Negotiables Summary -->
+                <div style="background: #ffffff; border: 2px solid #e5e7eb; border-radius: 1rem; padding: 2rem; margin: 2rem 0;" class="not-prose">
+                    <h3 style="color: #1e3a5f; font-weight: 800; font-size: 1.25rem; margin-bottom: 1.5rem;">The Non-Negotiables Summary</h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 0;">
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">1</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Benefits Cliff Navigation</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">Proactive modeling before income changes. Every family knows their cliff map.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">2</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Navigator Model</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">18-24 months, same person, full journey. Coordinators, not referrers.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid #f0f0f0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">3</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Wraparound Coordination</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">Simultaneous action on housing, childcare, healthcare, employment. Solve the whole problem.</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; padding: 1rem 0;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; margin-right: 1rem; margin-top: 0.1rem;">4</div>
+                            <div>
+                                <p style="font-weight: 700; color: #111827; margin-bottom: 0.25rem;">Data Dashboard</p>
+                                <p style="font-size: 0.875rem; color: #4b5563;">Unified tracking, real-time visibility, outcomes measurement. Data for decisions.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="font-weight: 700; color: #1e3a5f; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 2px solid #e5e7eb;">
+                        Everything else in the Empower Method can flex to your context. These four cannot.
+                    </p>
+
+                    <!-- Two-generational impact -->
+                    <div style="background: linear-gradient(135deg, #f7fbe8 0%, #eef5d0 100%); border-left: 4px solid #a3c520; border-radius: 0.5rem; padding: 1.25rem; margin-top: 1.25rem;">
+                        <p style="font-weight: 700; color: #1e3a5f; margin-bottom: 0.5rem;">Why this is two-generational:</p>
+                        <p style="font-size: 0.9rem; color: #374151;">Research shows every <strong style="color: #1e3a5f;">$3,000</strong> increase in parent income produces a <strong style="color: #1e3a5f;">17%</strong> increase in their child's future adult earnings. These four non-negotiables don't just lift families—they break the cycle for the next generation.</p>
+                    </div>
+                </div>
+
+                </div>
+
+                <!-- Table of Contents (Desktop only) -->
+                <aside class="hidden xl:block">
+                    <nav class="toc" aria-label="Table of contents">
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">On this page</p>
+                        <a href="#benefits-cliff" class="toc-link active">Benefits Cliff Navigation</a>
+                        <a href="#navigator" class="toc-link">The Navigator Model</a>
+                        <a href="#wraparound" class="toc-link">Wraparound Coordination</a>
+                        <a href="#dashboard" class="toc-link">Data Dashboard</a>
+                    </nav>
+                </aside>
+            </div>
+
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-3.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
+                    <span class="flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Previous: The Proof
+                    </span>
+                </a>
+                <a href="chapter-5.html" class="bg-tps-green text-tps-dark px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-tps-green/90 transition">
+                    Next: Adaptable Components
+                    <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">&copy; 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-3.html" title="Previous: The Proof" class="text-gray-600 hover:text-empower-blue">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+            </svg>
+        </a>
+        <a href="chapter-5.html" title="Next: Adaptable Components" class="text-gray-600 hover:text-tps-green">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        });
+
+        // TOC active state
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id]');
+
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Left arrow or 'p' for previous
+            if (e.key === 'ArrowLeft' || e.key === 'p' || e.key === 'P') {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const activeElement = document.activeElement;
+                    const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+                    if (!isInput) {
+                        window.location.href = 'chapter-3.html';
+                    }
+                }
+            }
+            // Right arrow or 'n' for next
+            if (e.key === 'ArrowRight' || e.key === 'n' || e.key === 'N') {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const activeElement = document.activeElement;
+                    const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+                    if (!isInput) {
+                        window.location.href = 'chapter-5.html';
+                    }
+                }
+            }
+            // 'h' for home/overview
+            if (e.key === 'h' || e.key === 'H') {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const activeElement = document.activeElement;
+                    const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+                    if (!isInput) {
+                        window.location.href = '../index.html';
+                    }
+                }
+            }
+            // Escape to close sidebar
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: Adaptable Components | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #a3c520, #7fa318);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f0f9e8; color: #3d6b0d; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Enhanced Prose styling */
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a5f;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #a3c520;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .prose ul {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+            list-style-type: disc;
+        }
+        .prose ol {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+            list-style-type: decimal;
+        }
+        .prose li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .prose blockquote {
+            border-left: 4px solid #a3c520;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #555;
+            margin: 2rem 0;
+            background: linear-gradient(to right, rgba(163, 197, 32, 0.05), transparent);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose strong { color: #222; }
+        .prose a {
+            color: #1e3a5f;
+            text-decoration: underline;
+            text-decoration-color: #a3c520;
+            text-underline-offset: 2px;
+        }
+        .prose a:hover {
+            color: #a3c520;
+        }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: #1e3a5f;
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            background: #1e3a5f;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* In-page TOC */
+        .toc {
+            position: sticky;
+            top: 100px;
+        }
+        .toc-link {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #666;
+            border-left: 2px solid #eee;
+            transition: all 0.15s;
+        }
+        .toc-link:hover {
+            color: #1e3a5f;
+            border-color: #1e3a5f;
+        }
+        .toc-link.active {
+            color: #1e3a5f;
+            border-color: #a3c520;
+            font-weight: 500;
+        }
+
+        /* Content with TOC grid */
+        @media (min-width: 1280px) {
+            .content-with-toc {
+                display: grid;
+                grid-template-columns: 1fr 220px;
+                gap: 48px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 - The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 - The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item active">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 - Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 - Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding & Unit Economics
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 -->
+            <p class="nav-section-title">Part 5 - Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Literature Review
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Evidence Tables
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Methodology Notes
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="main-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 2 - The Method</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chapter Header with Gradient -->
+        <div class="bg-gradient-to-br from-tps-green via-tps-green to-green-500 text-tps-dark px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="text-tps-dark/70 text-sm font-medium">Chapter 5</p>
+                    <span class="bg-white/30 backdrop-blur-sm text-tps-dark text-xs font-medium px-2.5 py-1 rounded-full">12 min read</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    Adaptable Components
+                </h1>
+                <p class="text-tps-dark/80 mt-4 text-lg">What you can customize vs. what must stay constant</p>
+            </div>
+        </div>
+
+        <!-- Chapter Content -->
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+                <div class="prose">
+
+                <!-- Key Concept Box -->
+                <div class="bg-empower-blue/5 border border-empower-blue/20 rounded-xl p-6 mb-8 not-prose">
+                    <h3 class="font-bold text-empower-blue text-lg mb-3">The Core Principle</h3>
+                    <p class="text-gray-700">The Four Non-Negotiables are constant. Everything else can be adapted to your community's context, existing systems, and resources. This chapter clarifies what must remain fixed for outcomes to hold—and where you have flexibility to make the model your own.</p>
+                </div>
+
+                <h2 id="distinction">Why This Distinction Matters</h2>
+
+                <p>Every community that implements the Empower model will face pressure to "customize" it. Funders will want their priorities emphasized. Partners will suggest shortcuts. Staff will propose workarounds. Some of these adaptations are healthy—they help the model fit local context. Others will undermine the very outcomes you're trying to achieve.</p>
+
+                <p>Knowing the difference is critical. We've seen well-intentioned modifications destroy program effectiveness in other regions. This chapter gives you clear guidance on where you have flexibility and where you don't.</p>
+
+                <!-- Research Evidence Box -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 0.75rem;">What the Research Shows</h4>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; margin-bottom: 1rem;">Implementation science draws a critical distinction between <strong style="color: #ffffff;">core components</strong> (the active ingredients that produce outcomes) and <strong style="color: #ffffff;">adaptable components</strong> (delivery mechanisms that can change based on context). Programs that clearly define and protect their core components scale faster and maintain effectiveness across diverse settings.</p>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.875rem; margin: 0;"><strong style="color: #f87171;">Warning:</strong> Research shows that 52% of nonprofits modify their programs to fit available funding—often unknowingly compromising core components. This "funding-driven drift" is one of the primary causes of program failure during scale-up.</p>
+                </div>
+
+                <h2 id="non-negotiables">The Non-Negotiables (Fixed)</h2>
+
+                <p>A quick reminder from <a href="chapter-4.html">Chapter 4</a>: these are the four elements that must remain intact for the model to work. They're worth repeating here because as you adapt the Empower Method to your context, these are the lines you cannot cross. Compromising on any one of them will significantly reduce outcomes:</p>
+
+                <div class="space-y-4 my-6 not-prose">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                        <h4 class="font-bold text-red-800">1. Benefits Cliff Navigation</h4>
+                        <p class="text-sm text-red-700 mt-1">Every family must receive personalized benefits cliff modeling before making employment decisions. This cannot be delegated to self-service tools or generalized advice.</p>
+                    </div>
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                        <h4 class="font-bold text-red-800">2. Navigator Model (1:25 ratio max)</h4>
+                        <p class="text-sm text-red-700 mt-1">Navigators must have caseloads small enough for relationship-based support. Higher ratios = transactional interactions = lost outcomes.</p>
+                    </div>
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                        <h4 class="font-bold text-red-800">3. Wraparound Coordination</h4>
+                        <p class="text-sm text-red-700 mt-1">Navigators must actively coordinate across service systems, not just make referrals. Warm handoffs and follow-through are required.</p>
+                    </div>
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                        <h4 class="font-bold text-red-800">4. Data Dashboard Accountability</h4>
+                        <p class="text-sm text-red-700 mt-1">Real-time outcome tracking must be visible to all stakeholders. No hiding poor results behind quarterly reports.</p>
+                    </div>
+                </div>
+
+                <h2 id="adaptable-elements">Adaptable Elements</h2>
+
+                <p>Within the framework of the Four Non-Negotiables, you have significant flexibility. Here's what can be customized:</p>
+
+                <h3 style="color: #a3c520; font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;"><span style="background: #a3c520; color: #111; width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">1</span> Navigator Staffing Models</h3>
+
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Dedicated Navigator Staff</p>
+                                    <p class="text-sm text-gray-500">Full-time employees focused solely on navigation</p>
+                                </div>
+                                <span class="bg-tps-green/20 text-tps-dark text-xs font-medium px-2 py-1 rounded">Upper Cumberland Model</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Embedded Navigators</p>
+                                    <p class="text-sm text-gray-500">Staff housed within partner agencies (TANF, workforce centers)</p>
+                                </div>
+                                <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-1 rounded">Alternative</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Hybrid Model</p>
+                                    <p class="text-sm text-gray-500">Core navigator team + trained staff at partner sites</p>
+                                </div>
+                                <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-1 rounded">Alternative</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Supervisor-as-Navigator</p>
+                                    <p class="text-sm text-gray-500">Workplace supervisors trained to provide navigation</p>
+                                </div>
+                                <span class="bg-empower-blue/10 text-empower-blue text-xs font-medium px-2 py-1 rounded">See Chapter 11</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: #a3c520; font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;"><span style="background: #a3c520; color: #111; width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">2</span> Targeting & Eligibility</h3>
+
+                <p>The ALICE threshold (225% FPL) is recommended but adaptable based on your funding sources and community needs:</p>
+
+                <div class="grid md:grid-cols-2 gap-4 my-6 not-prose">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Income-Based Targeting</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>ALICE threshold (up to 225% FPL)</li>
+                            <li>TANF-eligible families</li>
+                            <li>Specific income bands (150-300% FPL)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Population-Based Targeting</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>Parents with children under 18</li>
+                            <li>Specific employer workforces</li>
+                            <li>Geographic zones (specific counties)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">System-Based Entry Points</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>TANF recipients nearing time limits</li>
+                            <li>Workforce program completers</li>
+                            <li>Re-entry population</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Employer-Based Targeting</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>Employees of certified employers</li>
+                            <li>Industry-specific (healthcare, manufacturing)</li>
+                            <li>New hires in first 90 days</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 style="color: #a3c520; font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;"><span style="background: #a3c520; color: #111; width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">3</span> Service Delivery Channels</h3>
+
+                <p>How families access navigation services can vary by context:</p>
+
+                <ul>
+                    <li><strong>In-person at central location:</strong> Traditional model with dedicated Empower office</li>
+                    <li><strong>Mobile/itinerant navigators:</strong> Better for very rural/dispersed populations</li>
+                    <li><strong>Employer site-based:</strong> Navigators hold hours at certified employer locations</li>
+                    <li><strong>Hybrid digital:</strong> Initial screening online, intensive support in-person</li>
+                    <li><strong>Community anchor-based:</strong> Co-located with churches, libraries, or community centers</li>
+                </ul>
+
+                <h3 style="color: #a3c520; font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;"><span style="background: #a3c520; color: #111; width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">4</span> Partner Network Composition</h3>
+
+                <p>The wraparound coordination function requires partners, but which partners depends on your community:</p>
+
+                <div class="bg-gray-50 rounded-xl p-6 my-6 not-prose">
+                    <h4 class="font-semibold text-gray-900 mb-4">Essential Partner Types (Must Have)</h4>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Benefits administration (DHS/TANF)</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Workforce development</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Childcare resources</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Transportation options</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Context-Dependent Partners (Select Based on Needs)</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Healthcare/mental health</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Housing assistance</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Legal aid</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Financial coaching</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Adult education/GED</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Substance recovery</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Domestic violence services</span>
+                        <span class="bg-white border border-gray-200 px-3 py-1 rounded-full text-sm">Food security</span>
+                    </div>
+                </div>
+
+                <h3 style="color: #a3c520; font-size: 1.35rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;"><span style="background: #a3c520; color: #111; width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">5</span> Technology & Tools</h3>
+
+                <p>The data dashboard requirement is non-negotiable, but the specific tools used are flexible:</p>
+
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
+                        <h4 class="font-semibold text-gray-900">Technology Options by Component</h4>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4">
+                            <p class="font-medium text-gray-900 mb-2">Benefits Cliff Modeling</p>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>Atlanta Fed CLIFF tools (free, requires training)</li>
+                                <li>State-specific benefit calculators</li>
+                                <li>Commercial benefits optimization software</li>
+                            </ul>
+                        </div>
+                        <div class="px-6 py-4">
+                            <p class="font-medium text-gray-900 mb-2">Case Management</p>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>Social Solutions ETO</li>
+                                <li>Salesforce Nonprofit</li>
+                                <li>Custom database solutions</li>
+                                <li>Integrated state systems (where available)</li>
+                            </ul>
+                        </div>
+                        <div class="px-6 py-4">
+                            <p class="font-medium text-gray-900 mb-2">Dashboard & Reporting</p>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>Tableau/Power BI</li>
+                                <li>Google Data Studio</li>
+                                <li>Custom dashboard solutions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poverty Solution Dashboard Promo -->
+                <div style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%); border: 2px solid #a3c520; border-radius: 1rem; padding: 2rem; margin: 1.5rem 0;" class="not-prose">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <div style="background: #a3c520; width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                            <svg style="width: 1.5rem; height: 1.5rem; color: #111111;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <h4 style="color: #a3c520; font-weight: 800; font-size: 1.25rem;">The Poverty Solution Data Dashboard</h4>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.25rem;">Rather than piecing together multiple tools, The Poverty Solution is developing a unified data dashboard purpose-built for the Empower model. It integrates benefits cliff modeling, case management, and outcome reporting into a single platform—designed to track family progress across all four non-negotiables in real time.</p>
+                    <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #a3c520; color: #111111; font-weight: 700; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-decoration: none; font-size: 0.95rem;">
+                        View a Demo
+                        <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                    </a>
+                </div>
+
+                <h2 id="decision-framework">Decision Framework: When to Adapt</h2>
+
+                <p>Use this framework when stakeholders propose modifications:</p>
+
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4 bg-green-50">
+                            <div class="flex items-start space-x-3">
+                                <span class="text-green-600 text-lg">&#10003;</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Adapt if the change...</p>
+                                    <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                        <li>Improves fit with local systems without compromising core functions</li>
+                                        <li>Addresses a real barrier families face in your community</li>
+                                        <li>Leverages existing resources more efficiently</li>
+                                        <li>Makes the model more sustainable long-term</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4 bg-red-50">
+                            <div class="flex items-start space-x-3">
+                                <span class="text-red-600 text-lg">&#10007;</span>
+                                <div>
+                                    <p class="font-medium text-gray-900">Resist if the change...</p>
+                                    <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                        <li>Increases caseload ratios beyond 1:25</li>
+                                        <li>Removes benefits cliff analysis from the process</li>
+                                        <li>Shifts navigators to transactional rather than relational support</li>
+                                        <li>Reduces data transparency or accountability</li>
+                                        <li>Prioritizes funder preferences over family outcomes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <blockquote>
+                    "The art of implementation is knowing where to be rigid and where to be flexible. Get it backwards and you either break the model or fail to fit the community."
+                </blockquote>
+
+                <h2 id="examples">Adaptation Examples</h2>
+
+                <p>Here's how different communities have adapted the model while keeping the core intact:</p>
+
+                <h3>Rural Appalachian Region</h3>
+                <p><strong>Adaptation:</strong> Added mobile navigator van for communities without public transportation. Navigators travel to families rather than expecting families to come to central office.</p>
+                <p><strong>Why it works:</strong> Addresses real access barrier without changing the navigator relationship model.</p>
+
+                <h3>Recovery-Focused Implementation</h3>
+                <p><strong>Adaptation:</strong> Integrated peer recovery specialists as co-navigators for families with substance use history. Recovery specialists handle SUD-specific coordination while navigators handle economic mobility.</p>
+                <p><strong>Why it works:</strong> Adds specialized capacity without increasing caseloads or diluting navigator focus.</p>
+
+                <h3>Large Employer Partnership</h3>
+                <p><strong>Adaptation:</strong> Placed dedicated navigator on-site at regional hospital system (3,000+ employees). All new hires in entry-level positions offered navigation as part of onboarding.</p>
+                <p><strong>Why it works:</strong> Embeds navigation into employment pipeline without changing core model.</p>
+
+                <h2 id="social-capital">Social Capital & Peer Support Integration</h2>
+
+                <p>One critical adaptable element is how you build social capital and peer support into the model. While navigator relationships are non-negotiable, communities can add layers of peer connection that strengthen outcomes.</p>
+
+                <!-- Research Box on Social Capital -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 0.75rem;">Why Social Capital Matters</h4>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; margin-bottom: 1rem;">Research from programs like Circles USA demonstrates that <strong style="color: #ffffff;">bridging social capital</strong>—connections to people outside one's immediate network who have access to different resources and opportunities—is a powerful accelerator of economic mobility. Families in poverty often have strong "bonding" social capital (close ties to family and neighbors) but limited "bridging" capital (connections to employers, professionals, and community leaders).</p>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.875rem; margin: 0;">The Empower navigator relationship provides one form of bridging capital, but additional peer structures can multiply this effect.</p>
+                </div>
+
+                <h3>Peer Support Options</h3>
+
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Peer Cohort Model</p>
+                                    <p class="text-sm text-gray-500">Participants enroll in groups, meet regularly, and progress together through 18-24 month journey. Creates mutual accountability and shared learning.</p>
+                                </div>
+                                <span class="bg-tps-green/20 text-tps-dark text-xs font-medium px-2 py-1 rounded">High Impact</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Alumni Mentorship</p>
+                                    <p class="text-sm text-gray-500">Graduates who have achieved self-sufficiency mentor current participants. Provides hope, practical wisdom, and proof that mobility is possible.</p>
+                                </div>
+                                <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-1 rounded">Moderate Effort</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Cross-Class Partnerships (Circles)</p>
+                                    <p class="text-sm text-gray-500">A core component of the Empower UC model. Community volunteers ("Allies") from different economic backgrounds form intentional relationships with participants, expanding social networks beyond poverty and providing ongoing support throughout the journey.</p>
+                                </div>
+                                <span style="background: rgba(163, 197, 32, 0.15); color: #6b8a14;" class="text-xs font-medium px-2 py-1 rounded flex-shrink-0">Empower UC</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Family Support Groups</p>
+                                    <p class="text-sm text-gray-500">Structured gatherings for participants and their families to share challenges, celebrate wins, and build community. Often includes shared meals.</p>
+                                </div>
+                                <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-1 rounded">Low Barrier</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-gray-900">Employer Peer Networks</p>
+                                    <p class="text-sm text-gray-500">Within certified employers, connect program participants who work at the same company. Creates workplace support system and carpooling opportunities.</p>
+                                </div>
+                                <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2 py-1 rounded">Workplace Based</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Community Voice & Co-Design</h3>
+
+                <p>Another adaptable element is how deeply you involve participants in program design and governance. While the Four Non-Negotiables must remain intact, the way you implement them should be shaped by community input:</p>
+
+                <div class="grid md:grid-cols-2 gap-4 my-6 not-prose">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Participant Advisory Board</h4>
+                        <p class="text-sm text-gray-600">Current participants and alumni serving on a formal advisory body that provides input on program operations, policies, and communications.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Participant Feedback Loops</h4>
+                        <p class="text-sm text-gray-600">Regular surveys, listening sessions, and feedback mechanisms that inform continuous improvement—not just exit surveys.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Co-Design Sessions</h4>
+                        <p class="text-sm text-gray-600">Including participants in the design of new services, materials, or approaches before implementation. Especially valuable when expanding to new populations.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Story-Sharing Platforms</h4>
+                        <p class="text-sm text-gray-600">Creating opportunities for participants to share their journeys (with consent) to humanize the program and inform policy advocacy.</p>
+                    </div>
+                </div>
+
+                <div class="bg-tps-green/10 border border-tps-green/30 rounded-xl p-6 my-6 not-prose">
+                    <h4 class="font-bold text-tps-dark text-lg mb-3">Implementation Note</h4>
+                    <p class="text-gray-700">Social capital building takes time and intention. If you're launching a new program, start with the navigator model first and add peer structures as capacity allows. Don't dilute navigator relationships by overloading the model with too many components at once. A well-implemented core model beats a poorly-implemented comprehensive model.</p>
+                </div>
+
+                <h3>Team Structures: The Top-Down, Bottom-Up Approach</h3>
+
+                <p>The Poverty Solution and Empower model works from both directions: supporting families on the ground while simultaneously advocating for systemic and policy change at the community level. This requires intentional team structures that connect frontline work to leadership decision-making. Your community should adapt some version of all three of these teams:</p>
+
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; margin: 1.5rem 0;" class="not-prose">
+                    <div style="background: #ffffff; border: 2px solid #a3c520; border-radius: 0.75rem; padding: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">1</div>
+                            <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem;">Economic Stability Teams</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7;">The frontline team working directly with families—navigators, case managers, and partner agency staff. This team coordinates wraparound services, tracks family progress through the data dashboard, and surfaces real-time insights about what families are experiencing. They are the "bottom-up" intelligence of the model, identifying barriers and gaps as they emerge.</p>
+                    </div>
+
+                    <div style="background: #ffffff; border: 2px solid #1e3a5f; border-radius: 0.75rem; padding: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="background: #1e3a5f; color: #ffffff; min-width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">2</div>
+                            <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem;">Leadership &amp; Collective Impact Teams</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7;">Cross-sector leaders from government, nonprofits, healthcare, education, and business who meet regularly to align resources, remove systemic barriers, and advocate for policy change. This is the "top-down" component—using insights from the Economic Stability Teams to drive community-level decisions and push for structural changes that make economic mobility possible at scale.</p>
+                    </div>
+
+                    <div style="background: #ffffff; border: 2px solid #a3c520; border-radius: 0.75rem; padding: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">3</div>
+                            <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem;">Employer Coalition / Advisory Board</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7;">A group of local employers who come together on a monthly or quarterly basis to help move the pilot forward. They share what they're seeing on the ground with hiring, retention, and workforce challenges—and work together to figure out solutions to gaps in the community. This coalition bridges the frontline family work with real employer needs, ensuring the model stays connected to actual job opportunities and that employers are actively invested in participant success.</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f7fbe8 0%, #eef5d0 100%); border-left: 4px solid #a3c520; border-radius: 0.5rem; padding: 1.25rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="font-weight: 700; color: #1e3a5f; margin-bottom: 0.5rem;">Why all three matter:</p>
+                    <p style="font-size: 0.9rem; color: #374151;">Without Economic Stability Teams, you lose touch with what families actually need. Without Leadership Teams, systemic barriers never change. Without the Employer Coalition, job placement becomes disconnected from real workforce demand. The Empower model works because information flows between all three—families inform leaders, leaders change systems, and employers create the opportunities families need.</p>
+                </div>
+
+                </div>
+
+                <!-- Table of Contents (Desktop only) -->
+                <aside class="hidden xl:block">
+                    <nav class="toc" aria-label="Table of contents">
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">On this page</p>
+                        <a href="#distinction" class="toc-link active">Why This Distinction Matters</a>
+                        <a href="#non-negotiables" class="toc-link">The Non-Negotiables (Fixed)</a>
+                        <a href="#adaptable-elements" class="toc-link">Adaptable Elements</a>
+                        <a href="#decision-framework" class="toc-link">Decision Framework</a>
+                        <a href="#examples" class="toc-link">Adaptation Examples</a>
+                        <a href="#social-capital" class="toc-link">Social Capital & Peer Support</a>
+                    </nav>
+                </aside>
+            </div>
+
+            <!-- Chapter Navigation -->
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-4.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
+                    &#8592; Previous: Four Non-Negotiables
+                </a>
+                <a href="chapter-6.html" class="bg-empower-blue text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-empower-blue/90 transition">
+                    Next: Certified Employer Program &#8594;
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">&copy; 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-4.html" title="Previous: Four Non-Negotiables" aria-label="Previous chapter">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="chapter-6.html" title="Next: Certified Employer Program" aria-label="Next chapter">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        function updateReadingProgress() {
+            const article = document.querySelector('.prose');
+            if (!article) return;
+
+            const articleTop = article.offsetTop;
+            const articleHeight = article.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const scrollTop = window.scrollY;
+
+            const progress = Math.min(Math.max((scrollTop - articleTop + windowHeight * 0.3) / articleHeight * 100, 0), 100);
+            document.getElementById('readingProgress').style.width = progress + '%';
+        }
+
+        window.addEventListener('scroll', updateReadingProgress);
+        window.addEventListener('resize', updateReadingProgress);
+        updateReadingProgress();
+
+        // TOC active state
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id]');
+
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Only trigger if not typing in an input/textarea
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            // Left arrow or 'p' for previous
+            if (e.key === 'ArrowLeft' || e.key === 'p') {
+                window.location.href = 'chapter-4.html';
+            }
+            // Right arrow or 'n' for next
+            if (e.key === 'ArrowRight' || e.key === 'n') {
+                window.location.href = 'chapter-6.html';
+            }
+            // 'h' for home/overview
+            if (e.key === 'h') {
+                window.location.href = '../index.html';
+            }
+        });
+    </script>
+</body>
+</html>

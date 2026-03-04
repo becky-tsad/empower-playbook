@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 13: Templates & Tools | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #a3c520, #8ab018);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f0f9e8; color: #3d6b0d; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            gap: 8px;
+            z-index: 50;
+        }
+        .floating-nav a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: #555;
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            background: #1e3a5f;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Enhanced Prose Styling */
+        .prose-enhanced {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: #374151;
+        }
+        .prose-enhanced p {
+            margin-bottom: 1.5rem;
+        }
+        .prose-enhanced h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .prose-enhanced h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .prose-enhanced ul, .prose-enhanced ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .prose-enhanced li {
+            margin-bottom: 0.5rem;
+        }
+        .prose-enhanced blockquote {
+            border-left: 4px solid #a3c520;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #4b5563;
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 16px;
+                right: 16px;
+            }
+            .floating-nav a {
+                width: 44px;
+                height: 44px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 — The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 — The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 — Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 — Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 - Research -->
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Evidence Foundation
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Benefits Cliff Research
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Research Bibliography
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item active">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="main-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Training Academy</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chapter Header with Gradient -->
+        <div class="bg-gradient-to-br from-tps-green via-tps-green to-green-600 px-6 lg:px-12 py-12 relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+
+            <div class="max-w-7xl mx-auto relative">
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="text-tps-dark/70 text-sm font-medium">Chapter 13</p>
+                    <span class="text-xs bg-white/30 text-tps-dark px-2 py-0.5 rounded-full font-medium">Resource Library</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight text-tps-dark">
+                    Templates & Tools
+                </h1>
+                <p class="text-tps-dark/70 mt-3 text-lg">Ready-to-use resources for implementation</p>
+            </div>
+        </div>
+
+        <!-- Chapter Content -->
+        <div class="px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto prose-enhanced">
+
+                <!-- Featured Tools Section -->
+                <div style="background: #1a1a1a; border-radius: 16px; padding: 32px; margin-bottom: 32px;">
+                    <h2 style="color: #a3c520; font-weight: 700; font-size: 1.5rem; margin-bottom: 8px; margin-top: 0;">Essential Implementation Tools</h2>
+                    <p style="color: rgba(255,255,255,0.7); margin-bottom: 24px;">Research-backed tools to support your Empower implementation.</p>
+
+                    <div style="display: grid; gap: 16px;">
+                        <!-- Beacon Navigator Tool -->
+                        <div style="display: block; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; border: 1px solid rgba(163,197,32,0.3);">
+                            <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px;">
+                                <div style="background: #a3c520; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg style="width: 24px; height: 24px; color: #111;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1;">
+                                    <p style="color: #ffffff; font-weight: 700; font-size: 1.125rem; margin-bottom: 4px;">Beacon: The Navigator Data Tool</p>
+                                    <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; margin-bottom: 12px;">Purpose-built for economic mobility tracking with AI co-pilot capabilities.</p>
+                                </div>
+                            </div>
+                            <ul style="color: rgba(255,255,255,0.7); font-size: 0.875rem; margin: 0; padding-left: 64px; list-style: disc;">
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">AI Co-pilot for Navigators:</strong> Intelligent decision support during participant interactions</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">Real-time Meeting Transcription:</strong> Automatic documentation of all navigator sessions</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">Participant Portal:</strong> Secure document upload and progress tracking for families</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">Family-Level Outcome Tracking:</strong> Comprehensive data on economic mobility progress</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">Benefits Cliff Monitoring:</strong> Integrated alerts for benefits cliff exposure changes</li>
+                            </ul>
+                            <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(163,197,32,0.2); font-style: italic;">As we discovered: "If you have the wrong data being captured from the start, your pilot will be confusing and unable to get more funding." Beacon solves the data infrastructure problem that kills programs.</p>
+                        </div>
+
+                        <!-- Benefits Cliff Diagnostic Tool -->
+                        <div style="display: block; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; border: 1px solid rgba(86,157,183,0.3);">
+                            <div style="display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px;">
+                                <div style="background: #569db7; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg style="width: 24px; height: 24px; color: #fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1;">
+                                    <p style="color: #ffffff; font-weight: 700; font-size: 1.125rem; margin-bottom: 4px;">Benefits Cliff Diagnostic Tool</p>
+                                    <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; margin-bottom: 12px;">Interactive assessment for communities to understand their benefits cliff landscape.</p>
+                                </div>
+                            </div>
+                            <ul style="color: rgba(255,255,255,0.7); font-size: 0.875rem; margin: 0; padding-left: 64px; list-style: disc;">
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">County/Regional Assessment:</strong> Determine how many people in your area are in the "cliff zone"</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">Economic Impact Quantification:</strong> Understand local costs of benefits cliffs</li>
+                                <li style="margin-bottom: 8px;"><strong style="color: #ffffff;">Outreach Starter:</strong> Perfect conversation opener with potential partners and funders</li>
+                            </ul>
+                        </div>
+
+                        <!-- Atlanta Fed CLIFF Dashboard -->
+                        <a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families/cliff-tool" target="_blank" style="display: block; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; border: 1px solid rgba(163,197,32,0.3); text-decoration: none; transition: all 0.2s;">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div style="background: #a3c520; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg style="width: 24px; height: 24px; color: #111;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1;">
+                                    <p style="color: #ffffff; font-weight: 700; font-size: 1.125rem; margin-bottom: 4px;">Atlanta Fed CLIFF Dashboard</p>
+                                    <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; margin: 0;">The gold standard for benefits cliff modeling. State-specific calculators to help families visualize income vs. benefits tradeoffs.</p>
+                                </div>
+                                <div style="color: #a3c520; flex-shrink: 0;">
+                                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Employer ROI Calculator -->
+                        <a href="../tools/employer-roi-calculator.html" style="display: block; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; border: 1px solid rgba(86,157,183,0.3); text-decoration: none; transition: all 0.2s;">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div style="background: #569db7; width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg style="width: 24px; height: 24px; color: #fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1;">
+                                    <p style="color: #ffffff; font-weight: 700; font-size: 1.125rem; margin-bottom: 4px;">Employer ROI Calculator</p>
+                                    <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; margin: 0;">Calculate your company's return on investment from participating in the Empower Certified Employer program.</p>
+                                </div>
+                                <div style="color: #569db7; flex-shrink: 0;">
+                                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Downloadable Templates Section -->
+                <h2 style="color: #111827; font-weight: 700; font-size: 1.5rem; margin-top: 2.5rem; margin-bottom: 1rem;">Downloadable Templates</h2>
+                <p style="color: #374151; margin-bottom: 1.5rem;">Ready-to-use templates for program implementation. Click to open, then print or save as PDF.</p>
+
+                <div style="background: #1a1a1a; border-radius: 16px; padding: 32px; margin-bottom: 32px;">
+                    <h3 style="color: #a3c520; font-weight: 600; font-size: 1.125rem; margin-bottom: 16px;">Community & Program Assessments</h3>
+                    <div style="display: grid; gap: 12px; margin-bottom: 24px;">
+                        <a href="../templates/community-readiness-assessment.html" style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; border-left: 4px solid #a3c520; text-decoration: none; transition: all 0.2s;">
+                            <div style="background: #a3c520; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg style="width: 20px; height: 20px; color: #111;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Community Readiness Assessment</p>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem; margin: 0;">20-question diagnostic with scoring to evaluate your community's foundation for Empower implementation</p>
+                            </div>
+                            <svg style="width: 20px; height: 20px; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="../templates/transportation-barrier-assessment.html" style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; border-left: 4px solid #569db7; text-decoration: none; transition: all 0.2s;">
+                            <div style="background: #569db7; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg style="width: 20px; height: 20px; color: #fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Transportation Barrier Assessment</p>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem; margin: 0;">Comprehensive evaluation of transportation challenges - THE barrier in rural areas - with solution planning</p>
+                            </div>
+                            <svg style="width: 20px; height: 20px; color: #569db7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <h3 style="color: #a3c520; font-weight: 600; font-size: 1.125rem; margin-bottom: 16px;">Participant Forms</h3>
+                    <div style="display: grid; gap: 12px; margin-bottom: 24px;">
+                        <a href="../templates/participant-intake-form.html" style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; border-left: 4px solid #a3c520; text-decoration: none; transition: all 0.2s;">
+                            <div style="background: #a3c520; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg style="width: 20px; height: 20px; color: #111;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Participant Intake Form</p>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem; margin: 0;">Comprehensive enrollment form capturing household, benefits, employment, education, barriers, and goals</p>
+                            </div>
+                            <svg style="width: 20px; height: 20px; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="../templates/weekly-checkin-form.html" style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; border-left: 4px solid #569db7; text-decoration: none; transition: all 0.2s;">
+                            <div style="background: #569db7; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg style="width: 20px; height: 20px; color: #fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Weekly Check-In Form</p>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem; margin: 0;">Quick progress tracking form with pulse check, wins/challenges, goal review, and action items</p>
+                            </div>
+                            <svg style="width: 20px; height: 20px; color: #569db7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <h3 style="color: #a3c520; font-weight: 600; font-size: 1.125rem; margin-bottom: 16px;">Navigator & Program Management</h3>
+                    <div style="display: grid; gap: 12px;">
+                        <a href="../templates/navigator-wellness-assessment.html" style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; border-left: 4px solid #a3c520; text-decoration: none; transition: all 0.2s;">
+                            <div style="background: #a3c520; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg style="width: 20px; height: 20px; color: #111;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Navigator Wellness Self-Assessment</p>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem; margin: 0;">Confidential burnout risk and compassion fatigue screening with protective factors and action planning</p>
+                            </div>
+                            <svg style="width: 20px; height: 20px; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="../templates/family-disengagement-protocol.html" style="display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; border-left: 4px solid #569db7; text-decoration: none; transition: all 0.2s;">
+                            <div style="background: #569db7; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg style="width: 20px; height: 20px; color: #fff;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                            </div>
+                            <div style="flex: 1;">
+                                <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Family Disengagement Protocol</p>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.875rem; margin: 0;">4-week graduated outreach process with reason tracking, re-engagement planning, and program learning</p>
+                            </div>
+                            <svg style="width: 20px; height: 20px; color: #569db7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Implementation Guides Section -->
+                <h2 style="color: #111827; font-weight: 700; font-size: 1.5rem; margin-top: 2.5rem; margin-bottom: 1rem;">Sector Implementation Guides</h2>
+                <p style="color: #374151; margin-bottom: 1.5rem;">11 specialized guides for adapting Empower to different organizational contexts. Each guide includes sector-specific messaging, integration strategies, funding sources, and implementation steps.</p>
+
+                <div style="background: #f3f4f6; border-radius: 16px; padding: 24px; margin-bottom: 32px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+                        <a href="../guides/tanf-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">TANF Programs</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/hra-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Human Resource Agencies</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/development-districts-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Development Districts</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/employer-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Employers</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/k12-education-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">K-12 Education</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/early-childhood-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Early Childhood</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/fqhc-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">FQHCs / Healthcare</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/housing-authorities-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Housing Authorities</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/recovery-programs-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Recovery Programs</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/reentry-programs-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Reentry Programs</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="../guides/veterans-services-implementation-guide.html" style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; text-decoration: none; color: #374151; transition: all 0.2s; border: 1px solid #e5e7eb;">
+                            <span style="font-size: 0.875rem;">Veterans Services</span>
+                            <svg style="width: 16px; height: 16px; margin-left: auto; color: #a3c520;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tools Development Notice -->
+                <div style="background: #f0f9e8; border-radius: 12px; padding: 20px; border-left: 4px solid #a3c520; margin-top: 24px;">
+                    <p style="color: #111827; font-weight: 600; margin-bottom: 8px;">Tools in Active Development</p>
+                    <p style="color: #374151; margin: 0; font-size: 0.9375rem;">These tools are actively being developed and refined based on real-world program experience. By partnering with The Poverty Solution, you gain access to the latest versions, ongoing updates, and direct input on feature development. <a href="mailto:info@thepovertysolution.com" style="color: #a3c520; text-decoration: none; font-weight: 600;">Contact us</a> to learn more about partnership opportunities.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter Navigation -->
+        <div class="px-6 lg:px-12 py-8 border-t border-gray-100">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <a href="chapter-14.html" class="group flex items-center text-gray-500 hover:text-empower-blue transition">
+                    <svg class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <div>
+                        <p class="text-xs text-gray-400">Previous</p>
+                        <p class="text-sm font-medium">Poverty IQ for Employers</p>
+                    </div>
+                </a>
+                <a href="../index.html" class="group flex items-center text-right text-gray-500 hover:text-empower-blue transition">
+                    <div>
+                        <p class="text-xs text-gray-400">Next</p>
+                        <p class="text-sm font-medium">Back to Overview</p>
+                    </div>
+                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-14.html" title="Previous: Poverty IQ for Employers" aria-label="Previous chapter">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="../index.html" title="Back to Overview" aria-label="Back to Overview">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        function updateReadingProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('readingProgress').style.width = progress + '%';
+        }
+
+        window.addEventListener('scroll', updateReadingProgress);
+        window.addEventListener('resize', updateReadingProgress);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Don't trigger if user is typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            // Left arrow - previous chapter
+            if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.metaKey) {
+                window.location.href = 'chapter-14.html';
+            }
+
+            // Right arrow - next chapter (back to overview)
+            if (e.key === 'ArrowRight' && !e.ctrlKey && !e.metaKey) {
+                window.location.href = '../index.html';
+            }
+
+            // Escape - close sidebar on mobile
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: The Problem We're Solving | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #a3c520 0%, #1e3a5f 100%);
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 100;
+            transition: transform 0.1s;
+        }
+
+        /* Skip to content for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus { top: 0; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item:focus { outline: 2px solid #a3c520; outline-offset: 2px; }
+        .nav-item.active { background: linear-gradient(135deg, #f0f9e8 0%, #e8f5d9 100%); color: #3d6b0d; font-weight: 500; }
+        .nav-item .num {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Prose styling - Enhanced */
+        .prose h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+            color: #1e3a5f;
+            scroll-margin-top: 100px;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+            scroll-margin-top: 100px;
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+            font-size: 1.05rem;
+        }
+        .prose ul { margin-bottom: 1.25rem; margin-left: 1.5rem; list-style-type: disc; }
+        .prose li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+            color: #444;
+            font-size: 1.05rem;
+        }
+        .prose blockquote {
+            border-left: 4px solid #a3c520;
+            padding: 1.5rem;
+            font-style: italic;
+            color: #555;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, #f0f9e8 0%, #fafafa 100%);
+            border-radius: 0 12px 12px 0;
+            font-size: 1.1rem;
+        }
+        .prose strong { color: #1e3a5f; }
+
+        /* In-page TOC */
+        .toc {
+            position: sticky;
+            top: 100px;
+        }
+        .toc-link {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #666;
+            border-left: 2px solid #eee;
+            transition: all 0.15s;
+        }
+        .toc-link:hover {
+            color: #1e3a5f;
+            border-color: #1e3a5f;
+        }
+        .toc-link.active {
+            color: #1e3a5f;
+            border-color: #a3c520;
+            font-weight: 500;
+        }
+
+        /* Floating chapter nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+        .floating-nav.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .floating-nav a {
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.4);
+                backdrop-filter: blur(4px);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                left: 16px;
+                right: 16px;
+                transform: none;
+                bottom: 80px;
+            }
+            .hide-on-mobile { display: none; }
+        }
+
+        @media (min-width: 1280px) {
+            .content-with-toc {
+                display: grid;
+                grid-template-columns: 1fr 220px;
+                gap: 48px;
+            }
+        }
+
+        /* Focus visible for accessibility */
+        *:focus-visible {
+            outline: 2px solid #a3c520;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="progress"></div>
+
+    <!-- Skip to content link -->
+    <a href="#chapter-content" class="skip-link">Skip to chapter content</a>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-tps-dark to-gray-800 rounded-xl flex items-center justify-center shadow-lg">
+                    <span class="text-tps-green font-bold text-lg">E</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 — The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item active">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 — The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 — Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 — Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding & Unit Economics
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 -->
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Benefits Cliff Research
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Two-Generation Evidence
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Navigation Model Research
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="chapter-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-lg border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()" aria-label="Open navigation">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 1 — The Case</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs text-gray-400 hide-on-mobile">7 min read</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                        <span class="text-xs bg-tps-green/20 text-tps-dark px-2 py-1 rounded font-medium">P</span>
+                        <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chapter Header -->
+        <div class="bg-gradient-to-br from-empower-blue to-blue-900 text-white px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="inline-flex items-center px-3 py-1 bg-white/20 text-white/90 text-xs font-semibold rounded-full">
+                        Chapter 2
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 bg-tps-green/20 text-tps-green text-xs font-semibold rounded-full">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        7 min read
+                    </span>
+                </div>
+                <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight mb-4">
+                    The Problem We're Solving
+                </h1>
+                <p class="text-lg text-white/80 max-w-4xl">
+                    Before we can fix the system, we need to name what's broken. Three interconnected problems trap families in poverty—even when they're doing everything right.
+                </p>
+            </div>
+        </div>
+
+        <!-- Chapter Content with TOC -->
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+                <!-- Main Content -->
+                <div class="max-w-7xl mx-auto prose">
+
+                    <!-- Who We Serve Section -->
+                    <h2 id="who-we-serve">Who We Serve: Understanding Stranded Talent</h2>
+
+                    <p class="text-xl text-gray-600 leading-relaxed">
+                        The people we serve aren't in crisis. They're <strong>stuck</strong>.
+                    </p>
+
+                    <p>
+                        They're working—often multiple jobs. They're not unemployed. They're not homeless. By federal poverty measures, many aren't even "poor." But they can't get ahead. Year after year, they work hard with little wage growth, limited career mobility, and no clear path to stability.
+                    </p>
+
+                    <!-- Stranded Talent Definition Box -->
+                    <div style="background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); color: #ffffff; padding: 2rem; border-radius: 0.75rem; margin: 2rem 0;" class="not-prose">
+                        <h3 style="color: #a3c520; font-weight: 700; margin: 0 0 1rem 0; font-size: 1.25rem;">Stranded Talent: A Better Framework</h3>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                            <strong style="color: #ffffff;">Stranded talent</strong> describes working people who are stuck rather than in crisis. They fall into three categories:
+                        </p>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="background: rgba(163,197,32,0.15); padding: 1.25rem; border-radius: 0.5rem; border-left: 4px solid #a3c520;">
+                                <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.5rem 0;">Persistently Low-Wage</p>
+                                <p style="color: rgba(255,255,255,0.85); margin: 0; font-size: 0.95rem;">Earning insufficient wages to meet basic needs despite full-time work. Working 40+ hours and still can't cover rent, childcare, and transportation.</p>
+                            </div>
+                            <div style="background: rgba(163,197,32,0.15); padding: 1.25rem; border-radius: 0.5rem; border-left: 4px solid #a3c520;">
+                                <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.5rem 0;">Underemployed</p>
+                                <p style="color: rgba(255,255,255,0.85); margin: 0; font-size: 0.95rem;">Earning less than expected based on education or experience. The CNA who could be an RN. The factory worker with management potential. Skills and capability that go untapped.</p>
+                            </div>
+                            <div style="background: rgba(163,197,32,0.15); padding: 1.25rem; border-radius: 0.5rem; border-left: 4px solid #a3c520;">
+                                <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.5rem 0;">Stalled</p>
+                                <p style="color: rgba(255,255,255,0.85); margin: 0; font-size: 0.95rem;">Little to no wage growth or advancement over time. Same job, same pay, year after year—despite showing up, working hard, and doing everything asked of them.</p>
+                            </div>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.85rem; margin: 1.5rem 0 0 0; font-style: italic;">Research shows 36 million U.S. workers are stuck in high-churn, low-pay jobs. Source: Burning Glass Institute/Multiverse (2023)</p>
+                    </div>
+
+                    <!-- ALICE Framework Box -->
+                    <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 2px solid #1e3a5f; border-radius: 0.75rem; padding: 2rem; margin: 2rem 0;" class="not-prose">
+                        <h3 style="color: #1e3a5f; font-weight: 700; margin: 0 0 1rem 0; font-size: 1.25rem;">ALICE: The Economic Reality</h3>
+                        <p style="color: #334155; font-size: 1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                            <strong>ALICE</strong> stands for <strong>Asset Limited, Income Constrained, Employed</strong>. It describes working families who earn above the federal poverty line but cannot afford basic household necessities.
+                        </p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                            <div style="text-align: center;">
+                                <p style="font-size: 2.5rem; font-weight: 800; color: #1e3a5f; margin: 0;">44%</p>
+                                <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0;">of Tennessee households are below the ALICE Threshold</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="font-size: 2.5rem; font-weight: 800; color: #1e3a5f; margin: 0;">$74,796</p>
+                                <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0;">what a TN family of 4 actually needs annually</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="font-size: 2.5rem; font-weight: 800; color: #1e3a5f; margin: 0;">2x</p>
+                                <p style="font-size: 0.85rem; color: #64748b; margin: 0.25rem 0 0 0;">more than the federal poverty line</p>
+                            </div>
+                        </div>
+                        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0;">
+                            <p style="color: #92400e; margin: 0; font-size: 0.95rem;"><strong>The cruel irony:</strong> Because ALICE families earn above the federal poverty line, they don't qualify for most assistance programs—SNAP, housing vouchers, Medicaid. They're too "rich" for help but too poor to survive without it.</p>
+                        </div>
+                        <p style="color: #64748b; font-size: 0.8rem; margin: 1rem 0 0 0; font-style: italic;">Source: United For ALICE, 2023 Tennessee Report</p>
+                    </div>
+
+                    <!-- The Impossible Choices -->
+                    <h3>The Impossible Choices</h3>
+                    <p>
+                        ALICE families and stranded talent face daily decisions no one should have to make:
+                    </p>
+                    <ul>
+                        <li><strong>Car repair or rent?</strong> The car is how they get to work. The rent is how they keep a roof over their kids.</li>
+                        <li><strong>Quality childcare or utilities?</strong> Both are required for employment.</li>
+                        <li><strong>Fill the prescription or fill the tank?</strong> Health or transportation—pick one.</li>
+                        <li><strong>Take the overtime or see the kids?</strong> More hours means more money but less parenting.</li>
+                    </ul>
+                    <p>
+                        These short-term decisions have long-term consequences. And they're not the result of bad choices—they're the result of a system that doesn't work for working families.
+                    </p>
+
+                    <div style="background: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;" class="not-prose">
+                        <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.75rem 0; font-size: 1.1rem;">Why This Framing Matters</p>
+                        <p style="color: rgba(255,255,255,0.9); margin: 0; line-height: 1.8;">
+                            Positioning our work around <strong style="color: #ffffff;">unlocking stranded talent</strong> is more accurate—and more compelling—than a crisis-based narrative. These aren't people who need rescue. They're people who need <em>a path forward</em>. The Empower Method provides that path: a navigator who sees the whole picture, connects the dots, and helps families build toward stability—not just survive another month.
+                        </p>
+                    </div>
+
+                    <h2 id="fragmented-services">2.1 Fragmented Services = Fragmented Families</h2>
+
+                    <p>
+                        Meet Sarah. She's a single mother of two in rural Tennessee. She works 32 hours a week at the local grocery store—it's all her employer offers. She receives SNAP, Medicaid for her kids, and a childcare subsidy. She's on a housing waitlist. She wants to work more, earn more, and get off benefits.
+                    </p>
+
+                    <p>
+                        Here's her current reality:
+                    </p>
+
+                    <ul>
+                        <li>She works with a <strong>SNAP caseworker</strong> at DHS—sees them every 6 months</li>
+                        <li>She has a <strong>TennCare eligibility worker</strong>—different person, different office</li>
+                        <li>Her childcare subsidy goes through a <strong>separate state agency</strong></li>
+                        <li>She's on a housing waitlist managed by a <strong>local housing authority</strong></li>
+                        <li>She attended a <strong>workforce center</strong> workshop once, but never went back</li>
+                    </ul>
+
+                    <p>
+                        None of these agencies talk to each other. Sarah tells her story five times. Each agency sees one slice of her life. No one sees the whole picture. No one is responsible for her outcome.
+                    </p>
+
+                    <h3>The Referral Treadmill</h3>
+
+                    <p>
+                        In fragmented systems, "helping" means referring. The workforce center refers Sarah to a job training program. The training program refers her to an employer. The employer needs childcare documentation, so they refer her back to DHS. DHS needs income verification, so they refer her to the employer.
+                    </p>
+
+                    <p>
+                        Sarah runs in circles. She attends meetings. She fills out forms. She waits on hold. She's "being served" by multiple agencies—and going nowhere.
+                    </p>
+
+                    <blockquote>
+                        Every agency measures their referrals. No one measures whether Sarah actually got a job, kept it, and stayed off benefits.
+                    </blockquote>
+
+                    <h3>Duplicate Programs, Competing for the Same Families</h3>
+
+                    <p>
+                        In many communities, three different organizations run job readiness workshops. Two agencies provide financial literacy classes. Four groups offer food assistance. They compete for the same grant dollars, serve the same families, and duplicate each other's efforts—while critical gaps go unaddressed.
+                    </p>
+
+                    <p>
+                        Meanwhile, no one provides benefits cliff navigation. No one coordinates healthcare transitions. No one stays with a family for 18 months.
+                    </p>
+
+                    <p>
+                        <strong>The problem isn't too few services. It's no coordination.</strong>
+                    </p>
+
+                    <h2 id="benefits-cliff">2.2 The Benefits Cliff Crisis</h2>
+
+                    <p>
+                        This is the hidden trap that keeps working families poor.
+                    </p>
+
+                    <!-- Research Data Box: The Scale of the Cliff Crisis -->
+                    <div class="bg-gradient-to-br from-tps-dark to-gray-900 text-white p-6 rounded-xl my-8 not-prose">
+                        <h4 style="color: #a3c520;" class="font-bold text-lg mb-4">The Scale of the Benefits Cliff Crisis</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                            <div class="p-3">
+                                <p style="color: #a3c520; font-size: 3.5rem; font-weight: 800; line-height: 1;">3M+</p>
+                                <p style="color: #ffffff;" class="text-sm mt-2">households face benefits cliffs if income increases</p>
+                            </div>
+                            <div class="p-3">
+                                <p style="color: #a3c520; font-size: 3.5rem; font-weight: 800; line-height: 1;">51%</p>
+                                <p style="color: #ffffff;" class="text-sm mt-2">median effective marginal tax rate for families with children above poverty</p>
+                            </div>
+                            <div class="p-3">
+                                <p style="color: #a3c520; font-size: 3.5rem; font-weight: 800; line-height: 1;">95%+</p>
+                                <p style="color: #ffffff;" class="text-sm mt-2">marginal tax rate possible when Medicaid is lost</p>
+                            </div>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.8);" class="text-sm mt-4 text-center italic">For many families, earning more means keeping less—the system creates invisible walls to advancement.</p>
+                    </div>
+
+                    <h3>How a $1 Raise Can Cost a Family $5,000</h3>
+
+                    <p>
+                        Sarah's employer offers her a promotion: 40 hours a week, $2 more per hour. That's $4,160 more per year. She should take it, right?
+                    </p>
+
+                    <p>
+                        Wrong.
+                    </p>
+
+                    <p>
+                        That raise pushes her income above the childcare subsidy threshold. She loses $6,800 per year in childcare assistance. She's now $2,640 poorer than before the raise.
+                    </p>
+
+                    <p>
+                        If she earns a bit more, she loses SNAP. A bit more after that, her kids lose TennCare. Each "cliff" punishes her for earning more.
+                    </p>
+
+                    <!-- Benefits Cliff Visual Chart -->
+                    <div class="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl p-6 lg:p-8 my-8 not-prose">
+                        <h4 class="font-bold text-slate-800 text-xl mb-2">The Benefits Cliff Visualized</h4>
+                        <p class="text-slate-600 text-sm mb-8">As Sarah's wages increase, her total resources actually <strong>decrease</strong> due to benefit loss.</p>
+
+                        <!-- Horizontal Step Chart -->
+                        <div class="space-y-4">
+                            <!-- Step 1: Before Raise -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-28 lg:w-36 text-right">
+                                    <p class="text-sm font-semibold text-slate-700">Before Raise</p>
+                                    <p class="text-xs text-slate-500">$12.80/hr</p>
+                                </div>
+                                <div class="flex-1 flex items-center gap-1 h-12">
+                                    <div class="bg-empower-blue h-full rounded-l-lg flex items-center justify-center text-white text-xs font-bold px-2" style="width: 55%;">
+                                        Wages: $26.6K
+                                    </div>
+                                    <div class="bg-tps-green h-full rounded-r-lg flex items-center justify-center text-tps-dark text-xs font-bold px-2" style="width: 27%;">
+                                        Benefits: $12.8K
+                                    </div>
+                                </div>
+                                <div class="w-24 text-left">
+                                    <p class="text-lg font-bold text-slate-800">$39,424</p>
+                                </div>
+                            </div>
+
+                            <!-- Cliff Indicator -->
+                            <div class="flex items-center gap-4 py-2">
+                                <div class="w-28 lg:w-36"></div>
+                                <div class="flex-1 flex items-center justify-center">
+                                    <div class="flex items-center gap-2 bg-red-100 text-red-600 px-4 py-1 rounded-full">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                        </svg>
+                                        <span class="text-xs font-bold">$2/HR RAISE TRIGGERS CLIFF</span>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="w-24"></div>
+                            </div>
+
+                            <!-- Step 2: After Raise - Lost Childcare -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-28 lg:w-36 text-right">
+                                    <p class="text-sm font-semibold text-slate-700">After Raise</p>
+                                    <p class="text-xs text-red-500">Lost childcare</p>
+                                </div>
+                                <div class="flex-1 flex items-center gap-1 h-12">
+                                    <div class="bg-empower-blue h-full rounded-l-lg flex items-center justify-center text-white text-xs font-bold px-2" style="width: 64%;">
+                                        Wages: $30.8K
+                                    </div>
+                                    <div class="bg-tps-green/60 h-full rounded-r-lg flex items-center justify-center text-tps-dark text-xs font-bold px-2" style="width: 12%;">
+                                        $6K
+                                    </div>
+                                </div>
+                                <div class="w-24 text-left">
+                                    <p class="text-lg font-bold text-red-600">$36,784</p>
+                                    <p class="text-xs text-red-500">-$2,640</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Lost SNAP -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-28 lg:w-36 text-right">
+                                    <p class="text-sm font-semibold text-slate-700">More Hours</p>
+                                    <p class="text-xs text-red-500">Lost SNAP</p>
+                                </div>
+                                <div class="flex-1 flex items-center gap-1 h-12">
+                                    <div class="bg-empower-blue h-full rounded-l-lg flex items-center justify-center text-white text-xs font-bold px-2" style="width: 68%;">
+                                        Wages: $32.8K
+                                    </div>
+                                    <div class="bg-tps-green/40 h-full rounded-r-lg flex items-center justify-center text-tps-dark text-xs font-bold px-2" style="width: 8%;">
+                                        $4K
+                                    </div>
+                                </div>
+                                <div class="w-24 text-left">
+                                    <p class="text-lg font-bold text-red-600">$36,800</p>
+                                    <p class="text-xs text-red-500">-$2,624</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Lost All Benefits -->
+                            <div class="flex items-center gap-4">
+                                <div class="w-28 lg:w-36 text-right">
+                                    <p class="text-sm font-semibold text-slate-700">Promotion</p>
+                                    <p class="text-xs text-red-500">Lost TennCare</p>
+                                </div>
+                                <div class="flex-1 flex items-center h-12">
+                                    <div class="bg-empower-blue h-full rounded-lg flex items-center justify-center text-white text-xs font-bold px-2" style="width: 72%;">
+                                        Wages Only: $35K
+                                    </div>
+                                </div>
+                                <div class="w-24 text-left">
+                                    <p class="text-lg font-bold text-red-600">$35,000</p>
+                                    <p class="text-xs text-red-500">-$4,424</p>
+                                </div>
+                            </div>
+
+                            <!-- Gap Indicator -->
+                            <div class="flex items-center gap-4 py-2">
+                                <div class="w-28 lg:w-36"></div>
+                                <div class="flex-1 border-t-2 border-dashed border-slate-300 relative">
+                                    <span class="absolute left-1/2 -translate-x-1/2 -top-3 bg-slate-100 px-3 text-xs text-slate-500 font-medium">$19K GAP TO BREAK EVEN</span>
+                                </div>
+                                <div class="w-24"></div>
+                            </div>
+
+                            <!-- Step 5: Break Even Target -->
+                            <div class="flex items-center gap-4 opacity-60">
+                                <div class="w-28 lg:w-36 text-right">
+                                    <p class="text-sm font-semibold text-tps-green">Break Even</p>
+                                    <p class="text-xs text-slate-500">Target needed</p>
+                                </div>
+                                <div class="flex-1 flex items-center h-12">
+                                    <div class="bg-empower-blue/50 h-full rounded-lg flex items-center justify-center text-white text-xs font-bold px-2 border-2 border-dashed border-tps-green" style="width: 100%;">
+                                        Wages: $54K+ (no benefits needed)
+                                    </div>
+                                </div>
+                                <div class="w-24 text-left">
+                                    <p class="text-lg font-bold text-tps-green">$54,000+</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="flex flex-wrap justify-center gap-6 mt-8 pt-4 border-t border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 rounded bg-empower-blue"></div>
+                                <span class="text-sm text-slate-600">Wages</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 rounded bg-tps-green"></div>
+                                <span class="text-sm text-slate-600">Benefits</span>
+                            </div>
+                        </div>
+
+                        <!-- Key Insight -->
+                        <div class="bg-red-100 border border-red-200 rounded-xl p-4 mt-6">
+                            <p class="text-red-800 text-sm">
+                                <strong class="text-red-900">The Poverty Trap:</strong> Sarah needs to nearly <strong>double her income</strong> (from $26K to $54K+) just to get back to the same standard of living she had before the raise. This $19,000+ gap is why families stay stuck.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Research Callout: Childcare Has the Steepest Cliffs -->
+                    <div class="bg-orange-50 border-l-4 border-orange-500 p-4 my-6 not-prose">
+                        <p class="font-bold text-orange-800 mb-1">Research Finding: Childcare Has the Steepest Cliffs</p>
+                        <p class="text-orange-900 text-sm">Childcare subsidies produce the steepest cliff effects of any benefit program. Families can lose <strong>$5,991 to $6,000+ annually</strong> at cliff points—often more than the income gain that triggered the loss. This is why benefits cliff navigation should start with childcare mapping for families receiving subsidies.</p>
+                    </div>
+
+                    <h3>Why Employed Families Stay Trapped</h3>
+
+                    <p>
+                        Here's the statistic that should change how you think about poverty:
+                    </p>
+
+                    <div class="bg-tps-dark text-white p-6 rounded-xl my-8 text-center not-prose">
+                        <p style="color: #a3c520; font-size: 4.5rem; font-weight: 800; line-height: 1;" class="mb-2">69%</p>
+                        <p style="color: #ffffff;" class="text-lg">of participants in the Empower program are already employed</p>
+                    </div>
+
+                    <p>
+                        This is not an unemployment problem. These aren't people who won't work. They're working—often multiple jobs—and still can't get ahead because the system punishes every step forward.
+                    </p>
+
+                    <!-- Employer Impact Callout -->
+                    <div class="bg-gradient-to-br from-tps-dark to-gray-900 text-white p-6 rounded-xl my-8 not-prose">
+                        <h4 style="color: #a3c520;" class="font-bold text-lg mb-3">The Employer Perspective</h4>
+                        <div class="flex items-center justify-center mb-4">
+                            <span style="color: #a3c520;" class="text-6xl font-bold">1 in 3</span>
+                        </div>
+                        <p style="color: #ffffff;" class="text-center text-lg mb-2">businesses report employees declining promotions or advancement</p>
+                        <p style="color: #ffffff;" class="text-center text-sm italic">due to fear of losing benefits—the cliff affects employers too</p>
+                    </div>
+
+                    <h3>What Families Actually Need</h3>
+
+                    <p>
+                        Sarah doesn't need another job skills workshop. She needs someone to sit down with her and map out:
+                    </p>
+
+                    <ul>
+                        <li>Exactly where her benefits cliffs are</li>
+                        <li>How much she needs to earn to clear each cliff</li>
+                        <li>A sequenced plan to navigate the transition</li>
+                        <li>An employer who understands the plan and won't accidentally push her over a cliff with a well-meaning raise</li>
+                    </ul>
+
+                    <p>
+                        That's benefits cliff navigation. It's the difference between telling Sarah "get a better job" and actually helping her get there.
+                    </p>
+
+                    <h2 id="poverty-management">2.3 Poverty Management vs. Poverty Alleviation</h2>
+
+                    <p>
+                        Here's the uncomfortable truth about most poverty programs:
+                    </p>
+
+                    <p>
+                        <strong>They're designed to help people cope with poverty, not exit it.</strong>
+                    </p>
+
+                    <h3>The Difference</h3>
+
+                    <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                        <div class="bg-gray-100 p-6 rounded-xl">
+                            <h4 class="font-bold text-gray-600 mb-3">Poverty Management</h4>
+                            <ul class="text-sm space-y-2">
+                                <li class="text-gray-600">✗ Measures activities (referrals made)</li>
+                                <li class="text-gray-600">✗ 3-6 month program cycles</li>
+                                <li class="text-gray-600">✗ Success = enrolled in services</li>
+                                <li class="text-gray-600">✗ Rotating caseloads</li>
+                                <li class="text-gray-600">✗ Siloed services</li>
+                                <li class="text-gray-600">✗ Reactive (respond to crises)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-tps-green/10 border-2 border-tps-green p-6 rounded-xl">
+                            <h4 class="font-bold text-tps-dark mb-3">Poverty Alleviation</h4>
+                            <ul class="text-sm space-y-2">
+                                <li class="text-gray-700">✓ Measures outcomes (income gained)</li>
+                                <li class="text-gray-700">✓ 18-24 month commitments</li>
+                                <li class="text-gray-700">✓ Success = self-sufficiency achieved</li>
+                                <li class="text-gray-700">✓ One navigator, full journey</li>
+                                <li class="text-gray-700">✓ Coordinated services</li>
+                                <li class="text-gray-700">✓ Proactive (prevent cliffs before they happen)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>The Self-Sufficiency Standard: ALICE</h3>
+
+                    <p>
+                        Most programs use the Federal Poverty Level (FPL) as their benchmark. If a family earns above FPL, they're "not poor" by official measures.
+                    </p>
+
+                    <p>
+                        But FPL is absurdly low. In 2024, FPL for a family of three is $24,860. No one believes a family of three can be self-sufficient on $25,000 a year.
+                    </p>
+
+                    <p>
+                        That's why we use the <strong>ALICE threshold</strong>: Asset Limited, Income Constrained, Employed. ALICE households earn too much to qualify for poverty programs but too little to afford basic needs: housing, childcare, food, transportation, healthcare.
+                    </p>
+
+                    <p>
+                        The Empower Method targets <strong>225% of FPL</strong>—roughly where families cross from "surviving" to "stable." That's the real finish line.
+                    </p>
+
+                    <!-- Key Takeaway Box -->
+                    <div class="bg-gradient-to-br from-tps-dark to-gray-900 text-white p-8 rounded-2xl mt-12 not-prose relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-tps-green/10 rounded-full blur-3xl"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span style="color: #a3c520;" class="inline-flex items-center px-3 py-1 bg-tps-green/20 text-xs font-semibold rounded-full">
+                                    Key Takeaway
+                                </span>
+                            </div>
+                            <p style="color: rgba(255,255,255,0.8);" class="leading-relaxed text-lg mb-4">
+                                The current system creates three traps:
+                            </p>
+                            <ol class="space-y-2 mb-4">
+                                <li style="color: #ffffff;"><span style="color: #a3c520; font-weight: bold;">1. Fragmentation:</span> No one owns the outcome</li>
+                                <li style="color: #ffffff;"><span style="color: #a3c520; font-weight: bold;">2. Benefits cliffs:</span> Working harder makes you poorer</li>
+                                <li style="color: #ffffff;"><span style="color: #a3c520; font-weight: bold;">3. Wrong metrics:</span> Programs measure activity, not exit</li>
+                            </ol>
+                            <p style="color: #ffffff;" class="font-bold text-xl">
+                                The Empower Method solves all three—and Chapter 3 proves it works.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Table of Contents (Desktop only) -->
+                <aside class="hidden xl:block">
+                    <nav class="toc" aria-label="Table of contents">
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">On this page</p>
+                        <a href="#who-we-serve" class="toc-link active">Who We Serve</a>
+                        <a href="#fragmented-services" class="toc-link">Fragmented Services</a>
+                        <a href="#benefits-cliff" class="toc-link">The Benefits Cliff Crisis</a>
+                        <a href="#poverty-management" class="toc-link">Poverty Management vs. Alleviation</a>
+                    </nav>
+                </aside>
+            </div>
+
+            <!-- Chapter Navigation -->
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-16 pt-8 border-t border-gray-200">
+                <a href="chapter-1.html" class="flex items-center text-gray-500 hover:text-empower-blue transition text-sm group">
+                    <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    Previous: Why Rural Needs Different
+                </a>
+                <a href="chapter-3.html" class="flex items-center bg-empower-blue text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-empower-blue/90 transition group">
+                    Next: The Proof
+                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Navigation -->
+    <div class="floating-nav" id="floatingNav">
+        <a href="chapter-1.html" class="text-gray-600 hover:bg-gray-100">
+            ← Previous
+        </a>
+        <a href="chapter-3.html" class="bg-empower-blue text-white hover:bg-empower-blue/90">
+            Next Chapter →
+        </a>
+    </div>
+
+    <script>
+        // Reading progress
+        function updateProgress() {
+            const content = document.getElementById('chapter-content');
+            const progress = document.getElementById('progress');
+            const scrolled = window.scrollY;
+            const height = content.scrollHeight - window.innerHeight;
+            const percent = Math.min(scrolled / height, 1);
+            progress.style.transform = `scaleX(${percent})`;
+
+            // Show floating nav after scrolling
+            const floatingNav = document.getElementById('floatingNav');
+            if (scrolled > 500) {
+                floatingNav.classList.add('show');
+            } else {
+                floatingNav.classList.remove('show');
+            }
+        }
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
+
+        // TOC active state
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id]');
+
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebar();
+            // Arrow keys for chapter navigation
+            if (e.key === 'ArrowLeft') window.location.href = 'chapter-1.html';
+            if (e.key === 'ArrowRight') window.location.href = 'chapter-3.html';
+        });
+    </script>
+</body>
+</html>

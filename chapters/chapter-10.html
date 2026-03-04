@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 10: Funding & Unit Economics | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #545454, #6b7280);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f3f4f6; color: #545454; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Enhanced Prose styling */
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a5f;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #545454;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .prose ul {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+            list-style-type: disc;
+        }
+        .prose ol {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+            list-style-type: decimal;
+        }
+        .prose li {
+            margin-bottom: 0.625rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .prose blockquote {
+            border-left: 4px solid #545454;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #555;
+            margin: 1.75rem 0;
+            background: #f3f4f6;
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose strong { color: #222; }
+        .prose a {
+            color: #545454;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .prose a:hover {
+            color: #374151;
+        }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            background: #545454;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* TOC Styles */
+        .toc { position: sticky; top: 100px; }
+        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
+        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
+        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
+        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 - The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 - The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 - Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 - Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item active">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding & Unit Economics
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 - Research -->
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Evidence Foundation
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Benefits Cliff Research
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Research Bibliography
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="main-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 4 - Scale</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chapter Header with Gradient -->
+        <div class="bg-gradient-to-br from-[#545454] to-[#6b7280] text-white px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="text-white/70 text-sm font-medium">Chapter 10</p>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded-full">12 min read</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    Funding & Unit Economics
+                </h1>
+                <p class="text-white/80 mt-4 text-lg">The investment case for economic mobility infrastructure</p>
+            </div>
+        </div>
+
+        <!-- Chapter Content -->
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+            <div class="prose">
+
+                <!-- Executive Summary Box -->
+                <div class="bg-tps-green/10 border border-tps-green/30 rounded-xl p-6 mb-8 not-prose">
+                    <h3 class="font-bold text-tps-dark text-lg mb-3">The Investment Thesis</h3>
+                    <p class="text-gray-700 mb-4">The Empower model delivers <strong>$7.10 in community economic return for every $1 invested</strong>. This chapter breaks down exactly how we calculate that return and what funders at every level can expect from their investment.</p>
+                    <div class="grid md:grid-cols-3 gap-4 mt-4">
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <p style="font-size: 2.5rem; font-weight: 800; color: #1e3a5f;">$2,847</p>
+                            <p class="text-sm text-gray-600">Cost per family served</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <p style="font-size: 2.5rem; font-weight: 800; color: #a3c520;">$8,500</p>
+                            <p class="text-sm text-gray-600">Avg. annual wage gain</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <p style="font-size: 2.5rem; font-weight: 800; color: #1e3a5f;">7.1:1</p>
+                            <p class="text-sm text-gray-600">Return on investment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="unit-economics">Understanding Unit Economics</h2>
+
+                <p>Most poverty programs report aggregate numbers that hide the true cost of outcomes. "We served 500 families" tells funders nothing about efficiency or impact. The Empower model operates with full transparency on unit economics because we believe funders deserve to know exactly what they're buying.</p>
+
+                <h3>Cost Per Family Served</h3>
+
+                <p>The total cost to fully serve one family through the Empower navigator model breaks down as follows:</p>
+
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
+                        <h4 class="font-semibold text-gray-900">Annual Cost Per Family: $2,847</h4>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Navigator time allocation</p>
+                                <p class="text-sm text-gray-500">Avg. 24 hours per family annually (assessment, coaching, coordination)</p>
+                            </div>
+                            <p class="font-semibold text-gray-900">$1,200</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Benefits cliff modeling</p>
+                                <p class="text-sm text-gray-500">Software licensing and data integration per family</p>
+                            </div>
+                            <p class="font-semibold text-gray-900">$180</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Wraparound coordination</p>
+                                <p class="text-sm text-gray-500">Partner agency coordination, referral management</p>
+                            </div>
+                            <p class="font-semibold text-gray-900">$420</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Emergency stabilization fund</p>
+                                <p class="text-sm text-gray-500">Average direct assistance per family (transportation, utilities, deposits)</p>
+                            </div>
+                            <p class="font-semibold text-gray-900">$650</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Infrastructure overhead</p>
+                                <p class="text-sm text-gray-500">Data systems, training, quality assurance (15%)</p>
+                            </div>
+                            <p class="font-semibold text-gray-900">$397</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Cost Per Outcome Achieved</h3>
+
+                <p>Not every family achieves every outcome. Here's the real cost per successful outcome:</p>
+
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Cost per family achieving wage increase</p>
+                                <p class="text-sm text-gray-500">72% success rate</p>
+                            </div>
+                            <p class="font-semibold text-tps-green">$3,954</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Cost per family exiting ALICE status</p>
+                                <p class="text-sm text-gray-500">34% achieve within 24 months</p>
+                            </div>
+                            <p class="font-semibold text-empower-blue">$8,373</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Cost per benefits cliff successfully navigated</p>
+                                <p class="text-sm text-gray-500">89% avoid cliff-related setbacks</p>
+                            </div>
+                            <p class="font-semibold text-tps-green">$3,199</p>
+                        </div>
+                        <div class="px-6 py-4 flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-900">Cost per job retention at 12 months</p>
+                                <p class="text-sm text-gray-500">85% retention rate vs. 62% regional average</p>
+                            </div>
+                            <p class="font-semibold text-tps-green">$3,349</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="roi-calculation">The 7.1:1 ROI Calculation</h2>
+
+                <p>Our return on investment isn't an estimate—it's calculated from actual outcomes data across 500+ families served over three years. Here's how the math works:</p>
+
+                <h3>Direct Economic Returns (Per Family)</h3>
+
+                <div class="bg-empower-blue/5 border border-empower-blue/20 rounded-xl p-6 my-6 not-prose">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center pb-3 border-b border-empower-blue/10">
+                            <span class="text-gray-700">Average annual wage increase</span>
+                            <span class="font-bold text-empower-blue">+$8,500</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-empower-blue/10">
+                            <span class="text-gray-700">Retained benefits (optimized vs. lost)</span>
+                            <span class="font-bold text-empower-blue">+$4,200</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-empower-blue/10">
+                            <span class="text-gray-700">Reduced emergency service utilization</span>
+                            <span class="font-bold text-empower-blue">+$2,100</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-empower-blue/10">
+                            <span class="text-gray-700">Employer retention value (reduced turnover)</span>
+                            <span class="font-bold text-empower-blue">+$3,400</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-empower-blue/10">
+                            <span class="text-gray-700">Local economic multiplier effect (1.3x)</span>
+                            <span class="font-bold text-empower-blue">+$2,060</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2">
+                            <span class="font-bold text-gray-900">Total Annual Economic Value Created</span>
+                            <span class="font-bold text-tps-green text-xl">$20,260</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-empower-blue/20 text-center">
+                        <p class="text-gray-600 mb-2">$20,260 value created / $2,847 cost = <strong class="text-empower-blue text-2xl">7.1:1 ROI</strong></p>
+                    </div>
+                </div>
+
+                <!-- Research Data Box -->
+                <div style="background: #1a1a1a; border-radius: 12px; padding: 24px; margin: 32px 0;" class="not-prose">
+                    <h3 style="color: #a3c520; font-weight: 700; font-size: 1.125rem; margin-bottom: 16px;">Research: Two-Generation Funding Landscape</h3>
+                    <p style="color: rgba(255,255,255,0.85); margin-bottom: 16px; line-height: 1.7;">The Aspen Institute's Ascend Network reports <strong style="color: #a3c520;">$284 million in 2Gen funding</strong> was deployed across their network in FY 2023-2024. This demonstrates growing national investment in whole-family economic mobility approaches.</p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px;">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 700; margin-bottom: 4px;">$284M</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">2Gen funding (FY 2023-24)</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px;">
+                            <p style="color: #a3c520; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Ascend</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Network reporting source</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="funding-sources">Funding Sources & Strategy</h2>
+
+                <p>The Empower model is designed for <strong>braided funding</strong>—combining multiple sources to create sustainable, diversified revenue. No single funder carries more than 35% of total program cost.</p>
+
+                <h3>Recommended Funding Mix</h3>
+
+                <div class="grid md:grid-cols-2 gap-4 my-6 not-prose">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-10 h-10 bg-empower-blue/10 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-empower-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Employer Investment</h4>
+                                <p class="text-sm text-gray-500">25-30% of total</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">Certified Employer partners invest $500-2,000/month based on company size and employee utilization. ROI includes reduced turnover, improved productivity, and workforce stability.</p>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-10 h-10 bg-tps-green/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Foundation Grants</h4>
+                                <p class="text-sm text-gray-500">30-35% of total</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">Multi-year capacity grants from regional and national foundations focused on economic mobility, workforce development, and rural innovation.</p>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Government Contracts</h4>
+                                <p class="text-sm text-gray-500">20-25% of total</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">TANF flexibility funds, WIOA contracts, Community Services Block Grants, and state workforce development allocations. <strong>TANF flexibility funds can directly support navigator positions and benefits cliff tools.</strong></p>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900">Fee-for-Service</h4>
+                                <p class="text-sm text-gray-500">15-20% of total</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">Training fees from Poverty IQ certification, consulting services to other regions, and technical assistance contracts.</p>
+                    </div>
+                </div>
+
+                <h2 id="value-propositions">Funder-Specific Value Propositions</h2>
+
+                <h3>For National Foundations</h3>
+
+                <p>The Empower model offers what most rural programs cannot: <strong>a replicable, evidence-based approach with demonstrated ROI</strong>. Unlike urban-centric models that fail in low-density contexts, this is rural-native infrastructure designed for scale.</p>
+
+                <ul>
+                    <li><strong>Scale opportunity:</strong> 85% of U.S. counties are classified as rural, representing 46 million Americans living in poverty or ALICE status</li>
+                    <li><strong>Systems change:</strong> Not a direct service grant—an investment in replicable infrastructure that transforms how regions approach economic mobility</li>
+                    <li><strong>Learning agenda:</strong> Built-in data collection and evaluation framework enables continuous learning and model refinement</li>
+                </ul>
+
+                <h3>For State Government</h3>
+
+                <p>Tennessee and similar states face a workforce crisis: employers can't find workers, while working families can't escape the benefits cliff. The Empower model directly addresses both.</p>
+
+                <!-- State Policy Innovation Box -->
+                <div style="background: #1a1a1a; border-radius: 12px; padding: 24px; margin: 24px 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 16px;">State Policy Innovations Supporting Economic Mobility</h4>
+                    <div style="display: grid; gap: 12px;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border-left: 3px solid #a3c520;">
+                            <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">DC Career MAP</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">5-year transitional assistance model that allows families to maintain benefits while building income</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border-left: 3px solid #a3c520;">
+                            <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Maine STEP Bill</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">75% earned income disregard policy—families keep more of what they earn while transitioning</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border-left: 3px solid #a3c520;">
+                            <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Colorado</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">100% earned income disregard—the gold standard for cliff mitigation policy</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; border-left: 3px solid #569db7;">
+                            <p style="color: #ffffff; font-weight: 600; margin-bottom: 4px;">Medicaid Expansion States</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Saw dramatic coverage increases for treatment access, removing a major cliff barrier</p>
+                        </div>
+                    </div>
+                </div>
+
+                <ul>
+                    <li><strong>Workforce pipeline:</strong> 72% of participants achieve wage increases, expanding the pool of workers earning family-sustaining wages</li>
+                    <li><strong>Benefits efficiency:</strong> Optimized benefit transitions mean state dollars support advancement, not dependency</li>
+                    <li><strong>Rural equity:</strong> Proven model that works where traditional workforce programs fail</li>
+                </ul>
+
+                <h3>For Employers</h3>
+
+                <p>Every HR director knows: turnover is expensive. The average cost to replace an hourly employee is $4,700. Empower participants have 23% higher retention rates than non-participants in the same companies.</p>
+
+                <ul>
+                    <li><strong>Direct ROI:</strong> For every $1,000 invested in Empower, employers save $2,100 in reduced turnover and absenteeism</li>
+                    <li><strong>Competitive advantage:</strong> "Empower Certified" designation attracts workers seeking supportive employers</li>
+                    <li><strong>Community investment:</strong> Employer participation strengthens the workforce pipeline for all local businesses</li>
+                </ul>
+
+                <h3>For Community Foundations</h3>
+
+                <p>Local foundations often struggle to fund systemic change—most grants support programs, not infrastructure. Empower offers a different opportunity: funding the connective tissue that makes all other programs more effective.</p>
+
+                <ul>
+                    <li><strong>Leverage existing investments:</strong> Navigator coordination makes every other funder's dollars work harder</li>
+                    <li><strong>Visible, local impact:</strong> Dashboard provides real-time visibility into community-level outcomes</li>
+                    <li><strong>Sustainability path:</strong> Employer and government funding reduces long-term philanthropic dependence</li>
+                </ul>
+
+                <h2 id="grant-writing">Grant Writing: Key Language</h2>
+
+                <p>When seeking funding for Empower replication, use language that resonates with current funder priorities:</p>
+
+                <div class="bg-gray-50 rounded-xl p-6 my-6 not-prose">
+                    <h4 class="font-semibold text-gray-900 mb-4">Funder Alignment Phrases</h4>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start space-x-3">
+                            <span class="text-tps-green font-bold">+</span>
+                            <p><strong>"Economic mobility infrastructure"</strong> not "social services program"</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-tps-green font-bold">+</span>
+                            <p><strong>"Benefits cliff navigation"</strong> not "benefits assistance"</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-tps-green font-bold">+</span>
+                            <p><strong>"Two-generation workforce strategy"</strong> not "family services"</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-tps-green font-bold">+</span>
+                            <p><strong>"Rural-native design"</strong> not "adapted urban model"</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-tps-green font-bold">+</span>
+                            <p><strong>"Employer-integrated navigator model"</strong> not "case management"</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-tps-green font-bold">+</span>
+                            <p><strong>"ALICE threshold accountability"</strong> not "poverty line metrics"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="sustainability">Sustainability Timeline</h2>
+
+                <p>The goal is philanthropic independence within 5 years. Here's the typical funding evolution:</p>
+
+                <div class="border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="bg-empower-blue text-white px-6 py-3">
+                        <h4 class="font-semibold">Path to Sustainability</h4>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-4">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <span class="bg-empower-blue/10 text-empower-blue font-bold px-2 py-1 rounded text-sm">Year 1-2</span>
+                                <span class="font-semibold text-gray-900">Foundation-Heavy Launch</span>
+                            </div>
+                            <p class="text-sm text-gray-600">60% foundation grants, 25% government, 15% employer. Focus on proving the model and collecting outcome data.</p>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <span class="bg-tps-green/20 text-tps-dark font-bold px-2 py-1 rounded text-sm">Year 3-4</span>
+                                <span class="font-semibold text-gray-900">Diversification</span>
+                            </div>
+                            <p class="text-sm text-gray-600">35% foundation, 30% government contracts, 25% employer investment, 10% fee-for-service. Outcome data unlocks government contracts.</p>
+                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <span class="bg-gray-200 text-gray-700 font-bold px-2 py-1 rounded text-sm">Year 5+</span>
+                                <span class="font-semibold text-gray-900">Earned Revenue Majority</span>
+                            </div>
+                            <p class="text-sm text-gray-600">20% foundation, 30% government, 30% employer, 20% fee-for-service. Foundation grants shift to innovation and expansion, not operations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="making-ask">Making the Ask</h2>
+
+                <p>When presenting to funders, lead with outcomes, not activities. Here's the structure that converts:</p>
+
+                <ol>
+                    <li><strong>The problem (with local data):</strong> X families in your region are one car repair away from crisis</li>
+                    <li><strong>Why existing approaches fail:</strong> Benefits cliffs, siloed services, urban-designed programs</li>
+                    <li><strong>The Empower difference:</strong> Navigator model with proven 7.1:1 ROI in similar rural community</li>
+                    <li><strong>The specific ask:</strong> $X investment to serve Y families with Z expected outcomes</li>
+                    <li><strong>The sustainability path:</strong> How your investment builds infrastructure, not dependence</li>
+                </ol>
+
+                <blockquote>
+                    "We're not asking you to fund a program. We're asking you to invest in infrastructure that will make every other dollar in this region work harder for working families."
+                </blockquote>
+
+            </div>
+
+            <!-- On This Page TOC -->
+            <aside class="hidden xl:block">
+                <div class="toc">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
+                    <nav>
+                        <a href="#unit-economics" class="toc-link active">Unit Economics</a>
+                        <a href="#roi-calculation" class="toc-link">7.1:1 ROI Calculation</a>
+                        <a href="#funding-sources" class="toc-link">Funding Sources</a>
+                        <a href="#value-propositions" class="toc-link">Value Propositions</a>
+                        <a href="#grant-writing" class="toc-link">Grant Writing</a>
+                        <a href="#sustainability" class="toc-link">Sustainability</a>
+                        <a href="#making-ask" class="toc-link">Making the Ask</a>
+                    </nav>
+                </div>
+            </aside>
+            </div>
+
+            <!-- Chapter Navigation -->
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-9.html" class="text-gray-500 hover:text-gray-700 transition text-sm">
+                    ← Previous: What Kills Programs
+                </a>
+                <a href="chapter-11.html" class="bg-gradient-to-r from-[#545454] to-[#6b7280] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:from-[#374151] hover:to-[#545454] transition">
+                    Next: Adapting the Model →
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-9.html" title="Previous Chapter" aria-label="Previous Chapter">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="chapter-11.html" title="Next Chapter" aria-label="Next Chapter">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', function() {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPos = window.scrollY;
+            const progress = (scrollPos / docHeight) * 100;
+            document.getElementById('readingProgress').style.width = progress + '%';
+        });
+
+        // TOC Active State
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id]');
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Left arrow - previous chapter
+            if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const activeElement = document.activeElement;
+                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
+                if (!isInput) {
+                    window.location.href = 'chapter-9.html';
+                }
+            }
+            // Right arrow - next chapter
+            if (e.key === 'ArrowRight' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const activeElement = document.activeElement;
+                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
+                if (!isInput) {
+                    window.location.href = 'chapter-11.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

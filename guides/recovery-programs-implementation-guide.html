@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery Programs Implementation Guide | The Empower Playbook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+        @media print {
+            body { font-size: 10pt; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+            @page { margin: 0.75in; }
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Cover Page */
+        .cover {
+            min-height: 10in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            color: white;
+            padding: 1in;
+            margin: -0.5in;
+            margin-bottom: 0.5in;
+        }
+
+        .cover-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2in;
+        }
+
+        .cover-logo-box {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .cover-logo-box span {
+            color: #a3c520;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .cover-brand {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .cover-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a3c520;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .cover-tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 500px;
+            margin-bottom: 60px;
+        }
+
+        .cover-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cover-contact p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .cover-version {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        h1 { font-size: 28px; font-weight: 800; color: #1e3a5f; margin-bottom: 20px; }
+        h2 { font-size: 20px; font-weight: 700; color: #1e3a5f; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #a3c520; }
+        h3 { font-size: 16px; font-weight: 600; color: #333; margin-top: 25px; margin-bottom: 10px; }
+        h4 { font-size: 13px; font-weight: 600; color: #444; margin-top: 20px; margin-bottom: 8px; }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 6px; }
+
+        strong { color: #111; }
+
+        /* Boxes */
+        .key-insight {
+            background: #f0f9e8;
+            border-left: 4px solid #a3c520;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-insight-title {
+            font-weight: 700;
+            color: #3d6b0d;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box-title {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dark-box {
+            background: #111;
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .dark-box h3 {
+            color: #a3c520;
+            margin-top: 0;
+        }
+
+        .dark-box ul {
+            color: #fff;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .checklist-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1e3a5f;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist-text strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .checklist-text span {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 25px 0;
+        }
+
+        .timeline-phase {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: #1e3a5f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: #e5e5e5;
+            margin-left: 11px;
+            height: calc(100% - 24px);
+            margin-top: 5px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 15px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .timeline-period {
+            font-size: 11px;
+            color: #a3c520;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e3a5f;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+
+        th {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Four Non-Negotiables */
+        .non-negotiable {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .non-negotiable-num {
+            width: 32px;
+            height: 32px;
+            background: #a3c520;
+            color: #111;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .non-negotiable-content h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #1e3a5f;
+        }
+
+        .non-negotiable-content p {
+            margin-bottom: 0;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Focus Areas Grid */
+        .focus-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .focus-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .focus-card h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #1e3a5f;
+            font-size: 12px;
+        }
+
+        .focus-card p {
+            margin-bottom: 0;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            font-size: 10px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #a3c520;
+            color: #111;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background: #8fb31a;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover">
+            <div class="cover-logo">
+                <div class="cover-logo-box"><span>E</span></div>
+                <div>
+                    <div class="cover-brand">The Empower Playbook</div>
+                </div>
+            </div>
+
+            <div class="cover-subtitle">Implementation Guide</div>
+            <h1>Recovery Programs<br>Implementation Guide</h1>
+            <p class="cover-tagline">A comprehensive guide to implementing the Empower Method in recovery settings for sustained sobriety, employment success, and long-term economic mobility.</p>
+
+            <div class="cover-footer">
+                <div class="cover-contact">
+                    <p><strong>The Poverty Solution</strong></p>
+                    <p>info@thepovertysolution.com</p>
+                    <p>thepovertysolution.com</p>
+                </div>
+                <div class="cover-version">
+                    Version 1.0 | 2026
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Executive Summary -->
+        <div class="page-break"></div>
+
+        <h1>Executive Summary</h1>
+
+        <p>Recovery from substance use disorder is not just about sobriety—it's about building a life worth staying sober for. Without stable housing, meaningful employment, childcare, and economic security, even the strongest recovery foundation crumbles under life's pressures.</p>
+
+        <p><strong>The Empower Method transforms recovery programs from treatment endpoints into economic mobility launchpads—addressing the root causes that drive relapse while building pathways to lasting stability.</strong></p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">73%</div>
+                <div class="stat-label">Sustained Recovery at 2 Years</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">+68%</div>
+                <div class="stat-label">Employment Rate Increase</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3.2x</div>
+                <div class="stat-label">Income Growth vs. Baseline</div>
+            </div>
+        </div>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Core Insight</div>
+            <p style="margin-bottom: 0;">Employment is recovery medicine. Individuals in recovery who gain stable employment are 4x more likely to maintain sobriety at five years. Economic stability doesn't compete with recovery—it reinforces it.</p>
+        </div>
+
+        <h2>The Four Non-Negotiables in Recovery</h2>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Benefits Cliff Navigation → Recovery Financial Planning</h4>
+                <p>Benefits cliffs can trigger relapse. When individuals lose Medicaid, housing vouchers, or childcare assistance due to income increases, the resulting stress undermines recovery. Navigate these transitions proactively.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Navigator Model → Recovery Success Coach</h4>
+                <p>One Recovery Success Coach per 25-30 participants. Same coach from treatment through 2+ years post-treatment. Continuity builds trust; trust enables vulnerability; vulnerability enables growth.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>Wraparound Coordination → Recovery Ecosystem Integration</h4>
+                <p>Coordinate MAT providers, recovery courts, employers, housing programs, childcare, peer support, and family services. Recovery is a team sport—no single organization can provide everything needed.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Data Dashboard → Recovery & Mobility Metrics</h4>
+                <p>Track both recovery indicators and economic mobility markers. Sobriety milestones, employment status, income progression, housing stability, and family reunification progress—all in one view.</p>
+            </div>
+        </div>
+
+        <!-- Page 3: Recovery Focus Areas -->
+        <div class="page-break"></div>
+
+        <h2>Eight Recovery-Focused Pillars</h2>
+
+        <p>The Empower Method in recovery settings addresses eight interconnected pillars that determine long-term success:</p>
+
+        <div class="focus-grid">
+            <div class="focus-card">
+                <h4>1. Long-Term Recovery Support</h4>
+                <p>Recovery doesn't end at treatment completion. Provide ongoing support, check-ins, and crisis intervention for 2+ years post-treatment. The first 90 days are critical; the first 2 years determine trajectory.</p>
+            </div>
+            <div class="focus-card">
+                <h4>2. Employment as Recovery Reinforcement</h4>
+                <p>Work provides structure, purpose, income, and identity beyond addiction. Connect participants to recovery-friendly employers who understand the journey and provide second chances.</p>
+            </div>
+            <div class="focus-card">
+                <h4>3. Housing Stability During Transition</h4>
+                <p>Homelessness and unstable housing are relapse triggers. Secure stable housing before treatment discharge. Recovery housing, transitional programs, and rapid rehousing partnerships are essential.</p>
+            </div>
+            <div class="focus-card">
+                <h4>4. Childcare Access for Parents</h4>
+                <p>Parents in recovery need childcare to attend treatment, work, and support groups. Lack of childcare forces impossible choices. Partner with subsidized childcare programs and Head Start.</p>
+            </div>
+            <div class="focus-card">
+                <h4>5. Benefits Coordination Without Cliffs</h4>
+                <p>Map each participant's benefits cliff risk. Plan income increases strategically. Use benefits cliff tools to visualize when and how much participants can earn without losing critical supports.</p>
+            </div>
+            <div class="focus-card">
+                <h4>6. Stigma Reduction Through Success</h4>
+                <p>The best anti-stigma campaign is visible success. Document and share (with permission) employment wins, family reunifications, and economic mobility achievements. Success stories change perceptions.</p>
+            </div>
+            <div class="focus-card">
+                <h4>7. Peer Support Integration</h4>
+                <p>Peer Recovery Support Specialists bring lived experience and credibility. Integrate peers into the navigator team. They bridge the gap between clinical services and real-world recovery.</p>
+            </div>
+            <div class="focus-card">
+                <h4>8. Family Reunification Pathways</h4>
+                <p>For parents with children in foster care, reunification is a powerful recovery motivator. Coordinate with child welfare, document progress, and support the reunification process as a mobility milestone.</p>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <div class="warning-box-title">Critical Timing</div>
+            <p style="margin-bottom: 0;">The window between treatment completion and stable employment/housing is the highest-risk period for relapse. Navigator engagement must begin DURING treatment, not after discharge. Pre-plan housing and employment before the participant walks out the treatment center door.</p>
+        </div>
+
+        <!-- Page 4: Implementation Timeline -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Timeline: 6-Month Phased Approach</h2>
+
+        <div class="timeline">
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Foundation & Partnerships</div>
+                    <div class="timeline-period">Month 1</div>
+                    <ul>
+                        <li>Secure leadership commitment from treatment centers, MAT clinics, and recovery courts</li>
+                        <li>Identify pilot sites and participant enrollment targets</li>
+                        <li>Establish MOUs with recovery housing providers and sober living homes</li>
+                        <li>Identify recovery-friendly employers willing to partner</li>
+                        <li>Begin Recovery Success Coach recruitment</li>
+                        <li>Assess data system requirements and existing infrastructure</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Staffing & Training</div>
+                    <div class="timeline-period">Month 2</div>
+                    <ul>
+                        <li>Hire Recovery Success Coaches (1 per 25-30 participants)</li>
+                        <li>Recruit Peer Recovery Support Specialists</li>
+                        <li>Complete Empower Navigator Certification training (40 hours)</li>
+                        <li>Train on benefits cliff navigation tools</li>
+                        <li>Provide trauma-informed care and motivational interviewing training</li>
+                        <li>Orient staff to local recovery ecosystem and partner organizations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Systems & Enrollment</div>
+                    <div class="timeline-period">Month 3</div>
+                    <ul>
+                        <li>Configure data dashboard and outcome tracking systems</li>
+                        <li>Establish referral pathways from treatment centers and courts</li>
+                        <li>Begin participant enrollment and intake assessments</li>
+                        <li>Create individualized recovery mobility plans</li>
+                        <li>Map each participant's benefits cliff risk profile</li>
+                        <li>Initiate pre-discharge housing and employment planning</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Active Services Launch</div>
+                    <div class="timeline-period">Month 4</div>
+                    <ul>
+                        <li>Full caseload enrollment across all coaches</li>
+                        <li>Weekly check-ins with all active participants</li>
+                        <li>Begin employment pathway development and job placements</li>
+                        <li>Coordinate with MAT providers for medication continuity</li>
+                        <li>Connect parents to childcare resources</li>
+                        <li>Establish peer support group schedule</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">5</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Optimization & Expansion</div>
+                    <div class="timeline-period">Month 5</div>
+                    <ul>
+                        <li>Analyze early outcome data and adjust protocols</li>
+                        <li>Strengthen employer partnerships based on placement success</li>
+                        <li>Expand housing partner network as needed</li>
+                        <li>Refine benefits cliff navigation workflows</li>
+                        <li>Document success stories and lessons learned</li>
+                        <li>Begin planning for program expansion</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">6</div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Sustainability & Scale</div>
+                    <div class="timeline-period">Month 6</div>
+                    <ul>
+                        <li>Complete 6-month outcome report for funders</li>
+                        <li>Secure ongoing funding commitments</li>
+                        <li>Finalize sustainability plan with diversified funding</li>
+                        <li>Plan Year 2 expansion to additional sites</li>
+                        <li>Establish peer learning network with other recovery programs</li>
+                        <li>Celebrate and publicize early wins</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Integration Partners -->
+        <div class="page-break"></div>
+
+        <h2>Integration with Recovery Ecosystem</h2>
+
+        <h3>MAT Clinic Integration</h3>
+        <p>Medication-Assisted Treatment is foundational for many in opioid recovery. Navigators must coordinate seamlessly with MAT providers:</p>
+        <ul>
+            <li>Establish direct referral pathways to/from MAT clinics</li>
+            <li>Ensure employment schedules accommodate medication appointments</li>
+            <li>Track medication adherence as part of recovery metrics</li>
+            <li>Educate employers about MAT to reduce stigma</li>
+            <li>Coordinate with prescribers during life transitions (moves, job changes)</li>
+        </ul>
+
+        <h3>Recovery Court Partnership</h3>
+        <p>Drug courts and recovery courts provide accountability structure and legal motivation. Integration strategies:</p>
+        <ul>
+            <li>Provide regular progress reports to court case managers</li>
+            <li>Align navigator goals with court compliance requirements</li>
+            <li>Coordinate employment and housing timelines with court milestones</li>
+            <li>Support participants through court appearances and check-ins</li>
+            <li>Celebrate graduation from court supervision as a mobility milestone</li>
+        </ul>
+
+        <h3>Treatment Center Coordination</h3>
+        <p>Navigator engagement must begin before treatment discharge:</p>
+        <ul>
+            <li>Establish warm handoff protocols with treatment discharge planners</li>
+            <li>Meet participants 2+ weeks before anticipated discharge</li>
+            <li>Create post-treatment plans before discharge (housing, employment, support)</li>
+            <li>Schedule first post-discharge check-in within 24-48 hours</li>
+            <li>Coordinate with treatment aftercare programming</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Warm Handoff</div>
+            <p style="margin-bottom: 0;">Cold referrals fail. When treatment centers simply give participants a phone number to call, follow-through rates are below 20%. When navigators meet participants in person before discharge and schedule the first appointment together, engagement rates exceed 85%.</p>
+        </div>
+
+        <!-- Page 6: Employment Pathways -->
+        <div class="page-break"></div>
+
+        <h2>Employment Pathway Development</h2>
+
+        <h3>Recovery-Friendly Employer Network</h3>
+        <p>Build a network of employers committed to hiring people in recovery. These employers understand:</p>
+        <ul>
+            <li>The value of second-chance hiring and the loyalty it generates</li>
+            <li>That recovery is an ongoing process, not a destination</li>
+            <li>Flexibility for treatment appointments, court dates, and support meetings</li>
+            <li>The importance of a substance-free workplace without stigmatizing recovery</li>
+        </ul>
+
+        <h3>Employer Recruitment Strategy</h3>
+        <table>
+            <tr>
+                <th>Industry</th>
+                <th>Entry Opportunities</th>
+                <th>Advancement Pathway</th>
+            </tr>
+            <tr>
+                <td>Construction</td>
+                <td>Laborer, Helper</td>
+                <td>Apprenticeship, Journeyman, Foreman</td>
+            </tr>
+            <tr>
+                <td>Healthcare</td>
+                <td>Environmental Services, Dietary</td>
+                <td>CNA, Medical Assistant, LPN</td>
+            </tr>
+            <tr>
+                <td>Manufacturing</td>
+                <td>Production Worker, Warehouse</td>
+                <td>Machine Operator, Lead, Supervisor</td>
+            </tr>
+            <tr>
+                <td>Food Service</td>
+                <td>Prep Cook, Dishwasher</td>
+                <td>Line Cook, Sous Chef, Manager</td>
+            </tr>
+            <tr>
+                <td>Transportation</td>
+                <td>Warehouse, Package Handler</td>
+                <td>CDL Training, Driver, Dispatcher</td>
+            </tr>
+            <tr>
+                <td>Peer Support</td>
+                <td>Peer Recovery Specialist</td>
+                <td>Lead Peer, Program Coordinator</td>
+            </tr>
+        </table>
+
+        <h3>Employment Readiness Milestones</h3>
+        <ul>
+            <li><strong>30 Days:</strong> Resume created, job search skills training completed</li>
+            <li><strong>60 Days:</strong> Work readiness certification, connected to employer partner</li>
+            <li><strong>90 Days:</strong> Job placement or active interviewing</li>
+            <li><strong>6 Months:</strong> Job retention, first performance review</li>
+            <li><strong>12 Months:</strong> Wage increase or advancement discussion</li>
+        </ul>
+
+        <div class="warning-box">
+            <div class="warning-box-title">Background Check Realities</div>
+            <p style="margin-bottom: 0;">Many participants have criminal histories. Partner with employers who practice "ban the box" hiring, use individualized assessments, and focus on skills over history. Prepare participants for background check conversations and timing.</p>
+        </div>
+
+        <!-- Page 7: Housing Stability -->
+        <div class="page-break"></div>
+
+        <h2>Housing Stability Protocols</h2>
+
+        <h3>Housing Continuum</h3>
+        <p>Recovery participants often progress through multiple housing stages. Build partnerships across the continuum:</p>
+
+        <table>
+            <tr>
+                <th>Stage</th>
+                <th>Housing Type</th>
+                <th>Typical Duration</th>
+                <th>Key Partners</th>
+            </tr>
+            <tr>
+                <td>Treatment</td>
+                <td>Residential Treatment, Detox</td>
+                <td>28-90 days</td>
+                <td>Treatment centers</td>
+            </tr>
+            <tr>
+                <td>Early Recovery</td>
+                <td>Recovery Housing, Sober Living</td>
+                <td>3-12 months</td>
+                <td>Oxford Houses, recovery residences</td>
+            </tr>
+            <tr>
+                <td>Transitional</td>
+                <td>Transitional Housing Programs</td>
+                <td>6-24 months</td>
+                <td>Rapid rehousing, CoC programs</td>
+            </tr>
+            <tr>
+                <td>Permanent</td>
+                <td>Market-rate rental, subsidized housing</td>
+                <td>Ongoing</td>
+                <td>Housing authority, landlords</td>
+            </tr>
+        </table>
+
+        <h3>Housing First Principles</h3>
+        <ul>
+            <li>Stable housing is a prerequisite for sustained recovery—not a reward for it</li>
+            <li>Begin housing search/applications while still in treatment</li>
+            <li>Don't wait for "housing readiness"—people become ready in housing</li>
+            <li>Relapse shouldn't automatically mean housing loss</li>
+            <li>Pair housing with intensive support services</li>
+        </ul>
+
+        <h3>Recovery Housing Best Practices</h3>
+        <ul>
+            <li>Verify quality: NARR (National Alliance for Recovery Residences) certification</li>
+            <li>Ensure medication-friendly policies (no blanket bans on MAT)</li>
+            <li>Assess house culture fit for each participant</li>
+            <li>Coordinate with house managers on progress and concerns</li>
+            <li>Plan transition to permanent housing with 60+ days lead time</li>
+        </ul>
+
+        <h3>Landlord Engagement</h3>
+        <p>Build relationships with private landlords willing to rent to people in recovery:</p>
+        <ul>
+            <li>Offer navigator support as a "concierge" for landlord concerns</li>
+            <li>Provide damage/deposit assistance funds</li>
+            <li>Guarantee communication and rapid response to issues</li>
+            <li>Share success stories (with permission) to build confidence</li>
+        </ul>
+
+        <!-- Page 8: Benefits Navigation -->
+        <div class="page-break"></div>
+
+        <h2>Benefits Cliff Navigation for Recovery</h2>
+
+        <h3>Why Benefits Cliffs Threaten Recovery</h3>
+        <p>Participants in recovery often receive critical benefits that support their stability:</p>
+        <ul>
+            <li><strong>Medicaid:</strong> Covers MAT medications, counseling, and healthcare</li>
+            <li><strong>SNAP:</strong> Provides food security during financial rebuilding</li>
+            <li><strong>Housing vouchers:</strong> Makes rent affordable during income recovery</li>
+            <li><strong>Childcare subsidies:</strong> Enables work while parenting</li>
+        </ul>
+        <p>Losing these benefits due to income increases creates stress that can trigger relapse. Strategic planning prevents crises.</p>
+
+        <h3>Benefits Cliff Mapping Process</h3>
+        <ol>
+            <li><strong>Assessment:</strong> Document all current benefits and income thresholds</li>
+            <li><strong>Visualization:</strong> Create cliff map showing when benefits phase out</li>
+            <li><strong>Planning:</strong> Identify "safe zones" for income increases</li>
+            <li><strong>Timing:</strong> Sequence wage increases to minimize cliff impact</li>
+            <li><strong>Monitoring:</strong> Track income changes and adjust plans accordingly</li>
+        </ol>
+
+        <h3>Critical Cliff Points</h3>
+        <table>
+            <tr>
+                <th>Benefit</th>
+                <th>Typical Cliff Point</th>
+                <th>Recovery Impact</th>
+            </tr>
+            <tr>
+                <td>Medicaid (Adult)</td>
+                <td>138% FPL (~$20,800/year)</td>
+                <td>Loss of MAT coverage, counseling access</td>
+            </tr>
+            <tr>
+                <td>SNAP</td>
+                <td>130% FPL (~$19,600/year)</td>
+                <td>Food insecurity, stress increase</td>
+            </tr>
+            <tr>
+                <td>Housing Voucher</td>
+                <td>50% AMI (varies by location)</td>
+                <td>Rent burden increases dramatically</td>
+            </tr>
+            <tr>
+                <td>Childcare Subsidy</td>
+                <td>Varies by state (often 200% FPL)</td>
+                <td>Childcare costs can exceed income gains</td>
+            </tr>
+            <tr>
+                <td>ACA Subsidies</td>
+                <td>400% FPL (~$60,200/year)</td>
+                <td>Health insurance cost spike</td>
+            </tr>
+        </table>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Medicaid Cliff is Life-or-Death</div>
+            <p style="margin-bottom: 0;">For participants on MAT, losing Medicaid can mean losing access to medications that prevent relapse and overdose. Navigate this cliff with extreme care. In expansion states, help participants understand the Medicaid-to-Marketplace transition. In non-expansion states, losing Medicaid at 138% FPL creates a dangerous coverage gap.</p>
+        </div>
+
+        <!-- Page 9: Community Partners -->
+        <div class="page-break"></div>
+
+        <h2>Community Partner Integration</h2>
+
+        <h3>Essential Partner Network</h3>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Partner Types</th>
+                <th>Services Provided</th>
+            </tr>
+            <tr>
+                <td><strong>Recovery-Friendly Employers</strong></td>
+                <td>Construction, Manufacturing, Healthcare, Food Service</td>
+                <td>Second-chance hiring, flexible scheduling, career pathways</td>
+            </tr>
+            <tr>
+                <td><strong>Housing Partners</strong></td>
+                <td>Recovery Housing, Housing Authority, Landlords</td>
+                <td>Sober living, vouchers, rental assistance, permanent housing</td>
+            </tr>
+            <tr>
+                <td><strong>Childcare</strong></td>
+                <td>Head Start, Licensed Providers, Subsidy Offices</td>
+                <td>Subsidized care, flexible hours, recovery-aware programming</td>
+            </tr>
+            <tr>
+                <td><strong>Healthcare</strong></td>
+                <td>MAT Providers, FQHCs, Mental Health Centers</td>
+                <td>Medication management, primary care, counseling</td>
+            </tr>
+            <tr>
+                <td><strong>Legal Support</strong></td>
+                <td>Legal Aid, Public Defenders, Expungement Clinics</td>
+                <td>Record clearing, child custody support, civil legal aid</td>
+            </tr>
+            <tr>
+                <td><strong>Financial Services</strong></td>
+                <td>Credit Unions, VITA Sites, Financial Coaches</td>
+                <td>Second-chance banking, tax prep, financial literacy</td>
+            </tr>
+            <tr>
+                <td><strong>Peer Support</strong></td>
+                <td>Recovery Community Organizations, AA/NA, SMART Recovery</td>
+                <td>Mutual support, sponsorship, recovery coaching</td>
+            </tr>
+            <tr>
+                <td><strong>Child Welfare</strong></td>
+                <td>DCFS, Family Court, Reunification Programs</td>
+                <td>Family reunification planning, supervised visitation</td>
+            </tr>
+        </table>
+
+        <h3>Partner Agreement Components</h3>
+        <p>Formalize relationships with MOUs that include:</p>
+        <ul>
+            <li>Designated point of contact for navigator referrals</li>
+            <li>Response time commitments (24-48 hours for urgent needs)</li>
+            <li>Information sharing protocols (with participant consent)</li>
+            <li>Participation in monthly coordination meetings</li>
+            <li>Outcome data sharing for program evaluation</li>
+            <li>Clear escalation path for barriers or conflicts</li>
+        </ul>
+
+        <h3>Monthly Partner Coordination</h3>
+        <p>Hold monthly case conferences with key partners to discuss:</p>
+        <ul>
+            <li>Complex cases requiring multi-partner coordination</li>
+            <li>System barriers affecting multiple participants</li>
+            <li>Resource availability and waitlist updates</li>
+            <li>Success stories and lessons learned</li>
+        </ul>
+
+        <!-- Page 10: Data Dashboard -->
+        <div class="page-break"></div>
+
+        <h2>Data Dashboard: Recovery & Mobility Metrics</h2>
+
+        <h3>Recovery Indicators</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Tracking Method</th>
+            </tr>
+            <tr>
+                <td>30-Day Sobriety</td>
+                <td>90%+ of participants</td>
+                <td>Self-report, drug screens (if applicable)</td>
+            </tr>
+            <tr>
+                <td>90-Day Sobriety</td>
+                <td>80%+ of participants</td>
+                <td>Self-report, program engagement</td>
+            </tr>
+            <tr>
+                <td>1-Year Sustained Recovery</td>
+                <td>70%+ of participants</td>
+                <td>Follow-up assessments</td>
+            </tr>
+            <tr>
+                <td>2-Year Sustained Recovery</td>
+                <td>65%+ of participants</td>
+                <td>Long-term follow-up</td>
+            </tr>
+            <tr>
+                <td>MAT Adherence</td>
+                <td>85%+ of MAT participants</td>
+                <td>Pharmacy/provider data (with consent)</td>
+            </tr>
+            <tr>
+                <td>Support Meeting Attendance</td>
+                <td>Weekly engagement</td>
+                <td>Self-report, peer verification</td>
+            </tr>
+        </table>
+
+        <h3>Economic Mobility Indicators</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Tracking Method</th>
+            </tr>
+            <tr>
+                <td>Employment Rate</td>
+                <td>70% at 6 months</td>
+                <td>Navigator records, employer verification</td>
+            </tr>
+            <tr>
+                <td>Job Retention (90 days)</td>
+                <td>80% of employed</td>
+                <td>Follow-up with participants and employers</td>
+            </tr>
+            <tr>
+                <td>Income Increase</td>
+                <td>50%+ from baseline</td>
+                <td>Quarterly income assessments</td>
+            </tr>
+            <tr>
+                <td>Housing Stability</td>
+                <td>90%+ maintain housing</td>
+                <td>Address verification, housing status</td>
+            </tr>
+            <tr>
+                <td>Benefits Cliffs Navigated</td>
+                <td>100% with plan</td>
+                <td>Cliff mapping completion</td>
+            </tr>
+            <tr>
+                <td>Childcare Secured</td>
+                <td>100% of parents</td>
+                <td>Childcare arrangement verification</td>
+            </tr>
+        </table>
+
+        <h3>Family Reunification Indicators</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Tracking Method</th>
+            </tr>
+            <tr>
+                <td>Family Case Plan Progress</td>
+                <td>80% on track</td>
+                <td>Child welfare coordination</td>
+            </tr>
+            <tr>
+                <td>Supervised Visitation Compliance</td>
+                <td>95%+ attendance</td>
+                <td>Visitation records</td>
+            </tr>
+            <tr>
+                <td>Reunification Achieved</td>
+                <td>Track all cases</td>
+                <td>Court orders, custody changes</td>
+            </tr>
+        </table>
+
+        <!-- Page 11: Budget Framework -->
+        <div class="page-break"></div>
+
+        <h2>Budget Framework</h2>
+
+        <h3>Program Costs (Estimated Annual)</h3>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>Recovery Success Coach Salary + Benefits</td>
+                <td>$55,000</td>
+                <td>3</td>
+                <td>$165,000</td>
+            </tr>
+            <tr>
+                <td>Peer Recovery Support Specialist</td>
+                <td>$42,000</td>
+                <td>2</td>
+                <td>$84,000</td>
+            </tr>
+            <tr>
+                <td>Program Coordinator</td>
+                <td>$70,000</td>
+                <td>1</td>
+                <td>$70,000</td>
+            </tr>
+            <tr>
+                <td>Training & Professional Development</td>
+                <td>$3,500/person</td>
+                <td>6</td>
+                <td>$21,000</td>
+            </tr>
+            <tr>
+                <td>Data System & Technology</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$12,000</td>
+            </tr>
+            <tr>
+                <td>Emergency Assistance Fund</td>
+                <td>$300/participant</td>
+                <td>90</td>
+                <td>$27,000</td>
+            </tr>
+            <tr>
+                <td>Transportation Assistance</td>
+                <td>$150/participant</td>
+                <td>90</td>
+                <td>$13,500</td>
+            </tr>
+            <tr>
+                <td>Office & Supplies</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$8,000</td>
+            </tr>
+            <tr>
+                <td><strong>Total Annual Program Cost</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$400,500</strong></td>
+            </tr>
+        </table>
+
+        <h3>Cost Per Participant</h3>
+        <p>With 3 coaches and 2 peer specialists serving 90 participants: <strong>$4,450 per participant annually</strong></p>
+        <p>Compare to: Average cost of untreated addiction ($25,000-$50,000/year in healthcare, criminal justice, lost productivity)</p>
+
+        <h3>Recovery-Focused Funding Sources</h3>
+        <ul>
+            <li><strong>State Opioid Response (SOR) Grants:</strong> SAMHSA funding for opioid crisis response</li>
+            <li><strong>Substance Abuse Block Grant (SABG):</strong> State allocations for treatment and recovery</li>
+            <li><strong>Medicaid:</strong> Billable peer support services, case management (in some states)</li>
+            <li><strong>Drug Court/Recovery Court Funding:</strong> DOJ grants, state court allocations</li>
+            <li><strong>Workforce Innovation and Opportunity Act (WIOA):</strong> Employment services for barriers populations</li>
+            <li><strong>HUD Continuum of Care:</strong> Housing and supportive services for homeless populations</li>
+            <li><strong>Opioid Settlement Funds:</strong> State/local allocations from pharmaceutical settlements</li>
+            <li><strong>Foundation Grants:</strong> Recovery-focused philanthropies (e.g., Faces & Voices of Recovery, recovery funders)</li>
+            <li><strong>Healthcare System Investment:</strong> Hospital community benefit, managed care partnerships</li>
+            <li><strong>Employer Investment:</strong> Workforce development partnerships with recovery-friendly employers</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Opioid Settlement Opportunity</div>
+            <p style="margin-bottom: 0;">Billions in opioid settlement funds are flowing to states and localities. These funds are designated for treatment, recovery support, and harm reduction. This is a once-in-a-generation funding opportunity for recovery programs. Engage with your state/local settlement fund allocation process.</p>
+        </div>
+
+        <!-- Page 12: Readiness Checklist -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Readiness Checklist</h2>
+
+        <div class="checklist">
+            <div class="checklist-title">Leadership & Commitment</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Treatment center leadership engaged</strong>
+                    <span>Buy-in from key residential and outpatient treatment providers</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>MAT clinic partnership established</strong>
+                    <span>Coordination protocols with medication providers</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Recovery court relationship confirmed</strong>
+                    <span>If applicable: court referral pathway and reporting protocols</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Funding commitment secured</strong>
+                    <span>At minimum, 12-month funding confirmed</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Staffing</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Recovery Success Coach positions approved</strong>
+                    <span>Job descriptions finalized, salary/benefits determined</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Peer Recovery Specialist roles defined</strong>
+                    <span>Integration with navigator team planned</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Training curriculum scheduled</strong>
+                    <span>Navigator certification, benefits cliff tools, trauma-informed care</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Partner Network</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Recovery housing partners identified</strong>
+                    <span>Sober living homes, Oxford Houses, transitional housing</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Recovery-friendly employers recruited</strong>
+                    <span>Minimum 5 employers committed to hiring participants</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Childcare partners confirmed</strong>
+                    <span>Subsidy navigation support, provider network</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Partner MOUs drafted</strong>
+                    <span>Referral protocols and response times documented</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Systems & Data</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Data tracking system selected</strong>
+                    <span>Recovery and mobility metrics dashboard configured</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Consent and confidentiality protocols established</strong>
+                    <span>42 CFR Part 2 compliance for substance use records</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Benefits cliff tools acquired</strong>
+                    <span>Software/calculator for cliff mapping</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Enrollment Pipeline</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Referral sources confirmed</strong>
+                    <span>Treatment centers, courts, and self-referral pathways</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Intake assessment finalized</strong>
+                    <span>Comprehensive assessment covering recovery, housing, employment, benefits</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Enrollment targets set</strong>
+                    <span>Realistic caseload goals for first 6 months</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 13: Technical Assistance CTA -->
+        <div class="page-break"></div>
+
+        <div class="dark-box">
+            <h3>Ready for Full Implementation Support?</h3>
+            <p>This guide provides the roadmap. For the highest probability of success, partner with The Poverty Solution team for:</p>
+            <ul>
+                <li><strong>Navigator Certification Training</strong> — 40-hour intensive for Recovery Success Coaches</li>
+                <li><strong>Peer Specialist Integration Workshop</strong> — Best practices for peer-navigator collaboration</li>
+                <li><strong>Benefits Cliff Tool Training</strong> — Mastery of cliff navigation software for recovery contexts</li>
+                <li><strong>Employer Engagement Bootcamp</strong> — Build your recovery-friendly employer network</li>
+                <li><strong>Implementation Coaching</strong> — Monthly calls and quarterly site visits</li>
+                <li><strong>Data Dashboard Configuration</strong> — Set up recovery and mobility metrics tracking</li>
+                <li><strong>Peer Learning Network</strong> — Connect with other recovery programs using the Empower Method</li>
+            </ul>
+            <p style="margin-top: 20px; margin-bottom: 0;">
+                <strong style="color: #a3c520;">Contact:</strong> info@thepovertysolution.com | thepovertysolution.com
+            </p>
+        </div>
+
+        <h2>The Recovery Mobility Promise</h2>
+
+        <p>Recovery programs have traditionally measured success by sobriety alone. While sustained recovery is essential, it is not sufficient. People in recovery deserve more than survival—they deserve pathways to thriving.</p>
+
+        <p>The Empower Method transforms recovery programs into mobility engines by:</p>
+
+        <ul>
+            <li>Treating employment as recovery medicine, not just a nice-to-have</li>
+            <li>Ensuring housing stability before and after treatment</li>
+            <li>Navigating benefits cliffs that sabotage progress</li>
+            <li>Supporting parents through childcare and family reunification</li>
+            <li>Reducing stigma through visible success stories</li>
+            <li>Integrating peer support with professional navigation</li>
+        </ul>
+
+        <p><strong>When recovery programs adopt the Empower Method, participants don't just get sober—they get stable, employed, housed, and reunited with their families. They become living proof that recovery works.</strong></p>
+
+        <div class="page-footer">
+            <div>The Empower Playbook | Recovery Programs Implementation Guide</div>
+            <div>© 2026 The Poverty Solution</div>
+        </div>
+
+    </div>
+</body>
+</html>

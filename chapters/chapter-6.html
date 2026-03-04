@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: The Certified Employer Program | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #a3c520, #c4e030);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 200;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f0f9e8; color: #3d6b0d; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Enhanced Prose styling */
+        .prose-enhanced h2 {
+            font-size: 1.625rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+            color: #1e3a5f;
+            letter-spacing: -0.025em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+        .prose-enhanced h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose-enhanced p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #374151;
+        }
+        .prose-enhanced ul {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+            list-style-type: disc;
+        }
+        .prose-enhanced li {
+            margin-bottom: 0.625rem;
+            line-height: 1.7;
+            color: #374151;
+        }
+        .prose-enhanced blockquote {
+            border-left: 4px solid #a3c520;
+            padding-left: 1.25rem;
+            font-style: italic;
+            color: #4b5563;
+            margin: 1.75rem 0;
+            background: #fafafa;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose-enhanced strong { color: #111827; }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        /* In-page TOC */
+        .toc {
+            position: sticky;
+            top: 100px;
+        }
+        .toc-link {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #666;
+            border-left: 2px solid #eee;
+            transition: all 0.15s;
+        }
+        .toc-link:hover {
+            color: #1e3a5f;
+            border-color: #1e3a5f;
+        }
+        .toc-link.active {
+            color: #1e3a5f;
+            border-color: #a3c520;
+            font-weight: 500;
+        }
+
+        /* Content with TOC grid */
+        @media (min-width: 1280px) {
+            .content-with-toc {
+                display: grid;
+                grid-template-columns: 1fr 220px;
+                gap: 48px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 — The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 — The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item active">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 — Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 — Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 -->
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Literature Review
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Evidence Tables
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Methodology Notes
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="main-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 2 — The Method</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chapter Header with Gradient -->
+        <div class="bg-gradient-to-br from-tps-green to-tps-green/80 text-tps-dark px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="text-tps-dark/70 text-sm font-medium">Chapter 6</p>
+                    <span class="text-xs bg-white/30 text-tps-dark px-2 py-1 rounded-full font-medium">12 min read</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    The Certified Employer Program
+                </h1>
+                <p class="text-tps-dark/70 mt-3 text-lg">How employers become active partners in the self-sufficiency journey</p>
+            </div>
+        </div>
+
+        <!-- Chapter Content -->
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+                <div class="prose-enhanced">
+
+                <p class="text-xl text-gray-500 mb-8 leading-relaxed">
+                    Most workforce programs end at job placement. The Empower Method makes employers active partners in the self-sufficiency journey. The Poverty Solution team has developed a Certified Employer Program that goes beyond training—employers complete Poverty IQ education, commit to competitive compensation, coordinate raises through benefits cliff tools, and partner with navigators on long-term retention. Certification means an employer is truly equipped to hire, support, and advance families moving out of poverty.
+                </p>
+
+                <div class="bg-orange-50 border-2 border-orange-400 p-6 rounded-xl mb-8 not-prose">
+                    <h4 class="font-bold text-orange-700 mb-2">Why This Matters</h4>
+                    <p class="text-sm text-gray-700">
+                        Job placement without employer preparation creates revolving doors. Employers who don't understand ALICE populations—the benefits cliff, the barriers, the reality of working poverty—accidentally harm the families they're trying to help. A well-meaning raise can cost a family thousands. A rigid attendance policy can punish someone whose childcare falls through.
+                    </p>
+                    <p class="text-sm text-gray-700 mt-2 font-semibold">
+                        Certified employers don't just hire participants. They're equipped to retain and advance them.
+                    </p>
+                </div>
+
+                <h2 id="why-matters">6.1 Why Employer Certification Matters</h2>
+
+                <!-- Economic Case Research Box -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 0.75rem;">The Business Case: Research Evidence</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 700; margin: 0;">$250B</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Lost annually in U.S. productivity from employee financial stress</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 700; margin: 0;">2.2x</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Higher turnover among financially stressed employees</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 700; margin: 0;">$15,000</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Average cost to replace a single hourly employee</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 700; margin: 0;">25-31%</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Turnover reduction from financial wellness programs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Job Placement Does Not Equal Job Retention</h3>
+
+                <p>
+                    Here's a statistic that haunts traditional workforce programs: <strong>within 6 months, most job placements fail.</strong> Participants are back where they started—or worse, now with a gap in their resume.
+                </p>
+
+                <p>Why? Because the employer side of the equation was never prepared:</p>
+
+                <ul>
+                    <li>Supervisors don't understand why a stellar employee calls out when childcare falls through</li>
+                    <li>HR gives a raise without realizing it will cost the employee more than they gain</li>
+                    <li>The culture punishes the "messy" realities of working while poor</li>
+                </ul>
+
+                <h3>Two-Way Accountability</h3>
+
+                <p>
+                    The Empower Method creates accountability on <em>both</em> sides of the employment relationship:
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold text-empower-blue mb-3">Participant Responsibility</h4>
+                        <ul class="text-sm space-y-2 text-gray-600">
+                            <li>Complete soft skills training</li>
+                            <li>Communicate proactively about barriers</li>
+                            <li>Engage with navigator and financial coaching</li>
+                            <li>Work toward skill development</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h4 class="font-bold text-tps-green mb-3">Employer Responsibility</h4>
+                        <ul class="text-sm space-y-2 text-gray-600">
+                            <li>Complete Poverty IQ training</li>
+                            <li>Coordinate raises through benefits cliff tool</li>
+                            <li>Provide reasonable flexibility</li>
+                            <li>Partner on retention, not just hire</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="requirements">6.2 Certified Employer Requirements</h2>
+
+                <p>
+                    To become a Certified Employer in the Empower network, a business must complete the following:
+                </p>
+
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden my-8 not-prose border border-gray-100">
+                    <div class="bg-empower-blue text-white p-4">
+                        <h4 class="font-bold">Certification Checklist</h4>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="p-4 flex items-start">
+                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 text-sm">1</span>
+                            <div>
+                                <p class="font-semibold">Poverty IQ Training</p>
+                                <p class="text-sm text-gray-600">Complete training on what it's actually like to hire someone navigating poverty. Covers: benefits cliffs, transportation barriers, childcare realities, financial instability, and how these affect work performance.</p>
+                                <p class="text-xs text-gray-400 mt-1">Duration: ~2 hours | Required for: HR + direct supervisors</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex items-start bg-gray-50">
+                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 text-sm">2</span>
+                            <div>
+                                <p class="font-semibold">ALICE Orientation</p>
+                                <p class="text-sm text-gray-600">Basic education on the ALICE population—Asset Limited, Income Constrained, Employed. Understanding that your future employees are already working, already trying, and trapped by systems—not personal failures.</p>
+                                <p class="text-xs text-gray-400 mt-1">Duration: 30 minutes | Can be video-based</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex items-start">
+                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 text-sm">3</span>
+                            <div>
+                                <p class="font-semibold">Benefits Cliff Tool Access</p>
+                                <p class="text-sm text-gray-600">Agree to coordinate raises and promotions through the benefits cliff tool. Before offering a raise, HR contacts the navigator to model the impact. Raises are structured to help, not hurt.</p>
+                                <p class="text-xs text-gray-400 mt-1">Ongoing commitment | HR point of contact required</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex items-start bg-gray-50">
+                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 text-sm">4</span>
+                            <div>
+                                <p class="font-semibold">Job Slot Commitment</p>
+                                <p class="text-sm text-gray-600">Commit to reserving X positions for pilot participants. This can be "as positions open" or a specific number per quarter. The key: participants have a pipeline, not just a job board.</p>
+                                <p class="text-xs text-gray-400 mt-1">Flexible based on employer size</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex items-start">
+                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 text-sm">5</span>
+                            <div>
+                                <p class="font-semibold">Retention Partnership</p>
+                                <p class="text-sm text-gray-600">Agree to work with the pilot to retain employees—not just hire and forget. This means: communicating issues early, coordinating with navigators when problems arise, giving participants a fair chance to address barriers.</p>
+                                <p class="text-xs text-gray-400 mt-1">Ongoing commitment | Regular check-ins with employer liaison</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex items-start bg-gray-50">
+                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0 text-sm">6</span>
+                            <div>
+                                <p class="font-semibold">Competitive Compensation</p>
+                                <p class="text-sm text-gray-600">Offer livable wages and benefits where possible. Ideal: healthcare, paid time off, predictable schedules. Minimum: wages that move families toward—not away from—self-sufficiency.</p>
+                                <p class="text-xs text-gray-400 mt-1">Context-dependent | Not all employers can offer full benefits</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefits of Becoming a Certified Employer -->
+                <div style="background: linear-gradient(135deg, #1e3a5f 0%, #0f2544 100%); border-radius: 1rem; padding: 2.5rem; margin: 2.5rem 0; border: 1px solid rgba(163, 197, 32, 0.3);" class="not-prose">
+                    <h3 style="color: #a3c520; font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; text-align: center;">Benefits of Becoming a Certified Employer</h3>
+                    <p style="color: rgba(255,255,255,0.7); text-align: center; margin-bottom: 2rem; font-size: 0.95rem;">Exclusive advantages designed to enhance your workforce, increase productivity, and boost employee satisfaction</p>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 0.75rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <span style="background: #a3c520; color: #111; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">$</span>
+                                <h4 style="color: #ffffff; font-weight: 700; font-size: 1.1rem; margin: 0;">Financial Assistance & Wage Reimbursement</h4>
+                            </div>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6;">Consider offering <strong style="color: #a3c520;">wage subsidies or on-the-job training reimbursements</strong> to offset hiring costs. Many programs cover 50% of wages for the first 8-12 weeks of employment.</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 0.75rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <span style="background: #a3c520; color: #111; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                                    <svg style="width: 18px; height: 18px;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/></svg>
+                                </span>
+                                <h4 style="color: #ffffff; font-weight: 700; font-size: 1.1rem; margin: 0;">Access to Eager, Trainable Talent</h4>
+                            </div>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6;">Direct access to motivated individuals ready for on-the-job training, apprenticeships, and career development.</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 0.75rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <span style="background: #a3c520; color: #111; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                                    <svg style="width: 18px; height: 18px;" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+                                </span>
+                                <h4 style="color: #ffffff; font-weight: 700; font-size: 1.1rem; margin: 0;">Labor Market Insights & Data</h4>
+                            </div>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6;">Comprehensive labor market intelligence on skill availability, wage trends, and workforce demographics.</p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 0.75rem; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <span style="background: #a3c520; color: #111; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                                    <svg style="width: 18px; height: 18px;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                </span>
+                                <h4 style="color: #ffffff; font-weight: 700; font-size: 1.1rem; margin: 0;">Employee Assessment Services</h4>
+                            </div>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; line-height: 1.6;">Reduce hiring risks by evaluating candidates thoroughly, saving time, resources, and potential turnover costs.</p>
+                        </div>
+                    </div>
+
+                    <!-- Additional Perks -->
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <div style="background: rgba(163, 197, 32, 0.15); border-radius: 100px; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg style="width: 16px; height: 16px; color: #a3c520;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span style="color: #ffffff; font-size: 0.85rem; font-weight: 500;">Reduced Turnover Costs</span>
+                        </div>
+                        <div style="background: rgba(163, 197, 32, 0.15); border-radius: 100px; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg style="width: 16px; height: 16px; color: #a3c520;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span style="color: #ffffff; font-size: 0.85rem; font-weight: 500;">Ongoing Post-Placement Support</span>
+                        </div>
+                        <div style="background: rgba(163, 197, 32, 0.15); border-radius: 100px; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg style="width: 16px; height: 16px; color: #a3c520;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span style="color: #ffffff; font-size: 0.85rem; font-weight: 500;">Promotional Videos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Quality Standards -->
+                <h2 id="job-quality">Job Quality Standards</h2>
+
+                <p>One critical component is how you define a "good job" for your community. The goal is family-sustaining employment—but what that means varies by local cost of living, industry mix, and family composition.</p>
+
+                <div class="bg-tps-green/10 border border-tps-green/30 rounded-xl p-6 my-6 not-prose">
+                    <h4 class="font-bold text-tps-dark text-lg mb-4">Minimum Job Quality Indicators</h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-2">Compensation</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>Wage meets local ALICE survival threshold</li>
+                                <li>Consistent hours (30+ weekly minimum)</li>
+                                <li>Predictable scheduling</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-2">Benefits Access</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>Health insurance offered (employer or ACA)</li>
+                                <li>Paid sick leave available</li>
+                                <li>Retirement savings option</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-2">Advancement Pathway</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>Clear path to wage increases</li>
+                                <li>Skill development opportunities</li>
+                                <li>Internal promotion history</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-900 mb-2">Work-Life Compatibility</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>Schedule accommodates childcare</li>
+                                <li>Commute under 45 minutes</li>
+                                <li>Emergency flexibility policies</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Certified Employers should meet most of these criteria. Navigators should counsel families toward employers who do—even if it means waiting for a better opportunity rather than taking the first available job.</p>
+
+                <h2 id="pipeline">6.3 The Two-Way Pipeline</h2>
+
+                <p>
+                    Certified employers don't just post jobs and wait for applications. They participate in a <strong>coordinated pipeline</strong> that matches trained participants to specific opportunities.
+                </p>
+
+                <div style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%); border-radius: 1rem; padding: 2rem; margin: 2rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 800; font-size: 1.25rem; margin-bottom: 1.5rem;">How the Pipeline Works</h4>
+
+                    <div style="display: flex; flex-direction: column; gap: 0;">
+                        <!-- Step 1 -->
+                        <div style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Employer</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">"I have 5 warehouse positions opening in 3 months"</p>
+                            </div>
+                            <div style="color: #a3c520; font-size: 1.5rem; padding: 0 1rem; flex-shrink: 0;">&#10132;</div>
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Pilot</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">Receives advance notice of opportunity</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Pilot</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">Identifies participants ready for warehouse work</p>
+                            </div>
+                            <div style="color: #a3c520; font-size: 1.5rem; padding: 0 1rem; flex-shrink: 0;">&#10132;</div>
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Navigator</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">Begins targeted soft skills training</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Navigator</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">Coordinates childcare, transportation, benefits cliff</p>
+                            </div>
+                            <div style="color: #a3c520; font-size: 1.5rem; padding: 0 1rem; flex-shrink: 0;">&#10132;</div>
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Participant</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">Arrives job-ready with support in place</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div style="display: flex; align-items: center; padding: 1rem 0;">
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Participant</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">Starts job with navigator support continuing</p>
+                            </div>
+                            <div style="color: #a3c520; font-size: 1.5rem; padding: 0 1rem; flex-shrink: 0;">&#10132;</div>
+                            <div style="background: rgba(163, 197, 32, 0.15); border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center;">
+                                <p style="color: #a3c520; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Employer</p>
+                                <p style="color: #ffffff; font-size: 0.85rem;">Gets retention support, coordinates raises</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    This is the opposite of spray-and-pray job placement. It's a coordinated system where:
+                </p>
+
+                <ul>
+                    <li>Employers get <strong>pre-screened, prepared candidates</strong> with support structures in place</li>
+                    <li>Participants get <strong>real opportunities</strong> they're trained for, not random job postings</li>
+                    <li>Navigators can <strong>prepare wraparound support</strong> before issues arise</li>
+                </ul>
+
+                <h2 id="network">6.4 Building Your Employer Network</h2>
+
+                <!-- Case Study Evidence Box -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 0.75rem;">Proven Results: Employer Support Programs</h4>
+                    <div style="border-left: 3px solid #a3c520; padding-left: 1rem; margin-bottom: 1rem;">
+                        <p style="color: #ffffff; font-weight: 600; margin: 0;">UPS Stability Support Pilot</p>
+                        <p style="color: rgba(255,255,255,0.8); font-size: 0.875rem; margin: 0.5rem 0 0 0;">When UPS provided stability support services to entry-level workers, 90-day retention jumped from <strong style="color: #f87171;">69%</strong> to <strong style="color: #a3c520;">96%</strong>—a transformation that dramatically reduced recruitment and training costs.</p>
+                    </div>
+                    <div style="border-left: 3px solid #a3c520; padding-left: 1rem; margin-bottom: 1rem;">
+                        <p style="color: #ffffff; font-weight: 600; margin: 0;">Employer Childcare Support</p>
+                        <p style="color: rgba(255,255,255,0.8); font-size: 0.875rem; margin: 0.5rem 0 0 0;">Companies offering childcare support document an average <strong style="color: #a3c520;">425% ROI</strong> through reduced turnover and absenteeism.</p>
+                    </div>
+                    <div style="border-left: 3px solid #a3c520; padding-left: 1rem; margin-bottom: 1rem;">
+                        <p style="color: #ffffff; font-weight: 600; margin: 0;">Benefits Cliff Awareness in Ohio</p>
+                        <p style="color: rgba(255,255,255,0.8); font-size: 0.875rem; margin: 0.5rem 0 0 0;"><strong style="color: #ffffff;">1 in 5 Ohio businesses</strong> reported experiencing personnel issues related to benefits cliff concerns—employees declining raises or promotions to preserve benefits.</p>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; font-style: italic; margin: 0;">Note: Recovery-friendly workplace certifications now exist nationally, providing a model for employer certification programs focused on specific workforce challenges.</p>
+                </div>
+
+                <h3>Start Small: 3-5 Anchor Employers</h3>
+
+                <p>
+                    You don't need every employer in your region certified on day one. Start with 3-5 anchor employers who:
+                </p>
+
+                <ul>
+                    <li>Are already community-minded (they show up at chamber meetings, sponsor local events)</li>
+                    <li>Have positions that pay livable wages</li>
+                    <li>Have HR capacity to coordinate with your team</li>
+                    <li>Are willing to be early adopters and help refine the process</li>
+                </ul>
+
+                <h3>Expand Through Employer Referrals</h3>
+
+                <p>
+                    Once your anchor employers see results—better retention, less turnover, more reliable employees—they become your best recruiters. "This program sent me three great hires" is more compelling than any pitch deck.
+                </p>
+
+                <h3>Celebrate Certified Employers Publicly</h3>
+
+                <p>
+                    Make certification visible:
+                </p>
+
+                <ul>
+                    <li><strong>Window decal/badge:</strong> "Empower Certified Employer"</li>
+                    <li><strong>Website listing:</strong> Public directory of certified employers</li>
+                    <li><strong>Press recognition:</strong> Announce new certifications in local media</li>
+                    <li><strong>Annual awards:</strong> Recognize employers with exceptional retention</li>
+                </ul>
+
+                <p>
+                    Certification becomes a mark of community investment—and a competitive advantage for employers trying to attract workers who want more than just a job.
+                </p>
+
+                <div class="bg-tps-dark text-white p-6 rounded-xl mt-10 not-prose">
+                    <h3 style="color: #a3c520;" class="font-bold text-lg mb-3">Key Takeaway</h3>
+                    <p style="color: #ffffff;" class="mb-4">
+                        A Certified Employer is a business that:
+                    </p>
+                    <ul style="list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem;">
+                        <li style="color: #ffffff; font-size: 0.875rem; margin-bottom: 0.5rem;">Completes Poverty IQ training</li>
+                        <li style="color: #ffffff; font-size: 0.875rem; margin-bottom: 0.5rem;">Receives ALICE orientation</li>
+                        <li style="color: #ffffff; font-size: 0.875rem; margin-bottom: 0.5rem;">Coordinates raises through the benefits cliff tool</li>
+                        <li style="color: #ffffff; font-size: 0.875rem; margin-bottom: 0.5rem;">Commits job slots to program participants</li>
+                        <li style="color: #ffffff; font-size: 0.875rem; margin-bottom: 0.5rem;">Partners on retention, not just placement</li>
+                        <li style="color: #ffffff; font-size: 0.875rem;">Offers competitive compensation</li>
+                    </ul>
+                    <p style="color: #ffffff;" class="font-semibold">
+                        This is the missing piece in most workforce programs—and one of the biggest differentiators of the Empower Method.
+                    </p>
+                </div>
+
+                </div>
+
+                <!-- Table of Contents (Desktop only) -->
+                <aside class="hidden xl:block">
+                    <nav class="toc" aria-label="Table of contents">
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">On this page</p>
+                        <a href="#why-matters" class="toc-link active">Why Certification Matters</a>
+                        <a href="#requirements" class="toc-link">Requirements</a>
+                        <a href="#job-quality" class="toc-link">Job Quality Standards</a>
+                        <a href="#pipeline" class="toc-link">The Two-Way Pipeline</a>
+                        <a href="#network" class="toc-link">Building Your Network</a>
+                    </nav>
+                </aside>
+            </div>
+
+            <!-- Chapter Navigation -->
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-5.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
+                    ← Previous: Adaptable Components
+                </a>
+                <a href="chapter-7.html" class="bg-empower-blue text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-empower-blue/90 transition">
+                    Next: The Phased Approach →
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-5.html" title="Previous: Adaptable Components" class="text-gray-600 hover:text-empower-blue">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="chapter-7.html" title="Next: The Phased Approach" class="text-gray-600 hover:text-empower-blue">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', function() {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / docHeight) * 100;
+            document.getElementById('readingProgress').style.width = progress + '%';
+        });
+
+        // TOC active state
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id]');
+
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Left arrow - previous chapter
+            if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const activeElement = document.activeElement;
+                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
+                if (!isInput) {
+                    window.location.href = 'chapter-5.html';
+                }
+            }
+            // Right arrow - next chapter
+            if (e.key === 'ArrowRight' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const activeElement = document.activeElement;
+                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
+                if (!isInput) {
+                    window.location.href = 'chapter-7.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

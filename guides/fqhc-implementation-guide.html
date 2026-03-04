@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Health Center Implementation Guide | The Empower Playbook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+        @media print {
+            body { font-size: 10pt; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+            @page { margin: 0.75in; }
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Cover Page */
+        .cover {
+            min-height: 10in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            color: white;
+            padding: 1in;
+            margin: -0.5in;
+            margin-bottom: 0.5in;
+        }
+
+        .cover-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2in;
+        }
+
+        .cover-logo-box {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .cover-logo-box span {
+            color: #a3c520;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .cover-brand {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .cover-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a3c520;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .cover-tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 500px;
+            margin-bottom: 60px;
+        }
+
+        .cover-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cover-contact p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .cover-version {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        h1 { font-size: 28px; font-weight: 800; color: #1e3a5f; margin-bottom: 20px; }
+        h2 { font-size: 20px; font-weight: 700; color: #1e3a5f; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #a3c520; }
+        h3 { font-size: 16px; font-weight: 600; color: #333; margin-top: 25px; margin-bottom: 10px; }
+        h4 { font-size: 13px; font-weight: 600; color: #444; margin-top: 20px; margin-bottom: 8px; }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 6px; }
+
+        strong { color: #111; }
+
+        /* Boxes */
+        .key-insight {
+            background: #f0f9e8;
+            border-left: 4px solid #a3c520;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-insight-title {
+            font-weight: 700;
+            color: #3d6b0d;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .dark-box {
+            background: #111;
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .dark-box h3 {
+            color: #a3c520;
+            margin-top: 0;
+        }
+
+        .dark-box ul {
+            color: #fff;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .checklist-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1e3a5f;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist-text strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .checklist-text span {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 25px 0;
+        }
+
+        .timeline-phase {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: #1e3a5f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: #e5e5e5;
+            margin-left: 11px;
+            height: calc(100% - 24px);
+            margin-top: 5px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 15px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .timeline-period {
+            font-size: 11px;
+            color: #a3c520;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e3a5f;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+
+        th {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Four Non-Negotiables */
+        .non-negotiable {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .non-negotiable-num {
+            width: 32px;
+            height: 32px;
+            background: #a3c520;
+            color: #111;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .non-negotiable-content h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #1e3a5f;
+        }
+
+        .non-negotiable-content p {
+            margin-bottom: 0;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            font-size: 10px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #a3c520;
+            color: #111;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background: #8fb31a;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover">
+            <div class="cover-logo">
+                <div class="cover-logo-box"><span>E</span></div>
+                <div>
+                    <div class="cover-brand">The Empower Playbook</div>
+                </div>
+            </div>
+
+            <div class="cover-subtitle">Implementation Guide</div>
+            <h1>Community Health Center<br>Implementation Guide</h1>
+            <p class="cover-tagline">A comprehensive guide for FQHCs and Community Health Centers to integrate Social Determinants of Health screening with economic mobility navigation.</p>
+
+            <div class="cover-footer">
+                <div class="cover-contact">
+                    <p><strong>The Poverty Solution</strong></p>
+                    <p>info@thepovertysolution.com</p>
+                    <p>thepovertysolution.com</p>
+                </div>
+                <div class="cover-version">
+                    Version 1.0 | 2026
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Executive Summary -->
+        <div class="page-break"></div>
+
+        <h1>Executive Summary</h1>
+
+        <p>FQHCs and Community Health Centers already serve patients facing the greatest health disparities. But clinical care alone cannot address the root causes: unstable housing, food insecurity, unemployment, and the benefits cliffs that keep families trapped in poverty.</p>
+
+        <p><strong>The Empower Method transforms SDOH screening from a checkbox into a pathway to economic mobility—with Community Health Workers serving as economic mobility navigators.</strong></p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">80%</div>
+                <div class="stat-label">Health Outcomes Driven by SDOH</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">-35%</div>
+                <div class="stat-label">ED Visits with SDOH Navigation</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2.1x</div>
+                <div class="stat-label">Chronic Disease Mgmt Improvement</div>
+            </div>
+        </div>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Core Insight</div>
+            <p style="margin-bottom: 0;">SDOH screening identifies social needs. The Empower Method addresses them systematically—transforming Community Health Workers into economic mobility navigators who help patients build lasting stability, not just survive crises.</p>
+        </div>
+
+        <h2>The Four Non-Negotiables in Healthcare</h2>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Benefits Cliff Navigation for Healthcare Coverage</h4>
+                <p>Patients lose Medicaid when income rises, falling into coverage gaps. Navigate the Medicaid-to-Marketplace transition to maintain continuous coverage during economic advancement.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Community Health Workers as Economic Mobility Navigators</h4>
+                <p>CHWs become navigators with sustained caseloads (1:40 ratio), building trust over time to address root causes—not just acute needs. Same CHW, same patient, multi-year relationship.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>Warm Referrals with Community Partner Integration</h4>
+                <p>No cold handoffs to 211. Warm referrals to housing, food, employment partners with follow-up tracking. The CHW navigator stays involved until the need is met.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Integrated Data Dashboard for Health + Social Outcomes</h4>
+                <p>Track clinical outcomes alongside SDOH interventions. See how housing stability affects A1C. Measure how food security impacts blood pressure control.</p>
+            </div>
+        </div>
+
+        <!-- Page 3: SDOH Screening Integration -->
+        <div class="page-break"></div>
+
+        <h2>SDOH Screening as Gateway to Economic Mobility</h2>
+
+        <p>Most health centers already conduct SDOH screening. The Empower Method transforms screening from data collection into an economic mobility assessment—the first step in a sustained support relationship.</p>
+
+        <h3>Recommended Screening Protocol</h3>
+
+        <table>
+            <tr>
+                <th>Domain</th>
+                <th>Key Questions</th>
+                <th>Navigator Action Trigger</th>
+            </tr>
+            <tr>
+                <td><strong>Housing</strong></td>
+                <td>Housing stability, utility shutoffs, living conditions</td>
+                <td>Any instability indicator</td>
+            </tr>
+            <tr>
+                <td><strong>Food Security</strong></td>
+                <td>Food access, SNAP enrollment, nutrition quality</td>
+                <td>Food insecurity past 12 months</td>
+            </tr>
+            <tr>
+                <td><strong>Transportation</strong></td>
+                <td>Reliable transportation, missed appointments</td>
+                <td>Transportation barrier to care</td>
+            </tr>
+            <tr>
+                <td><strong>Employment/Income</strong></td>
+                <td>Employment status, income stability, benefits cliff proximity</td>
+                <td>Unemployment or benefits cliff risk</td>
+            </tr>
+            <tr>
+                <td><strong>Healthcare Coverage</strong></td>
+                <td>Insurance type, coverage gaps, cost barriers</td>
+                <td>Uninsured or Medicaid cliff risk</td>
+            </tr>
+            <tr>
+                <td><strong>Childcare</strong></td>
+                <td>Childcare access, cost burden, reliability</td>
+                <td>Childcare barrier to employment/health</td>
+            </tr>
+            <tr>
+                <td><strong>Safety</strong></td>
+                <td>Domestic violence, neighborhood safety</td>
+                <td>Any safety concern</td>
+            </tr>
+        </table>
+
+        <h3>Beyond Screening: The Navigator Handoff</h3>
+
+        <p>When SDOH screening identifies needs, the traditional response is a resource list. The Empower Method response:</p>
+
+        <ol>
+            <li><strong>Immediate Warm Introduction</strong> — Patient meets their assigned CHW Navigator before leaving the appointment</li>
+            <li><strong>Comprehensive Assessment</strong> — Navigator completes full economic mobility assessment including benefits cliff analysis</li>
+            <li><strong>Economic Mobility Plan</strong> — Co-created plan addressing immediate needs AND long-term stability goals</li>
+            <li><strong>Sustained Relationship</strong> — Regular check-ins, not just crisis response</li>
+        </ol>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Difference</div>
+            <p style="margin-bottom: 0;">Traditional: "You screened positive for food insecurity. Here's a list of food banks."<br>
+            Empower Method: "You screened positive for food insecurity. Let me introduce you to Maria, your navigator. She'll help you get SNAP benefits enrolled today, and work with you over the next 6 months to address the income issues causing the food insecurity."</p>
+        </div>
+
+        <!-- Page 4: Implementation Timeline -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Timeline (6-Month Phased Approach)</h2>
+
+        <div class="timeline">
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Foundation & Design</div>
+                    <div class="timeline-period">Month 1</div>
+                    <ul>
+                        <li>Secure executive leadership commitment and designate program champion</li>
+                        <li>Form implementation team (clinical, operations, finance, IT)</li>
+                        <li>Assess current SDOH screening practices and CHW capacity</li>
+                        <li>Identify pilot clinic site(s) and target patient population</li>
+                        <li>Map existing community partners and identify gaps</li>
+                        <li>Establish baseline metrics for pilot population</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Preparation & Training</div>
+                    <div class="timeline-period">Month 2</div>
+                    <ul>
+                        <li>Hire or reassign CHW Navigators (1 per 40 patients)</li>
+                        <li>Complete Navigator certification training (40 hours)</li>
+                        <li>Train on benefits cliff navigation tools</li>
+                        <li>Establish warm referral protocols with community partners</li>
+                        <li>Configure EHR workflows for SDOH screening and navigation tracking</li>
+                        <li>Develop patient consent and engagement materials</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Pilot Launch</div>
+                    <div class="timeline-period">Months 3-4</div>
+                    <ul>
+                        <li>Begin SDOH screening with navigator warm handoff protocol</li>
+                        <li>Navigators conduct comprehensive economic mobility assessments</li>
+                        <li>Create economic mobility plans for enrolled patients</li>
+                        <li>Initiate warm referrals to community partners</li>
+                        <li>Hold weekly team huddles to troubleshoot and refine workflows</li>
+                        <li>Track process metrics (screening rates, navigator caseloads, referral completion)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Optimize & Expand</div>
+                    <div class="timeline-period">Months 5-6</div>
+                    <ul>
+                        <li>Analyze pilot outcomes (health outcomes, SDOH resolution, patient satisfaction)</li>
+                        <li>Refine protocols based on navigator and patient feedback</li>
+                        <li>Develop sustainability plan with Medicaid billing optimization</li>
+                        <li>Document ROI and prepare expansion business case</li>
+                        <li>Plan rollout to additional clinic sites</li>
+                        <li>Establish ongoing quality improvement processes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: CHW Navigator Model -->
+        <div class="page-break"></div>
+
+        <h2>Community Health Worker Navigator Model</h2>
+
+        <p>The CHW Navigator role expands traditional CHW functions to include sustained economic mobility support. This is not case management—it's relationship-based navigation toward family stability.</p>
+
+        <h3>CHW Navigator Role</h3>
+        <p><strong>Ratio:</strong> 1 Navigator per 40 active patients</p>
+        <p><strong>Commitment:</strong> Same patients for minimum 12 months; continuity is critical</p>
+
+        <h4>Core Responsibilities:</h4>
+        <ul>
+            <li>Receive warm handoffs from clinical teams for SDOH-positive patients</li>
+            <li>Conduct comprehensive economic mobility assessments</li>
+            <li>Develop co-created economic mobility plans with patients</li>
+            <li>Navigate benefits cliff transitions (Medicaid to Marketplace, SNAP to employment)</li>
+            <li>Make warm referrals to community partners and follow through to completion</li>
+            <li>Conduct regular check-ins (weekly to monthly based on need)</li>
+            <li>Document interventions and outcomes in EHR</li>
+            <li>Participate in care team huddles and case conferences</li>
+        </ul>
+
+        <h4>Required Competencies:</h4>
+        <ul>
+            <li>CHW certification (state requirements vary)</li>
+            <li>Deep understanding of public benefits systems (SNAP, Medicaid, TANF, housing)</li>
+            <li>Benefits cliff navigation and planning skills</li>
+            <li>Motivational interviewing and trauma-informed approaches</li>
+            <li>Cultural and linguistic competency for patient population</li>
+            <li>EHR documentation proficiency</li>
+            <li>Community resource knowledge and relationship-building</li>
+        </ul>
+
+        <h4>Training Requirements:</h4>
+        <ul>
+            <li>Empower Navigator Certification (40 hours)</li>
+            <li>Benefits Cliff Tool Training (8 hours)</li>
+            <li>Trauma-Informed Care (8 hours)</li>
+            <li>Motivational Interviewing (16 hours)</li>
+            <li>Local Resource Network Orientation (8 hours)</li>
+            <li>EHR/Documentation Training (4 hours)</li>
+        </ul>
+
+        <div class="warning-box">
+            <strong>Critical Success Factor:</strong> CHW Navigators must have protected time for patient navigation. If they are pulled into front desk coverage, interpreter duties, or other operational needs, the navigator function fails. Protect the caseload ratio and navigator time.
+        </div>
+
+        <!-- Page 6: Healthcare Coverage Cliff Navigation -->
+        <div class="page-break"></div>
+
+        <h2>Healthcare Coverage Cliff Navigation</h2>
+
+        <p>The Medicaid cliff is one of the most dangerous benefits cliffs. When patients' income rises above Medicaid thresholds, they can lose coverage entirely—often while managing chronic conditions that require continuous care.</p>
+
+        <h3>The Medicaid-to-Marketplace Transition</h3>
+
+        <table>
+            <tr>
+                <th>Scenario</th>
+                <th>Risk</th>
+                <th>Navigator Response</th>
+            </tr>
+            <tr>
+                <td>Patient gets job/raise pushing income above Medicaid limit</td>
+                <td>Coverage loss mid-chronic disease treatment</td>
+                <td>Pre-plan transition; identify marketplace options; enroll before Medicaid ends</td>
+            </tr>
+            <tr>
+                <td>Medicaid redetermination (annual or unwinding)</td>
+                <td>Administrative churn causing coverage gaps</td>
+                <td>Proactive redetermination support; document submission; appeal assistance</td>
+            </tr>
+            <tr>
+                <td>Patient entering "donut hole" (income too high for Medicaid, too low for subsidized marketplace)</td>
+                <td>Unaffordable coverage options</td>
+                <td>Benefits cliff mapping; income optimization; explore all coverage options</td>
+            </tr>
+            <tr>
+                <td>Loss of Medicaid for children in family</td>
+                <td>Pediatric care disruption</td>
+                <td>CHIP enrollment; family marketplace plan analysis</td>
+            </tr>
+        </table>
+
+        <h3>Navigator Protocol for Coverage Transitions</h3>
+
+        <ol>
+            <li><strong>Early Warning</strong> — Identify patients approaching Medicaid income limits through employment/income discussions</li>
+            <li><strong>Benefits Cliff Mapping</strong> — Model the full impact of income change on all benefits (healthcare, SNAP, childcare, housing)</li>
+            <li><strong>Coverage Option Analysis</strong> — Research marketplace plans, employer coverage, CHIP options</li>
+            <li><strong>Transition Planning</strong> — Time the transition to minimize coverage gaps; coordinate with providers</li>
+            <li><strong>Enrollment Support</strong> — Assist with marketplace enrollment, premium tax credit applications</li>
+            <li><strong>Continuity Assurance</strong> — Ensure prescriptions, specialist referrals, and treatment plans transfer</li>
+        </ol>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Billing Opportunity</div>
+            <p style="margin-bottom: 0;">Many state Medicaid programs now reimburse for CHW services, including care coordination and benefits navigation. Document all navigator activities to maximize reimbursement. Some states allow billing for "bridging" services during coverage transitions.</p>
+        </div>
+
+        <!-- Page 7: Warm Referral Protocols -->
+        <div class="page-break"></div>
+
+        <h2>Warm Referral Protocols</h2>
+
+        <p>A referral is not a handoff—it's an introduction. Cold referrals (giving patients a phone number) have completion rates under 30%. Warm referrals with navigator follow-through exceed 70% completion.</p>
+
+        <h3>Warm Referral Process</h3>
+
+        <table>
+            <tr>
+                <th>Step</th>
+                <th>Action</th>
+                <th>Timeline</th>
+            </tr>
+            <tr>
+                <td><strong>1. Identify Need</strong></td>
+                <td>Navigator identifies specific resource need from assessment</td>
+                <td>During assessment</td>
+            </tr>
+            <tr>
+                <td><strong>2. Contact Partner</strong></td>
+                <td>Navigator calls partner organization, confirms availability, explains patient situation (with consent)</td>
+                <td>Same day as assessment</td>
+            </tr>
+            <tr>
+                <td><strong>3. Three-Way Introduction</strong></td>
+                <td>Navigator introduces patient to partner contact (phone or in-person)</td>
+                <td>Within 48 hours</td>
+            </tr>
+            <tr>
+                <td><strong>4. Appointment Scheduling</strong></td>
+                <td>Navigator helps schedule appointment and addresses barriers (transportation, childcare)</td>
+                <td>At introduction</td>
+            </tr>
+            <tr>
+                <td><strong>5. Confirmation</strong></td>
+                <td>Navigator confirms appointment with patient day before</td>
+                <td>Day before appointment</td>
+            </tr>
+            <tr>
+                <td><strong>6. Follow-Up</strong></td>
+                <td>Navigator checks in after appointment to confirm service received</td>
+                <td>Within 3 days of appointment</td>
+            </tr>
+            <tr>
+                <td><strong>7. Loop Closure</strong></td>
+                <td>Navigator documents outcome and determines if need was met</td>
+                <td>Within 1 week</td>
+            </tr>
+        </table>
+
+        <h3>Partner Expectations</h3>
+
+        <p>Community partners must agree to:</p>
+        <ul>
+            <li>Designate a specific point of contact for warm referrals</li>
+            <li>Respond to navigator calls within 24 hours</li>
+            <li>Accept three-way introductions and prioritize referred patients</li>
+            <li>Report back to navigator on service delivery (with patient consent)</li>
+            <li>Participate in monthly partner coordination meetings</li>
+        </ul>
+
+        <div class="warning-box">
+            <strong>When Referrals Fail:</strong> If a patient cannot access a referred service (waitlist, eligibility, transportation), the navigator does not close the referral. Alternative resources are identified, or the navigator advocates for access. The need—not the referral—is the unit of measurement.
+        </div>
+
+        <!-- Page 8: Community Partner Integration -->
+        <div class="page-break"></div>
+
+        <h2>Community Partner Integration</h2>
+
+        <p>Effective SDOH navigation requires deep relationships with community organizations across all domains. Build formal partnerships with MOUs that define referral protocols, response times, and outcome reporting.</p>
+
+        <h3>Essential Partner Categories</h3>
+
+        <table>
+            <tr>
+                <th>Domain</th>
+                <th>Partner Types</th>
+                <th>Services</th>
+            </tr>
+            <tr>
+                <td><strong>Housing</strong></td>
+                <td>Housing Authority, Rapid Rehousing, Homeless Services, Legal Aid</td>
+                <td>Emergency shelter, transitional housing, eviction prevention, utility assistance, housing search</td>
+            </tr>
+            <tr>
+                <td><strong>Food Security</strong></td>
+                <td>Food Banks, SNAP Office, WIC, Medically Tailored Meals</td>
+                <td>Emergency food, benefits enrollment, nutrition support for chronic disease</td>
+            </tr>
+            <tr>
+                <td><strong>Employment</strong></td>
+                <td>Workforce Development, WIOA Programs, Vocational Rehab, Employers</td>
+                <td>Job training, placement, career coaching, benefits cliff counseling</td>
+            </tr>
+            <tr>
+                <td><strong>Benefits Navigation</strong></td>
+                <td>DSS/DHS, Benefits Counseling Orgs, VITA Sites</td>
+                <td>SNAP, Medicaid, TANF enrollment, EITC filing, benefits optimization</td>
+            </tr>
+            <tr>
+                <td><strong>Behavioral Health</strong></td>
+                <td>Community Mental Health, SUD Treatment, Crisis Services</td>
+                <td>Counseling, psychiatry, MAT, crisis intervention, peer support</td>
+            </tr>
+            <tr>
+                <td><strong>Childcare</strong></td>
+                <td>Head Start, Childcare Resource & Referral, Subsidy Office</td>
+                <td>Childcare placement, subsidy navigation, early intervention</td>
+            </tr>
+            <tr>
+                <td><strong>Legal Services</strong></td>
+                <td>Legal Aid, Medical-Legal Partnerships</td>
+                <td>Housing/eviction, benefits appeals, immigration, family law</td>
+            </tr>
+            <tr>
+                <td><strong>Transportation</strong></td>
+                <td>Transit Authority, Medicaid Transportation, Volunteer Drivers</td>
+                <td>Bus passes, NEMT, ride coordination, vehicle repair programs</td>
+            </tr>
+        </table>
+
+        <h3>Monthly Partner Coordination Meeting</h3>
+
+        <p>Convene all partners monthly to:</p>
+        <ul>
+            <li>Review complex cases requiring multi-agency coordination</li>
+            <li>Identify systemic barriers and advocate for policy changes</li>
+            <li>Share resource updates (new programs, waitlist status, funding changes)</li>
+            <li>Strengthen relationships and referral pathways</li>
+            <li>Celebrate successes and problem-solve challenges</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Employment as a Health Intervention</div>
+            <p style="margin-bottom: 0;">Stable employment improves health outcomes across nearly every measure. Partner with workforce development to treat unemployment as a health condition requiring intervention—with the same urgency as uncontrolled diabetes.</p>
+        </div>
+
+        <!-- Page 9: Data Dashboard -->
+        <div class="page-break"></div>
+
+        <h2>Data Dashboard: Health Outcomes + Social Determinants</h2>
+
+        <p>The integrated dashboard connects clinical outcomes with SDOH interventions—making visible the relationship between social stability and health.</p>
+
+        <h3>Clinical Outcome Metrics</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Data Source</th>
+            </tr>
+            <tr>
+                <td>Diabetes Control (A1C < 9%)</td>
+                <td>80% of diabetic patients</td>
+                <td>EHR lab values</td>
+            </tr>
+            <tr>
+                <td>Hypertension Control (BP < 140/90)</td>
+                <td>75% of hypertensive patients</td>
+                <td>EHR vitals</td>
+            </tr>
+            <tr>
+                <td>Emergency Department Utilization</td>
+                <td>Reduce by 35%</td>
+                <td>Claims/HIE data</td>
+            </tr>
+            <tr>
+                <td>Hospital Admissions</td>
+                <td>Reduce by 25%</td>
+                <td>Claims/HIE data</td>
+            </tr>
+            <tr>
+                <td>Medication Adherence</td>
+                <td>85% PDC for chronic meds</td>
+                <td>Pharmacy claims</td>
+            </tr>
+            <tr>
+                <td>Preventive Care Completion</td>
+                <td>80% (age-appropriate screenings)</td>
+                <td>EHR quality measures</td>
+            </tr>
+        </table>
+
+        <h3>SDOH Resolution Metrics</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Data Source</th>
+            </tr>
+            <tr>
+                <td>Housing Stability</td>
+                <td>90% maintain stable housing</td>
+                <td>Navigator tracking</td>
+            </tr>
+            <tr>
+                <td>Food Security</td>
+                <td>85% achieve food security</td>
+                <td>Follow-up SDOH screening</td>
+            </tr>
+            <tr>
+                <td>Healthcare Coverage Continuity</td>
+                <td>95% maintain coverage</td>
+                <td>Coverage tracking</td>
+            </tr>
+            <tr>
+                <td>Employment Stability</td>
+                <td>70% employed or in training</td>
+                <td>Navigator tracking</td>
+            </tr>
+            <tr>
+                <td>Income Improvement</td>
+                <td>40% increase household income</td>
+                <td>Patient self-report</td>
+            </tr>
+            <tr>
+                <td>Benefits Cliff Navigation</td>
+                <td>100% receive cliff counseling before transition</td>
+                <td>Navigator tracking</td>
+            </tr>
+        </table>
+
+        <h3>Process Metrics</h3>
+        <ul>
+            <li>SDOH screening rate (target: 90% of patients)</li>
+            <li>Navigator caseload (target: 35-45 active patients per navigator)</li>
+            <li>Warm referral completion rate (target: 70%)</li>
+            <li>Time to first navigator contact (target: within 48 hours of positive screen)</li>
+            <li>Economic mobility plan completion rate (target: 85% of enrolled patients)</li>
+        </ul>
+
+        <!-- Page 10: Chronic Disease Integration -->
+        <div class="page-break"></div>
+
+        <h2>Chronic Disease Management Through Stability</h2>
+
+        <p>Uncontrolled chronic disease is often uncontrolled social circumstances. Address the root causes to improve clinical outcomes.</p>
+
+        <h3>The Stability-Health Connection</h3>
+
+        <table>
+            <tr>
+                <th>Social Factor</th>
+                <th>Health Impact</th>
+                <th>Navigator Intervention</th>
+            </tr>
+            <tr>
+                <td><strong>Food Insecurity</strong></td>
+                <td>2x higher diabetes rates; poor glycemic control</td>
+                <td>SNAP enrollment; medically tailored meals; food pharmacy programs</td>
+            </tr>
+            <tr>
+                <td><strong>Housing Instability</strong></td>
+                <td>3x higher chronic disease burden; medication storage issues</td>
+                <td>Housing stabilization; utility assistance; healthy housing advocacy</td>
+            </tr>
+            <tr>
+                <td><strong>Transportation Barriers</strong></td>
+                <td>Missed appointments; medication gaps; delayed care</td>
+                <td>NEMT enrollment; bus passes; appointment scheduling optimization</td>
+            </tr>
+            <tr>
+                <td><strong>Unemployment/Poverty</strong></td>
+                <td>Chronic stress; inability to afford healthy choices</td>
+                <td>Employment connection; income supports; stress reduction</td>
+            </tr>
+            <tr>
+                <td><strong>Coverage Gaps</strong></td>
+                <td>Medication non-adherence; avoided care; disease progression</td>
+                <td>Coverage navigation; prescription assistance; sliding fee access</td>
+            </tr>
+        </table>
+
+        <h3>Mental Health and Substance Use Integration</h3>
+
+        <p>Behavioral health conditions both cause and result from social instability. The navigator model must integrate:</p>
+
+        <ul>
+            <li><strong>Depression/Anxiety Screening</strong> — PHQ-9 and GAD-7 as standard alongside SDOH screening</li>
+            <li><strong>Substance Use Screening</strong> — SBIRT integration with warm handoffs to treatment</li>
+            <li><strong>Trauma-Informed Approach</strong> — All navigator interactions recognize trauma prevalence</li>
+            <li><strong>Co-located Services</strong> — Behavioral health available at same site when possible</li>
+            <li><strong>Peer Support Integration</strong> — Peer recovery specialists for SUD populations</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Stability Prescription</div>
+            <p style="margin-bottom: 0;">For patients with uncontrolled chronic disease, prescribe stability alongside medications. A stable home, reliable food, and continuous coverage are as important as metformin for diabetes control.</p>
+        </div>
+
+        <!-- Page 11: Budget Framework -->
+        <div class="page-break"></div>
+
+        <h2>Budget Framework</h2>
+
+        <h3>Per-Site Annual Costs (Medium FQHC Site)</h3>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            <tr>
+                <td>CHW Navigator Salary + Benefits</td>
+                <td>$52,000</td>
+                <td>3</td>
+                <td>$156,000</td>
+            </tr>
+            <tr>
+                <td>Program Coordinator (shared across sites)</td>
+                <td>$68,000</td>
+                <td>0.5</td>
+                <td>$34,000</td>
+            </tr>
+            <tr>
+                <td>Training & Certification</td>
+                <td>$3,500/person</td>
+                <td>3</td>
+                <td>$10,500</td>
+            </tr>
+            <tr>
+                <td>Benefits Cliff Tools & Technology</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$12,000</td>
+            </tr>
+            <tr>
+                <td>Emergency Assistance Fund</td>
+                <td>$150/patient</td>
+                <td>120</td>
+                <td>$18,000</td>
+            </tr>
+            <tr>
+                <td>Transportation & Supplies</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$8,000</td>
+            </tr>
+            <tr>
+                <td><strong>Total Per Site</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$238,500</strong></td>
+            </tr>
+        </table>
+
+        <h3>Cost Per Patient</h3>
+        <p>With 3 navigators serving 120 patients: <strong>$1,988 per patient annually</strong></p>
+
+        <h3>Funding Sources</h3>
+
+        <h4>HRSA Funding:</h4>
+        <ul>
+            <li><strong>Health Center Program (Section 330):</strong> Enabling services and case management</li>
+            <li><strong>HRSA Quality Improvement Awards:</strong> SDOH integration initiatives</li>
+            <li><strong>Health Center Cluster Funding:</strong> CHW workforce development</li>
+        </ul>
+
+        <h4>Medicaid Funding:</h4>
+        <ul>
+            <li><strong>CHW Medicaid Billing:</strong> Many states now reimburse CHW services (check state plan)</li>
+            <li><strong>Medicaid Administrative Claiming:</strong> Outreach and enrollment activities</li>
+            <li><strong>1115 Waiver Programs:</strong> SDOH-focused delivery system reform</li>
+            <li><strong>Managed Care Partnerships:</strong> Value-based contracts for SDOH outcomes</li>
+        </ul>
+
+        <h4>Other Sources:</h4>
+        <ul>
+            <li><strong>Community Health Center Fund:</strong> SDOH integration expansion</li>
+            <li><strong>CDC Chronic Disease Prevention:</strong> SDOH-integrated chronic disease management</li>
+            <li><strong>Foundation Grants:</strong> Health equity, social determinants, community health</li>
+            <li><strong>United Way / Community Foundations:</strong> Local health improvement initiatives</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">ROI for Health Centers</div>
+            <p style="margin-bottom: 0;">Reducing one preventable ED visit saves $1,500-$3,000. Preventing one hospitalization saves $10,000+. Navigator programs typically achieve ROI of 3:1 or higher through reduced acute utilization and improved chronic disease outcomes.</p>
+        </div>
+
+        <!-- Page 12: Readiness Checklist -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Readiness Checklist</h2>
+
+        <div class="checklist">
+            <div class="checklist-title">Leadership & Governance</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Executive leadership commitment secured</strong>
+                    <span>CEO/CMO support with resource allocation authority</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Program champion designated</strong>
+                    <span>Clinical or operational leader to drive implementation</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Board briefed on SDOH integration strategy</strong>
+                    <span>Board understands approach and investment required</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Staffing & Training</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>CHW Navigator positions approved and funded</strong>
+                    <span>Job descriptions, salary ranges, and FTEs confirmed</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Navigators hired or identified for reassignment</strong>
+                    <span>Candidates with community connections and benefits knowledge</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Training curriculum and schedule confirmed</strong>
+                    <span>Navigator certification, benefits cliff tools, trauma-informed care</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Clinical Integration</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>SDOH screening protocol standardized</strong>
+                    <span>Screening tool selected, workflow defined, clinical triggers set</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Warm handoff process designed</strong>
+                    <span>How clinical team introduces patients to navigators</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Care team huddle integration planned</strong>
+                    <span>When and how navigators participate in team meetings</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Data & Technology</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>EHR workflow configured</strong>
+                    <span>SDOH screening, Z-codes, navigator documentation</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Outcome tracking system ready</strong>
+                    <span>Dashboard for clinical and SDOH metrics</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Benefits cliff navigation tools procured</strong>
+                    <span>Software for modeling benefits transitions</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Community Partners</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Key partners identified across all SDOH domains</strong>
+                    <span>Housing, food, employment, benefits, behavioral health, legal, transportation</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Partner MOUs drafted with referral protocols</strong>
+                    <span>Response times, contact points, data sharing agreements</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Monthly coordination meeting scheduled</strong>
+                    <span>Regular convening of all partners</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Sustainability</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Year 1 funding secured</strong>
+                    <span>Full budget for pilot period committed</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Medicaid billing strategy developed</strong>
+                    <span>CHW billing codes, documentation requirements</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Multi-year sustainability plan drafted</strong>
+                    <span>Blended funding strategy for ongoing operations</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 13: Technical Assistance CTA -->
+        <div class="page-break"></div>
+
+        <div class="dark-box">
+            <h3>Ready for Full Implementation Support?</h3>
+            <p>This guide provides the roadmap. For the highest probability of success, partner with The Poverty Solution team for:</p>
+            <ul>
+                <li><strong>CHW Navigator Certification Training</strong> — 40-hour intensive for Community Health Workers</li>
+                <li><strong>Leadership Alignment Workshops</strong> — Get clinical, operational, and executive teams aligned</li>
+                <li><strong>Benefits Cliff Tool Training</strong> — Mastery of cliff navigation software and counseling techniques</li>
+                <li><strong>Implementation Coaching</strong> — Monthly calls and quarterly site visits during pilot</li>
+                <li><strong>EHR Workflow Configuration</strong> — SDOH screening, documentation, and reporting optimization</li>
+                <li><strong>Community Partner Facilitation</strong> — Help establish and strengthen partner relationships</li>
+                <li><strong>Medicaid Billing Optimization</strong> — Maximize reimbursement for CHW and SDOH services</li>
+                <li><strong>Peer Learning Network</strong> — Connect with other implementing FQHCs</li>
+            </ul>
+            <p style="margin-top: 20px; margin-bottom: 0;">
+                <strong style="color: #a3c520;">Contact:</strong> info@thepovertysolution.com | thepovertysolution.com
+            </p>
+        </div>
+
+        <h2>Key Resources</h2>
+
+        <h4>HRSA Resources:</h4>
+        <ul>
+            <li>Health Center Program Compliance Manual (Chapter 12: Enabling Services)</li>
+            <li>HRSA SDOH Integration Technical Assistance</li>
+            <li>UDS+ SDOH Screening Measures</li>
+        </ul>
+
+        <h4>Medicaid Resources:</h4>
+        <ul>
+            <li>CMS State Health Official Letter on SDOH (SHO #21-001)</li>
+            <li>State Medicaid CHW Billing Policies (varies by state)</li>
+            <li>1115 Waiver SDOH Initiatives Database</li>
+        </ul>
+
+        <h4>Clinical Resources:</h4>
+        <ul>
+            <li>PRAPARE Social Determinants of Health Assessment Tool</li>
+            <li>The EveryONE Project (AAFP) Toolkit</li>
+            <li>NACHC SDOH Implementation Resources</li>
+        </ul>
+
+        <div class="page-footer">
+            <div>The Empower Playbook | Community Health Center Implementation Guide</div>
+            <div>© 2026 The Poverty Solution</div>
+        </div>
+
+    </div>
+</body>
+</html>

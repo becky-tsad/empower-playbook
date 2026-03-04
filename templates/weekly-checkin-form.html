@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Check-In Form | Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { font-size: 11pt; }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <div class="bg-tps-green px-8 py-6 no-print">
+        <div class="max-w-7xl mx-auto mx-auto">
+            <p class="text-sm text-tps-dark/70 mb-1">Empower Playbook Template</p>
+            <h1 class="text-2xl font-bold text-tps-dark">Weekly Check-In Form</h1>
+            <p class="text-tps-dark/80 mt-2">Quick progress tracking for navigator-participant meetings</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mx-auto px-8 py-8">
+        <!-- Session Info -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Participant Name</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Meeting Type</label>
+                    <select class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                        <option>In-Person</option>
+                        <option>Phone Call</option>
+                        <option>Video Call</option>
+                        <option>Text Exchange</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Pulse Check -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Quick Pulse Check</h2>
+            <p class="text-sm text-gray-600 mb-4">How is the participant doing overall this week? (1 = Struggling, 5 = Thriving)</p>
+
+            <div class="grid md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2 text-center">Financial Stability</label>
+                    <div class="flex justify-center gap-2">
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="financial" value="1" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-red-300 flex items-center justify-center peer-checked:bg-red-500 peer-checked:text-white peer-checked:border-red-500">1</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="financial" value="2" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-orange-300 flex items-center justify-center peer-checked:bg-orange-500 peer-checked:text-white peer-checked:border-orange-500">2</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="financial" value="3" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-yellow-300 flex items-center justify-center peer-checked:bg-yellow-500 peer-checked:text-white peer-checked:border-yellow-500">3</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="financial" value="4" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-lime-300 flex items-center justify-center peer-checked:bg-lime-500 peer-checked:text-white peer-checked:border-lime-500">4</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="financial" value="5" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-green-300 flex items-center justify-center peer-checked:bg-green-500 peer-checked:text-white peer-checked:border-green-500">5</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2 text-center">Employment</label>
+                    <div class="flex justify-center gap-2">
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="employment" value="1" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-red-300 flex items-center justify-center peer-checked:bg-red-500 peer-checked:text-white peer-checked:border-red-500">1</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="employment" value="2" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-orange-300 flex items-center justify-center peer-checked:bg-orange-500 peer-checked:text-white peer-checked:border-orange-500">2</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="employment" value="3" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-yellow-300 flex items-center justify-center peer-checked:bg-yellow-500 peer-checked:text-white peer-checked:border-yellow-500">3</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="employment" value="4" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-lime-300 flex items-center justify-center peer-checked:bg-lime-500 peer-checked:text-white peer-checked:border-lime-500">4</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="employment" value="5" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-green-300 flex items-center justify-center peer-checked:bg-green-500 peer-checked:text-white peer-checked:border-green-500">5</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2 text-center">Family Stability</label>
+                    <div class="flex justify-center gap-2">
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="family" value="1" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-red-300 flex items-center justify-center peer-checked:bg-red-500 peer-checked:text-white peer-checked:border-red-500">1</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="family" value="2" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-orange-300 flex items-center justify-center peer-checked:bg-orange-500 peer-checked:text-white peer-checked:border-orange-500">2</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="family" value="3" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-yellow-300 flex items-center justify-center peer-checked:bg-yellow-500 peer-checked:text-white peer-checked:border-yellow-500">3</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="family" value="4" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-lime-300 flex items-center justify-center peer-checked:bg-lime-500 peer-checked:text-white peer-checked:border-lime-500">4</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="family" value="5" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-green-300 flex items-center justify-center peer-checked:bg-green-500 peer-checked:text-white peer-checked:border-green-500">5</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2 text-center">Hopefulness</label>
+                    <div class="flex justify-center gap-2">
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="hope" value="1" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-red-300 flex items-center justify-center peer-checked:bg-red-500 peer-checked:text-white peer-checked:border-red-500">1</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="hope" value="2" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-orange-300 flex items-center justify-center peer-checked:bg-orange-500 peer-checked:text-white peer-checked:border-orange-500">2</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="hope" value="3" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-yellow-300 flex items-center justify-center peer-checked:bg-yellow-500 peer-checked:text-white peer-checked:border-yellow-500">3</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="hope" value="4" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-lime-300 flex items-center justify-center peer-checked:bg-lime-500 peer-checked:text-white peer-checked:border-lime-500">4</span>
+                        </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="hope" value="5" class="sr-only peer">
+                            <span class="w-10 h-10 rounded-full border-2 border-green-300 flex items-center justify-center peer-checked:bg-green-500 peer-checked:text-white peer-checked:border-green-500">5</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wins This Week -->
+        <div class="bg-tps-green/20 rounded-xl p-6 mb-6">
+            <h2 class="font-bold text-lg mb-3 text-tps-dark">Wins This Week</h2>
+            <p class="text-sm text-gray-600 mb-3">What went well? What should we celebrate?</p>
+            <textarea rows="3" class="w-full border border-tps-green rounded-lg px-4 py-2" placeholder="Even small wins matter - acknowledge progress!"></textarea>
+        </div>
+
+        <!-- Challenges This Week -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-3 text-empower-blue">Challenges This Week</h2>
+            <p class="text-sm text-gray-600 mb-3">What obstacles came up? What's worrying the participant?</p>
+            <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Any new or worsening barriers?</label>
+                <div class="flex flex-wrap gap-2">
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox">
+                        <span>Transportation</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox">
+                        <span>Childcare</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox">
+                        <span>Housing</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox">
+                        <span>Health</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox">
+                        <span>Benefits Change</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox">
+                        <span>Job Issue</span>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox">
+                        <span>Family Crisis</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goal Progress Review -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-3 text-empower-blue">Goal Progress</h2>
+            <p class="text-sm text-gray-600 mb-4">Review current goals and action items from last meeting.</p>
+
+            <div class="space-y-4">
+                <div class="border rounded-lg p-4">
+                    <div class="flex items-start gap-3">
+                        <select class="border rounded px-2 py-1 text-sm">
+                            <option>Not Started</option>
+                            <option>In Progress</option>
+                            <option>Completed</option>
+                            <option>Blocked</option>
+                        </select>
+                        <div class="flex-1">
+                            <input type="text" class="w-full border-b border-gray-200 pb-1 mb-2" placeholder="Goal/Action Item 1">
+                            <input type="text" class="w-full text-sm text-gray-500" placeholder="Notes on progress...">
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <div class="flex items-start gap-3">
+                        <select class="border rounded px-2 py-1 text-sm">
+                            <option>Not Started</option>
+                            <option>In Progress</option>
+                            <option>Completed</option>
+                            <option>Blocked</option>
+                        </select>
+                        <div class="flex-1">
+                            <input type="text" class="w-full border-b border-gray-200 pb-1 mb-2" placeholder="Goal/Action Item 2">
+                            <input type="text" class="w-full text-sm text-gray-500" placeholder="Notes on progress...">
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <div class="flex items-start gap-3">
+                        <select class="border rounded px-2 py-1 text-sm">
+                            <option>Not Started</option>
+                            <option>In Progress</option>
+                            <option>Completed</option>
+                            <option>Blocked</option>
+                        </select>
+                        <div class="flex-1">
+                            <input type="text" class="w-full border-b border-gray-200 pb-1 mb-2" placeholder="Goal/Action Item 3">
+                            <input type="text" class="w-full text-sm text-gray-500" placeholder="Notes on progress...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Items for Next Week -->
+        <div class="bg-empower-blue text-white rounded-xl p-6 mb-6">
+            <h2 class="font-bold text-lg mb-3">Action Items for Next Week</h2>
+            <p class="text-sm text-white/70 mb-4">What will the participant commit to doing before our next meeting?</p>
+
+            <div class="space-y-3">
+                <div class="flex gap-3">
+                    <span class="bg-white/20 px-3 py-1 rounded text-sm">1</span>
+                    <input type="text" class="flex-1 bg-white/10 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-white/50" placeholder="Participant will...">
+                </div>
+                <div class="flex gap-3">
+                    <span class="bg-white/20 px-3 py-1 rounded text-sm">2</span>
+                    <input type="text" class="flex-1 bg-white/10 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-white/50" placeholder="Participant will...">
+                </div>
+                <div class="flex gap-3">
+                    <span class="bg-white/20 px-3 py-1 rounded text-sm">3</span>
+                    <input type="text" class="flex-1 bg-white/10 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-white/50" placeholder="Participant will...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigator Follow-ups -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-3 text-empower-blue">Navigator Follow-Ups</h2>
+            <p class="text-sm text-gray-600 mb-4">What does the Navigator need to do before the next meeting?</p>
+
+            <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                    <input type="checkbox">
+                    <input type="text" class="flex-1 border-b border-gray-200 pb-1" placeholder="Navigator follow-up item...">
+                </div>
+                <div class="flex items-start gap-3">
+                    <input type="checkbox">
+                    <input type="text" class="flex-1 border-b border-gray-200 pb-1" placeholder="Navigator follow-up item...">
+                </div>
+                <div class="flex items-start gap-3">
+                    <input type="checkbox">
+                    <input type="text" class="flex-1 border-b border-gray-200 pb-1" placeholder="Navigator follow-up item...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Referrals Made -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-3 text-empower-blue">Referrals Made This Session</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Childcare assistance</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Transportation assistance</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Housing assistance</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Food bank/SNAP</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Healthcare/Mental health</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Job training/Education</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Legal services</span>
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                    <input type="checkbox">
+                    <span>Other: </span>
+                    <input type="text" class="flex-1 border-b border-gray-300">
+                </label>
+            </div>
+        </div>
+
+        <!-- Next Meeting -->
+        <div class="bg-gray-100 rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-lg mb-4">Next Meeting</h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                    <input type="time" class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Location/Format</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white" placeholder="Office, phone, etc.">
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Duration -->
+        <div class="bg-white rounded-xl p-4 shadow-sm mb-8">
+            <div class="flex items-center justify-between">
+                <span class="font-medium">Session Duration:</span>
+                <input type="text" class="border border-gray-300 rounded px-3 py-1 w-24" placeholder="minutes">
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-4 no-print">
+            <button onclick="window.print()" class="bg-empower-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-empower-blue/90 transition">
+                Print / Save as PDF
+            </button>
+            <a href="../chapters/chapter-13.html" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                Back to Templates
+            </a>
+        </div>
+    </div>
+</body>
+</html>

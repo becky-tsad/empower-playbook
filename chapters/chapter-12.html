@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 12: Scaling Beyond | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #545454, #6b7280);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #545454;
+            color: white;
+            padding: 8px 16px;
+            z-index: 200;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f3f4f6; color: #545454; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            gap: 8px;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            background: #f3f4f6;
+        }
+        .floating-nav a:hover svg {
+            color: #545454;
+        }
+
+        /* Enhanced Prose styling with grey accents */
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a5f;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #d1d5db;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+            padding-left: 0.75rem;
+            border-left: 3px solid #545454;
+        }
+        .prose p { margin-bottom: 1rem; line-height: 1.75; color: #444; }
+        .prose ul { margin-bottom: 1rem; margin-left: 1.5rem; list-style-type: disc; }
+        .prose ol { margin-bottom: 1rem; margin-left: 1.5rem; list-style-type: decimal; }
+        .prose li { margin-bottom: 0.5rem; line-height: 1.6; color: #444; }
+        .prose li::marker { color: #545454; }
+        .prose blockquote {
+            border-left: 4px solid #545454;
+            padding-left: 1rem;
+            font-style: italic;
+            color: #666;
+            margin: 1.5rem 0;
+            background: linear-gradient(to right, #f3f4f6, transparent);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose strong { color: #222; }
+        .prose a { color: #545454; text-decoration: underline; text-underline-offset: 2px; }
+        .prose a:hover { color: #374151; }
+
+        /* TOC Styles */
+        .toc { position: sticky; top: 100px; }
+        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
+        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
+        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
+        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 16px;
+                right: 16px;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 — The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 — The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 — Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 — Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding & Unit Economics
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item active">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 - Research -->
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Evidence Foundation
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Benefits Cliff Research
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Research Bibliography
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-11.html" title="Previous: Adapting the Model" aria-label="Previous chapter">
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="chapter-14.html" title="Next: Poverty IQ Training" aria-label="Next chapter">
+            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="main-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 4 — Scale</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Gradient Chapter Header -->
+        <div class="bg-gradient-to-r from-[#545454] to-[#6b7280] text-white px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center space-x-3 mb-2">
+                    <p class="text-white/60 text-sm font-medium">Chapter 12</p>
+                    <span class="bg-white/20 text-white/90 text-xs px-2 py-0.5 rounded-full">15 min read</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    Scaling Beyond: The National Opportunity
+                </h1>
+                <p class="text-white/80 mt-4 text-lg">From one Tennessee region to rural America</p>
+            </div>
+        </div>
+
+        <!-- Chapter Content -->
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+            <div class="prose">
+
+                <!-- Vision Box -->
+                <div class="bg-gradient-to-br from-tps-green/10 to-empower-blue/10 border border-tps-green/30 rounded-xl p-6 mb-8 not-prose">
+                    <h3 class="font-bold text-tps-dark text-lg mb-3">The Scale Opportunity</h3>
+                    <p class="text-gray-700 mb-4">46 million Americans live in rural poverty or ALICE status. There is no proven, scalable model designed for their reality—until now. This chapter maps the path from one region's success to national infrastructure transformation.</p>
+                    <div class="grid md:grid-cols-3 gap-4 mt-4">
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <p style="font-size: 2.5rem; font-weight: 800; color: #1e3a5f;">85%</p>
+                            <p class="text-sm text-gray-600">of U.S. counties are rural</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <p style="font-size: 2.5rem; font-weight: 800; color: #a3c520;">60M</p>
+                            <p class="text-sm text-gray-600">rural Americans</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 text-center">
+                            <p style="font-size: 2.5rem; font-weight: 800; color: #1e3a5f;">0</p>
+                            <p class="text-sm text-gray-600">rural-native models at scale</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="why-scale">Why Scale Matters Now</h2>
+
+                <p>The window for rural economic mobility infrastructure is open—but not indefinitely. Three forces are converging:</p>
+
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-5">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <span class="text-red-600 font-bold">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-1">Workforce Crisis Hitting Critical Mass</h4>
+                                    <p class="text-sm text-gray-600">Rural employers across every sector report inability to fill positions. Manufacturing, healthcare, agriculture—all facing the same cliff. The political will for solutions has never been higher.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-5">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <span class="text-gray-600 font-bold">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-1">Benefits Cliff Awareness Rising</h4>
+                                    <p class="text-sm text-gray-600">What was once an insider policy conversation is now mainstream. State governments are actively seeking solutions. The Atlanta Fed's benefits cliff tools have created shared language.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-5">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <span class="text-green-600 font-bold">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-1">Funder Fatigue with Failed Urban Exports</h4>
+                                    <p class="text-sm text-gray-600">National foundations have spent decades funding "innovative" programs that fail when transplanted to rural contexts. There's growing appetite for rural-native solutions with evidence.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="scaling-model">The Scaling Model</h2>
+
+                <p>Most nonprofit scaling follows a flawed playbook: prove it locally, then try to convince others to adopt it. This rarely works because:</p>
+
+                <ul>
+                    <li>Local success factors are often invisible and undocumented</li>
+                    <li>Replicators lack the support to implement correctly</li>
+                    <li>No one owns quality control across sites</li>
+                    <li>Each site reinvents infrastructure from scratch</li>
+                </ul>
+
+                <p>The Empower scaling model is different. We're not asking communities to adopt and adapt on their own. We're building <strong>tiered infrastructure</strong> that supports quality implementation at every level.</p>
+
+                <h3>Three-Tier Scaling Architecture</h3>
+
+                <div class="space-y-4 my-6 not-prose">
+                    <div class="bg-empower-blue text-white rounded-xl p-6">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Tier 1: National Hub</h4>
+                                <p class="text-white/80 text-sm">The Poverty Solution</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 text-sm text-white/90 ml-15">
+                            <li>• Maintains the Empower methodology and quality standards</li>
+                            <li>• Develops and licenses technology platform (benefits modeling, dashboards)</li>
+                            <li>• Trains and certifies regional implementation partners</li>
+                            <li>• Conducts cross-site research and continuous improvement</li>
+                            <li>• Manages national funder relationships and advocacy</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-tps-green text-tps-dark rounded-xl p-6">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-12 h-12 bg-white/30 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Tier 2: Regional Anchors</h4>
+                                <p class="text-tps-dark/70 text-sm">Development Districts, Community Action Agencies, Regional Intermediaries</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 text-sm text-tps-dark/90 ml-15">
+                            <li>• Implements Empower model across multi-county service area</li>
+                            <li>• Hires, trains, and supervises navigators</li>
+                            <li>• Manages employer certification program locally</li>
+                            <li>• Coordinates with existing workforce and social service systems</li>
+                            <li>• Reports outcomes to national hub and local funders</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900">Tier 3: Community Partners</h4>
+                                <p class="text-gray-500 text-sm">Employers, Human Service Agencies, Healthcare Providers</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 text-sm text-gray-700 ml-15">
+                            <li>• Participates in Certified Employer or Referring Partner network</li>
+                            <li>• Receives training through Poverty IQ program</li>
+                            <li>• Integrates navigator touchpoints into existing operations</li>
+                            <li>• Contributes to shared data and outcome tracking</li>
+                            <li>• Benefits from network effects of regional coordination</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 id="timeline">Scaling Timeline & Targets</h2>
+
+                <p>National scale doesn't happen overnight. Here's the realistic pathway from current proof-of-concept to national infrastructure:</p>
+
+                <div class="border border-gray-200 rounded-xl overflow-hidden my-6 not-prose">
+                    <div class="bg-empower-blue text-white px-6 py-4">
+                        <h4 class="font-bold">10-Year National Scaling Roadmap</h4>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-6 py-5 grid md:grid-cols-3 gap-4">
+                            <div class="font-semibold text-empower-blue">Phase 1: 2024-2026<br><span class="text-sm font-normal text-gray-500">Proof & Refinement</span></div>
+                            <div class="md:col-span-2">
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• Complete 3-year Upper Cumberland pilot with full outcome data</li>
+                                    <li>• Develop comprehensive playbook and training curriculum (complete)</li>
+                                    <li>• Secure 2-3 additional Tennessee regional anchor partnerships</li>
+                                    <li>• Build technology platform for multi-site deployment</li>
+                                </ul>
+                                <p class="text-xs text-gray-500 mt-2">Target: 3 regions | 1,500 families | 25 certified employers</p>
+                            </div>
+                        </div>
+                        <div class="px-6 py-5 grid md:grid-cols-3 gap-4">
+                            <div class="font-semibold text-tps-green">Phase 2: 2027-2029<br><span class="text-sm font-normal text-gray-500">State Expansion</span></div>
+                            <div class="md:col-span-2">
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• Expand to all Tennessee development districts (9 total)</li>
+                                    <li>• Launch pilots in 2-3 adjacent states (Kentucky, Georgia, Alabama)</li>
+                                    <li>• Establish state-level government partnerships</li>
+                                    <li>• Begin employer network franchising</li>
+                                </ul>
+                                <p class="text-xs text-gray-500 mt-2">Target: 15 regions | 7,500 families | 150 certified employers</p>
+                            </div>
+                        </div>
+                        <div class="px-6 py-5 grid md:grid-cols-3 gap-4">
+                            <div class="font-semibold text-purple-600">Phase 3: 2030-2032<br><span class="text-sm font-normal text-gray-500">Regional Networks</span></div>
+                            <div class="md:col-span-2">
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• Establish Southeast regional hub (TN, KY, GA, AL, MS, NC)</li>
+                                    <li>• Launch Midwest rural initiative (OH, IN, MO, KS, NE)</li>
+                                    <li>• Create national employer certification network</li>
+                                    <li>• Integrate with federal workforce development systems</li>
+                                </ul>
+                                <p class="text-xs text-gray-500 mt-2">Target: 50 regions | 35,000 families | 500 certified employers</p>
+                            </div>
+                        </div>
+                        <div class="px-6 py-5 grid md:grid-cols-3 gap-4">
+                            <div class="font-semibold text-gray-600">Phase 4: 2033-2035<br><span class="text-sm font-normal text-gray-500">National Infrastructure</span></div>
+                            <div class="md:col-span-2">
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• Operational in all 50 states' rural regions</li>
+                                    <li>• Standardized methodology with regional adaptations</li>
+                                    <li>• Self-sustaining revenue model (70%+ earned)</li>
+                                    <li>• Policy influence at federal level</li>
+                                </ul>
+                                <p class="text-xs text-gray-500 mt-2">Target: 200+ regions | 150,000 families | 2,000 certified employers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="success-factors">What Makes Scaling Succeed</h2>
+
+                <!-- NFP Fidelity Research Box -->
+                <div style="background: #1a1a1a; border-radius: 12px; padding: 24px; margin: 24px 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 16px;">Research: Nurse-Family Partnership Scaling Model</h4>
+                    <p style="color: rgba(255,255,255,0.85); margin-bottom: 16px; line-height: 1.7;">The Nurse-Family Partnership (NFP) provides the gold standard for evidence-based scaling with fidelity. Their model demonstrates that <strong style="color: #a3c520;">rigorous fidelity investment actually LOWERS costs at scale</strong>—contrary to conventional wisdom.</p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; text-align: center;">
+                            <p style="color: #a3c520; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">19</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Fidelity standards</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; text-align: center;">
+                            <p style="color: #a3c520; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">18</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Core Model Elements</p>
+                        </div>
+                    </div>
+                    <div style="background: rgba(163,197,32,0.1); border-left: 3px solid #a3c520; padding: 12px 16px; border-radius: 0 8px 8px 0;">
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.875rem;"><strong style="color: #a3c520;">Key Finding:</strong> Weekly supervision + coaching is essential for maintaining fidelity. Real-time data systems enable rapid intervention when drift occurs.</p>
+                    </div>
+                </div>
+
+                <p>We've studied why promising programs fail to scale. The Empower model is designed around avoiding these failure modes:</p>
+
+                <h3>Failure Mode #1: Founder Dependence</h3>
+                <p><strong>The problem:</strong> Success relies on the charisma and relationships of one leader. When they leave, the model collapses.</p>
+                <p><strong>Our solution:</strong> The Four Non-Negotiables aren't about people—they're about systems. Any region can implement benefits cliff navigation, the navigator model, wraparound coordination, and data dashboards with the right training and support.</p>
+
+                <h3>Failure Mode #2: Context Blindness</h3>
+                <p><strong>The problem:</strong> Models developed in one context assume their specific conditions are universal. Urban programs assume public transit. Coastal programs assume diverse industries.</p>
+                <p><strong>Our solution:</strong> Rural-native design from day one. Every element of the model was built for low-density, relationship-based, limited-infrastructure contexts. We're not adapting urban models—we're creating the rural standard.</p>
+
+                <h3>Failure Mode #3: Replication Without Support</h3>
+                <p><strong>The problem:</strong> "Here's a toolkit, good luck" doesn't work. Local implementers face unexpected challenges and have no one to call.</p>
+                <p><strong>Our solution:</strong> The three-tier architecture ensures every regional anchor has direct support from the national hub. Monthly coaching calls, annual in-person convenings, shared troubleshooting forums, and rapid-response technical assistance.</p>
+
+                <h3>Failure Mode #4: Mission Drift Under Pressure</h3>
+                <p><strong>The problem:</strong> Funders or local stakeholders push programs to abandon core principles for short-term gains or political convenience.</p>
+                <p><strong>Our solution:</strong> Clear certification requirements. Regional anchors that deviate from the Four Non-Negotiables lose their certification and network access. The brand is protected by quality standards, not just licensing agreements.</p>
+
+                <!-- Scaling Structure Options -->
+                <div style="background: #f3f4f6; border-radius: 12px; padding: 24px; margin: 24px 0;" class="not-prose">
+                    <h4 style="color: #1e3a5f; font-weight: 700; margin-bottom: 16px;">Scaling Structure Options</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                        <div style="background: white; padding: 16px; border-radius: 8px; border: 2px solid #a3c520;">
+                            <p style="color: #1e3a5f; font-weight: 700; margin-bottom: 8px;">Branching Model</p>
+                            <p style="color: #666; font-size: 0.875rem;">Tight control with direct organizational expansion. Best for maintaining strict fidelity in early scaling phases.</p>
+                        </div>
+                        <div style="background: white; padding: 16px; border-radius: 8px; border: 2px solid #569db7;">
+                            <p style="color: #1e3a5f; font-weight: 700; margin-bottom: 8px;">Affiliate Model</p>
+                            <p style="color: #666; font-size: 0.875rem;">Moderate autonomy with certification standards. Best for mature models with established quality systems.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 id="investment">Investment Required for Scale</h2>
+
+                <p>Transforming rural economic mobility infrastructure across America requires strategic investment at each tier:</p>
+
+                <div class="bg-gray-50 rounded-xl p-6 my-6 not-prose">
+                    <h4 class="font-semibold text-gray-900 mb-4">10-Year Investment Map</h4>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                            <div>
+                                <p class="font-medium text-gray-900">National Hub Development</p>
+                                <p class="text-sm text-gray-500">Technology, training curriculum, research, advocacy</p>
+                            </div>
+                            <p class="font-bold text-empower-blue">$15M</p>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                            <div>
+                                <p class="font-medium text-gray-900">Regional Anchor Launch Grants</p>
+                                <p class="text-sm text-gray-500">$500K average per region for 3-year startup (100 regions)</p>
+                            </div>
+                            <p class="font-bold text-empower-blue">$50M</p>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                            <div>
+                                <p class="font-medium text-gray-900">Employer Certification Network</p>
+                                <p class="text-sm text-gray-500">Marketing, training, quality assurance systems</p>
+                            </div>
+                            <p class="font-bold text-empower-blue">$10M</p>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                            <div>
+                                <p class="font-medium text-gray-900">Research & Evaluation</p>
+                                <p class="text-sm text-gray-500">Longitudinal outcomes study, continuous improvement</p>
+                            </div>
+                            <p class="font-bold text-empower-blue">$8M</p>
+                        </div>
+                        <div class="flex justify-between items-center pt-2">
+                            <p class="font-bold text-gray-900">Total 10-Year Investment</p>
+                            <p class="font-bold text-tps-green text-xl">$83M</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <p class="text-sm text-gray-600"><strong>Projected 10-Year Return:</strong> 150,000 families served × $20,260 annual value = <span class="text-tps-green font-bold">$3.04B in economic value created</span></p>
+                        <p class="text-sm text-gray-500 mt-1">System-wide ROI: <strong>36:1</strong></p>
+                    </div>
+                </div>
+
+                <h2 id="coalition">Regional Coalition Strategy</h2>
+
+                <p>One of the most powerful—and often overlooked—paths to scaling is not going bigger, but going wider. Instead of expanding Empower as a single national organization, multiple regional pilots can form intentional coalitions that unlock funding opportunities impossible for individual programs to access.</p>
+
+                <h3>Why Regional Coalitions Open New Funding Doors</h3>
+
+                <p>Individual programs compete for the same limited local funding. A single navigator program in Upper Cumberland reaches hundreds of families. But when Upper Cumberland coordinates with neighboring development districts as a regional economic mobility ecosystem, something fundamentally changes:</p>
+
+                <ul>
+                    <li><strong>State-level funders recognize system-level thinking.</strong> A coalition showing coordinated impact across multiple counties signals serious infrastructure investment, not a one-off pilot.</li>
+                    <li><strong>Federal doors open.</strong> EDA, ARC, and workforce boards have much larger funding pots for regional initiatives than local programs can access.</li>
+                    <li><strong>Major foundations shift their calculus.</strong> Lumina, Gates, and other national foundations are actively seeking evidence-based models that can work at scale. A multi-county coalition with integrated data demonstrates scalability.</li>
+                    <li><strong>Employer recruitment becomes dramatically easier.</strong> A multi-county employer certification network is more attractive to national employers and supply chain partners than isolated local programs.</li>
+                </ul>
+
+                <p><strong>Example:</strong> Imagine Empower Upper Cumberland joining with Coal Region Development District (Pennsylvania), Eastern Kentucky Concentrated Employment Program (Kentucky), and North Georgia Development Authority (Georgia) as a formal "Appalachian Economic Mobility Coalition." Suddenly, you're not competing for $250K local grants—you're eligible for multi-million-dollar ARC funding, regional workforce development grants, and the attention of national foundations looking for rural-native infrastructure.</p>
+
+                <!-- Coalition Structure Box -->
+                <div style="background: #2d2d2d; border-radius: 12px; padding: 24px; margin: 24px 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 16px;">Coalition Structure Options</h4>
+                    <div style="display: grid; gap: 16px;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-left: 3px solid #a3c520; border-radius: 0 8px 8px 0;">
+                            <p style="color: #fff; font-weight: 700; margin-bottom: 8px;">Lead Agency Model</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 12px;">One established organization (often largest development district) holds the grant and subcontracts to partners.</p>
+                            <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;"><strong style="color: #a3c520;">Best for:</strong> Quick coalition formation; clear accountability. <strong style="color: #a3c520;">Risk:</strong> Smaller partners feel secondary.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-left: 3px solid #569db7; border-radius: 0 8px 8px 0;">
+                            <p style="color: #fff; font-weight: 700; margin-bottom: 8px;">Fiscal Sponsor Model</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 12px;">A neutral backbone organization (community foundation, intermediary) holds funding and manages distribution equally.</p>
+                            <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;"><strong style="color: #a3c520;">Best for:</strong> Larger coalitions where partner equity matters. <strong style="color: #a3c520;">Risk:</strong> Slower decision-making; requires new entity.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-left: 3px solid #1e3a5f; border-radius: 0 8px 8px 0;">
+                            <p style="color: #fff; font-weight: 700; margin-bottom: 8px;">Consortium Model</p>
+                            <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 12px;">Shared governance through formal coalition council with rotating leadership. Each partner maintains independence while pooling resources.</p>
+                            <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;"><strong style="color: #a3c520;">Best for:</strong> Mature coalition with established trust. <strong style="color: #a3c520;">Risk:</strong> Complex governance; consensus-seeking can slow execution.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>What Funders Want to See in Regional Coalitions</h3>
+
+                <p>Not all coalitions are created equal. Funders—especially those managing seven-figure grants—have learned to distinguish between genuine regional infrastructure and administrative convenience coalitions. Here's what they're evaluating:</p>
+
+                <ul>
+                    <li><strong>Shared Outcomes Framework.</strong> Not "we each do our own thing and report separately." Instead: integrated target population definition, aligned performance metrics across all partners, and collective accountability for regional economic mobility gains.</li>
+                    <li><strong>Clear Roles and Responsibilities.</strong> Which partner handles employer certification? Who manages the shared benefits counselor network? Where does the data live? Written MOU, not handshake agreements.</li>
+                    <li><strong>Data Sharing Agreements.</strong> A regional dashboard showing not just individual site performance but collective impact. HIPAA/FERPA compliant cross-site data integration that reveals patterns invisible at single sites.</li>
+                    <li><strong>Demonstrated Coordination, Not Co-Location.</strong> Having quarterly steering committee meetings where partners report to each other separately is theater. Actual coordination means: shared employer recruitment, navigators who refer across county lines based on job placement opportunity (not administrative convenience), and genuine resource pooling.</li>
+                    <li><strong>Sustainability Beyond Initial Grant Period.</strong> How will the coalition sustain after grant money ends? Are there earned revenue models? State funding commitments? National certification fee structures that support ongoing operations?</li>
+                </ul>
+
+                <!-- What Funders Want Box -->
+                <div style="background: #1a1a1a; border-radius: 12px; padding: 24px; margin: 24px 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 16px;">Funder Red Flags & Green Lights</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div>
+                            <p style="color: #ff6b6b; font-weight: 700; margin-bottom: 12px;">🚩 Red Flags</p>
+                            <ul style="color: rgba(255,255,255,0.8); font-size: 0.9rem; list-style: none; padding: 0; margin: 0; space-y: 8px;">
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• "We're a coalition but each partner operates independently"</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• No shared data infrastructure</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• Coalition formed primarily to access grant (dissolves when money ends)</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• Partners don't know each other's metrics</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• No written agreements on resource sharing</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p style="color: #51cf66; font-weight: 700; margin-bottom: 12px;">✓ Green Lights</p>
+                            <ul style="color: rgba(255,255,255,0.8); font-size: 0.9rem; list-style: none; padding: 0; margin: 0;">
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• Shared KPI dashboard updated monthly</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• Cross-county case conferencing</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• Joint employer recruitment strategy</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• Revenue model not 100% grant-dependent</li>
+                                <li style="margin-bottom: 8px; padding-left: 16px;">• Coalition formed by stakeholder demand (not funder requirement)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Building Coalition Infrastructure</h3>
+
+                <p>Regional coalitions don't just happen. They require intentional infrastructure investment, especially in the first two years:</p>
+
+                <ul>
+                    <li><strong>Start with informal coordination before formalizing.</strong> Six months of monthly coordination calls between executive directors, shared learning about each other's challenges, and informal resource sharing. Only when trust exists should you formalize through MOUs or fiscal sponsors.</li>
+                    <li><strong>Create a shared assessment or data dashboard.</strong> Invest in integrated systems that show regional economic mobility outcomes—not just individual program metrics. This becomes your primary advocacy and funder communication tool.</li>
+                    <li><strong>Establish regular leadership alignment meetings.</strong> Monthly executive director calls focused on strategic issues (funder relations, employer partnership expansion, policy engagement). Quarterly in-person convenings where full teams (navigators, benefits counselors, employers) can coordinate directly.</li>
+                    <li><strong>Develop a combined identity and communication strategy.</strong> A shared website describing the regional coalition, a unified slide deck that can be customized for each partner's local context, and a joint landing page for employers interested in multi-state certification.</li>
+                    <li><strong>Invest in backbone staff infrastructure.</strong> For coalitions of 3-5 regional anchors, consider a $100-150K annual role: Coalition Coordinator (or "Director of Regional Alignment"). This person manages data integration, coordinates meetings, troubleshoots tensions, and keeps the coalition focused on shared outcomes.</li>
+                </ul>
+
+                <h3>Funding Sources for Regional Coalition Approaches</h3>
+
+                <p>Once your coalition is structured, you become eligible for funding streams unavailable to single-site programs:</p>
+
+                <div class="space-y-3 my-6 not-prose">
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+                        <p style="font-weight: 700; color: #1e3a5f; margin: 0 0 4px 0;">Economic Development Administration (EDA)</p>
+                        <p style="color: #666; font-size: 0.9rem; margin: 0;">Multi-million-dollar grants for regional economic development projects. EDA explicitly prioritizes workforce development as component of economic strategy. Regional coalition structure is ideal for EDA's "regions" mandate.</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+                        <p style="font-weight: 700; color: #1e3a5f; margin: 0 0 4px 0;">Appalachian Regional Commission (ARC)</p>
+                        <p style="color: #666; font-size: 0.9rem; margin: 0;">Up to $2M per approved project for multi-county regional initiatives in Appalachian region. Focuses on workforce development, economic opportunity, and cross-sector coordination.</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+                        <p style="font-weight: 700; color: #1e3a5f; margin: 0 0 4px 0;">State Workforce Development Boards</p>
+                        <p style="color: #666; font-size: 0.9rem; margin: 0;">Each state distributes Workforce Innovation and Opportunity Act (WIOA) funds to regional boards. Regional coalitions can apply for local area grants ($1-5M+) or state-level innovation grants.</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+                        <p style="font-weight: 700; color: #1e3a5f; margin: 0 0 4px 0;">Major National Foundations</p>
+                        <p style="color: #666; font-size: 0.9rem; margin: 0;">Lumina Foundation, Bill & Melinda Gates Foundation, Ford Foundation, and others with "rural" or "economic opportunity" priorities. Multi-site coalitions demonstrate scalability and systems thinking these funders want to support.</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;">
+                        <p style="font-weight: 700; color: #1e3a5f; margin: 0 0 4px 0;">State TANF Flexibility Funds</p>
+                        <p style="color: #666; font-size: 0.9rem; margin: 0;">Most states allocate Temporary Assistance to Needy Families dollars to innovative workforce/poverty reduction projects at state level. Regional coalitions focused on TANF populations can access significant flexible funding.</p>
+                    </div>
+                </div>
+
+                <p><strong>Coalition Funding Strategy Example:</strong> A 4-county coalition applying together could realistically pursue: $1.2M EDA regional planning grant (2-year) + $800K state workforce board grant (1-year, renewable) + $600K foundation grant (2-year) = $2.6M in first 24 months—far beyond what any single site could access independently.</p>
+
+                <h2 id="national-funders">The Call to National Funders</h2>
+
+                <p>Rural America has been waiting for a solution designed for its reality. Urban approaches have failed. Piecemeal programs have stalled. The Empower model offers something different: <strong>proven infrastructure that works where other models don't.</strong></p>
+
+                <p>We're not asking for charity. We're offering an investment opportunity:</p>
+
+                <ul>
+                    <li><strong>For workforce foundations:</strong> The most effective workforce strategy for employers who can't find workers</li>
+                    <li><strong>For anti-poverty foundations:</strong> A benefits cliff solution that actually helps families advance</li>
+                    <li><strong>For rural-focused foundations:</strong> Finally, a rural-native model with evidence</li>
+                    <li><strong>For systems-change foundations:</strong> Infrastructure that transforms how regions approach economic mobility</li>
+                </ul>
+
+                <blockquote>
+                    "We've proven it works in Upper Cumberland. Now we need partners who want to see it work everywhere rural families are struggling to get ahead."
+                </blockquote>
+
+                <h2 id="join">Join the Movement</h2>
+
+                <p>The Empower model isn't owned by one organization—it's a movement. Here's how different stakeholders can engage:</p>
+
+                <div class="grid md:grid-cols-2 gap-4 my-6 not-prose">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">Regional Organizations</h4>
+                        <p class="text-sm text-gray-600 mb-3">Want to become an Empower regional anchor?</p>
+                        <a href="mailto:info@thepovertysolution.com?subject=Regional Anchor Interest" class="text-gray-600 text-sm font-medium hover:underline">Request Implementation Information →</a>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">National Funders</h4>
+                        <p class="text-sm text-gray-600 mb-3">Interested in supporting scale?</p>
+                        <a href="mailto:info@thepovertysolution.com?subject=Funder Inquiry" class="text-gray-600 text-sm font-medium hover:underline">Schedule a Briefing →</a>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">State Policymakers</h4>
+                        <p class="text-sm text-gray-600 mb-3">Want to bring this to your state?</p>
+                        <a href="mailto:info@thepovertysolution.com?subject=State Partnership" class="text-gray-600 text-sm font-medium hover:underline">Request Policy Brief →</a>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                        <h4 class="font-semibold text-gray-900 mb-2">National Employers</h4>
+                        <p class="text-sm text-gray-600 mb-3">Multi-site company with rural locations?</p>
+                        <a href="mailto:info@thepovertysolution.com?subject=Employer Network" class="text-gray-600 text-sm font-medium hover:underline">Join the Employer Network →</a>
+                    </div>
+                </div>
+
+                <div class="bg-empower-blue/5 border border-empower-blue/20 rounded-xl p-6 mt-8 not-prose">
+                    <h4 class="font-bold text-empower-blue text-lg mb-3">What Happens Next</h4>
+                    <p class="text-gray-700">You've read the playbook. You understand the model. Now the question is: will you be part of building the economic mobility infrastructure rural America deserves?</p>
+                    <p class="text-gray-700 mt-3">Contact <a href="mailto:info@thepovertysolution.com" class="text-empower-blue font-medium hover:underline">info@thepovertysolution.com</a> to start the conversation.</p>
+                </div>
+
+            </div>
+
+            <!-- On This Page TOC -->
+            <aside class="hidden xl:block">
+                <div class="toc">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
+                    <nav>
+                        <a href="#why-scale" class="toc-link active">Why Scale Matters</a>
+                        <a href="#scaling-model" class="toc-link">Scaling Model</a>
+                        <a href="#timeline" class="toc-link">Timeline & Targets</a>
+                        <a href="#success-factors" class="toc-link">Success Factors</a>
+                        <a href="#investment" class="toc-link">Investment Required</a>
+                        <a href="#coalition" class="toc-link">Coalition Strategy</a>
+                        <a href="#national-funders" class="toc-link">National Funders</a>
+                        <a href="#join" class="toc-link">Join the Movement</a>
+                    </nav>
+                </div>
+            </aside>
+            </div>
+
+            <!-- Chapter Navigation -->
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-11.html" class="text-gray-500 hover:text-gray-700 transition text-sm">
+                    ← Previous: Adapting the Model
+                </a>
+                <a href="chapter-14.html" class="bg-[#545454] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#6b7280] transition">
+                    Next: Poverty IQ Training →
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', function() {
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / docHeight) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        });
+
+        // TOC Active State
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id]');
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Left arrow - previous chapter
+            if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const activeElement = document.activeElement;
+                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
+                if (!isInput) {
+                    window.location.href = 'chapter-11.html';
+                }
+            }
+            // Right arrow - next chapter
+            if (e.key === 'ArrowRight' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const activeElement = document.activeElement;
+                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
+                if (!isInput) {
+                    window.location.href = 'chapter-14.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

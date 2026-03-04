@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 14: Poverty IQ for Employers | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#569db7',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #a3c520, #7a9c10);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #1e3a5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 200;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #f0f9e8; color: #3d6b0d; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Enhanced Prose Styling */
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a5f;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .prose h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: #a3c520;
+            border-radius: 2px;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .prose ul, .prose ol {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+        }
+        .prose ul { list-style-type: disc; }
+        .prose ol { list-style-type: decimal; }
+        .prose li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .prose blockquote {
+            border-left: 4px solid #a3c520;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #555;
+            margin: 1.5rem 0;
+            background: linear-gradient(90deg, rgba(163,197,32,0.05), transparent);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose strong { color: #222; }
+        .prose hr {
+            border: none;
+            border-top: 1px solid #e5e5e5;
+            margin: 2.5rem 0;
+        }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        /* Gradient Chapter Header */
+        .chapter-header {
+            background: linear-gradient(135deg, #a3c520 0%, #8ab218 50%, #7a9c10 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .chapter-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1));
+        }
+
+        /* Read Time Badge */
+        .read-time-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: rgba(17,17,17,0.8);
+        }
+
+        /* Module styling */
+        .module-section { border-bottom: 1px solid #f0f0f0; }
+        .module-section:last-child { border-bottom: none; }
+
+        .module-header {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .module-header:hover { background: #f9f9f9; }
+
+        .lesson-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px 10px 44px;
+            font-size: 13px;
+            color: #666;
+            transition: all 0.15s;
+            border-left: 2px solid transparent;
+        }
+        .lesson-link:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+        .lesson-link.active {
+            background: #f0fdf4;
+            color: #166534;
+            border-left-color: #a3c520;
+        }
+        .lesson-link.completed {
+            color: #999;
+        }
+        .lesson-link.completed::before {
+            content: '\2713';
+            margin-right: 8px;
+            color: #a3c520;
+        }
+
+        /* Video container */
+        .video-wrapper {
+            background: #000;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .play-button:hover {
+            background: #a3c520;
+            transform: scale(1.1);
+        }
+
+        /* Accordion */
+        .module-lessons {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .module-lessons.open {
+            max-height: 1000px;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <nav class="py-4">
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 1 - The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num bg-empower-blue text-white">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 2 - The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 3 - Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num bg-part3-blue text-white">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num bg-red-700 text-white">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <p class="nav-section-title">Part 4 - Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">10</span>
+                    Funding
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 - Research -->
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Evidence Foundation
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Benefits Cliff Research
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Research Bibliography
+                </a>
+            </div>
+
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item active">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content min-h-screen" id="main-content">
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Training Academy</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-tps-green/20 text-tps-dark px-2 py-1 rounded font-medium">TRAINING</span>
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Gradient Chapter Header -->
+        <div class="chapter-header text-tps-dark px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="text-tps-dark/70 text-sm font-medium">Chapter 14</p>
+                    <span class="read-time-badge">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        2 hr course
+                    </span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    Poverty IQ for Employers
+                </h1>
+                <p class="text-tps-dark/80 mt-3">Employer Certification Course</p>
+            </div>
+        </div>
+
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto">
+
+                <!-- Research Impact Box -->
+                <div style="background: #1a1a1a; border-radius: 16px; padding: 28px; margin-bottom: 24px;">
+                    <h3 style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin-bottom: 16px;">Research: The Business Cost of Financial Stress</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">$250B</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.8125rem;">Annual productivity loss from employee financial stress</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">3+ hrs</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.8125rem;">Per week employees spend on financial issues at work</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">49%</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.8125rem;">Of employees distracted by finances at work</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 10px; text-align: center;">
+                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">34%</p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.8125rem;">Increase in absenteeism from financial stress</p>
+                        </div>
+                    </div>
+                    <div style="background: rgba(163,197,32,0.1); border-left: 3px solid #a3c520; padding: 12px 16px; border-radius: 0 8px 8px 0;">
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.875rem; margin: 0;"><strong style="color: #a3c520;">Recovery-Friendly Workplace Certification</strong> programs now exist to help employers formally commit to supporting employees in recovery—demonstrating that workforce support is becoming a competitive advantage.</p>
+                    </div>
+                </div>
+
+                <!-- Course Overview -->
+                <div class="bg-white rounded-xl shadow-sm p-6 lg:p-8 mb-8 prose">
+                    <div class="max-w-7xl mx-auto">
+                        <h2 class="mt-0">Welcome to Empower</h2>
+
+                        <p class="text-gray-600 leading-relaxed">
+                            Thank you for taking the first step toward becoming an Empower Certified Employer. This course will equip you with the knowledge and tools you need to hire, support, and retain employees who are navigating poverty.
+                        </p>
+
+                        <div class="bg-gray-50 rounded-lg p-5 mb-6 not-prose">
+                            <h3 class="font-semibold text-gray-900 mb-3">What You'll Learn</h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-tps-green mt-0.5">&#10003;</span>
+                                    <span class="text-gray-600">Understanding poverty dynamics and how they affect your workforce</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-tps-green mt-0.5">&#10003;</span>
+                                    <span class="text-gray-600">The benefits cliff and how to help employees navigate it</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-tps-green mt-0.5">&#10003;</span>
+                                    <span class="text-gray-600">Strategies for creating an empowering workplace</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <span class="text-tps-green mt-0.5">&#10003;</span>
+                                    <span class="text-gray-600">How to partner with Empower for ongoing support</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 bg-tps-green/10 rounded-lg not-prose">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-tps-green rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-tps-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">Certification Included</p>
+                                    <p class="text-sm text-gray-500">Complete all modules to earn your certificate</p>
+                                </div>
+                            </div>
+                            <span class="text-sm text-tps-dark font-medium">~2 hours</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Modules -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+                    <div class="p-6 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-900">Course Modules</h3>
+                        <p class="text-sm text-gray-500 mt-1">Progress through each module to complete your certification</p>
+                    </div>
+
+                    <!-- Welcome -->
+                    <div class="module-section">
+                        <div class="module-header flex items-center justify-between" onclick="toggleModule(this)">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-6 h-6 rounded bg-tps-dark flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900">Welcome</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="module-lessons">
+                            <a href="#welcome" class="lesson-link active" onclick="loadLesson('welcome', this)">
+                                Welcome to Empower
+                            </a>
+                            <a href="#benefits-certified" class="lesson-link" onclick="loadLesson('benefits-certified', this)">
+                                Benefits of Becoming Certified
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Module 1 -->
+                    <div class="module-section">
+                        <div class="module-header flex items-center justify-between" onclick="toggleModule(this)">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-6 h-6 rounded bg-empower-blue text-white flex items-center justify-center text-xs font-bold">1</div>
+                                <span class="text-sm font-medium text-gray-900">Introduction to Poverty</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="module-lessons">
+                            <a href="#" class="lesson-link" onclick="loadLesson('poverty-dynamics', this)">Poverty Dynamics</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('poverty-iq', this)">Poverty IQ and Decision-Making</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('fpl', this)">Federal Poverty Line</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('quiz-1', this)">Check for Understanding</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('scenario-1', this)">Coaching Scenario</a>
+                        </div>
+                    </div>
+
+                    <!-- Module 2 -->
+                    <div class="module-section">
+                        <div class="module-header flex items-center justify-between" onclick="toggleModule(this)">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-6 h-6 rounded bg-empower-blue text-white flex items-center justify-center text-xs font-bold">2</div>
+                                <span class="text-sm font-medium text-gray-900">Benefits of Hiring</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="module-lessons">
+                            <a href="#" class="lesson-link" onclick="loadLesson('csr', this)">Corporate Social Responsibility</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('growth', this)">Driving Growth</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('quiz-2', this)">Check for Understanding</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('scenario-2', this)">Coaching Scenario</a>
+                        </div>
+                    </div>
+
+                    <!-- Module 3 - Benefits Cliff -->
+                    <div class="module-section">
+                        <div class="module-header flex items-center justify-between" onclick="toggleModule(this)">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-6 h-6 rounded bg-tps-green text-tps-dark flex items-center justify-center text-xs font-bold">3</div>
+                                <div>
+                                    <span class="text-sm font-medium text-gray-900">The Benefits Cliff</span>
+                                    <span class="ml-2 text-[10px] bg-tps-green/20 text-tps-dark px-1.5 py-0.5 rounded font-medium">KEY</span>
+                                </div>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="module-lessons">
+                            <a href="#" class="lesson-link" onclick="loadLesson('cliff-explained', this)">The Benefits Cliff Explained</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('cliff-effects', this)">Effects on Employees</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('cliff-support', this)">Supporting Employees</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('scenario-3', this)">Coaching Scenario</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('quiz-3', this)">Check for Understanding</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('tenncare', this)">TennCare in Tennessee</a>
+                        </div>
+                    </div>
+
+                    <!-- Module 4 -->
+                    <div class="module-section">
+                        <div class="module-header flex items-center justify-between" onclick="toggleModule(this)">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-6 h-6 rounded bg-empower-blue text-white flex items-center justify-center text-xs font-bold">4</div>
+                                <span class="text-sm font-medium text-gray-900">Employee Empowerment</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="module-lessons">
+                            <a href="#" class="lesson-link" onclick="loadLesson('emp-role', this)">Employer's Role</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('emp-strategies', this)">Strategies for Empowering</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('emp-comm', this)">Effective Communication</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('emp-connections', this)">Building Connections</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('scenario-4', this)">Coaching Scenario</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('quiz-4', this)">Check for Understanding</a>
+                        </div>
+                    </div>
+
+                    <!-- Conclusion -->
+                    <div class="module-section">
+                        <div class="module-header flex items-center justify-between" onclick="toggleModule(this)">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-6 h-6 rounded bg-tps-dark flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-tps-green" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </div>
+                                <span class="text-sm font-medium text-gray-900">Conclusion</span>
+                            </div>
+                            <svg class="w-4 h-4 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="module-lessons">
+                            <a href="#" class="lesson-link" onclick="loadLesson('final', this)">Putting Poverty IQ into Practice</a>
+                            <a href="#" class="lesson-link" onclick="loadLesson('certificate', this)">Get Your Certificate</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Player -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+                    <div class="video-wrapper">
+                        <!-- Replace this div with your video embed -->
+                        <div class="play-button">
+                            <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <!-- Example embed:
+                        <iframe src="https://player.vimeo.com/video/YOUR_ID" class="w-full h-full" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                        -->
+                    </div>
+                </div>
+
+                <!-- Resources Section -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                    <h3 class="font-semibold text-gray-900 mb-4">Resources</h3>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <a href="#" class="flex items-center space-x-3 p-3 border border-gray-100 rounded-lg hover:border-empower-blue hover:bg-empower-blue/5 transition">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Course Guide</p>
+                                <p class="text-xs text-gray-400">PDF Download</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-3 border border-gray-100 rounded-lg hover:border-empower-blue hover:bg-empower-blue/5 transition">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Benefits Cliff Calculator</p>
+                                <p class="text-xs text-gray-400">Web Tool</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-3 border border-gray-100 rounded-lg hover:border-empower-blue hover:bg-empower-blue/5 transition">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            </svg>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Employer Checklist</p>
+                                <p class="text-xs text-gray-400">PDF Download</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Chapter Navigation -->
+                <div class="flex justify-between items-center pt-8 border-t border-gray-200">
+                    <a href="chapter-12.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                            Previous: Scaling Beyond
+                        </span>
+                    </a>
+                    <a href="chapter-13.html" class="bg-tps-green text-tps-dark px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-tps-green/90 transition">
+                        Next: Templates & Tools
+                        <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">&copy; 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-12.html" title="Previous: Scaling Beyond" class="text-gray-600 hover:text-empower-blue">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+            </svg>
+        </a>
+        <a href="chapter-13.html" title="Next: Templates & Tools" class="text-gray-600 hover:text-tps-green">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Toggle module sections
+        function toggleModule(header) {
+            const lessons = header.nextElementSibling;
+            const arrow = header.querySelector('.module-arrow');
+
+            // Close all other modules
+            document.querySelectorAll('.module-lessons').forEach(m => {
+                if (m !== lessons) {
+                    m.classList.remove('open');
+                    m.previousElementSibling.querySelector('.module-arrow').classList.remove('rotate-180');
+                }
+            });
+
+            lessons.classList.toggle('open');
+            arrow.classList.toggle('rotate-180');
+        }
+
+        // Load lesson content
+        function loadLesson(lessonId, element) {
+            // Update active state
+            document.querySelectorAll('.lesson-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            // Here you would load the actual lesson content
+            // For now, just scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Open first module by default
+        document.querySelector('.module-lessons').classList.add('open');
+        document.querySelector('.module-arrow').classList.add('rotate-180');
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('readingProgress').style.width = scrolled + '%';
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Left arrow or 'p' for previous
+            if (e.key === 'ArrowLeft' || e.key === 'p' || e.key === 'P') {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const activeElement = document.activeElement;
+                    const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+                    if (!isInput) {
+                        window.location.href = 'chapter-12.html';
+                    }
+                }
+            }
+            // Right arrow or 'n' for next
+            if (e.key === 'ArrowRight' || e.key === 'n' || e.key === 'N') {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const activeElement = document.activeElement;
+                    const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+                    if (!isInput) {
+                        window.location.href = 'chapter-13.html';
+                    }
+                }
+            }
+            // 'h' for home/overview
+            if (e.key === 'h' || e.key === 'H') {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                    const activeElement = document.activeElement;
+                    const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA';
+                    if (!isInput) {
+                        window.location.href = '../index.html';
+                    }
+                }
+            }
+            // Escape to close sidebar
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

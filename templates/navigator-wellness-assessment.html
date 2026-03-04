@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigator Wellness Self-Assessment | Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { font-size: 11pt; }
+        }
+        .score-radio:checked + label {
+            background-color: #a3c520;
+            color: #111;
+            border-color: #a3c520;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <div class="bg-tps-green px-8 py-6 no-print">
+        <div class="max-w-7xl mx-auto mx-auto">
+            <p class="text-sm text-tps-dark/70 mb-1">Empower Playbook Template</p>
+            <h1 class="text-2xl font-bold text-tps-dark">Navigator Wellness Self-Assessment</h1>
+            <p class="text-tps-dark/80 mt-2">Confidential tool for navigators to monitor burnout risk and compassion fatigue</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mx-auto px-8 py-8">
+        <!-- Important Context -->
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-amber-800 mb-2">Why This Matters</h2>
+            <p class="text-amber-900 text-sm">Navigator work is emotionally demanding. You carry the weight of families' struggles, navigate complex systems, and celebrate hard-won victories. This assessment helps you recognize when you need support—not as a sign of weakness, but as essential maintenance for sustainable impact. <strong>Your wellness directly affects the families you serve.</strong></p>
+        </div>
+
+        <!-- Assessment Info -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Current Caseload Size</label>
+                    <input type="number" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-tps-green focus:border-transparent" placeholder="Number of active families">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Physical Symptoms -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 1: Physical Wellness</h2>
+            <p class="text-gray-600 text-sm mb-6">Rate how often you've experienced these in the past two weeks.</p>
+
+            <div class="space-y-6">
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">1.1 Difficulty sleeping or changes in sleep patterns</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="p1" id="p1_1" value="0" class="sr-only score-radio">
+                        <label for="p1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="p1" id="p1_2" value="1" class="sr-only score-radio">
+                        <label for="p1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="p1" id="p1_3" value="2" class="sr-only score-radio">
+                        <label for="p1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="p1" id="p1_4" value="3" class="sr-only score-radio">
+                        <label for="p1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="p1" id="p1_5" value="4" class="sr-only score-radio">
+                        <label for="p1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">1.2 Headaches, muscle tension, or physical exhaustion</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="p2" id="p2_1" value="0" class="sr-only score-radio">
+                        <label for="p2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="p2" id="p2_2" value="1" class="sr-only score-radio">
+                        <label for="p2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="p2" id="p2_3" value="2" class="sr-only score-radio">
+                        <label for="p2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="p2" id="p2_4" value="3" class="sr-only score-radio">
+                        <label for="p2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="p2" id="p2_5" value="4" class="sr-only score-radio">
+                        <label for="p2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">1.3 Changes in appetite or eating habits</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="p3" id="p3_1" value="0" class="sr-only score-radio">
+                        <label for="p3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="p3" id="p3_2" value="1" class="sr-only score-radio">
+                        <label for="p3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="p3" id="p3_3" value="2" class="sr-only score-radio">
+                        <label for="p3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="p3" id="p3_4" value="3" class="sr-only score-radio">
+                        <label for="p3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="p3" id="p3_5" value="4" class="sr-only score-radio">
+                        <label for="p3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-medium mb-3">1.4 Getting sick more often than usual</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="p4" id="p4_1" value="0" class="sr-only score-radio">
+                        <label for="p4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="p4" id="p4_2" value="1" class="sr-only score-radio">
+                        <label for="p4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="p4" id="p4_3" value="2" class="sr-only score-radio">
+                        <label for="p4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="p4" id="p4_4" value="3" class="sr-only score-radio">
+                        <label for="p4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="p4" id="p4_5" value="4" class="sr-only score-radio">
+                        <label for="p4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Emotional Symptoms -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 2: Emotional Wellness</h2>
+            <p class="text-gray-600 text-sm mb-6">Rate how often you've experienced these in the past two weeks.</p>
+
+            <div class="space-y-6">
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">2.1 Feeling emotionally drained at the end of the day</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="e1" id="e1_1" value="0" class="sr-only score-radio">
+                        <label for="e1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="e1" id="e1_2" value="1" class="sr-only score-radio">
+                        <label for="e1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="e1" id="e1_3" value="2" class="sr-only score-radio">
+                        <label for="e1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="e1" id="e1_4" value="3" class="sr-only score-radio">
+                        <label for="e1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="e1" id="e1_5" value="4" class="sr-only score-radio">
+                        <label for="e1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">2.2 Feeling overwhelmed or unable to cope</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="e2" id="e2_1" value="0" class="sr-only score-radio">
+                        <label for="e2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="e2" id="e2_2" value="1" class="sr-only score-radio">
+                        <label for="e2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="e2" id="e2_3" value="2" class="sr-only score-radio">
+                        <label for="e2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="e2" id="e2_4" value="3" class="sr-only score-radio">
+                        <label for="e2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="e2" id="e2_5" value="4" class="sr-only score-radio">
+                        <label for="e2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">2.3 Irritability or frustration with participants or colleagues</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="e3" id="e3_1" value="0" class="sr-only score-radio">
+                        <label for="e3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="e3" id="e3_2" value="1" class="sr-only score-radio">
+                        <label for="e3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="e3" id="e3_3" value="2" class="sr-only score-radio">
+                        <label for="e3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="e3" id="e3_4" value="3" class="sr-only score-radio">
+                        <label for="e3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="e3" id="e3_5" value="4" class="sr-only score-radio">
+                        <label for="e3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">2.4 Difficulty feeling hopeful about participants' futures</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="e4" id="e4_1" value="0" class="sr-only score-radio">
+                        <label for="e4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="e4" id="e4_2" value="1" class="sr-only score-radio">
+                        <label for="e4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="e4" id="e4_3" value="2" class="sr-only score-radio">
+                        <label for="e4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="e4" id="e4_4" value="3" class="sr-only score-radio">
+                        <label for="e4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="e4" id="e4_5" value="4" class="sr-only score-radio">
+                        <label for="e4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-medium mb-3">2.5 Thinking about work during off-hours or difficulty "switching off"</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="e5" id="e5_1" value="0" class="sr-only score-radio">
+                        <label for="e5_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="e5" id="e5_2" value="1" class="sr-only score-radio">
+                        <label for="e5_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="e5" id="e5_3" value="2" class="sr-only score-radio">
+                        <label for="e5_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="e5" id="e5_4" value="3" class="sr-only score-radio">
+                        <label for="e5_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="e5" id="e5_5" value="4" class="sr-only score-radio">
+                        <label for="e5_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Professional Engagement -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 3: Professional Engagement</h2>
+            <p class="text-gray-600 text-sm mb-6">Rate how often you've experienced these in the past two weeks.</p>
+
+            <div class="space-y-6">
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">3.1 Difficulty staying focused during participant meetings</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="w1" id="w1_1" value="0" class="sr-only score-radio">
+                        <label for="w1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="w1" id="w1_2" value="1" class="sr-only score-radio">
+                        <label for="w1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="w1" id="w1_3" value="2" class="sr-only score-radio">
+                        <label for="w1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="w1" id="w1_4" value="3" class="sr-only score-radio">
+                        <label for="w1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="w1" id="w1_5" value="4" class="sr-only score-radio">
+                        <label for="w1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">3.2 Feeling detached or numb when hearing participants' challenges</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="w2" id="w2_1" value="0" class="sr-only score-radio">
+                        <label for="w2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="w2" id="w2_2" value="1" class="sr-only score-radio">
+                        <label for="w2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="w2" id="w2_3" value="2" class="sr-only score-radio">
+                        <label for="w2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="w2" id="w2_4" value="3" class="sr-only score-radio">
+                        <label for="w2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="w2" id="w2_5" value="4" class="sr-only score-radio">
+                        <label for="w2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">3.3 Questioning whether this work makes a difference</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="w3" id="w3_1" value="0" class="sr-only score-radio">
+                        <label for="w3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="w3" id="w3_2" value="1" class="sr-only score-radio">
+                        <label for="w3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="w3" id="w3_3" value="2" class="sr-only score-radio">
+                        <label for="w3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="w3" id="w3_4" value="3" class="sr-only score-radio">
+                        <label for="w3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="w3" id="w3_5" value="4" class="sr-only score-radio">
+                        <label for="w3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-medium mb-3">3.4 Dreading going to work or avoiding certain participants</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="w4" id="w4_1" value="0" class="sr-only score-radio">
+                        <label for="w4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Never</label>
+                        <input type="radio" name="w4" id="w4_2" value="1" class="sr-only score-radio">
+                        <label for="w4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Rarely</label>
+                        <input type="radio" name="w4" id="w4_3" value="2" class="sr-only score-radio">
+                        <label for="w4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Sometimes</label>
+                        <input type="radio" name="w4" id="w4_4" value="3" class="sr-only score-radio">
+                        <label for="w4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Often</label>
+                        <input type="radio" name="w4" id="w4_5" value="4" class="sr-only score-radio">
+                        <label for="w4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Almost Always</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Support Systems -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-2 text-empower-blue">Section 4: Support Systems</h2>
+            <p class="text-gray-600 text-sm mb-6">These protective factors reduce burnout risk. Rate your current access.</p>
+
+            <div class="space-y-6">
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">4.1 I have regular supervision/support from my manager</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="s1" id="s1_1" value="4" class="sr-only score-radio">
+                        <label for="s1_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Agree</label>
+                        <input type="radio" name="s1" id="s1_2" value="3" class="sr-only score-radio">
+                        <label for="s1_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Agree</label>
+                        <input type="radio" name="s1" id="s1_3" value="2" class="sr-only score-radio">
+                        <label for="s1_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Neutral</label>
+                        <input type="radio" name="s1" id="s1_4" value="1" class="sr-only score-radio">
+                        <label for="s1_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Disagree</label>
+                        <input type="radio" name="s1" id="s1_5" value="0" class="sr-only score-radio">
+                        <label for="s1_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Disagree</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">4.2 I can talk to colleagues who understand this work</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="s2" id="s2_1" value="4" class="sr-only score-radio">
+                        <label for="s2_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Agree</label>
+                        <input type="radio" name="s2" id="s2_2" value="3" class="sr-only score-radio">
+                        <label for="s2_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Agree</label>
+                        <input type="radio" name="s2" id="s2_3" value="2" class="sr-only score-radio">
+                        <label for="s2_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Neutral</label>
+                        <input type="radio" name="s2" id="s2_4" value="1" class="sr-only score-radio">
+                        <label for="s2_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Disagree</label>
+                        <input type="radio" name="s2" id="s2_5" value="0" class="sr-only score-radio">
+                        <label for="s2_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Disagree</label>
+                    </div>
+                </div>
+
+                <div class="border-b border-gray-100 pb-4">
+                    <p class="font-medium mb-3">4.3 I have activities outside work that help me recharge</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="s3" id="s3_1" value="4" class="sr-only score-radio">
+                        <label for="s3_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Agree</label>
+                        <input type="radio" name="s3" id="s3_2" value="3" class="sr-only score-radio">
+                        <label for="s3_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Agree</label>
+                        <input type="radio" name="s3" id="s3_3" value="2" class="sr-only score-radio">
+                        <label for="s3_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Neutral</label>
+                        <input type="radio" name="s3" id="s3_4" value="1" class="sr-only score-radio">
+                        <label for="s3_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Disagree</label>
+                        <input type="radio" name="s3" id="s3_5" value="0" class="sr-only score-radio">
+                        <label for="s3_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Disagree</label>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="font-medium mb-3">4.4 My caseload is manageable (≤25 families)</p>
+                    <div class="flex flex-wrap gap-2">
+                        <input type="radio" name="s4" id="s4_1" value="4" class="sr-only score-radio">
+                        <label for="s4_1" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Agree</label>
+                        <input type="radio" name="s4" id="s4_2" value="3" class="sr-only score-radio">
+                        <label for="s4_2" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Agree</label>
+                        <input type="radio" name="s4" id="s4_3" value="2" class="sr-only score-radio">
+                        <label for="s4_3" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Neutral</label>
+                        <input type="radio" name="s4" id="s4_4" value="1" class="sr-only score-radio">
+                        <label for="s4_4" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Disagree</label>
+                        <input type="radio" name="s4" id="s4_5" value="0" class="sr-only score-radio">
+                        <label for="s4_5" class="px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 text-sm">Strongly Disagree</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="bg-empower-blue text-white rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-xl mb-4">Your Results</h2>
+            <div class="grid md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <p class="text-sm text-white/70">Burnout Risk Score</p>
+                    <p class="text-3xl font-bold" id="burnoutScore">0</p>
+                    <p class="text-xs text-white/60">/ 52 (lower is better)</p>
+                </div>
+                <div class="bg-white/10 rounded-lg p-4 text-center">
+                    <p class="text-sm text-white/70">Protective Factors Score</p>
+                    <p class="text-3xl font-bold" id="protectiveScore">0</p>
+                    <p class="text-xs text-white/60">/ 16 (higher is better)</p>
+                </div>
+            </div>
+            <div class="bg-white/20 rounded-lg p-4">
+                <p class="text-sm text-white/70 mb-2">Risk Level</p>
+                <p class="text-xl font-bold" id="riskLevel">Complete assessment to see results</p>
+            </div>
+        </div>
+
+        <!-- Interpretation -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Understanding Your Results</h2>
+            <div class="space-y-4">
+                <div class="border-l-4 border-green-500 pl-4">
+                    <p class="font-semibold">Low Risk (Burnout 0-17, Protective 12-16)</p>
+                    <p class="text-gray-600 text-sm">You're managing well. Continue your self-care practices and support system engagement. Monitor any changes.</p>
+                </div>
+                <div class="border-l-4 border-yellow-500 pl-4">
+                    <p class="font-semibold">Moderate Risk (Burnout 18-34 OR Protective 8-11)</p>
+                    <p class="text-gray-600 text-sm">Warning signs present. Schedule time with your supervisor to discuss workload. Prioritize self-care and peer support. Consider which protective factors you can strengthen.</p>
+                </div>
+                <div class="border-l-4 border-red-500 pl-4">
+                    <p class="font-semibold">High Risk (Burnout 35-52 OR Protective 0-7)</p>
+                    <p class="text-gray-600 text-sm">Immediate attention needed. Please speak with your supervisor this week about caseload adjustment and support needs. This is not a failure—it's the work recognizing you need care too.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Steps -->
+        <div class="bg-tps-green/10 rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-lg mb-4 text-tps-dark">Wellness Action Steps</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">One thing I will do this week for my physical wellness:</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">One boundary I will set or maintain:</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">One person I will connect with for support:</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="bg-gray-100 rounded-xl p-6 mb-8">
+            <h2 class="font-bold text-lg mb-4">Resources</h2>
+            <ul class="space-y-2 text-gray-600 text-sm">
+                <li><strong>Employee Assistance Program (EAP):</strong> Check with your HR department for free confidential counseling</li>
+                <li><strong>Peer Support:</strong> Navigators Network monthly calls - connect with others doing this work</li>
+                <li><strong>Books:</strong> "Trauma Stewardship" by Laura van Dernoot Lipsky; "The Body Keeps the Score" by Bessel van der Kolk</li>
+                <li><strong>Crisis Support:</strong> 988 Suicide & Crisis Lifeline (call or text 988)</li>
+            </ul>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-4 no-print">
+            <button onclick="window.print()" class="bg-empower-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-empower-blue/90 transition">
+                Print / Save as PDF
+            </button>
+            <a href="../chapters/chapter-13.html" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                Back to Templates
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', calculateScores);
+        });
+
+        function calculateScores() {
+            let burnout = 0;
+            let protective = 0;
+
+            // Physical symptoms (p1-p4)
+            for (let i = 1; i <= 4; i++) {
+                const checked = document.querySelector(`input[name="p${i}"]:checked`);
+                if (checked) burnout += parseInt(checked.value);
+            }
+
+            // Emotional symptoms (e1-e5)
+            for (let i = 1; i <= 5; i++) {
+                const checked = document.querySelector(`input[name="e${i}"]:checked`);
+                if (checked) burnout += parseInt(checked.value);
+            }
+
+            // Professional engagement (w1-w4)
+            for (let i = 1; i <= 4; i++) {
+                const checked = document.querySelector(`input[name="w${i}"]:checked`);
+                if (checked) burnout += parseInt(checked.value);
+            }
+
+            // Support systems (s1-s4) - these are protective
+            for (let i = 1; i <= 4; i++) {
+                const checked = document.querySelector(`input[name="s${i}"]:checked`);
+                if (checked) protective += parseInt(checked.value);
+            }
+
+            document.getElementById('burnoutScore').textContent = burnout;
+            document.getElementById('protectiveScore').textContent = protective;
+
+            // Determine risk level
+            let riskLevel = '';
+            if (burnout >= 35 || protective <= 7) {
+                riskLevel = 'HIGH RISK - Please speak with your supervisor';
+            } else if (burnout >= 18 || protective <= 11) {
+                riskLevel = 'MODERATE RISK - Schedule supervisor check-in';
+            } else {
+                riskLevel = 'LOW RISK - Continue self-care practices';
+            }
+            document.getElementById('riskLevel').textContent = riskLevel;
+        }
+    </script>
+</body>
+</html>

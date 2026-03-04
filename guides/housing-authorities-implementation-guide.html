@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Housing Authority Implementation Guide | The Empower Playbook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+        @media print {
+            body { font-size: 10pt; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+            @page { margin: 0.75in; }
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Cover Page */
+        .cover {
+            min-height: 10in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            color: white;
+            padding: 1in;
+            margin: -0.5in;
+            margin-bottom: 0.5in;
+        }
+
+        .cover-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2in;
+        }
+
+        .cover-logo-box {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .cover-logo-box span {
+            color: #a3c520;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .cover-brand {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .cover-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a3c520;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .cover-tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 500px;
+            margin-bottom: 60px;
+        }
+
+        .cover-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cover-contact p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .cover-version {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        h1 { font-size: 28px; font-weight: 800; color: #1e3a5f; margin-bottom: 20px; }
+        h2 { font-size: 20px; font-weight: 700; color: #1e3a5f; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #a3c520; }
+        h3 { font-size: 16px; font-weight: 600; color: #333; margin-top: 25px; margin-bottom: 10px; }
+        h4 { font-size: 13px; font-weight: 600; color: #444; margin-top: 20px; margin-bottom: 8px; }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 6px; }
+
+        strong { color: #111; }
+
+        /* Boxes */
+        .key-insight {
+            background: #f0f9e8;
+            border-left: 4px solid #a3c520;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-insight-title {
+            font-weight: 700;
+            color: #3d6b0d;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box-title {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dark-box {
+            background: #111;
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .dark-box h3 {
+            color: #a3c520;
+            margin-top: 0;
+        }
+
+        .dark-box ul {
+            color: #fff;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .checklist-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1e3a5f;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist-text strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .checklist-text span {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 25px 0;
+        }
+
+        .timeline-phase {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: #1e3a5f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: #e5e5e5;
+            margin-left: 11px;
+            height: calc(100% - 24px);
+            margin-top: 5px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 15px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .timeline-period {
+            font-size: 11px;
+            color: #a3c520;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e3a5f;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+
+        th {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Four Non-Negotiables */
+        .non-negotiable {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .non-negotiable-num {
+            width: 32px;
+            height: 32px;
+            background: #a3c520;
+            color: #111;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .non-negotiable-content h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #1e3a5f;
+        }
+
+        .non-negotiable-content p {
+            margin-bottom: 0;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            font-size: 10px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #a3c520;
+            color: #111;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background: #8fb31a;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover">
+            <div class="cover-logo">
+                <div class="cover-logo-box"><span>E</span></div>
+                <div>
+                    <div class="cover-brand">The Empower Playbook</div>
+                </div>
+            </div>
+
+            <div class="cover-subtitle">Implementation Guide</div>
+            <h1>Public Housing Authority<br>Implementation Guide</h1>
+            <p class="cover-tagline">A comprehensive guide to implementing the Empower Method for resident economic mobility, FSS program transformation, and positive housing outcomes.</p>
+
+            <div class="cover-footer">
+                <div class="cover-contact">
+                    <p><strong>The Poverty Solution</strong></p>
+                    <p>info@thepovertysolution.com</p>
+                    <p>thepovertysolution.com</p>
+                </div>
+                <div class="cover-version">
+                    Version 1.0 | 2026
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Executive Summary -->
+        <div class="page-break"></div>
+
+        <h1>Executive Summary</h1>
+
+        <p>Public Housing Authorities serve some of the nation's most economically vulnerable families. Yet traditional PHA operations often inadvertently trap residents in poverty through rent calculation cliffs, disconnected services, and program rules that penalize income growth.</p>
+
+        <p><strong>The Empower Method transforms PHAs from housing administrators into economic mobility engines—helping residents build income, assets, and pathways to housing stability and self-sufficiency.</strong></p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">+47%</div>
+                <div class="stat-label">Increase in FSS Escrow Completion</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$8,200</div>
+                <div class="stat-label">Average Annual Income Gain</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3x</div>
+                <div class="stat-label">Higher Positive Move-Out Rate</div>
+            </div>
+        </div>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Core Insight</div>
+            <p style="margin-bottom: 0;">The 30% income rule creates one of the steepest benefits cliffs in the safety net. For every dollar a resident earns, they lose 30 cents in increased rent—plus potential losses in SNAP, Medicaid, and childcare subsidies. Without cliff navigation, income growth triggers housing instability.</p>
+        </div>
+
+        <h2>The Four Non-Negotiables for PHAs</h2>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Benefits Cliff Navigation for Rent Calculations</h4>
+                <p>Help residents understand and plan for rent increases before they happen. Use cliff modeling tools to show the true cost of income changes and identify pathways that maximize net benefit.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Resident Navigator Model</h4>
+                <p>Dedicated navigators (1 per 75-100 households) who build long-term relationships, coordinate services, and walk alongside families through economic transitions. Not case managers—partners.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>FSS Program Transformation</h4>
+                <p>Redesign FSS from a compliance program into a genuine wealth-building opportunity. Proactive escrow building, goal-aligned services, and navigation support from enrollment to completion.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Data-Driven Mobility Tracking</h4>
+                <p>Dashboard tracking income growth, escrow accumulation, employment changes, educational advancement, and housing outcomes. Measure what matters: economic mobility, not just occupancy.</p>
+            </div>
+        </div>
+
+        <!-- Page 3: Implementation Timeline -->
+        <div class="page-break"></div>
+
+        <h2>6-Month Implementation Timeline</h2>
+
+        <div class="timeline">
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Foundation & Assessment</div>
+                    <div class="timeline-period">Month 1</div>
+                    <ul>
+                        <li>Secure Executive Director and Board commitment</li>
+                        <li>Assess current FSS program enrollment and outcomes</li>
+                        <li>Audit existing resident services and partner relationships</li>
+                        <li>Identify pilot population (recommend starting with HCV or FSS-enrolled households)</li>
+                        <li>Review MTW flexibilities (if applicable) for implementation options</li>
+                        <li>Establish baseline metrics for income, employment, and housing outcomes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Staffing & Training</div>
+                    <div class="timeline-period">Month 2</div>
+                    <ul>
+                        <li>Hire or reassign Resident Navigators (1 per 75-100 households)</li>
+                        <li>Complete Empower Navigator Certification training (40 hours)</li>
+                        <li>Train staff on benefits cliff modeling tools</li>
+                        <li>Develop resident intake and assessment protocols</li>
+                        <li>Create referral pathways with community partners</li>
+                        <li>Configure data tracking systems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Partner Network Development</div>
+                    <div class="timeline-period">Month 3</div>
+                    <ul>
+                        <li>Formalize MOUs with workforce development agencies</li>
+                        <li>Establish relationships with community colleges and training programs</li>
+                        <li>Connect with SNAP, Medicaid, and childcare subsidy offices</li>
+                        <li>Engage financial coaching and asset-building partners</li>
+                        <li>Identify homeownership counseling resources</li>
+                        <li>Create community resource guide for navigators</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Pilot Launch</div>
+                    <div class="timeline-period">Month 4</div>
+                    <ul>
+                        <li>Begin resident outreach and enrollment</li>
+                        <li>Conduct comprehensive economic assessments</li>
+                        <li>Create individual cliff navigation and mobility plans</li>
+                        <li>Launch enhanced FSS enrollment with navigator support</li>
+                        <li>Begin regular navigator-resident meetings</li>
+                        <li>Activate community partner referrals</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">5</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Operations & Refinement</div>
+                    <div class="timeline-period">Month 5</div>
+                    <ul>
+                        <li>Weekly navigator team meetings for case consultation</li>
+                        <li>Monitor early indicators (employment changes, training enrollment)</li>
+                        <li>Refine referral processes based on partner feedback</li>
+                        <li>Address implementation barriers</li>
+                        <li>Begin resident leadership development activities</li>
+                        <li>Document success stories and lessons learned</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">6</div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Evaluation & Expansion Planning</div>
+                    <div class="timeline-period">Month 6</div>
+                    <ul>
+                        <li>Analyze pilot outcomes against baseline</li>
+                        <li>Calculate cost-effectiveness and ROI</li>
+                        <li>Gather resident and staff feedback</li>
+                        <li>Develop expansion plan for additional properties/programs</li>
+                        <li>Present results to Board and stakeholders</li>
+                        <li>Identify sustainable funding strategies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: HCV and Public Housing Integration -->
+        <div class="page-break"></div>
+
+        <h2>Integration with HCV and Public Housing Programs</h2>
+
+        <h3>Housing Choice Voucher (Section 8) Program</h3>
+        <p>HCV participants face unique mobility challenges: income reporting requirements, landlord relationships, and portability decisions. The Empower approach enhances HCV administration:</p>
+
+        <table>
+            <tr>
+                <th>Traditional Approach</th>
+                <th>Empower Approach</th>
+            </tr>
+            <tr>
+                <td>Annual recertification focuses on compliance</td>
+                <td>Recertification becomes economic coaching opportunity</td>
+            </tr>
+            <tr>
+                <td>Income increases trigger immediate rent burden</td>
+                <td>Cliff modeling prepares families for transitions</td>
+            </tr>
+            <tr>
+                <td>FSS offered but under-enrolled</td>
+                <td>FSS actively promoted with navigator support</td>
+            </tr>
+            <tr>
+                <td>Portability seen as administrative burden</td>
+                <td>Portability used strategically for opportunity moves</td>
+            </tr>
+            <tr>
+                <td>Limited connection to employment services</td>
+                <td>Integrated workforce and education referrals</td>
+            </tr>
+        </table>
+
+        <h3>Public Housing Program</h3>
+        <p>Public housing residents often have deeper service needs and longer tenure. The Empower model adapts for on-site implementation:</p>
+
+        <ul>
+            <li><strong>On-Site Navigator Presence:</strong> Navigators maintain regular office hours at properties, building trust through consistent availability</li>
+            <li><strong>Community Building:</strong> Leverage property-based community for peer support, resident leadership, and collective economic advancement</li>
+            <li><strong>Coordinated Services:</strong> Partner with on-site service providers (Head Start, senior services, health clinics) for warm handoffs</li>
+            <li><strong>Rent Structure Education:</strong> Help residents understand flat rent vs. income-based rent options and when each benefits them</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">MTW Opportunity</div>
+            <p style="margin-bottom: 0;">Moving to Work PHAs have significant flexibility to redesign rent structures, FSS incentives, and self-sufficiency programs. MTW activities like stepped rent, income disregards, and alternative recertification schedules can dramatically reduce cliff effects.</p>
+        </div>
+
+        <h3>Program-Specific Strategies</h3>
+
+        <h4>For HCV Programs:</h4>
+        <ul>
+            <li>Use briefing sessions to introduce economic mobility services</li>
+            <li>Include cliff navigation in portability counseling</li>
+            <li>Partner with landlords on resident retention during income growth</li>
+            <li>Leverage interim recertifications as coaching touchpoints</li>
+        </ul>
+
+        <h4>For Public Housing:</h4>
+        <ul>
+            <li>Integrate navigator services with property management</li>
+            <li>Coordinate with resident councils on mobility initiatives</li>
+            <li>Use community rooms for financial coaching workshops</li>
+            <li>Connect with ROSS-SC grants for service coordination funding</li>
+        </ul>
+
+        <!-- Page 5: FSS Program Enhancement -->
+        <div class="page-break"></div>
+
+        <h2>FSS Program Transformation</h2>
+
+        <p>The Family Self-Sufficiency program is the federal government's primary vehicle for resident economic mobility—but most PHAs see low enrollment, high dropout rates, and minimal escrow payouts. The Empower approach transforms FSS outcomes:</p>
+
+        <h3>Current FSS Challenges</h3>
+        <ul>
+            <li>Average national graduation rate: under 35%</li>
+            <li>Many participants never build meaningful escrow</li>
+            <li>Limited coordinator capacity (1 per 50+ participants)</li>
+            <li>Goals often generic, not aligned with resident aspirations</li>
+            <li>Disconnected from broader cliff navigation</li>
+        </ul>
+
+        <h3>The Empower FSS Model</h3>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Proactive Recruitment with Clear Value Proposition</h4>
+                <p>Show residents exactly how FSS escrow works using their current income. Model potential escrow accumulation over 5 years. Make the financial benefit tangible and compelling.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Goal-Aligned Individualized Training Plans</h4>
+                <p>Work with residents to identify their actual goals—not just "get a job" but specific careers, wage targets, and timelines. Connect training and education to those goals.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>Integrated Cliff Navigation</h4>
+                <p>Map how income increases affect rent, SNAP, Medicaid, and childcare together. Identify the income ranges that maximize total household resources. Plan career steps accordingly.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Escrow as Wealth-Building Tool</h4>
+                <p>Frame escrow not as program compliance but as forced savings. Connect to financial coaching. Help residents plan escrow use: homeownership, education, business startup, emergency fund.</p>
+            </div>
+        </div>
+
+        <h3>FSS Success Metrics</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Traditional Program</th>
+                <th>Empower Target</th>
+            </tr>
+            <tr>
+                <td>Enrollment Rate (of eligible)</td>
+                <td>15-20%</td>
+                <td>40%+</td>
+            </tr>
+            <tr>
+                <td>Graduation Rate</td>
+                <td>30-35%</td>
+                <td>60%+</td>
+            </tr>
+            <tr>
+                <td>Average Escrow at Graduation</td>
+                <td>$5,000-7,000</td>
+                <td>$12,000+</td>
+            </tr>
+            <tr>
+                <td>Employment Rate at Graduation</td>
+                <td>70%</td>
+                <td>90%+</td>
+            </tr>
+            <tr>
+                <td>Positive Move-Out within 2 Years</td>
+                <td>15%</td>
+                <td>35%+</td>
+            </tr>
+        </table>
+
+        <!-- Page 6: Navigator Model -->
+        <div class="page-break"></div>
+
+        <h2>Resident Navigator Model</h2>
+
+        <h3>Navigator Role Definition</h3>
+        <p><strong>Ratio:</strong> 1 Navigator per 75-100 households (intensive) or 1 per 150-200 (standard)</p>
+        <p><strong>Commitment:</strong> Same navigator works with families for duration of program participation</p>
+
+        <h4>Core Navigator Responsibilities:</h4>
+        <ul>
+            <li>Conduct comprehensive economic assessments at intake</li>
+            <li>Create personalized cliff navigation and mobility plans</li>
+            <li>Meet regularly with households (monthly minimum, more during transitions)</li>
+            <li>Coordinate referrals to employment, education, and support services</li>
+            <li>Track progress and adjust plans based on changing circumstances</li>
+            <li>Advocate for residents with landlords, employers, and service providers</li>
+            <li>Prepare residents for rent increases and benefits transitions</li>
+            <li>Support FSS participants through to graduation</li>
+            <li>Document outcomes in mobility tracking system</li>
+        </ul>
+
+        <h4>Required Qualifications:</h4>
+        <ul>
+            <li>Experience working with low-income populations</li>
+            <li>Understanding of affordable housing programs and benefits systems</li>
+            <li>Strong relationship-building and motivational interviewing skills</li>
+            <li>Cultural competency and trauma-informed approach</li>
+            <li>Data management and documentation capabilities</li>
+            <li>Bachelor's degree preferred; relevant experience may substitute</li>
+        </ul>
+
+        <h4>Training Requirements:</h4>
+        <ul>
+            <li>Empower Navigator Certification (40 hours)</li>
+            <li>Benefits Cliff Modeling Tool Training (8 hours)</li>
+            <li>HUD Housing Program Fundamentals (16 hours)</li>
+            <li>Motivational Interviewing (16 hours)</li>
+            <li>Trauma-Informed Care (8 hours)</li>
+            <li>Local Resource Network Orientation (8 hours)</li>
+        </ul>
+
+        <div class="warning-box">
+            <div class="warning-box-title">Common Pitfall</div>
+            <p style="margin-bottom: 0;">Don't confuse navigators with case managers. Case managers ensure compliance; navigators build relationships and walk alongside residents through economic transitions. The relationship is the intervention.</p>
+        </div>
+
+        <h3>Navigator Workflow</h3>
+        <table>
+            <tr>
+                <th>Activity</th>
+                <th>Frequency</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>Initial Assessment</td>
+                <td>At enrollment</td>
+                <td>Understand full economic picture, goals, barriers</td>
+            </tr>
+            <tr>
+                <td>Mobility Plan Development</td>
+                <td>Within 30 days</td>
+                <td>Create individualized roadmap with milestones</td>
+            </tr>
+            <tr>
+                <td>Regular Check-ins</td>
+                <td>Monthly minimum</td>
+                <td>Track progress, address barriers, adjust plan</td>
+            </tr>
+            <tr>
+                <td>Cliff Modeling Sessions</td>
+                <td>Before income changes</td>
+                <td>Prepare for rent and benefit impacts</td>
+            </tr>
+            <tr>
+                <td>Service Coordination</td>
+                <td>Ongoing</td>
+                <td>Warm referrals, follow-up on connections</td>
+            </tr>
+            <tr>
+                <td>Transition Support</td>
+                <td>During major changes</td>
+                <td>Intensive support during job changes, moves</td>
+            </tr>
+        </table>
+
+        <!-- Page 7: Benefits Cliff Navigation -->
+        <div class="page-break"></div>
+
+        <h2>Benefits Cliff Navigation</h2>
+
+        <h3>The Housing Cliff: Understanding the 30% Rule</h3>
+        <p>The 30% income rule for rent calculation creates a predictable but often devastating cliff. For every additional dollar earned, residents pay 30 cents more in rent. Combined with other benefit phase-outs, effective marginal tax rates can exceed 80%.</p>
+
+        <h4>Sample Cliff Analysis: Single Parent, Two Children, HCV</h4>
+        <table>
+            <tr>
+                <th>Annual Income</th>
+                <th>Rent Portion</th>
+                <th>SNAP</th>
+                <th>Childcare Subsidy</th>
+                <th>Net Available</th>
+            </tr>
+            <tr>
+                <td>$15,000</td>
+                <td>$375/mo</td>
+                <td>$535/mo</td>
+                <td>Full</td>
+                <td>$20,420</td>
+            </tr>
+            <tr>
+                <td>$20,000</td>
+                <td>$500/mo</td>
+                <td>$410/mo</td>
+                <td>Full</td>
+                <td>$22,020</td>
+            </tr>
+            <tr>
+                <td>$25,000</td>
+                <td>$625/mo</td>
+                <td>$285/mo</td>
+                <td>Reduced</td>
+                <td>$22,920</td>
+            </tr>
+            <tr>
+                <td>$30,000</td>
+                <td>$750/mo</td>
+                <td>$160/mo</td>
+                <td>Lost</td>
+                <td>$21,320</td>
+            </tr>
+            <tr>
+                <td>$35,000</td>
+                <td>$875/mo</td>
+                <td>$0</td>
+                <td>Lost</td>
+                <td>$24,500</td>
+            </tr>
+        </table>
+
+        <p><em>Note: This family is actually worse off at $30,000 than at $25,000 due to childcare cliff. Values illustrative; actual amounts vary by location.</em></p>
+
+        <h3>Cliff Navigation Strategies</h3>
+
+        <h4>Before Income Increases:</h4>
+        <ul>
+            <li>Model the full impact across all benefits (housing, SNAP, Medicaid, childcare)</li>
+            <li>Identify "cliff zones" where income gains are effectively erased</li>
+            <li>Plan career steps to skip over or quickly pass through cliff zones</li>
+            <li>Time income changes strategically (e.g., after childcare costs decrease)</li>
+        </ul>
+
+        <h4>PHA Policy Tools:</h4>
+        <ul>
+            <li><strong>Earned Income Disregards:</strong> Exclude portion of new income from rent calculation</li>
+            <li><strong>Stepped Rent:</strong> Gradual rent increases over time rather than immediate</li>
+            <li><strong>Ceiling Rents:</strong> Cap rent at market rate regardless of income</li>
+            <li><strong>FSS Escrow:</strong> Rent increases build savings instead of just cost</li>
+            <li><strong>Interim Recertification Timing:</strong> Strategic scheduling of income reporting</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The MTW Advantage</div>
+            <p style="margin-bottom: 0;">MTW agencies can implement alternative rent structures that dramatically reduce cliff effects. Tiered rent, minimum rent floors, and simplified income calculations all help residents plan income growth without penalty.</p>
+        </div>
+
+        <h4>Partner Coordination for Cliff Navigation:</h4>
+        <ul>
+            <li>Coordinate with SNAP office on transitional benefits</li>
+            <li>Connect to Medicaid expansion or marketplace navigation</li>
+            <li>Identify childcare assistance phase-out thresholds</li>
+            <li>Access EITC and CTC through tax preparation partnerships</li>
+        </ul>
+
+        <!-- Page 8: Employment and Education Support -->
+        <div class="page-break"></div>
+
+        <h2>Employment and Income Growth Support</h2>
+
+        <h3>Workforce Development Integration</h3>
+        <p>Sustainable economic mobility requires career pathways, not just job placement. Partner with workforce development to provide:</p>
+
+        <table>
+            <tr>
+                <th>Service</th>
+                <th>Partner Type</th>
+                <th>Resident Benefit</th>
+            </tr>
+            <tr>
+                <td>Career Assessment</td>
+                <td>Workforce Board, Career Centers</td>
+                <td>Identify strengths, interests, viable pathways</td>
+            </tr>
+            <tr>
+                <td>Skills Training</td>
+                <td>Community Colleges, Training Providers</td>
+                <td>Industry-recognized credentials, certifications</td>
+            </tr>
+            <tr>
+                <td>Job Placement</td>
+                <td>Staffing Agencies, Employer Partners</td>
+                <td>Direct connection to living-wage opportunities</td>
+            </tr>
+            <tr>
+                <td>Supportive Services</td>
+                <td>Childcare, Transportation Providers</td>
+                <td>Remove barriers to employment retention</td>
+            </tr>
+            <tr>
+                <td>Career Advancement</td>
+                <td>Employers, Apprenticeship Programs</td>
+                <td>Pathways beyond entry-level positions</td>
+            </tr>
+        </table>
+
+        <h3>Educational Advancement Support</h3>
+        <ul>
+            <li><strong>GED/HSE Completion:</strong> Partner with adult education providers; coordinate with childcare</li>
+            <li><strong>English Language Learning:</strong> ESL programs with flexible scheduling for working parents</li>
+            <li><strong>Community College:</strong> Dual enrollment, Pell Grant navigation, certificate programs</li>
+            <li><strong>Financial Aid Navigation:</strong> FAFSA completion assistance, scholarship identification</li>
+            <li><strong>Study Support:</strong> Tutoring connections, study space access, peer study groups</li>
+        </ul>
+
+        <h3>Income Growth Milestones</h3>
+        <p>Track and celebrate income milestones that mark progress toward self-sufficiency:</p>
+
+        <table>
+            <tr>
+                <th>Milestone</th>
+                <th>Significance</th>
+                <th>Navigator Action</th>
+            </tr>
+            <tr>
+                <td>First Job Obtained</td>
+                <td>Employment stability begins</td>
+                <td>Cliff modeling, benefits coordination</td>
+            </tr>
+            <tr>
+                <td>Living Wage Achieved</td>
+                <td>Income covers basic needs</td>
+                <td>Savings goals, credit building</td>
+            </tr>
+            <tr>
+                <td>50% AMI Reached</td>
+                <td>Approaching HCV income limit</td>
+                <td>Homeownership counseling, graduation planning</td>
+            </tr>
+            <tr>
+                <td>80% AMI Reached</td>
+                <td>Program exit approaching</td>
+                <td>Positive move-out planning, market transition</td>
+            </tr>
+        </table>
+
+        <h3>Resident Leadership Development</h3>
+        <p>Economic mobility includes building leadership capacity:</p>
+        <ul>
+            <li>Resident council participation and leadership training</li>
+            <li>Peer mentoring programs pairing successful participants with new enrollees</li>
+            <li>Advocacy skill building for system navigation</li>
+            <li>Community organizing for neighborhood improvement</li>
+            <li>Board and commission appointment pathways</li>
+        </ul>
+
+        <!-- Page 9: Homeownership and Positive Move-Outs -->
+        <div class="page-break"></div>
+
+        <h2>Homeownership Pathways and Positive Move-Outs</h2>
+
+        <h3>Homeownership Preparation</h3>
+        <p>For residents with homeownership goals, coordinate a comprehensive pathway:</p>
+
+        <h4>Phase 1: Foundation Building (12-24 months before purchase)</h4>
+        <ul>
+            <li>Credit assessment and repair planning</li>
+            <li>Savings plan development (down payment, closing costs, reserves)</li>
+            <li>Budget analysis for sustainable homeownership costs</li>
+            <li>HUD-approved homeownership counseling enrollment</li>
+            <li>FSS escrow accumulation strategy</li>
+        </ul>
+
+        <h4>Phase 2: Active Preparation (6-12 months before purchase)</h4>
+        <ul>
+            <li>Mortgage pre-qualification</li>
+            <li>Down payment assistance program navigation</li>
+            <li>Home search in opportunity neighborhoods</li>
+            <li>Home inspection and maintenance education</li>
+            <li>HCV Homeownership Program enrollment (if applicable)</li>
+        </ul>
+
+        <h4>Phase 3: Purchase and Transition</h4>
+        <ul>
+            <li>Closing process support</li>
+            <li>Utility setup and move coordination</li>
+            <li>Home maintenance planning</li>
+            <li>Post-purchase counseling connection</li>
+            <li>Celebration of achievement</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">HCV Homeownership Option</div>
+            <p style="margin-bottom: 0;">The HCV Homeownership Program allows voucher holders to use their subsidy toward mortgage payments instead of rent. This can make homeownership accessible at lower income levels while maintaining housing stability during the transition.</p>
+        </div>
+
+        <h3>Graduated Rent Phase-Out Strategies</h3>
+        <p>Help residents transition successfully off assistance:</p>
+
+        <ul>
+            <li><strong>Stepped Increases:</strong> Gradual rent increases over 12-24 months rather than immediate market rate</li>
+            <li><strong>Transition Vouchers:</strong> Short-term assistance during program exit</li>
+            <li><strong>Market-Ready Planning:</strong> Budget analysis for full market rent sustainability</li>
+            <li><strong>Savings Accumulation:</strong> Build reserves before assistance ends</li>
+            <li><strong>Location Strategy:</strong> Identify affordable market-rate options in opportunity areas</li>
+        </ul>
+
+        <h3>Positive Move-Out Outcomes</h3>
+        <p>Define and track positive exits from assisted housing:</p>
+
+        <table>
+            <tr>
+                <th>Outcome Type</th>
+                <th>Definition</th>
+                <th>Target Rate</th>
+            </tr>
+            <tr>
+                <td>Homeownership</td>
+                <td>Purchase of primary residence</td>
+                <td>10-15% of exits</td>
+            </tr>
+            <tr>
+                <td>Market-Rate Rental (Sustainable)</td>
+                <td>Unsubsidized rental with income &gt;50% of rent burden</td>
+                <td>20-25% of exits</td>
+            </tr>
+            <tr>
+                <td>Income Above Limit</td>
+                <td>Income exceeds program limit, stable employment</td>
+                <td>15-20% of exits</td>
+            </tr>
+            <tr>
+                <td>Opportunity Move</td>
+                <td>Relocation to higher-opportunity neighborhood</td>
+                <td>5-10% of exits</td>
+            </tr>
+        </table>
+
+        <!-- Page 10: Community Partners -->
+        <div class="page-break"></div>
+
+        <h2>Community Partner Integration</h2>
+
+        <p>Effective economic mobility requires a coordinated network of community partners. Establish formal relationships in each service category:</p>
+
+        <h3>Essential Partner Network</h3>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Partner Types</th>
+                <th>Services Provided</th>
+            </tr>
+            <tr>
+                <td><strong>Workforce Development</strong></td>
+                <td>Workforce Boards, Job Centers, Staffing Agencies</td>
+                <td>Career assessment, job placement, skills training</td>
+            </tr>
+            <tr>
+                <td><strong>Education</strong></td>
+                <td>Community Colleges, Adult Ed, Training Providers</td>
+                <td>GED, credentials, degree programs, ESL</td>
+            </tr>
+            <tr>
+                <td><strong>Financial Services</strong></td>
+                <td>CDFIs, Credit Unions, Financial Coaches</td>
+                <td>Banking access, credit building, savings programs</td>
+            </tr>
+            <tr>
+                <td><strong>Benefits Navigation</strong></td>
+                <td>DSS, Benefits Offices, 211</td>
+                <td>SNAP, Medicaid, TANF, childcare subsidies</td>
+            </tr>
+            <tr>
+                <td><strong>Childcare</strong></td>
+                <td>Head Start, Childcare Providers, Subsidy Office</td>
+                <td>Care access, subsidy navigation, early education</td>
+            </tr>
+            <tr>
+                <td><strong>Transportation</strong></td>
+                <td>Transit Authority, Car Programs, Ride Services</td>
+                <td>Transit passes, vehicle repair, ride coordination</td>
+            </tr>
+            <tr>
+                <td><strong>Healthcare</strong></td>
+                <td>FQHCs, Mental Health Providers, Insurance Navigators</td>
+                <td>Primary care, behavioral health, insurance enrollment</td>
+            </tr>
+            <tr>
+                <td><strong>Homeownership</strong></td>
+                <td>HUD-Certified Counselors, Lenders, DPA Programs</td>
+                <td>Counseling, mortgage access, down payment help</td>
+            </tr>
+        </table>
+
+        <h3>Partner Agreement Elements</h3>
+        <p>Formalize relationships through MOUs that include:</p>
+        <ul>
+            <li>Designated point of contact for referrals</li>
+            <li>Response time expectations (48-72 hours for initial contact)</li>
+            <li>Information sharing protocols (with resident consent)</li>
+            <li>Regular coordination meeting participation (monthly or quarterly)</li>
+            <li>Outcome reporting and feedback loops</li>
+            <li>Warm handoff procedures for high-priority referrals</li>
+        </ul>
+
+        <h3>Coordination Structure</h3>
+        <ul>
+            <li><strong>Monthly Partner Meetings:</strong> Review referral trends, troubleshoot barriers, share updates</li>
+            <li><strong>Case Conferences:</strong> As-needed meetings for complex household situations</li>
+            <li><strong>Annual Partner Summit:</strong> Evaluate outcomes, refine partnerships, plan improvements</li>
+            <li><strong>Shared Dashboard Access:</strong> Real-time visibility into referral status and outcomes</li>
+        </ul>
+
+        <!-- Page 11: Data Dashboard -->
+        <div class="page-break"></div>
+
+        <h2>Data Dashboard: Housing Stability and Mobility Metrics</h2>
+
+        <h3>Resident-Level Data Points</h3>
+        <ul>
+            <li>Household income (earned and unearned)</li>
+            <li>Employment status and employer information</li>
+            <li>Education level and current enrollment</li>
+            <li>Benefits received (SNAP, Medicaid, childcare, TANF)</li>
+            <li>FSS enrollment status and escrow balance</li>
+            <li>Credit score (with consent) and savings balance</li>
+            <li>Mobility plan goals and milestone progress</li>
+            <li>Navigator contact frequency and notes</li>
+            <li>Service referrals made and completed</li>
+        </ul>
+
+        <h3>Program-Level Metrics</h3>
+        <table>
+            <tr>
+                <th>Metric Category</th>
+                <th>Key Indicators</th>
+                <th>Target</th>
+            </tr>
+            <tr>
+                <td><strong>Housing Stability</strong></td>
+                <td>Lease compliance rate, eviction prevention rate</td>
+                <td>95%+ stable housing</td>
+            </tr>
+            <tr>
+                <td><strong>Income Growth</strong></td>
+                <td>% with income increase, average $ increase</td>
+                <td>60%+ with growth; $8,000+ avg</td>
+            </tr>
+            <tr>
+                <td><strong>Employment</strong></td>
+                <td>Employment rate, job retention 12+ months</td>
+                <td>75%+ employed; 80% retention</td>
+            </tr>
+            <tr>
+                <td><strong>Education</strong></td>
+                <td>Credential completion, degree progress</td>
+                <td>30%+ credential attainment</td>
+            </tr>
+            <tr>
+                <td><strong>FSS Outcomes</strong></td>
+                <td>Enrollment rate, graduation rate, avg escrow</td>
+                <td>40% enrolled; 60% grad; $12K+ escrow</td>
+            </tr>
+            <tr>
+                <td><strong>Asset Building</strong></td>
+                <td>Savings rate, credit score improvement</td>
+                <td>50%+ building savings</td>
+            </tr>
+            <tr>
+                <td><strong>Positive Move-Outs</strong></td>
+                <td>% exiting to homeownership or stable market</td>
+                <td>35%+ positive exits</td>
+            </tr>
+        </table>
+
+        <h3>Dashboard Views</h3>
+        <ul>
+            <li><strong>Executive Summary:</strong> High-level KPIs for leadership and board reporting</li>
+            <li><strong>Navigator Caseload:</strong> Individual household status, upcoming milestones, alerts</li>
+            <li><strong>Program Performance:</strong> Trends over time, cohort comparisons, goal progress</li>
+            <li><strong>Partner Referrals:</strong> Referral volume, completion rates, partner performance</li>
+            <li><strong>FSS Tracker:</strong> Enrollment pipeline, escrow accumulation, graduation forecasting</li>
+        </ul>
+
+        <h3>Reporting Cadence</h3>
+        <ul>
+            <li><strong>Weekly:</strong> Navigator activity reports, urgent alerts</li>
+            <li><strong>Monthly:</strong> Program performance summary, board dashboard</li>
+            <li><strong>Quarterly:</strong> Comprehensive outcome report, trend analysis</li>
+            <li><strong>Annual:</strong> Full program evaluation, ROI analysis, strategic recommendations</li>
+        </ul>
+
+        <!-- Page 12: Budget Framework -->
+        <div class="page-break"></div>
+
+        <h2>Budget Framework</h2>
+
+        <h3>Program Costs (Per 100 Participating Households)</h3>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Annual Total</th>
+            </tr>
+            <tr>
+                <td>Resident Navigator Salary + Benefits</td>
+                <td>$55,000</td>
+                <td>1.5 FTE</td>
+                <td>$82,500</td>
+            </tr>
+            <tr>
+                <td>Program Coordinator (shared)</td>
+                <td>$70,000</td>
+                <td>0.25 FTE</td>
+                <td>$17,500</td>
+            </tr>
+            <tr>
+                <td>Training & Professional Development</td>
+                <td>$3,500/person</td>
+                <td>2</td>
+                <td>$7,000</td>
+            </tr>
+            <tr>
+                <td>Benefits Cliff Modeling Software</td>
+                <td>$50/household</td>
+                <td>100</td>
+                <td>$5,000</td>
+            </tr>
+            <tr>
+                <td>Data System & Technology</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$8,000</td>
+            </tr>
+            <tr>
+                <td>Emergency Assistance Fund</td>
+                <td>$150/household</td>
+                <td>100</td>
+                <td>$15,000</td>
+            </tr>
+            <tr>
+                <td>Transportation & Supplies</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$5,000</td>
+            </tr>
+            <tr>
+                <td><strong>Total Per 100 Households</strong></td>
+                <td></td>
+                <td></td>
+                <td><strong>$140,000</strong></td>
+            </tr>
+        </table>
+
+        <h3>Cost Per Household: $1,400/year</h3>
+
+        <h3>Potential Funding Sources</h3>
+
+        <h4>HUD Funding:</h4>
+        <ul>
+            <li><strong>FSS Coordinator Grants:</strong> Dedicated funding for FSS program staffing</li>
+            <li><strong>ROSS-SC Grants:</strong> Resident Opportunity and Self-Sufficiency Service Coordinator funding</li>
+            <li><strong>Jobs Plus Grants:</strong> Employment-focused demonstration program (select sites)</li>
+            <li><strong>MTW Flexibility:</strong> Single fund flexibility for innovative self-sufficiency programs</li>
+            <li><strong>Administrative Fee Reserves:</strong> Portion of HCV admin fees for resident services</li>
+        </ul>
+
+        <h4>Local and State Funding:</h4>
+        <ul>
+            <li><strong>TANF:</strong> Workforce and self-sufficiency services for eligible residents</li>
+            <li><strong>WIOA:</strong> Workforce Innovation and Opportunity Act training funds</li>
+            <li><strong>CDBG:</strong> Community Development Block Grant for economic development</li>
+            <li><strong>State Housing Trust Funds:</strong> Many states allow resident services funding</li>
+            <li><strong>Local General Fund:</strong> City/county investment in economic mobility</li>
+        </ul>
+
+        <h4>Private Funding:</h4>
+        <ul>
+            <li><strong>Foundation Grants:</strong> Poverty alleviation, workforce, housing funders</li>
+            <li><strong>United Way:</strong> Economic mobility and family stability investments</li>
+            <li><strong>Corporate Partners:</strong> Employer-sponsored workforce development</li>
+            <li><strong>Healthcare Partners:</strong> Social determinants of health investments</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">ROI Calculation</div>
+            <p style="margin-bottom: 0;">Each household that successfully transitions to market-rate housing or homeownership frees a voucher or unit for the waiting list—often valued at $8,000-15,000 annually. A 10% increase in positive move-outs generates significant program capacity and demonstrates community impact.</p>
+        </div>
+
+        <!-- Page 13: Readiness Checklist -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Readiness Checklist</h2>
+
+        <div class="checklist">
+            <div class="checklist-title">Leadership & Commitment</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Executive Director commitment secured</strong>
+                    <span>Written support for pilot and potential expansion</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Board of Commissioners briefed</strong>
+                    <span>Board aware of initiative, timeline, and resource needs</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Staff buy-in established</strong>
+                    <span>Housing specialists and property managers understand the model</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>MTW flexibilities reviewed (if applicable)</strong>
+                    <span>Identified policy changes to support cliff mitigation</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Staffing & Training</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Navigator positions approved</strong>
+                    <span>Job descriptions created, salary range determined</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Hiring process initiated</strong>
+                    <span>Recruitment, interviews, background checks underway</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Training curriculum scheduled</strong>
+                    <span>Navigator certification, cliff tools, housing program training</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Supervision structure defined</strong>
+                    <span>Coordinator role, reporting relationships established</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Data & Technology</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Mobility metrics defined</strong>
+                    <span>Income, employment, FSS, move-out indicators established</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Data system selected/configured</strong>
+                    <span>Tracking system for resident progress and outcomes</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Benefits cliff tool access secured</strong>
+                    <span>Software for modeling income and benefit changes</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Baseline data collected</strong>
+                    <span>Current program outcomes documented for comparison</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Community Partners</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Key partners identified</strong>
+                    <span>Workforce, education, benefits, childcare, financial contacts</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Partner agreements drafted</strong>
+                    <span>MOUs with referral protocols and response expectations</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Resource guide created</strong>
+                    <span>Contact information and referral procedures compiled</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Funding</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Year 1 funding secured</strong>
+                    <span>Full pilot budget committed from identified sources</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>FSS Coordinator grant applied for/renewed</strong>
+                    <span>HUD funding for FSS staffing in place</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Sustainability plan drafted</strong>
+                    <span>Multi-year funding strategy identified</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 14: Technical Assistance -->
+        <div class="page-break"></div>
+
+        <div class="dark-box">
+            <h3>Ready for Full Implementation Support?</h3>
+            <p>This guide provides the roadmap. For the highest probability of success, partner with The Poverty Solution team for:</p>
+            <ul>
+                <li><strong>Navigator Certification Training</strong> — 40-hour intensive for Resident Navigators and FSS Coordinators</li>
+                <li><strong>Leadership Alignment Workshops</strong> — Get Executive Director, Board, and staff on the same page</li>
+                <li><strong>Benefits Cliff Tool Training</strong> — Mastery of cliff navigation software and rent calculation modeling</li>
+                <li><strong>FSS Program Redesign</strong> — Transform your FSS program into a wealth-building engine</li>
+                <li><strong>Implementation Coaching</strong> — Monthly calls and quarterly site visits during launch</li>
+                <li><strong>Data Dashboard Setup</strong> — Configure mobility tracking systems for your context</li>
+                <li><strong>MTW Strategy Consultation</strong> — Leverage MTW flexibilities for maximum cliff mitigation</li>
+                <li><strong>Peer Learning Network</strong> — Connect with other implementing PHAs across the country</li>
+            </ul>
+            <p style="margin-top: 20px; margin-bottom: 0;">
+                <strong style="color: #a3c520;">Contact:</strong> info@thepovertysolution.com | thepovertysolution.com
+            </p>
+        </div>
+
+        <h2>Appendix: Key HUD Resources</h2>
+
+        <h3>Program Regulations and Guidance</h3>
+        <ul>
+            <li>FSS Program: 24 CFR Part 984</li>
+            <li>HCV Program: 24 CFR Part 982</li>
+            <li>Public Housing: 24 CFR Part 960</li>
+            <li>MTW Demonstration: MTW Operations Notice</li>
+        </ul>
+
+        <h3>Funding Opportunities</h3>
+        <ul>
+            <li>FSS Coordinator NOFO (annual)</li>
+            <li>ROSS-SC NOFO (periodic)</li>
+            <li>Jobs Plus NOFO (periodic)</li>
+            <li>MTW Expansion Cohorts</li>
+        </ul>
+
+        <h3>Technical Assistance</h3>
+        <ul>
+            <li>HUD Exchange: hudexchange.info</li>
+            <li>FSS Resource Center</li>
+            <li>MTW Technical Assistance</li>
+        </ul>
+
+        <div class="page-footer">
+            <div>The Empower Playbook | Public Housing Authority Implementation Guide</div>
+            <div>© 2026 The Poverty Solution</div>
+        </div>
+
+    </div>
+</body>
+</html>

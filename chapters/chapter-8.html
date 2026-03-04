@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 8: Building Your Team | The Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                        'part3-blue': '#3d4f5f',
+                        'part4-grey': '#545454',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background: #fafafa; }
+
+        /* Reading Progress Bar */
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #3d4f5f, #2d3d4d);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #3d4f5f;
+            color: white;
+            padding: 8px 16px;
+            z-index: 200;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #fff;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            z-index: 40;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
+
+        .main-content { margin-left: 280px; }
+
+        /* Nav items */
+        .nav-section { padding: 4px 12px; }
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+            padding: 12px 12px 6px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #555;
+            transition: all 0.15s;
+            margin-bottom: 1px;
+        }
+        .nav-item:hover { background: #f5f5f5; color: #111; }
+        .nav-item.active { background: #e8edf1; color: #3d4f5f; font-weight: 500; }
+        .nav-item .num {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Color-coded chapter numbers */
+        .num-part1 { background: #1e3a5f; color: white; }
+        .num-part2 { background: #a3c520; color: #111; }
+        .num-part3 { background: #3d4f5f; color: white; }
+        .num-part4 { background: #545454; color: white; }
+
+        /* Enhanced Prose styling */
+        .prose h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1e3a5f;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e8edf1;
+        }
+        .prose h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        .prose p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .prose ul {
+            margin-bottom: 1.25rem;
+            margin-left: 1.5rem;
+            list-style-type: disc;
+        }
+        .prose li {
+            margin-bottom: 0.625rem;
+            line-height: 1.7;
+            color: #444;
+        }
+        .prose blockquote {
+            border-left: 4px solid #3d4f5f;
+            padding-left: 1.25rem;
+            font-style: italic;
+            color: #666;
+            margin: 1.5rem 0;
+            background: #e8edf1;
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .prose strong { color: #222; }
+
+        /* First paragraph styling */
+        .prose p:first-of-type {
+            font-size: 1.125rem;
+            line-height: 1.85;
+            color: #333;
+        }
+
+        /* Floating Chapter Nav */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 50;
+        }
+        .floating-nav a {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+        }
+        .floating-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+        .floating-nav a.primary {
+            background: linear-gradient(135deg, #3d4f5f, #2d3d4d);
+            color: white;
+        }
+
+        /* TOC Styles */
+        .toc { position: sticky; top: 100px; }
+        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
+        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
+        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
+        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 50;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.3);
+                z-index: 45;
+                display: none;
+            }
+            .mobile-overlay.show { display: block; }
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .floating-nav a {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div class="p-5 border-b border-gray-100">
+            <a href="../index.html" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
+                    <span class="text-tps-green font-bold text-sm">E</span>
+                </div>
+                <div>
+                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="py-4">
+            <!-- Overview -->
+            <div class="nav-section">
+                <a href="../index.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Overview
+                </a>
+            </div>
+
+            <!-- Part 1 -->
+            <p class="nav-section-title">Part 1 — The Case</p>
+            <div class="nav-section">
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num num-part1">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num num-part1">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num num-part1">3</span>
+                    The Proof
+                </a>
+            </div>
+
+            <!-- Part 2 -->
+            <p class="nav-section-title">Part 2 — The Method</p>
+            <div class="nav-section">
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num num-part2">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num num-part2">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num num-part2">6</span>
+                    Certified Employer Program
+                </a>
+            </div>
+
+            <!-- Part 3 -->
+            <p class="nav-section-title">Part 3 — Implementation</p>
+            <div class="nav-section">
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num num-part3">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item active">
+                    <span class="num num-part3">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num" style="background-color: #b91c1c; color: #ffffff;">9</span>
+                    What Kills Programs
+                </a>
+            </div>
+
+            <!-- Part 4 -->
+            <p class="nav-section-title">Part 4 — Scale</p>
+            <div class="nav-section">
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num num-part4">10</span>
+                    Funding
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num num-part4">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num num-part4">12</span>
+                    Scaling Beyond
+                </a>
+            </div>
+
+            <!-- Part 5 -->
+            <p class="nav-section-title">Part 5 — Research</p>
+            <div class="nav-section">
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">15</span>
+                    Literature Review
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">16</span>
+                    Evidence Tables
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num bg-part4-grey text-white">17</span>
+                    Methodology Notes
+                </a>
+            </div>
+
+            <!-- Training -->
+            <p class="nav-section-title">Training Academy</p>
+            <div class="nav-section">
+                <a href="chapter-14.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Poverty IQ for Employers
+                </a>
+                <a href="chapter-13.html" class="nav-item">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Templates & Tools
+                </a>
+            </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
+            <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Contact Us
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen" id="main-content">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <span class="text-sm text-gray-400">Part 3 — Implementation</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
+                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chapter Header with Gradient -->
+        <div class="bg-gradient-to-br from-[#3d4f5f] to-[#2d3d4d] text-white px-6 lg:px-12 py-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center gap-3 mb-3">
+                    <p class="text-white/70 text-sm font-medium">Chapter 8</p>
+                    <span class="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">2 min read</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                    Building Your Team
+                </h1>
+                <p class="text-white/80 mt-3 text-lg">The leadership and staffing that makes everything else work</p>
+            </div>
+        </div>
+
+        <!-- Chapter Content -->
+        <div class="px-6 lg:px-12 py-10">
+            <div class="max-w-7xl mx-auto content-with-toc">
+            <div class="prose">
+
+                <h2 id="leadership">Leadership: The Foundation of Everything</h2>
+
+                <p>Before discussing staffing, roles, and team structure, we need to talk about leadership—because without the right leadership, none of the rest matters. Poverty is what researchers Horst Rittel and Melvin Webber called a "wicked problem": complex, entangled, and resistant to simple solutions. Solving it requires a different kind of leader.</p>
+
+                <p>In <em>Beyond Poverty Management</em>, Scott C. Miller identifies three leadership styles essential for this work, drawn from research on navigating wicked problems:</p>
+
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; margin: 1.5rem 0;" class="not-prose">
+                    <div style="background: #ffffff; border: 2px solid #a3c520; border-radius: 0.75rem; padding: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">1</div>
+                            <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem;">The Visionary (Corporate Hero)</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7;">The visionary holds the vision and continuously shares it with everyone involved. They keep the mission front and center, articulating urgency and refusing to accept the status quo. This is leadership through clarity, confidence, and conviction—ensuring that every stakeholder understands what you're building and why it matters.</p>
+                    </div>
+
+                    <div style="background: #ffffff; border: 2px solid #1e3a5f; border-radius: 0.75rem; padding: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="background: #1e3a5f; color: #ffffff; min-width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">2</div>
+                            <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem;">The Facilitator (Adaptive Leader)</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7;">The facilitator sits in the middle, directing both the vision and the work being done. They connect the visionary's big picture to the practitioner's action items, ensuring alignment across teams and partners. It requires humility, curiosity, and emotional intelligence—bridging strategy with execution and keeping everyone moving in the same direction.</p>
+                    </div>
+
+                    <div style="background: #ffffff; border: 2px solid #a3c520; border-radius: 0.75rem; padding: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="background: #a3c520; color: #111111; min-width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;">3</div>
+                            <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem;">The Practitioner (Collaborative Leader)</h4>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7;">The practitioner takes the vision and hits the ground running with action steps and to-dos. They translate strategy into execution—creating checklists, building systems, and making things happen. In the Empower model, this is the leader who turns the big picture into daily work, ensuring families are served and outcomes are tracked.</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #f7fbe8 0%, #eef5d0 100%); border-left: 4px solid #a3c520; border-radius: 0.5rem; padding: 1.25rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="font-weight: 700; color: #1e3a5f; margin-bottom: 0.5rem;">Transformational Leadership = All Three</p>
+                    <p style="font-size: 0.9rem; color: #374151; line-height: 1.7;">The best leaders in this work are fluent in all three styles and know when to apply each depending on context, complexity, and urgency. As Miller writes: "Don't scatter your energy on a thousand good causes. Go all-in on the great one. Poverty is a wicked problem. It needs your whole heart, your full attention, and your most creative leadership."</p>
+                </div>
+
+                <p>With the right leadership in place, you can build a team that sustains the work. Without it, even the best-designed program will drift. Now let's look at the team you need to build.</p>
+
+                <!-- Research Evidence Box -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 0.75rem;">Research-Based Staffing Standards</h4>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; margin-bottom: 1rem;">Evidence from successful navigation programs establishes clear benchmarks for effective staffing:</p>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.25rem 0;">Caseload Ratios</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;"><strong style="color: #ffffff;">1:25</strong> for intensive early-stage work with complex barriers; <strong style="color: #ffffff;">1:15 or lower</strong> for participants with multiple compounding challenges (mental health, housing instability, substance recovery)</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.25rem 0;">Training Requirements</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;">Minimum <strong style="color: #ffffff;">40 hours of initial training</strong> plus <strong style="color: #ffffff;">2-3 months of supervised practice</strong> before navigators work independently. This is the threshold for competency in benefits cliff navigation, motivational interviewing, and trauma-informed care.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.25rem 0;">Ongoing Support</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;"><strong style="color: #ffffff;">Weekly supervision + coaching</strong> is essential for maintaining quality. Programs that reduce supervision frequency see measurable outcome degradation within 3-6 months.</p>
+                        </div>
+                        <div style="background: rgba(248,113,113,0.2); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #f87171;">
+                            <p style="color: #fca5a5; font-weight: 700; margin: 0 0 0.25rem 0;">Critical Warning</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;"><strong style="color: #ffffff;">Staff turnover is the primary cause of program drift.</strong> When experienced navigators leave and are replaced by undertrained staff, fidelity erodes rapidly. Invest in retention.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Who to Hire Section -->
+                <h2 id="who-to-hire">Who to Hire: Building Your Poverty Alleviation Team</h2>
+
+                <p>Building a Poverty Alleviation System requires specific roles hired in a specific order. This isn't a generic org chart—it's a sequence designed so that each hire builds on the last and the system comes together with intention.</p>
+
+                <!-- Cost of Understaffing - Research Box -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 1rem;">The Cost of Understaffing</h4>
+                    <p style="color: rgba(255,255,255,0.85); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem;">Research from FSG, the National Child Welfare Workforce Institute, and collective impact literature is clear: <strong style="color: #ffffff;">understaffing is the #1 reason poverty alleviation initiatives fail.</strong></p>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: rgba(255,255,255,0.85); margin: 0; font-size: 0.9rem;">Cost to replace one departing Navigator</p>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin: 0;">$54,000+</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: rgba(255,255,255,0.85); margin: 0; font-size: 0.9rem;">Nonprofit staff looking to leave within one year</p>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin: 0;">67%</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: rgba(255,255,255,0.85); margin: 0; font-size: 0.9rem;">Effectiveness decline when caseloads exceed limits</p>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin: 0;">22%</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(248,113,113,0.2); padding: 1rem; border-radius: 0.5rem; border: 1px solid rgba(248,113,113,0.3);">
+                            <p style="color: rgba(255,255,255,0.85); margin: 0; font-size: 0.9rem;">Client success rate with 3+ worker changes in one year</p>
+                            <p style="color: #fca5a5; font-weight: 700; font-size: 1.25rem; margin: 0;">5%</p>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 1rem 0 0 0; font-style: italic;">Sources: National Child Welfare Workforce Institute, FSG Collective Impact Research, Nurse-Family Partnership Implementation Studies</p>
+                </div>
+
+                <!-- The Poverty Solution Consultant Note -->
+                <div style="background: linear-gradient(135deg, #f7fbe8 0%, #eef5d0 100%); border-left: 4px solid #a3c520; border-radius: 0.5rem; padding: 1.25rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="font-weight: 700; color: #1e3a5f; margin-bottom: 0.5rem;">The Poverty Solution Support</p>
+                    <p style="font-size: 0.9rem; color: #374151; line-height: 1.7; margin: 0;">Communities working with The Poverty Solution are assigned a dedicated PAS Consultant who coaches your Director and leadership through each phase of implementation. You're not building this alone—our team meets with you regularly to ensure the system is being properly implemented and to help you overcome challenges as they arise.</p>
+                </div>
+
+                <h3 id="step1">Step 1: Hire a Poverty Alleviation Director</h3>
+
+                <p>This is your first and most critical hire. Everything else flows from this role. The Poverty Alleviation Director leads the entire system—hiring teams, aligning partners, managing cross-sector relationships, overseeing quality, and ensuring fidelity to the model. This is not a program manager. This is a systems leader.</p>
+
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 1rem;">Poverty Alleviation Director</h4>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.25rem 0;">Core Responsibilities</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;">Develops a comprehensive plan including funding, resource allocation, timelines, and risk management. Has oversight of the entire system including quality and flow of reports across all teams. Primary liaison between the Leadership Team, Collective Impact Team, and Economic Stability Teams.</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.25rem 0;">What to Look For</p>
+                            <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0;">Someone who can hold both the vision and the execution. They need to translate the Poverty Alleviation System into a practical, effective operation—evaluating sustainability and scalability of every decision. This person must be comfortable leading across sectors and navigating systemic barriers.</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem;">
+                            <p style="color: #ffffff; font-weight: 600; margin: 0;">Estimated Salary</p>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.1rem; margin: 0;">$95,000</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assistant/PM Recommendation -->
+                <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+                    <h4 style="color: #92400e; margin-top: 0;">Strongly Recommended: Assistant or Project Manager</h4>
+                    <p style="margin-bottom: 0.75rem; color: #444;">It is critical that the Poverty Alleviation Director has adequate support. An assistant manages schedules and communication; a project manager oversees day-to-day logistics, coordinates teams, and tracks implementation timelines. Without this support, your Director will get pulled into operational details instead of leading strategically.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-top: 0.75rem;">
+                        <p style="color: #1e3a5f; font-weight: 600; margin: 0;">Project Manager / Assistant</p>
+                        <p style="color: #92400e; font-weight: 700; margin: 0;">~$60,000</p>
+                    </div>
+                </div>
+
+                <h3 id="step2">Step 2: Build Your Teams & Hire Navigators</h3>
+
+                <p>Once your Director is in place, the next phase is building the team structure and hiring frontline staff simultaneously. The Poverty Alleviation System runs on three interconnected teams, plus the Navigators (also called Prosperity Coaches) who work directly with families.</p>
+
+                <!-- Three Teams -->
+                <div style="display: flex; flex-direction: column; gap: 1.25rem; margin: 1.5rem 0;" class="not-prose">
+                    <div style="background: #ffffff; border: 2px solid #1e3a5f; border-radius: 0.75rem; padding: 1.5rem;">
+                        <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem; margin-top: 0; margin-bottom: 0.75rem;">Leadership Team</h4>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7; margin-bottom: 0.75rem;">Dedicated leaders from business, community, and government—including directors of state and federal agencies. These leaders possess the influence and authority to advocate for and implement changes in resource allocation, policy, and program administration. They are also responsible for securing sustainable funding beyond the pilot phase.</p>
+                        <p style="font-size: 0.85rem; color: #6b7280; margin: 0;"><strong style="color: #1e3a5f;">Includes:</strong> PAS Founder, Poverty Alleviation Director, department heads, policymakers, commissioners, key government influencers</p>
+                    </div>
+
+                    <div style="background: #ffffff; border: 2px solid #a3c520; border-radius: 0.75rem; padding: 1.5rem;">
+                        <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem; margin-top: 0; margin-bottom: 0.75rem;">Collective Impact Team</h4>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7; margin-bottom: 0.75rem;">Facilitates collaboration between community leaders, experts, and stakeholders to design solutions, implement changes, and bridge service gaps. This team reviews data and stories from the Economic Stability Teams, gaining insights into the barriers families face in childcare, housing, healthcare, transportation, and employment—then reports to the Leadership Team to advocate for systemic change.</p>
+                        <p style="font-size: 0.85rem; color: #6b7280; margin: 0;"><strong style="color: #1e3a5f;">Includes:</strong> Community partners, leaders, experts, department heads, and members of the Leadership Team</p>
+                    </div>
+
+                    <div style="background: #ffffff; border: 2px solid #1e3a5f; border-radius: 0.75rem; padding: 1.5rem;">
+                        <h4 style="font-weight: 700; color: #1e3a5f; font-size: 1.1rem; margin-top: 0; margin-bottom: 0.75rem;">Economic Stability Teams</h4>
+                        <p style="font-size: 0.9rem; color: #374151; line-height: 1.7; margin-bottom: 0.75rem;">The frontline of the system. Dedicated Navigators (Prosperity Coaches) and volunteers who guide individuals through their Economic Stability Plans. This team is trained to empower rather than create dependency—helping families develop personalized plans and serving as a source of accountability. They document challenges, identify service gaps, and report upward to the Collective Impact Team.</p>
+                        <p style="font-size: 0.85rem; color: #6b7280; margin: 0;"><strong style="color: #1e3a5f;">Includes:</strong> Navigators (Prosperity Coaches), Coach Leads, volunteers, and community partners</p>
+                    </div>
+                </div>
+
+                <!-- Navigators Detail -->
+                <h4 style="font-size: 1.35rem; margin-bottom: 0.75rem;"><span style="color: #1e3a5f; font-weight: 700;">Navigators</span> <span style="font-weight: 400; color: #6b7280; font-size: 1rem;">(Prosperity Coaches)</span></h4>
+                <p>Navigators—called Prosperity Coaches in The Poverty Solution's training system—are the heart of the model. They provide direct financial navigation services to participants committed to getting out of poverty. This means understanding regional services, attending training on community resources, guiding families through their Economic Stability Plan, attending Prosperity Meetings, providing ongoing coaching, and completing onboarding and data entry.</p>
+
+                <!-- Evidence-Based Caseload Standards -->
+                <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #0ea5e9; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #0369a1; font-weight: 700; margin: 0 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Evidence-Based Caseload Limits
+                    </h4>
+                    <p style="font-size: 0.9rem; color: #374151; line-height: 1.7; margin-bottom: 1rem;">Research from Nurse-Family Partnership, LIFT, and social work studies establishes clear caseload boundaries:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; text-align: center; border: 1px solid #bae6fd;">
+                            <p style="font-size: 1.75rem; font-weight: 700; color: #0369a1; margin: 0;">1:15-20</p>
+                            <p style="font-size: 0.8rem; color: #64748b; margin: 0.25rem 0 0 0;">Optimal ratio</p>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; text-align: center; border: 1px solid #bae6fd;">
+                            <p style="font-size: 1.75rem; font-weight: 700; color: #0369a1; margin: 0;">1:25</p>
+                            <p style="font-size: 0.8rem; color: #64748b; margin: 0.25rem 0 0 0;">Maximum limit</p>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; text-align: center; border: 1px solid #bae6fd;">
+                            <p style="font-size: 1.75rem; font-weight: 700; color: #0369a1; margin: 0;">1:6-8</p>
+                            <p style="font-size: 0.8rem; color: #64748b; margin: 0.25rem 0 0 0;">Supervisor ratio</p>
+                        </div>
+                    </div>
+                    <div style="background: #fef3c7; border-left: 3px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 0 0.5rem 0.5rem 0;">
+                        <p style="font-size: 0.85rem; color: #92400e; margin: 0;"><strong>When caseloads exceed 25:</strong> Service quality deteriorates, worker burnout increases, and program effectiveness drops by 22% (Nurse-Family Partnership research). Never exceed 1:25.</p>
+                    </div>
+                </div>
+
+                <!-- Navigator Coach Leads -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 1rem;">Frontline Staffing & Budget</h4>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Navigator (Prosperity Coach)</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Direct family support, 1:25 caseload</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.1rem; margin: 0;">$55,000 each</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Coach Lead</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Supervises coaches, ensures quality and workflow</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.1rem; margin: 0;">$65,000 each</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Data & Evaluation Specialist</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Manages tracking, reporting, and learning loops</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.1rem; margin: 0;">Included in budget</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Administrative Support</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Logistics, documentation, communication</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; font-size: 1.1rem; margin: 0;">$35,000</p>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 1rem 0 0 0; font-style: italic;">Sample pilot budget for 125 families: ~$893,200/year including all staffing, training, technology, participant supports, and contingency. See Chapter 10 for detailed unit economics.</p>
+                </div>
+
+                <!-- Salary Benchmarking Note -->
+                <div style="background: #f8fafc; border-left: 4px solid #64748b; padding: 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0;" class="not-prose">
+                    <p style="font-weight: 700; color: #334155; margin: 0 0 0.5rem 0;">About These Salary Ranges</p>
+                    <p style="font-size: 0.9rem; color: #475569; line-height: 1.7; margin: 0;">These figures are validated against 2024-2026 BLS data and nonprofit compensation surveys. Rural organizations can expect to pay 15-25% below urban markets while remaining locally competitive. <strong style="color: #334155;">The investment in adequate compensation is cost-effective:</strong> replacing a Navigator costs $54,000+, while a $5,000 salary increase costs far less than turnover. Competitive pay isn't a luxury—it's the foundation of program sustainability.</p>
+                </div>
+
+                <!-- Tip: Hire from Pilots -->
+                <div style="background: linear-gradient(135deg, #f7fbe8 0%, #eef5d0 100%); border-left: 4px solid #a3c520; border-radius: 0.5rem; padding: 1.25rem; margin: 1.5rem 0;" class="not-prose">
+                    <p style="font-weight: 700; color: #1e3a5f; margin-bottom: 0.5rem;">Tip: Hire from Existing Pilots When Possible</p>
+                    <p style="font-size: 0.9rem; color: #374151; line-height: 1.7; margin: 0;">If your community has run a pilot program, your best hires are often the people who already worked inside the model. They understand the philosophy, have credibility with families and partners, and don't need retraining. Promote strong Navigators to Coach Lead roles. Move pilot coordinators into leadership positions. These are your most proven candidates.</p>
+                </div>
+
+                <!-- Recruitment Section -->
+                <h3 id="recruitment">Where to Find Navigator Candidates</h3>
+                <p>In rural areas, the hiring pool is limited. Be creative and intentional about where you look:</p>
+
+                <div style="background-color: #f8fafc; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                            <p style="color: #1e3a5f; font-weight: 700; margin: 0 0 0.5rem 0;">Social Work & Human Services Programs</p>
+                            <p style="color: #444; margin: 0; font-size: 0.9rem;">Partner with regional university BSW/MSW programs and community college human services programs. Offer internship-to-hire pathways.</p>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #3d4f5f;">
+                            <p style="color: #1e3a5f; font-weight: 700; margin: 0 0 0.5rem 0;">Community Health Workers</p>
+                            <p style="color: #444; margin: 0; font-size: 0.9rem;">CHWs already understand relationship-based support and community navigation. Certification program graduates make excellent candidates.</p>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                            <p style="color: #1e3a5f; font-weight: 700; margin: 0 0 0.5rem 0;">Faith Communities</p>
+                            <p style="color: #444; margin: 0; font-size: 0.9rem;">Churches often have members passionate about poverty alleviation. The mission-alignment is often already there.</p>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #3d4f5f;">
+                            <p style="color: #1e3a5f; font-weight: 700; margin: 0 0 0.5rem 0;">Recovery Community</p>
+                            <p style="color: #444; margin: 0; font-size: 0.9rem;">People with lived recovery experience (2+ years stable) bring irreplaceable credibility and understanding of the journey.</p>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #a3c520;">
+                            <p style="color: #1e3a5f; font-weight: 700; margin: 0 0 0.5rem 0;">Former Participants</p>
+                            <p style="color: #444; margin: 0; font-size: 0.9rem;">Program graduates who have achieved stability may become your best Navigators. They understand the journey intimately.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Retention Warning -->
+                <h3 id="retention">Retention: The Make-or-Break Factor</h3>
+                <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+                    <h4 style="color: #92400e; margin-top: 0;">The Retention Reality</h4>
+                    <p style="margin-bottom: 0.75rem; color: #444;">Staff turnover is the primary cause of program drift. Nonprofit turnover runs at <strong>19%</strong>—58% higher than other sectors—and 67% of staff are actively looking to leave. When experienced Navigators depart, fidelity erodes rapidly and client outcomes suffer.</p>
+                    <ul style="margin: 0; padding-left: 1.5rem; color: #444;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Competitive salaries</strong> — Replacing one Navigator costs $54,000+. A $5,000 raise costs far less than turnover.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Manageable caseloads</strong> — Never exceed 1:25. Research shows 70% of social workers report high emotional exhaustion.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Weekly supervision</strong> — Programs that reduce supervision see measurable outcome degradation within 3-6 months.</li>
+                        <li><strong>Ongoing development</strong> — 68% of employees would stay with additional training opportunities.</li>
+                    </ul>
+                </div>
+
+                <!-- Proven Retention Strategies -->
+                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 1rem;">Proven Retention Strategies</h4>
+                    <p style="color: rgba(255,255,255,0.85); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem;">Research identifies specific interventions that reduce turnover. These aren't optional—they're the foundation of sustainable programs:</p>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(163,197,32,0.15); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Formal mentoring programs</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Pair new Navigators with experienced staff</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; margin: 0;">50% reduction</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Flexible work policies</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Schedule flexibility, remote options where possible</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; margin: 0;">25-40% reduction</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Clinical supervision & peer support</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Weekly one-on-ones, case conferences, team debriefs</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; margin: 0;">Critical</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 0.5rem;">
+                            <div>
+                                <p style="color: #ffffff; font-weight: 600; margin: 0;">Clear career pathways</p>
+                                <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0.25rem 0 0 0;">Navigator → Coach Lead → Director progression</p>
+                            </div>
+                            <p style="color: #a3c520; font-weight: 700; margin: 0;">Essential</p>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; margin: 1rem 0 0 0; font-style: italic;">Sources: Stanford Remote Work Study, NBER Mentoring Research, Casey Family Programs</p>
+                </div>
+
+                <!-- Sustainability Callout -->
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 2px solid #f59e0b; border-radius: 0.75rem; padding: 1.5rem; margin: 1.5rem 0;" class="not-prose">
+                    <h4 style="color: #92400e; font-weight: 700; margin: 0 0 0.75rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        Build for Sustainability, Not Just Startup
+                    </h4>
+                    <p style="font-size: 0.9rem; color: #78350f; line-height: 1.7; margin: 0;">The backbone organization research is clear: <strong>understaffing is the #1 reason collective impact initiatives fail.</strong> Don't build your team with just startup capacity in mind. Plan for supervision ratios (1:6-8), retention strategies, and career pathways from day one. The most successful poverty alleviation programs—Nurse-Family Partnership, Communities in Schools, StriveTogether network members—all invest heavily in team sustainability. Investment in retention is poverty alleviation.</p>
+                </div>
+
+            </div>
+
+            <!-- On This Page TOC -->
+            <aside class="hidden xl:block">
+                <div class="toc">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
+                    <nav>
+                        <a href="#leadership" class="toc-link active">Leadership</a>
+                        <a href="#who-to-hire" class="toc-link">Who to Hire</a>
+                        <a href="#step1" class="toc-link">Step 1: Director</a>
+                        <a href="#step2" class="toc-link">Step 2: Teams & Navigators</a>
+                        <a href="#recruitment" class="toc-link">Finding Candidates</a>
+                        <a href="#retention" class="toc-link">Retention Strategies</a>
+                    </nav>
+                </div>
+            </aside>
+            </div>
+
+            <!-- Chapter Navigation -->
+            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
+                <a href="chapter-7.html" class="text-gray-500 hover:text-part3-blue transition text-sm">
+                    ← Previous: The Phased Approach
+                </a>
+                <a href="chapter-9.html" class="bg-part3-blue text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#2d3d4d] transition">
+                    Next: What Kills Programs →
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
+            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chapter Nav -->
+    <div class="floating-nav">
+        <a href="chapter-7.html" title="Previous: The Phased Approach" class="text-gray-600 hover:text-part3-blue">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <a href="chapter-9.html" title="Next: What Kills Programs" class="primary">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reading Progress Bar
+        window.addEventListener('scroll', function() {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / docHeight) * 100;
+            document.getElementById('readingProgress').style.width = progress + '%';
+        });
+
+        // TOC Active State
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('h2[id], h3[id]');
+        function updateTOC() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', updateTOC);
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            // Don't trigger if user is typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                window.location.href = 'chapter-7.html';
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                window.location.href = 'chapter-9.html';
+            } else if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

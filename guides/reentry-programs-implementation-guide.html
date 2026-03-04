@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Re-Entry Programs Implementation Guide | The Empower Playbook</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fff;
+        }
+
+        @media print {
+            body { font-size: 10pt; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+            @page { margin: 0.75in; }
+        }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Cover Page */
+        .cover {
+            min-height: 10in;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8a 100%);
+            color: white;
+            padding: 1in;
+            margin: -0.5in;
+            margin-bottom: 0.5in;
+        }
+
+        .cover-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2in;
+        }
+
+        .cover-logo-box {
+            width: 50px;
+            height: 50px;
+            background: #111;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .cover-logo-box span {
+            color: #a3c520;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .cover-brand {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .cover-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #a3c520;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .cover-tagline {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 500px;
+            margin-bottom: 60px;
+        }
+
+        .cover-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cover-contact p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .cover-version {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        /* Typography */
+        h1 { font-size: 28px; font-weight: 800; color: #1e3a5f; margin-bottom: 20px; }
+        h2 { font-size: 20px; font-weight: 700; color: #1e3a5f; margin-top: 30px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #a3c520; }
+        h3 { font-size: 16px; font-weight: 600; color: #333; margin-top: 25px; margin-bottom: 10px; }
+        h4 { font-size: 13px; font-weight: 600; color: #444; margin-top: 20px; margin-bottom: 8px; }
+
+        p { margin-bottom: 12px; }
+
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 6px; }
+
+        strong { color: #111; }
+
+        /* Boxes */
+        .key-insight {
+            background: #f0f9e8;
+            border-left: 4px solid #a3c520;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-insight-title {
+            font-weight: 700;
+            color: #3d6b0d;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box-title {
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 5px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dark-box {
+            background: #111;
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .dark-box h3 {
+            color: #a3c520;
+            margin-top: 0;
+        }
+
+        .dark-box ul {
+            color: #fff;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .checklist-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1e3a5f;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-text {
+            flex: 1;
+        }
+
+        .checklist-text strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .checklist-text span {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 25px 0;
+        }
+
+        .timeline-phase {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            flex-shrink: 0;
+        }
+
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: #1e3a5f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: #e5e5e5;
+            margin-left: 11px;
+            height: calc(100% - 24px);
+            margin-top: 5px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 15px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .timeline-period {
+            font-size: 11px;
+            color: #a3c520;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e3a5f;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+
+        th {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Four Non-Negotiables */
+        .non-negotiable {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .non-negotiable-num {
+            width: 32px;
+            height: 32px;
+            background: #a3c520;
+            color: #111;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .non-negotiable-content h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #1e3a5f;
+        }
+
+        .non-negotiable-content p {
+            margin-bottom: 0;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            font-size: 10px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #a3c520;
+            color: #111;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background: #8fb31a;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+    <div class="container">
+        <!-- Cover Page -->
+        <div class="cover">
+            <div class="cover-logo">
+                <div class="cover-logo-box"><span>E</span></div>
+                <div>
+                    <div class="cover-brand">The Empower Playbook</div>
+                </div>
+            </div>
+
+            <div class="cover-subtitle">Implementation Guide</div>
+            <h1>Re-Entry Programs<br>Implementation Guide</h1>
+            <p class="cover-tagline">A comprehensive guide to implementing the Empower Method for justice-involved individuals, reducing recidivism through economic mobility and wraparound support.</p>
+
+            <div class="cover-footer">
+                <div class="cover-contact">
+                    <p><strong>The Poverty Solution</strong></p>
+                    <p>info@thepovertysolution.com</p>
+                    <p>thepovertysolution.com</p>
+                </div>
+                <div class="cover-version">
+                    Version 1.0 | 2026
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Executive Summary -->
+        <div class="page-break"></div>
+
+        <h1>Executive Summary</h1>
+
+        <p>Recidivism is fundamentally an economic problem. Within three years, 68% of released individuals return to incarceration—not because they want to reoffend, but because they face impossible barriers: no housing, no job, benefits gaps, and fractured family connections. Traditional re-entry programs address these issues in silos. The Empower Method changes that.</p>
+
+        <p><strong>The Empower Method for Re-Entry creates pathways to economic stability starting before release, with continuous navigator support through the critical first year and beyond.</strong></p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">-45%</div>
+                <div class="stat-label">Recidivism Reduction</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">78%</div>
+                <div class="stat-label">Employment at 6 Months</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">92%</div>
+                <div class="stat-label">Housing Stability at 1 Year</div>
+            </div>
+        </div>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Core Insight</div>
+            <p style="margin-bottom: 0;">The first 72 hours after release determine everything. Individuals who leave prison with housing secured, an employer waiting, and a navigator by their side have dramatically different outcomes than those who walk out with $50 and a bus ticket.</p>
+        </div>
+
+        <h2>The Four Non-Negotiables for Re-Entry</h2>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Pre-Release Engagement (90-180 Days Before)</h4>
+                <p>Begin relationship building and planning inside. Secure housing commitments, employer connections, and benefits applications before the release date—not after.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Re-Entry Navigator Model</h4>
+                <p>One dedicated navigator per 20-25 participants. Same person from pre-release through 18+ months post-release. Trust-based relationship is the foundation of all success.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>Day-One Connections</h4>
+                <p>On release day: housing keys in hand, employer orientation scheduled within 72 hours, benefits applications submitted, navigator meeting within 24 hours. No gaps.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Benefits Cliff Navigation</h4>
+                <p>Employment income triggers benefits loss. Navigate SNAP, Medicaid, and housing subsidy transitions so that working never makes someone worse off financially.</p>
+            </div>
+        </div>
+
+        <!-- Page 3: Implementation Timeline -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Timeline: 6-Month Phased Approach</h2>
+
+        <div class="timeline">
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Foundation Building</div>
+                    <div class="timeline-period">Month 1</div>
+                    <ul>
+                        <li>Secure MOUs with correctional facilities for in-facility access</li>
+                        <li>Establish employer partner network (ban-the-box employers)</li>
+                        <li>Identify housing partners (transitional, permanent supportive, market-rate)</li>
+                        <li>Hire and train Re-Entry Navigators</li>
+                        <li>Set up data tracking and case management systems</li>
+                        <li>Develop referral protocols with probation/parole</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Pre-Release Program Launch</div>
+                    <div class="timeline-period">Month 2</div>
+                    <ul>
+                        <li>Begin in-facility engagement sessions (180 days pre-release)</li>
+                        <li>Conduct initial assessments: employment history, skills, barriers</li>
+                        <li>Start benefits pre-enrollment (Medicaid, SNAP applications)</li>
+                        <li>Connect with family members for reunification planning</li>
+                        <li>Begin employer matching process</li>
+                        <li>Identify housing placement options</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Intensive Pre-Release Phase</div>
+                    <div class="timeline-period">Months 3-4</div>
+                    <ul>
+                        <li>Weekly in-facility meetings with participants</li>
+                        <li>Finalize housing placements (lease signed before release)</li>
+                        <li>Confirm employer commitments (orientation date set)</li>
+                        <li>Complete benefits applications and expedite processing</li>
+                        <li>Develop transportation plans (ID, license reinstatement)</li>
+                        <li>Create detailed 90-day post-release action plans</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Release Day Operations</div>
+                    <div class="timeline-period">Month 5</div>
+                    <ul>
+                        <li>Navigator present at release (or within 24 hours)</li>
+                        <li>Transport to housing placement</li>
+                        <li>Immediate needs: food, clothing, hygiene, phone</li>
+                        <li>Benefits enrollment confirmation</li>
+                        <li>Employer orientation within 72 hours</li>
+                        <li>Probation/parole check-in coordination</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-phase">
+                <div class="timeline-marker">
+                    <div class="timeline-dot">5</div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Stabilization & Growth</div>
+                    <div class="timeline-period">Month 6+</div>
+                    <ul>
+                        <li>Weekly navigator check-ins (first 90 days)</li>
+                        <li>Benefits cliff navigation as income increases</li>
+                        <li>Career pathway development and advancement</li>
+                        <li>Family reunification support</li>
+                        <li>Long-term housing transition planning</li>
+                        <li>Track outcomes and refine program model</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Pre-Release Engagement -->
+        <div class="page-break"></div>
+
+        <h2>Pre-Release Engagement Protocols</h2>
+
+        <p>Success in re-entry is determined before release. The pre-release phase is where navigators build trust, assess needs, and secure commitments that make day-one success possible.</p>
+
+        <h3>Timeline: 180 to 90 Days Before Release</h3>
+        <table>
+            <tr>
+                <th>Week</th>
+                <th>Activity</th>
+                <th>Outcome</th>
+            </tr>
+            <tr>
+                <td>Week 1</td>
+                <td>Initial intake and assessment</td>
+                <td>Complete background, skills inventory, barrier assessment</td>
+            </tr>
+            <tr>
+                <td>Week 2-3</td>
+                <td>Goal setting and planning</td>
+                <td>Participant-driven 90-day post-release plan</td>
+            </tr>
+            <tr>
+                <td>Week 4-6</td>
+                <td>Housing assessment</td>
+                <td>Identify housing options, begin applications</td>
+            </tr>
+            <tr>
+                <td>Week 7-9</td>
+                <td>Employment preparation</td>
+                <td>Resume, skills assessment, employer matching</td>
+            </tr>
+            <tr>
+                <td>Week 10-12</td>
+                <td>Benefits enrollment</td>
+                <td>Medicaid, SNAP applications submitted</td>
+            </tr>
+        </table>
+
+        <h3>Timeline: 90 Days to Release</h3>
+        <table>
+            <tr>
+                <th>Week</th>
+                <th>Activity</th>
+                <th>Outcome</th>
+            </tr>
+            <tr>
+                <td>Week 1-2</td>
+                <td>Finalize housing</td>
+                <td>Lease signed, move-in date confirmed</td>
+            </tr>
+            <tr>
+                <td>Week 3-4</td>
+                <td>Employer confirmation</td>
+                <td>Job offer letter, start date within 72 hours of release</td>
+            </tr>
+            <tr>
+                <td>Week 5-6</td>
+                <td>Family reconnection meetings</td>
+                <td>Family expectations aligned, support network activated</td>
+            </tr>
+            <tr>
+                <td>Week 7-8</td>
+                <td>Transportation planning</td>
+                <td>ID obtained, license plan, transit access confirmed</td>
+            </tr>
+            <tr>
+                <td>Week 9-10</td>
+                <td>Legal barrier review</td>
+                <td>Record expungement eligibility, legal aid connected</td>
+            </tr>
+            <tr>
+                <td>Week 11-12</td>
+                <td>Release day planning</td>
+                <td>Hour-by-hour first 72 hours plan documented</td>
+            </tr>
+        </table>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Critical Success Factor</div>
+            <p style="margin-bottom: 0;">Navigators should meet with participants weekly during the final 90 days. These aren't check-ins—they're working sessions where housing applications get completed, employer interviews happen via video, and benefits paperwork gets filed.</p>
+        </div>
+
+        <!-- Page 5: Re-Entry Navigator Model -->
+        <div class="page-break"></div>
+
+        <h2>Re-Entry Navigator Model</h2>
+
+        <h3>Role Definition</h3>
+        <p><strong>Caseload:</strong> 20-25 participants per navigator</p>
+        <p><strong>Duration:</strong> 180 days pre-release through 18+ months post-release</p>
+        <p><strong>Relationship:</strong> Same navigator throughout—continuity is non-negotiable</p>
+
+        <h4>Core Responsibilities</h4>
+        <ul>
+            <li>Weekly in-facility meetings during pre-release phase</li>
+            <li>Present at release or within 24 hours</li>
+            <li>Daily contact during first week post-release</li>
+            <li>Weekly meetings during first 90 days</li>
+            <li>Bi-weekly meetings months 4-12</li>
+            <li>Monthly meetings year 2 and beyond</li>
+            <li>Crisis response: available 24/7 during critical periods</li>
+        </ul>
+
+        <h4>Navigator Competencies</h4>
+        <ul>
+            <li>Lived experience preferred (not required)</li>
+            <li>Deep knowledge of benefits systems and cliff effects</li>
+            <li>Understanding of criminal justice system and supervision requirements</li>
+            <li>Trauma-informed approach</li>
+            <li>Strong employer relationship skills</li>
+            <li>Housing navigation expertise</li>
+            <li>Motivational interviewing certification</li>
+            <li>Crisis de-escalation training</li>
+        </ul>
+
+        <h4>Training Requirements</h4>
+        <table>
+            <tr>
+                <th>Training</th>
+                <th>Hours</th>
+                <th>Timing</th>
+            </tr>
+            <tr>
+                <td>Empower Navigator Certification</td>
+                <td>40 hours</td>
+                <td>Before participant contact</td>
+            </tr>
+            <tr>
+                <td>Benefits Cliff Tool Mastery</td>
+                <td>16 hours</td>
+                <td>Before participant contact</td>
+            </tr>
+            <tr>
+                <td>Trauma-Informed Care</td>
+                <td>16 hours</td>
+                <td>First 30 days</td>
+            </tr>
+            <tr>
+                <td>Motivational Interviewing</td>
+                <td>24 hours</td>
+                <td>First 60 days</td>
+            </tr>
+            <tr>
+                <td>Criminal Justice System Overview</td>
+                <td>8 hours</td>
+                <td>First 30 days</td>
+            </tr>
+            <tr>
+                <td>Local Resource Network</td>
+                <td>8 hours</td>
+                <td>First 30 days</td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <div class="warning-box-title">Common Pitfall</div>
+            <p style="margin-bottom: 0;">High caseloads destroy programs. When navigators exceed 25 participants, they become case managers shuffling paper instead of relationship-builders creating change. Protect the caseload ratio fiercely.</p>
+        </div>
+
+        <!-- Page 6: Employment Pathway Development -->
+        <div class="page-break"></div>
+
+        <h2>Employment Pathway Development</h2>
+
+        <p>Employment within 72 hours of release is the single strongest predictor of successful re-entry. But not just any job—participants need career pathways with advancement potential and benefits.</p>
+
+        <h3>Employer Partner Development</h3>
+
+        <h4>Target Employer Characteristics</h4>
+        <ul>
+            <li><strong>Ban-the-box policies:</strong> Delay background checks until conditional offer</li>
+            <li><strong>Career ladder positions:</strong> Entry-level with advancement potential</li>
+            <li><strong>Benefits eligible:</strong> Healthcare, retirement, PTO within 90 days</li>
+            <li><strong>Schedule flexibility:</strong> Accommodate probation/parole requirements</li>
+            <li><strong>Supportive supervision:</strong> Managers trained on re-entry challenges</li>
+        </ul>
+
+        <h4>High-Potential Industries</h4>
+        <table>
+            <tr>
+                <th>Industry</th>
+                <th>Entry Wage</th>
+                <th>Advancement Potential</th>
+                <th>Benefits Access</th>
+            </tr>
+            <tr>
+                <td>Construction/Trades</td>
+                <td>$18-25/hr</td>
+                <td>Journeyman, Foreman, Contractor</td>
+                <td>Union benefits common</td>
+            </tr>
+            <tr>
+                <td>Manufacturing</td>
+                <td>$16-22/hr</td>
+                <td>Lead, Supervisor, Quality</td>
+                <td>Day-one benefits typical</td>
+            </tr>
+            <tr>
+                <td>Logistics/Warehousing</td>
+                <td>$17-21/hr</td>
+                <td>Lead, Supervisor, Driver</td>
+                <td>Varies; larger firms better</td>
+            </tr>
+            <tr>
+                <td>Healthcare Support</td>
+                <td>$15-20/hr</td>
+                <td>CNA, MA, LPN pathway</td>
+                <td>Strong benefits access</td>
+            </tr>
+            <tr>
+                <td>Culinary/Hospitality</td>
+                <td>$14-18/hr</td>
+                <td>Line cook, Sous chef, Chef</td>
+                <td>Improving; varies widely</td>
+            </tr>
+        </table>
+
+        <h3>Employer Engagement Model</h3>
+        <ol>
+            <li><strong>Recruit:</strong> Identify HR leaders and hiring managers open to fair chance hiring</li>
+            <li><strong>Educate:</strong> Provide data on retention, tax credits, bonding programs</li>
+            <li><strong>Support:</strong> Navigator serves as single point of contact for employer concerns</li>
+            <li><strong>Recognize:</strong> Publicly celebrate employer partners; create competitive advantage</li>
+        </ol>
+
+        <div class="key-insight">
+            <div class="key-insight-title">Employer Value Proposition</div>
+            <p style="margin-bottom: 0;">Fair chance employees have 13% lower turnover than general population. Work Opportunity Tax Credit provides $2,400-$9,600 per hire. Federal Bonding Program provides free fidelity bonds. Frame hiring as business decision, not charity.</p>
+        </div>
+
+        <!-- Page 7: Housing Placement Strategies -->
+        <div class="page-break"></div>
+
+        <h2>Housing Placement Strategies</h2>
+
+        <p>Homelessness is the fastest path back to incarceration. Housing must be secured before release—not after. A signed lease or confirmed bed is the minimum standard.</p>
+
+        <h3>Housing Continuum</h3>
+        <table>
+            <tr>
+                <th>Housing Type</th>
+                <th>Duration</th>
+                <th>Best For</th>
+                <th>Key Partners</th>
+            </tr>
+            <tr>
+                <td><strong>Transitional Housing</strong></td>
+                <td>30-90 days</td>
+                <td>Immediate stabilization; no family housing available</td>
+                <td>Re-entry housing providers, faith organizations</td>
+            </tr>
+            <tr>
+                <td><strong>Sober Living</strong></td>
+                <td>90 days - 1 year</td>
+                <td>Participants with substance use history; structured environment</td>
+                <td>Recovery housing networks</td>
+            </tr>
+            <tr>
+                <td><strong>Family Reunification</strong></td>
+                <td>Permanent</td>
+                <td>Stable family willing to receive; relationship repair needed</td>
+                <td>Family counseling services</td>
+            </tr>
+            <tr>
+                <td><strong>Rapid Re-Housing</strong></td>
+                <td>3-24 months subsidy</td>
+                <td>Employment secured; can sustain rent with cliff navigation</td>
+                <td>CoC, homeless services</td>
+            </tr>
+            <tr>
+                <td><strong>Permanent Supportive</strong></td>
+                <td>Permanent</td>
+                <td>Chronic homelessness; significant disabilities</td>
+                <td>Housing Authority, PSH providers</td>
+            </tr>
+            <tr>
+                <td><strong>Market-Rate Rental</strong></td>
+                <td>Permanent</td>
+                <td>Income sufficient; landlords willing to rent</td>
+                <td>Fair chance landlord network</td>
+            </tr>
+        </table>
+
+        <h3>Landlord Partnership Development</h3>
+        <ul>
+            <li><strong>Risk mitigation fund:</strong> Security deposit and damage guarantee pool</li>
+            <li><strong>Navigator support guarantee:</strong> Single point of contact for landlord concerns</li>
+            <li><strong>Tenant readiness certification:</strong> Pre-release housing education completed</li>
+            <li><strong>Rapid response:</strong> Navigator intervention within 24 hours of any issue</li>
+        </ul>
+
+        <h3>Pre-Release Housing Checklist</h3>
+        <ul>
+            <li>Housing type identified and matched to participant needs</li>
+            <li>Application completed and approved</li>
+            <li>Lease or placement agreement signed</li>
+            <li>Move-in date confirmed (same day as release ideal)</li>
+            <li>Security deposit and first month secured</li>
+            <li>Utilities scheduled for activation</li>
+            <li>Basic furnishings arranged (bed, linens, kitchen basics)</li>
+            <li>Address registered with probation/parole</li>
+        </ul>
+
+        <div class="warning-box">
+            <div class="warning-box-title">Housing Restriction Navigation</div>
+            <p style="margin-bottom: 0;">Many participants face housing restrictions based on offense type. Know your local public housing policies, registered offender residency requirements, and which private landlords have flexible screening criteria. Build relationships with landlords before you need them.</p>
+        </div>
+
+        <!-- Page 8: Benefits Enrollment & Cliff Navigation -->
+        <div class="page-break"></div>
+
+        <h2>Benefits Enrollment & Cliff Navigation</h2>
+
+        <p>Justice-involved individuals face a cruel paradox: they need benefits to stabilize, but employment income—essential for supervision compliance and long-term success—triggers benefits loss. Strategic cliff navigation makes work always pay.</p>
+
+        <h3>Benefits Enrollment Timeline</h3>
+        <table>
+            <tr>
+                <th>Benefit</th>
+                <th>Pre-Release Action</th>
+                <th>Post-Release Action</th>
+                <th>Cliff Risk</th>
+            </tr>
+            <tr>
+                <td><strong>Medicaid</strong></td>
+                <td>Submit application 45 days pre-release</td>
+                <td>Activate coverage on release date</td>
+                <td>High: Income-based; varies by state</td>
+            </tr>
+            <tr>
+                <td><strong>SNAP</strong></td>
+                <td>Submit application 30 days pre-release</td>
+                <td>Interview immediately; expedited if eligible</td>
+                <td>Medium: Gradual reduction with income</td>
+            </tr>
+            <tr>
+                <td><strong>ACA Marketplace</strong></td>
+                <td>Research options if Medicaid-ineligible</td>
+                <td>Enroll during SEP (release = qualifying event)</td>
+                <td>Medium: Subsidy cliff at 400% FPL</td>
+            </tr>
+            <tr>
+                <td><strong>SSI/SSDI</strong></td>
+                <td>Reinstatement application if prior recipient</td>
+                <td>Expedited reinstatement process</td>
+                <td>High: Complex work incentives</td>
+            </tr>
+            <tr>
+                <td><strong>Housing Voucher</strong></td>
+                <td>Waitlist application (long lead time)</td>
+                <td>Preference categories may apply</td>
+                <td>Low: 30% income rent calculation</td>
+            </tr>
+        </table>
+
+        <h3>Benefits Cliff Scenarios</h3>
+
+        <h4>Scenario 1: Medicaid to Employer Coverage Transition</h4>
+        <p>Participant earning $15/hr (31,200/year) in expansion state loses Medicaid at ~$20,000. Strategy: Time job start to maximize coverage overlap; enroll in employer coverage during open enrollment; use navigator to ensure no gap.</p>
+
+        <h4>Scenario 2: SNAP Phase-Out</h4>
+        <p>SNAP benefits reduce gradually but create effective marginal tax rates of 24% on top of regular taxes. Strategy: Map SNAP reduction against wage increases; identify income points where net income actually decreases; time raises strategically.</p>
+
+        <h4>Scenario 3: Child Support Arrears</h4>
+        <p>Back child support triggers wage garnishment of up to 65% of disposable income. Many participants owe tens of thousands. Strategy: Work with child support enforcement for realistic payment plans before employment starts; pursue arrears forgiveness programs.</p>
+
+        <div class="key-insight">
+            <div class="key-insight-title">The Cliff Navigation Conversation</div>
+            <p style="margin-bottom: 0;">Every participant needs a personalized benefits cliff map before employment begins. Show them exactly what happens to their total resources at $12/hr, $15/hr, $18/hr, and $22/hr. When people understand the math, they make better decisions—and they trust the navigator more.</p>
+        </div>
+
+        <!-- Page 9: Community Partner Integration -->
+        <div class="page-break"></div>
+
+        <h2>Community Partner Integration</h2>
+
+        <p>No single organization can address all re-entry needs. Success requires a coordinated network of partners with clear roles, fast referral pathways, and shared accountability for outcomes.</p>
+
+        <h3>Essential Partner Categories</h3>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Partner Types</th>
+                <th>Services</th>
+            </tr>
+            <tr>
+                <td><strong>Employment</strong></td>
+                <td>Workforce boards, staffing agencies, employer networks</td>
+                <td>Job placement, training, credentials, career coaching</td>
+            </tr>
+            <tr>
+                <td><strong>Housing</strong></td>
+                <td>Re-entry housing, CoC, Housing Authority, landlord networks</td>
+                <td>Transitional, rapid re-housing, permanent placements</td>
+            </tr>
+            <tr>
+                <td><strong>Family Services</strong></td>
+                <td>Family counseling, child welfare, domestic relations court</td>
+                <td>Reunification, parenting, child support navigation</td>
+            </tr>
+            <tr>
+                <td><strong>Behavioral Health</strong></td>
+                <td>Mental health providers, SUD treatment, peer support</td>
+                <td>Counseling, MAT, recovery support, crisis intervention</td>
+            </tr>
+            <tr>
+                <td><strong>Legal Services</strong></td>
+                <td>Legal aid, public defender, expungement clinics</td>
+                <td>Record sealing, license reinstatement, civil legal needs</td>
+            </tr>
+            <tr>
+                <td><strong>Transportation</strong></td>
+                <td>Transit authority, car programs, ride services</td>
+                <td>Bus passes, vehicle purchase/repair, license reinstatement</td>
+            </tr>
+            <tr>
+                <td><strong>Supervision</strong></td>
+                <td>Probation, parole, specialty courts</td>
+                <td>Compliance support, early termination, violation response</td>
+            </tr>
+        </table>
+
+        <h3>Partner Integration Model</h3>
+
+        <h4>Memorandum of Understanding Requirements</h4>
+        <ul>
+            <li>Designated point of contact with direct phone/email</li>
+            <li>Referral response time commitment (48 hours maximum)</li>
+            <li>Data sharing agreement (with participant consent)</li>
+            <li>Participation in monthly coordination meetings</li>
+            <li>Outcome reporting to shared dashboard</li>
+        </ul>
+
+        <h4>Coordination Meeting Structure</h4>
+        <ul>
+            <li><strong>Weekly:</strong> Navigator team case conferences (internal)</li>
+            <li><strong>Bi-weekly:</strong> High-barrier participant staffings with key partners</li>
+            <li><strong>Monthly:</strong> Full partner network meeting (all categories)</li>
+            <li><strong>Quarterly:</strong> Outcome review and process improvement</li>
+        </ul>
+
+        <h3>Family Reconnection Protocol</h3>
+        <p>Family support is the strongest protective factor—when relationships are healthy. Navigators must assess family dynamics carefully.</p>
+        <ol>
+            <li><strong>Assess:</strong> Pre-release family interviews; identify support potential and risks</li>
+            <li><strong>Prepare:</strong> Family education on re-entry challenges; expectation setting</li>
+            <li><strong>Facilitate:</strong> Structured reunification conversations with navigator present</li>
+            <li><strong>Support:</strong> Ongoing family counseling referrals; parenting support</li>
+            <li><strong>Monitor:</strong> Watch for relationship strain; intervene early</li>
+        </ol>
+
+        <!-- Page 10: Data Dashboard -->
+        <div class="page-break"></div>
+
+        <h2>Data Dashboard: Recidivism Reduction & Mobility Metrics</h2>
+
+        <h3>Participant-Level Tracking</h3>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Metrics</th>
+                <th>Frequency</th>
+            </tr>
+            <tr>
+                <td><strong>Recidivism</strong></td>
+                <td>New arrests, convictions, incarcerations, technical violations</td>
+                <td>Real-time alerts; quarterly analysis</td>
+            </tr>
+            <tr>
+                <td><strong>Employment</strong></td>
+                <td>Placement rate, retention (30/90/180/365 days), wages, hours, benefits</td>
+                <td>Weekly updates; monthly analysis</td>
+            </tr>
+            <tr>
+                <td><strong>Housing</strong></td>
+                <td>Placement type, stability, moves, evictions, homelessness episodes</td>
+                <td>Monthly updates; quarterly analysis</td>
+            </tr>
+            <tr>
+                <td><strong>Income</strong></td>
+                <td>Total household income, benefits, earned income, cliff proximity</td>
+                <td>Monthly updates; quarterly analysis</td>
+            </tr>
+            <tr>
+                <td><strong>Supervision</strong></td>
+                <td>Compliance status, violations, early termination progress</td>
+                <td>Weekly updates from PO</td>
+            </tr>
+            <tr>
+                <td><strong>Engagement</strong></td>
+                <td>Navigator contacts, meeting attendance, crisis episodes</td>
+                <td>Real-time tracking</td>
+            </tr>
+        </table>
+
+        <h3>Program Outcome Targets</h3>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Target</th>
+                <th>Comparison</th>
+            </tr>
+            <tr>
+                <td>1-Year Recidivism (new conviction)</td>
+                <td>&lt;15%</td>
+                <td>National average: 33%</td>
+            </tr>
+            <tr>
+                <td>3-Year Recidivism (new conviction)</td>
+                <td>&lt;25%</td>
+                <td>National average: 55%</td>
+            </tr>
+            <tr>
+                <td>Employment at 30 days</td>
+                <td>&gt;70%</td>
+                <td>Typical re-entry: 40%</td>
+            </tr>
+            <tr>
+                <td>Employment at 180 days</td>
+                <td>&gt;75%</td>
+                <td>Typical re-entry: 35%</td>
+            </tr>
+            <tr>
+                <td>Housing stability at 1 year</td>
+                <td>&gt;90%</td>
+                <td>Typical re-entry: 60%</td>
+            </tr>
+            <tr>
+                <td>Income increase at 1 year</td>
+                <td>&gt;40%</td>
+                <td>Pre-incarceration baseline</td>
+            </tr>
+            <tr>
+                <td>Median wage at 1 year</td>
+                <td>&gt;$17/hr</td>
+                <td>Living wage threshold</td>
+            </tr>
+        </table>
+
+        <h3>Early Warning Indicators</h3>
+        <ul>
+            <li><strong>Red flags:</strong> Missed navigator meetings (2+ consecutive), job loss, housing instability, positive drug test, new arrest</li>
+            <li><strong>Yellow flags:</strong> Reduced contact, employment issues, family conflict, financial stress, supervision concerns</li>
+            <li><strong>Response protocol:</strong> Red flags trigger 24-hour navigator outreach and partner notification; yellow flags trigger increased contact frequency</li>
+        </ul>
+
+        <!-- Page 11: Budget Framework -->
+        <div class="page-break"></div>
+
+        <h2>Budget Framework</h2>
+
+        <h3>Per-Participant Costs (Annual)</h3>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Unit Cost</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Navigator salary/benefits (allocated)</td>
+                <td>$2,800</td>
+                <td>$70K total / 25 participants</td>
+            </tr>
+            <tr>
+                <td>Supervisor (allocated)</td>
+                <td>$600</td>
+                <td>1 supervisor per 4 navigators</td>
+            </tr>
+            <tr>
+                <td>Training & development</td>
+                <td>$200</td>
+                <td>Initial + ongoing</td>
+            </tr>
+            <tr>
+                <td>Emergency assistance fund</td>
+                <td>$500</td>
+                <td>Housing, transportation, work supplies</td>
+            </tr>
+            <tr>
+                <td>Transportation support</td>
+                <td>$300</td>
+                <td>Bus passes, gas cards, license fees</td>
+            </tr>
+            <tr>
+                <td>Technology & data systems</td>
+                <td>$150</td>
+                <td>Case management, dashboards</td>
+            </tr>
+            <tr>
+                <td>Program operations</td>
+                <td>$250</td>
+                <td>Office, supplies, communications</td>
+            </tr>
+            <tr>
+                <td><strong>Total per participant</strong></td>
+                <td><strong>$4,800</strong></td>
+                <td>Per year of service</td>
+            </tr>
+        </table>
+
+        <h3>Program-Level Budget (50 Participants)</h3>
+        <table>
+            <tr>
+                <th>Line Item</th>
+                <th>Year 1</th>
+                <th>Year 2</th>
+            </tr>
+            <tr>
+                <td>Navigators (2 FTE)</td>
+                <td>$140,000</td>
+                <td>$144,200</td>
+            </tr>
+            <tr>
+                <td>Program Supervisor (0.5 FTE)</td>
+                <td>$40,000</td>
+                <td>$41,200</td>
+            </tr>
+            <tr>
+                <td>Training & Professional Development</td>
+                <td>$15,000</td>
+                <td>$8,000</td>
+            </tr>
+            <tr>
+                <td>Emergency Assistance Fund</td>
+                <td>$25,000</td>
+                <td>$25,000</td>
+            </tr>
+            <tr>
+                <td>Participant Transportation</td>
+                <td>$15,000</td>
+                <td>$15,000</td>
+            </tr>
+            <tr>
+                <td>Technology & Data Systems</td>
+                <td>$12,000</td>
+                <td>$7,500</td>
+            </tr>
+            <tr>
+                <td>Program Operations</td>
+                <td>$12,500</td>
+                <td>$12,500</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>$259,500</strong></td>
+                <td><strong>$253,400</strong></td>
+            </tr>
+        </table>
+
+        <h3>Re-Entry Funding Sources</h3>
+        <ul>
+            <li><strong>Second Chance Act Grants:</strong> Federal DOJ funding for re-entry programs</li>
+            <li><strong>WIOA Title I:</strong> Workforce training for justice-involved populations</li>
+            <li><strong>State DOC Re-Entry Funds:</strong> Many states allocate re-entry support funding</li>
+            <li><strong>Medicaid Administrative Claiming:</strong> Reimbursement for benefits enrollment assistance</li>
+            <li><strong>Community Development Block Grant:</strong> Housing and employment services</li>
+            <li><strong>Foundation Grants:</strong> Criminal justice reform, workforce development funders</li>
+            <li><strong>Social Impact Bonds:</strong> Pay-for-success financing based on recidivism reduction</li>
+            <li><strong>County/City Justice System Savings:</strong> Reinvestment of incarceration cost avoidance</li>
+        </ul>
+
+        <div class="key-insight">
+            <div class="key-insight-title">ROI Calculation</div>
+            <p style="margin-bottom: 0;">Average cost of incarceration: $35,000-$45,000 per year. Program cost: $4,800 per participant per year. Preventing one re-incarceration pays for 7-9 participants. A 20% recidivism reduction in a 50-person cohort saves the system $350,000+ annually.</p>
+        </div>
+
+        <!-- Page 12: Readiness Checklist -->
+        <div class="page-break"></div>
+
+        <h2>Implementation Readiness Checklist</h2>
+
+        <div class="checklist">
+            <div class="checklist-title">Correctional Facility Access</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>MOU with correctional facility secured</strong>
+                    <span>In-facility access for navigator visits approved</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Pre-release program space identified</strong>
+                    <span>Room for group sessions and individual meetings</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Referral pathway established with case managers</strong>
+                    <span>Process for identifying participants 180 days pre-release</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Employment Network</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Minimum 10 employer partners committed</strong>
+                    <span>Ban-the-box employers with career pathway positions</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Employer liaison process established</strong>
+                    <span>Single point of contact for employer concerns</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Tax credit and bonding information prepared</strong>
+                    <span>WOTC, Federal Bonding Program materials ready</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Housing Network</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Transitional housing beds identified</strong>
+                    <span>Minimum 20 beds available for immediate placement</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Landlord partner network initiated</strong>
+                    <span>Fair chance landlords willing to rent to participants</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Risk mitigation fund established</strong>
+                    <span>Security deposit and damage guarantee pool funded</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Staffing & Training</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Navigators hired</strong>
+                    <span>Background checks complete; start date confirmed</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Training curriculum scheduled</strong>
+                    <span>Navigator certification, benefits cliff, trauma-informed care</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Supervisor identified</strong>
+                    <span>Experienced leader to support navigator team</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-title">Systems & Partnerships</div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Probation/parole relationship established</strong>
+                    <span>Communication protocols and referral process agreed</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Benefits enrollment partners identified</strong>
+                    <span>Medicaid, SNAP, workforce system contacts confirmed</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Data dashboard configured</strong>
+                    <span>Tracking system ready for participant enrollment</span>
+                </div>
+            </div>
+            <div class="checklist-item">
+                <div class="checkbox"></div>
+                <div class="checklist-text">
+                    <strong>Year 1 funding secured</strong>
+                    <span>Full budget committed for pilot year</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 13: Technical Assistance CTA -->
+        <div class="page-break"></div>
+
+        <div class="dark-box">
+            <h3>Ready for Full Implementation Support?</h3>
+            <p>This guide provides the roadmap. For the highest probability of success, partner with The Poverty Solution team for:</p>
+            <ul>
+                <li><strong>Re-Entry Navigator Certification</strong> — 40-hour intensive training for navigators</li>
+                <li><strong>Benefits Cliff Tool Mastery</strong> — Navigate complex cliff scenarios with confidence</li>
+                <li><strong>Employer Partnership Development</strong> — Build your fair chance employer network</li>
+                <li><strong>Pre-Release Program Design</strong> — Customize in-facility engagement protocols</li>
+                <li><strong>Data Dashboard Configuration</strong> — Track recidivism and mobility outcomes</li>
+                <li><strong>Implementation Coaching</strong> — Monthly calls and quarterly site visits</li>
+                <li><strong>Peer Learning Network</strong> — Connect with other implementing programs</li>
+            </ul>
+            <p style="margin-top: 20px; margin-bottom: 0;">
+                <strong style="color: #a3c520;">Contact:</strong> info@thepovertysolution.com | thepovertysolution.com
+            </p>
+        </div>
+
+        <h2>Key Success Factors</h2>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">1</div>
+            <div class="non-negotiable-content">
+                <h4>Start Before Release</h4>
+                <p>Every hour invested pre-release saves days of crisis post-release. The 180-day pre-release engagement window is where success is built.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">2</div>
+            <div class="non-negotiable-content">
+                <h4>Protect the Caseload Ratio</h4>
+                <p>20-25 participants per navigator maximum. Higher caseloads destroy the relationship-based model that drives outcomes.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">3</div>
+            <div class="non-negotiable-content">
+                <h4>Day-One Connections Are Non-Negotiable</h4>
+                <p>Housing keys, employer orientation, navigator contact—all within 72 hours. The first week predicts the first year.</p>
+            </div>
+        </div>
+
+        <div class="non-negotiable">
+            <div class="non-negotiable-num">4</div>
+            <div class="non-negotiable-content">
+                <h4>Navigate the Cliffs</h4>
+                <p>Employment without benefits cliff navigation sets participants up for failure. Make work always pay.</p>
+            </div>
+        </div>
+
+        <div class="page-footer">
+            <div>The Empower Playbook | Re-Entry Programs Implementation Guide</div>
+            <div>© 2026 The Poverty Solution</div>
+        </div>
+
+    </div>
+</body>
+</html>

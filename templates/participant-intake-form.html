@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Intake Form | Empower Playbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'tps-green': '#a3c520',
+                        'tps-dark': '#111111',
+                        'empower-blue': '#1e3a5f',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-break { page-break-before: always; }
+            body { font-size: 10pt; }
+            .bg-white { box-shadow: none !important; }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <div class="bg-empower-blue text-white px-8 py-6 no-print">
+        <div class="max-w-7xl mx-auto mx-auto">
+            <p class="text-sm text-white/70 mb-1">Empower Playbook Template</p>
+            <h1 class="text-2xl font-bold">Participant Intake Form</h1>
+            <p class="text-white/80 mt-2">Comprehensive enrollment and baseline assessment</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mx-auto px-8 py-8">
+        <!-- Confidentiality Notice -->
+        <div class="bg-gray-100 rounded-xl p-4 mb-8 text-sm">
+            <p class="font-semibold mb-1">Confidentiality Notice</p>
+            <p class="text-gray-600">The information collected on this form is confidential and will only be used to provide services and evaluate program outcomes. Your participation is voluntary. You may decline to answer any question.</p>
+        </div>
+
+        <!-- Section 1: Basic Information -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 1: Basic Information</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth *</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Phone *</label>
+                    <input type="tel" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Contact Method</label>
+                    <select class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                        <option>Text Message</option>
+                        <option>Phone Call</option>
+                        <option>Email</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Street Address *</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">City *</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">County *</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" value="Tennessee">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">ZIP Code *</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Household Composition -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 2: Household Composition</h2>
+            <p class="text-sm text-gray-600 mb-4">List all members of your household who share resources and live with you.</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="text-left p-2">Name</th>
+                            <th class="text-left p-2">Relationship</th>
+                            <th class="text-left p-2">Age</th>
+                            <th class="text-left p-2">Employment Status</th>
+                            <th class="text-left p-2">Monthly Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1" placeholder="Self"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1" value="Self"></td>
+                            <td class="p-2"><input type="text" class="w-16 border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-24 border rounded px-2 py-1"></td>
+                        </tr>
+                        <tr class="border-b bg-gray-50">
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-16 border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-24 border rounded px-2 py-1"></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-16 border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-24 border rounded px-2 py-1"></td>
+                        </tr>
+                        <tr class="border-b bg-gray-50">
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-16 border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-24 border rounded px-2 py-1"></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-16 border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-full border rounded px-2 py-1"></td>
+                            <td class="p-2"><input type="text" class="w-24 border rounded px-2 py-1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4 mt-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Total Household Size</label>
+                    <input type="number" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Number of Children Under 18</label>
+                    <input type="number" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Total Household Monthly Income</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="$">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Current Benefits -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6 print-break">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 3: Current Benefits</h2>
+            <p class="text-sm text-gray-600 mb-4">Check all benefits you or household members currently receive.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">SNAP (Food Stamps)</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Monthly amount: $">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">TennCare/Medicaid</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Covered members">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">TANF (Families First)</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Monthly amount: $">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">Childcare Assistance</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Provider, monthly value">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">Section 8 / Housing Assistance</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Monthly value: $">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">LIHEAP (Energy Assistance)</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Annual amount: $">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">WIC</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Participants">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">SSI/SSDI</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Monthly amount: $">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">Free/Reduced School Lunch</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Number of children">
+                    </div>
+                </label>
+                <label class="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <div class="flex-1">
+                        <p class="font-medium">Other</p>
+                        <input type="text" class="w-full mt-1 border rounded px-2 py-1 text-sm" placeholder="Describe">
+                    </div>
+                </label>
+            </div>
+
+            <div class="mt-4 p-4 bg-amber-50 rounded-lg">
+                <label class="block text-sm font-medium text-amber-800 mb-1">Estimated Total Monthly Benefits Value</label>
+                <input type="text" class="w-full border border-amber-300 rounded-lg px-4 py-2" placeholder="$">
+                <p class="text-xs text-amber-700 mt-1">This is critical for benefits cliff navigation planning.</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Employment -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 4: Employment Status</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Employment Status</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="employment" value="ft">
+                            <span>Employed Full-Time (35+ hours/week)</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="employment" value="pt">
+                            <span>Employed Part-Time</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="employment" value="multi">
+                            <span>Multiple Part-Time Jobs</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="employment" value="seasonal">
+                            <span>Seasonal/Temporary Employment</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="employment" value="self">
+                            <span>Self-Employed</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="employment" value="seeking">
+                            <span>Unemployed - Actively Seeking</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="employment" value="not">
+                            <span>Not Currently Seeking Employment</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current/Most Recent Employer</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Hourly Wage / Annual Salary</label>
+                        <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="$">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Average Hours Per Week</label>
+                        <input type="number" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Benefits Offered?</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            <option value="">Select...</option>
+                            <option>Yes - Health Insurance</option>
+                            <option>Yes - Limited Benefits</option>
+                            <option>No Benefits</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Education -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 5: Education & Skills</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Highest Level of Education Completed</label>
+                    <div class="grid md:grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="none">
+                            <span>Less than High School</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="hs">
+                            <span>High School Diploma</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="ged">
+                            <span>GED/HiSET</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="some">
+                            <span>Some College</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="cert">
+                            <span>Certificate/Credential</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="assoc">
+                            <span>Associate Degree</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="bach">
+                            <span>Bachelor's Degree</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="education" value="grad">
+                            <span>Graduate Degree</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Certifications, Licenses, or Credentials</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="List any professional certifications (CNA, CDL, etc.)"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Currently Enrolled in Education/Training?</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="enrolled" value="yes">
+                            <span>Yes</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="enrolled" value="no">
+                            <span>No</span>
+                        </label>
+                    </div>
+                    <input type="text" class="w-full mt-2 border border-gray-300 rounded-lg px-4 py-2" placeholder="If yes, describe program...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Barriers Assessment -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6 print-break">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 6: Barriers Assessment</h2>
+            <p class="text-sm text-gray-600 mb-4">Check all barriers that currently affect your ability to work or advance economically.</p>
+
+            <div class="grid md:grid-cols-2 gap-3">
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Transportation - no reliable vehicle</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Transportation - can't afford gas/repairs</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">No driver's license</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Childcare - none available</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Childcare - can't afford</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Childcare - wrong hours</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Physical health issues</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Mental health challenges</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Substance use recovery</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Criminal record</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Housing instability</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Domestic violence situation</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Limited English proficiency</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Disability (self or family member)</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Lack of job skills/experience</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">No internet/technology access</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Outstanding debt/garnishments</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox">
+                    <span class="text-sm">Fear of losing benefits</span>
+                </label>
+            </div>
+
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Which barrier is most significant right now?</label>
+                <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+            </div>
+        </div>
+
+        <!-- Section 7: Goals -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 7: Goals & Aspirations</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Where do you want to be in 2 years? (Employment, income, stability)</label>
+                    <textarea rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">What career or job interests you most?</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">What would "self-sufficiency" look like for your family?</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">What are you most proud of?</label>
+                    <textarea rows="2" class="w-full border border-gray-300 rounded-lg px-4 py-2"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Referral Source -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Section 8: How Did You Hear About Us?</h2>
+
+            <div class="grid md:grid-cols-2 gap-2">
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="employer">
+                    <span>Employer</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="dhs">
+                    <span>DHS/TANF Caseworker</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="school">
+                    <span>School (child's school)</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="healthcare">
+                    <span>Healthcare Provider</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="church">
+                    <span>Church/Faith Organization</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="friend">
+                    <span>Friend/Family Member</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="community">
+                    <span>Community Organization</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="referral" value="other">
+                    <span>Other</span>
+                </label>
+            </div>
+            <input type="text" class="w-full mt-3 border border-gray-300 rounded-lg px-4 py-2" placeholder="If other or specific name, please specify...">
+        </div>
+
+        <!-- Signature -->
+        <div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+            <h2 class="font-bold text-lg mb-4 text-empower-blue">Consent & Signature</h2>
+
+            <div class="space-y-4">
+                <label class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1" required>
+                    <span class="text-sm">I understand that participation in the Empower program is voluntary and I may withdraw at any time.</span>
+                </label>
+                <label class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1" required>
+                    <span class="text-sm">I consent to the collection and use of my information for program services and evaluation.</span>
+                </label>
+                <label class="flex items-start gap-3">
+                    <input type="checkbox" class="mt-1" required>
+                    <span class="text-sm">I understand that my Navigator may share relevant information with partner organizations to help me access services.</span>
+                </label>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mt-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Participant Signature</label>
+                    <div class="h-16 border border-gray-300 rounded-lg"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mt-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Navigator Name</label>
+                    <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Enrollment Date</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-center gap-4 no-print">
+            <button onclick="window.print()" class="bg-empower-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-empower-blue/90 transition">
+                Print / Save as PDF
+            </button>
+            <a href="../chapters/chapter-13.html" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition">
+                Back to Templates
+            </a>
+        </div>
+    </div>
+</body>
+</html>
