@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 7: The Phased Approach | The Empower Playbook</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind (for utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -16,9 +20,9 @@
                         'tps-green': '#a3c520',
                         'tps-dark': '#111111',
                         'empower-blue': '#1e3a5f',
-                        'empower-rust': '#c45a32',
-                        'part3-blue': '#3d4f5f',
-                        'part4-grey': '#545454',
+                        'part3-blue': '#46729d',
+                        'part4-grey': '#2a4571',
+                        'part5-blue': '#545454',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -27,215 +31,33 @@
             }
         }
     </script>
-    <style>
-        html { scroll-behavior: smooth; }
-        body { background: #fafafa; }
 
-        /* Reading Progress Bar */
-        .reading-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #3d4f5f, #2d3d4d);
-            z-index: 100;
-            transition: width 0.1s ease-out;
-        }
-
-        /* Skip Link */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: #3d4f5f;
-            color: white;
-            padding: 8px 16px;
-            z-index: 200;
-            transition: top 0.3s;
-        }
-        .skip-link:focus {
-            top: 0;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: #fff;
-            border-right: 1px solid #eee;
-            overflow-y: auto;
-            z-index: 40;
-        }
-        .sidebar::-webkit-scrollbar { width: 3px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
-
-        .main-content { margin-left: 280px; }
-
-        /* Nav items */
-        .nav-section { padding: 4px 12px; }
-        .nav-section-title {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #999;
-            padding: 12px 12px 6px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #555;
-            transition: all 0.15s;
-            margin-bottom: 1px;
-        }
-        .nav-item:hover { background: #f5f5f5; color: #111; }
-        .nav-item.active { background: #e8edf1; color: #3d4f5f; font-weight: 500; }
-        .nav-item .num {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        /* Enhanced Prose styling */
-        .prose h2 {
-            font-size: 1.625rem;
-            font-weight: 700;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            color: #1e3a5f;
-            letter-spacing: -0.02em;
-        }
-        .prose h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 0.75rem;
-            color: #333;
-            letter-spacing: -0.01em;
-        }
-        .prose p {
-            margin-bottom: 1.25rem;
-            line-height: 1.8;
-            color: #374151;
-            font-size: 1.0625rem;
-        }
-        .prose ul {
-            margin-bottom: 1.25rem;
-            margin-left: 1.5rem;
-            list-style-type: disc;
-        }
-        .prose li {
-            margin-bottom: 0.625rem;
-            line-height: 1.7;
-            color: #374151;
-            font-size: 1.0625rem;
-        }
-        .prose blockquote {
-            border-left: 4px solid #3d4f5f;
-            padding-left: 1.25rem;
-            font-style: italic;
-            color: #6b7280;
-            margin: 1.75rem 0;
-            font-size: 1.0625rem;
-        }
-        .prose strong { color: #111827; }
-
-        /* Floating Chapter Nav */
-        .floating-nav {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 0.5rem;
-            z-index: 50;
-        }
-        .floating-nav a {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .floating-nav a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        }
-
-        /* TOC Styles */
-        .toc { position: sticky; top: 100px; }
-        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
-        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
-        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
-        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
-
-        /* Mobile */
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-                z-index: 50;
-            }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .mobile-overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0,0,0,0.3);
-                z-index: 45;
-                display: none;
-            }
-            .mobile-overlay.show { display: block; }
-            .floating-nav {
-                bottom: 1rem;
-                right: 1rem;
-            }
-            .floating-nav a {
-                width: 40px;
-                height: 40px;
-            }
-        }
-    </style>
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="../styles/design-system.css">
 </head>
+
 <body class="font-sans text-gray-800 antialiased">
 
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
     <!-- Reading Progress Bar -->
-    <div class="reading-progress" id="readingProgress"></div>
+    <div class="reading-progress" id="progress"></div>
+
+    <!-- Skip to content (Accessibility) -->
+    <a href="#chapter-content" class="skip-link">Skip to chapter content</a>
 
     <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+
         <!-- Logo -->
         <div class="p-5 border-b border-gray-100">
-            <a href="../index.html" class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
-                    <span class="text-tps-green font-bold text-sm">E</span>
+            <a href="../index.html" class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-tps-dark to-gray-800 rounded-xl flex items-center justify-center shadow-lg">
+                    <span class="text-tps-green font-bold text-lg">E</span>
                 </div>
                 <div>
-                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <h1 class="font-bold text-gray-900 text-sm">Empower Playbook</h1>
                     <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
                 </div>
             </a>
@@ -246,112 +68,123 @@
             <!-- Overview -->
             <div class="nav-section">
                 <a href="../index.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
                     Overview
                 </a>
             </div>
 
-            <!-- Part 1 -->
-            <p class="nav-section-title">Part 1 - The Case</p>
+            <!-- Part 1: The Case -->
+            <p class="nav-section-title">Part 1 — The Case</p>
             <div class="nav-section">
                 <a href="chapter-1.html" class="nav-item">
-                    <span class="num bg-empower-blue text-white">1</span>
+                    <span class="num part1">1</span>
                     Why Rural Needs Different
                 </a>
                 <a href="chapter-2.html" class="nav-item">
-                    <span class="num bg-empower-blue text-white">2</span>
+                    <span class="num part1">2</span>
                     The Problem We're Solving
                 </a>
                 <a href="chapter-3.html" class="nav-item">
-                    <span class="num bg-empower-blue text-white">3</span>
+                    <span class="num part1">3</span>
                     The Proof
                 </a>
             </div>
 
-            <!-- Part 2 -->
-            <p class="nav-section-title">Part 2 - The Method</p>
+            <!-- Part 2: The Method -->
+            <p class="nav-section-title">Part 2 — The Method</p>
             <div class="nav-section">
                 <a href="chapter-4.html" class="nav-item">
-                    <span class="num bg-tps-green text-tps-dark">4</span>
+                    <span class="num part2">4</span>
                     Four Non-Negotiables
                 </a>
                 <a href="chapter-5.html" class="nav-item">
-                    <span class="num bg-tps-green text-tps-dark">5</span>
+                    <span class="num part2">5</span>
                     Adaptable Components
                 </a>
                 <a href="chapter-6.html" class="nav-item">
-                    <span class="num bg-tps-green text-tps-dark">6</span>
+                    <span class="num part2">6</span>
                     Certified Employer Program
                 </a>
             </div>
 
-            <!-- Part 3 -->
-            <p class="nav-section-title">Part 3 - Implementation</p>
+            <!-- Part 3: Implementation -->
+            <p class="nav-section-title">Part 3 — Implementation</p>
             <div class="nav-section">
                 <a href="chapter-7.html" class="nav-item active">
-                    <span class="num bg-part3-blue text-white">7</span>
+                    <span class="num part3">7</span>
                     The Phased Approach
                 </a>
                 <a href="chapter-8.html" class="nav-item">
-                    <span class="num bg-part3-blue text-white">8</span>
+                    <span class="num part3">8</span>
                     Building Your Team
                 </a>
                 <a href="chapter-9.html" class="nav-item">
-                    <span class="num bg-red-700 text-white">9</span>
+                    <span class="num warning">9</span>
                     What Kills Programs
                 </a>
             </div>
 
-            <!-- Part 4 -->
-            <p class="nav-section-title">Part 4 - Scale</p>
+            <!-- Part 4: Scale -->
+            <p class="nav-section-title">Part 4 — Scale</p>
             <div class="nav-section">
                 <a href="chapter-10.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">10</span>
-                    Funding
+                    <span class="num part4">10</span>
+                    Funding & Unit Economics
                 </a>
                 <a href="chapter-11.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">11</span>
+                    <span class="num part4">11</span>
                     Adapting the Model
                 </a>
                 <a href="chapter-12.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">12</span>
+                    <span class="num part4">12</span>
                     Scaling Beyond
                 </a>
             </div>
 
-            <!-- Part 5 -->
-            <p class="nav-section-title">Part 5 - Research</p>
+            <!-- Part 5: Research -->
+            <p class="nav-section-title">Part 5 — Research</p>
             <div class="nav-section">
                 <a href="chapter-15.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">15</span>
-                    Literature Review
+                    <span class="num part5">15</span>
+                    The Evidence Base
                 </a>
                 <a href="chapter-16.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">16</span>
-                    Evidence Tables
+                    <span class="num part5">16</span>
+                    Competitive Landscape
                 </a>
                 <a href="chapter-17.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">17</span>
-                    Methodology Notes
+                    <span class="num part5">17</span>
+                    Scaling with Fidelity
                 </a>
             </div>
 
-            <!-- Training -->
+            <!-- Training Academy -->
             <p class="nav-section-title">Training Academy</p>
             <div class="nav-section">
                 <a href="chapter-14.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
                     Poverty IQ for Employers
                 </a>
                 <a href="chapter-13.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                     Templates & Tools
+                </a>
+            </div>
+
+            <!-- Tools -->
+            <p class="nav-section-title">Tools</p>
+            <div class="nav-section">
+                <a href="../tools/employer-roi-calculator.html" class="nav-item">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    Employer ROI Calculator
                 </a>
             </div>
         </nav>
@@ -367,381 +200,441 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="main-content min-h-screen" id="main-content">
-        <!-- Top Bar -->
-        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
-            <div class="flex items-center justify-between">
+    <!-- MAIN CONTENT -->
+    <main class="main-content min-h-screen" id="chapter-content">
+
+        <!-- Top Bar (sticky) -->
+        <header class="top-header">
+            <div class="flex items-center justify-between max-w-7xl mx-auto">
                 <div class="flex items-center space-x-3">
-                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()" aria-label="Open navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
-                    <span class="text-sm text-gray-400">Part 3 - Implementation</span>
+                    <span class="text-sm text-gray-400">Part 3 — Implementation</span>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs bg-empower-blue/10 text-empower-blue px-2 py-1 rounded font-medium">E</span>
-                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">F</span>
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs text-gray-400 hide-mobile">12 min read</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="badge badge-executives">E</span>
+                        <span class="badge badge-funders">F</span>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- Chapter Header with Gradient -->
-        <div class="bg-gradient-to-br from-[#3d4f5f] to-[#2d3d4d] text-white px-6 lg:px-12 py-12">
+        <!-- Chapter Header (Hero) - Part 3 Blue -->
+        <div class="chapter-header part3 text-white px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
-                <div class="flex items-center gap-3 mb-3">
-                    <p class="text-white/70 text-sm font-medium">Chapter 7</p>
-                    <span class="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">12 min read</span>
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="badge badge-white">Chapter 7</span>
+                    <span class="badge badge-green flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        12 min read
+                    </span>
                 </div>
-                <h1 class="text-3xl lg:text-4xl font-bold leading-tight">
+                <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight mb-4">
                     The Phased Approach
                 </h1>
-                <p class="text-white/80 mt-3 text-lg">Building infrastructure before serving families</p>
+                <p class="text-lg text-white/80 max-w-2xl">
+                    Build the system right. Then bring families in.
+                </p>
             </div>
         </div>
 
         <!-- Chapter Content -->
         <div class="px-6 lg:px-12 py-10">
-            <div class="max-w-7xl mx-auto content-with-toc">
-            <div class="prose">
+            <div class="max-w-7xl mx-auto">
 
-                <p class="text-xl text-gray-500 mb-8 leading-relaxed">
-                    Implementation takes time. The Empower Method uses a phased approach that builds infrastructure before serving families—ensuring that when participants arrive, the system is ready for them.
-                </p>
+                <!-- Content with TOC sidebar -->
+                <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
 
-                <!-- Research Evidence Box -->
-                <div style="background-color: #1e293b; color: #ffffff; padding: 1.5rem; border-radius: 0.75rem; margin: 1.5rem 0;" class="not-prose">
-                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 0.75rem;">Why Phasing Matters: Evidence from Scale-Up Research</h4>
-                    <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; margin-bottom: 1rem;">Programs that rush to scale typically see <strong style="color: #ffffff;">reduced effect sizes</strong> when moving from controlled trials to real-world implementation. The phased approach helps maintain quality during expansion.</p>
-                    <div style="background: rgba(163,197,32,0.15); border-left: 3px solid #a3c520; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0;">
-                        <p style="color: #a3c520; font-weight: 700; margin: 0 0 0.5rem 0;">NFP Success Story: Lower Costs at Scale</p>
-                        <p style="color: rgba(255,255,255,0.9); font-size: 0.875rem; margin: 0;">The Nurse-Family Partnership achieved something rare: <strong style="color: #ffffff;">lower per-participant costs at scale ($8,860)</strong> compared to original trials ($12,398). This counterintuitive result came from disciplined phased implementation—building infrastructure properly before expanding services.</p>
-                    </div>
-                </div>
+                    <!-- Main Prose Content -->
+                    <div class="prose">
 
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 not-prose">
-                    <p class="text-sm text-yellow-800">
-                        <strong>Critical insight:</strong> You should NOT enroll participants in the first 6 months. This phase is about building the foundation. Rushing to serve families before your infrastructure is ready creates the exact fragmentation you're trying to solve.
-                    </p>
-                </div>
+                        <!-- Lead paragraph -->
+                        <p class="text-xl text-gray-500 mb-10 leading-relaxed">
+                            Most programs launch fast and fail faster. The Empower Method flips that. You build the infrastructure first. Then you bring families in. When they walk through the door, the system works. Not someday. Day one.
+                        </p>
 
-                <!-- Phase Timeline Visual -->
-                <div class="bg-white rounded-xl shadow-sm p-6 my-8 not-prose border border-gray-100">
-                    <h4 class="font-bold text-center mb-6">Implementation Timeline</h4>
-                    <div class="flex items-center justify-between">
-                        <div class="text-center flex-1">
-                            <div class="w-16 h-16 bg-empower-blue text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
-                            <p class="text-sm font-semibold">Foundation</p>
-                            <p class="text-xs text-gray-500">Months 0-6</p>
+                        <!-- Research Evidence Box -->
+                        <div class="data-box">
+                            <h4>Why Phasing Matters: The Research Is Clear</h4>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 0.95rem; margin-bottom: 1rem;">Programs that rush to scale deliver <strong style="color: #ffffff;">weaker results</strong> in the real world than they did in controlled trials. Phasing protects outcomes as you grow.</p>
+                            <div style="background: rgba(163,197,32,0.15); border-left: 3px solid var(--tps-green); padding: 1rem; border-radius: 0 0.5rem 0.5rem 0;">
+                                <p style="color: var(--tps-green); font-weight: 700; margin: 0 0 0.5rem 0;">Proof It Works: Nurse-Family Partnership</p>
+                                <p style="color: rgba(255,255,255,0.9); font-size: 0.875rem; margin: 0;">The Nurse-Family Partnership pulled off something almost no one does: <strong style="color: #ffffff;">lower costs per family at scale ($8,860)</strong> than in original trials ($12,398). How? Disciplined phased implementation. They built the infrastructure right before they expanded. We do the same.</p>
+                            </div>
                         </div>
-                        <div class="flex-1 h-1 bg-gray-200 relative">
-                            <div class="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-gray-300"></div>
+
+                        <!-- Warning Callout -->
+                        <div class="callout callout-warning">
+                            <h4>Non-Negotiable</h4>
+                            <p style="color: #991b1b; margin-bottom: 0;">
+                                Do NOT enroll families in the first 6 months. Zero. This phase builds the foundation. Rushing families into a half-built system creates the exact fragmentation you set out to fix.
+                            </p>
                         </div>
-                        <div class="text-center flex-1">
-                            <div class="w-16 h-16 bg-tps-green text-tps-dark rounded-full flex items-center justify-center mx-auto mb-2 font-bold">2</div>
-                            <p class="text-sm font-semibold">Activation</p>
-                            <p class="text-xs text-gray-500">Months 6-12</p>
+
+                        <!-- Phase Timeline Visual -->
+                        <div class="bg-white rounded-xl shadow-sm p-6 my-8 border border-gray-100">
+                            <h4 class="font-bold text-center mb-6">Implementation Timeline</h4>
+                            <div class="flex items-center justify-between">
+                                <div class="text-center flex-1">
+                                    <div class="w-16 h-16 bg-empower-blue text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
+                                    <p class="text-sm font-semibold">Foundation</p>
+                                    <p class="text-xs text-gray-500">Months 0-6</p>
+                                </div>
+                                <div class="flex-1 h-1 bg-gray-200 relative">
+                                    <div class="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-gray-300"></div>
+                                </div>
+                                <div class="text-center flex-1">
+                                    <div class="w-16 h-16 bg-tps-green text-tps-dark rounded-full flex items-center justify-center mx-auto mb-2 font-bold">2</div>
+                                    <p class="text-sm font-semibold">Activation</p>
+                                    <p class="text-xs text-gray-500">Months 6-12</p>
+                                </div>
+                                <div class="flex-1 h-1 bg-gray-200 relative">
+                                    <div class="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-gray-300"></div>
+                                </div>
+                                <div class="text-center flex-1">
+                                    <div class="w-16 h-16 bg-part3-blue text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">3</div>
+                                    <p class="text-sm font-semibold">Momentum</p>
+                                    <p class="text-xs text-gray-500">Months 12-24</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex-1 h-1 bg-gray-200 relative">
-                            <div class="absolute top-1/2 left-0 right-0 border-t-2 border-dashed border-gray-300"></div>
+
+                        <h2 id="phase-1">Phase 1: Foundation (Months 0-6)</h2>
+
+                        <p class="text-lg font-semibold text-empower-blue">
+                            Goal: Build the infrastructure. No families yet.
+                        </p>
+
+                        <p>
+                            Get your house in order. Align the vision. Hire the right people. Train them. Lock in partnerships. Stand up the systems. Skip this phase and you will spend years cleaning up the mess.
+                        </p>
+
+                        <div class="callout callout-blue">
+                            <h4 class="font-bold text-empower-blue mb-4">Phase 1 Checklist</h4>
+                            <div class="space-y-3 text-sm">
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Create and document a shared vision</strong> — Get every partner aligned on what success looks like. Write it down. This becomes your North Star.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Hire the right people</strong> — See Chapter 8 for roles. Navigators and program director come first.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Train your team on the Empower Method</strong> — Complete all required training modules. Every person on the team should know the Four Non-Negotiables cold.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Map what already exists</strong> — What services are out there? Where is the duplication? Where are the gaps?</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Kill or merge duplicates</strong> — Do not add another layer. Consolidate.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Stand up the data dashboard</strong> — Unified tracking. Test it with dummy data. Make sure every team member can access it.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Launch employer certification</strong> — Start training anchor employers. Get 3-5 certified before a single family enrolls.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Lock in partner agreements</strong> — Written MOUs with housing, childcare, healthcare, and every other key partner. Handshakes are not enough.</span>
+                                </label>
+                            </div>
                         </div>
-                        <div class="text-center flex-1">
-                            <div class="w-16 h-16 bg-empower-rust text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">3</div>
-                            <p class="text-sm font-semibold">Momentum</p>
-                            <p class="text-xs text-gray-500">Months 12-24</p>
-                        </div>
-                    </div>
-                </div>
 
-                <h2 id="phase-1">Phase 1: Foundation (Months 0-6)</h2>
+                        <h3>How You Know Phase 1 Is Done</h3>
 
-                <p class="text-lg font-semibold text-empower-blue">
-                    Goal: Build the infrastructure. No families enrolled yet.
-                </p>
+                        <p>Move to Phase 2 when every box is checked:</p>
 
-                <p>
-                    This phase is about getting your house in order. You're creating the shared vision, hiring the right people, training them, establishing partnerships, and setting up systems. Skip this phase and you'll spend years cleaning up the mess.
-                </p>
-
-                <div class="bg-empower-blue/5 rounded-xl p-6 my-6 not-prose">
-                    <h4 class="font-bold text-empower-blue mb-4">Phase 1 Checklist</h4>
-                    <div class="space-y-3 text-sm">
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Create and document shared vision</strong> — Get all stakeholders aligned on what success looks like. Write it down. This document becomes your North Star.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Hire the right people</strong> — See Chapter 8 for role definitions. Prioritize navigators and program director first.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Train team on Empower methodology</strong> — Complete required training modules. Everyone should understand the Four Non-Negotiables inside and out.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Map existing programs</strong> — What services already exist? Where are the duplications? Where are the gaps?</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Eliminate or merge duplicate services</strong> — Don't add another layer. Consolidate where possible.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Establish data dashboard</strong> — Set up unified tracking system. Test with dummy data. Make sure everyone can access it.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Launch employer certification program</strong> — Begin training anchor employers. Get 3-5 certified before enrolling participants.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Formalize partner agency agreements</strong> — Written MOUs with housing, childcare, healthcare, and other key partners.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <h3>Success Markers for Phase 1</h3>
-
-                <p>You're ready for Phase 2 when you can check these boxes:</p>
-
-                <ul>
-                    <li>Shared vision document signed by all partners</li>
-                    <li>All staff hired and trained (certifications complete)</li>
-                    <li>Dashboard live and tested</li>
-                    <li>3-5 employers in certification pipeline (at least 2 certified)</li>
-                    <li>Partner agreements in place</li>
-                    <li>Team can articulate the Four Non-Negotiables without hesitation</li>
-                </ul>
-
-                <h2 id="phase-2">Phase 2: Activation (Months 6-12)</h2>
-
-                <p class="text-lg font-semibold text-tps-green">
-                    Goal: Start serving families and proving the model.
-                </p>
-
-                <p>
-                    Now you're ready to bring participants into the system. Start small—this is still a learning phase. You're testing your processes, identifying friction, and refining before scaling.
-                </p>
-
-                <div class="bg-tps-green/10 rounded-xl p-6 my-6 not-prose">
-                    <h4 class="font-bold text-tps-dark mb-4">Phase 2 Checklist</h4>
-                    <div class="space-y-3 text-sm">
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Enroll first cohort of participants</strong> — Start with 25-50 families. Small enough to learn from, large enough to see patterns.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Complete employer certifications</strong> — Finish certifying your anchor employers. Begin recruiting the next tier.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Begin benefits cliff navigation with each participant</strong> — Every enrolled family should have their cliff map within the first month.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Establish regular coordination meetings</strong> — Weekly navigator huddles. Monthly partner check-ins. Quarterly leadership reviews.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Collect baseline data for all participants</strong> — Income, benefits, barriers, goals. You need this for outcomes measurement.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>First job placements through certified employers</strong> — Pipeline is working. Participants are getting placed.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <h3>Success Markers for Phase 2</h3>
-
-                <ul>
-                    <li>X families enrolled with complete intake data</li>
-                    <li>X employers certified</li>
-                    <li>First job placements documented</li>
-                    <li>Regular coordination rhythm established and maintained</li>
-                    <li>No families lost to fragmentation (everyone has an active navigator)</li>
-                    <li>Early income gains visible in dashboard</li>
-                </ul>
-
-                <h2 id="phase-3">Phase 3: Momentum (Months 12-24)</h2>
-
-                <p class="text-lg font-semibold text-empower-rust">
-                    Goal: Scale what's working, fix what isn't.
-                </p>
-
-                <p>
-                    By now you've learned what works in your community. Phase 3 is about scaling the model while maintaining quality. This is also when you start seeing graduates—families who have crossed the ALICE threshold and achieved self-sufficiency.
-                </p>
-
-                <div class="bg-empower-rust/10 rounded-xl p-6 my-6 not-prose">
-                    <h4 class="font-bold text-empower-rust mb-4">Phase 3 Checklist</h4>
-                    <div class="space-y-3 text-sm">
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Expand enrollment based on capacity</strong> — Grow deliberately. Add participants only as navigator capacity allows.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>First participants hitting income targets</strong> — Document outcomes. These are your proof points.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Refine soft skills training based on employer feedback</strong> — What do employers need? Adjust training accordingly.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Document and share success stories</strong> — Ethical storytelling (see Appendix). Build your case for funders.</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Build funding sustainability plan</strong> — TANF won't last forever. What's your diversified funding strategy?</span>
-                        </label>
-                        <label class="flex items-start">
-                            <input type="checkbox" class="mt-1 mr-3">
-                            <span><strong>Prepare for Phase 4: Scale or Replicate</strong> — Ready to expand regionally? Help another community implement?</span>
-                        </label>
-                    </div>
-                </div>
-
-                <h3>Success Markers for Phase 3</h3>
-
-                <ul>
-                    <li>Participants graduating above ALICE threshold</li>
-                    <li>System running without daily firefighting</li>
-                    <li>Documented ROI for funders</li>
-                    <li>Waiting list for employer certification</li>
-                    <li>Stories of transformation documented</li>
-                    <li>Funding runway of 12+ months secured</li>
-                </ul>
-
-                <h2 id="minimum-viable">The Minimum Viable Implementation</h2>
-
-                <p>
-                    Not every community starts with full funding. If you're resource-constrained, here's how to phase the phases:
-                </p>
-
-                <div class="grid md:grid-cols-3 gap-4 my-8 not-prose">
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h4 class="font-bold text-empower-blue mb-2">Starter</h4>
-                        <ul class="text-sm space-y-1 text-gray-600">
-                            <li>1 Navigator</li>
-                            <li>Benefits cliff tool</li>
-                            <li>Basic tracking (spreadsheet OK)</li>
-                            <li>Serve 25-50 families</li>
+                        <ul>
+                            <li>Shared vision document signed by all partners</li>
+                            <li>All staff hired, trained, and certified</li>
+                            <li>Dashboard live and tested</li>
+                            <li>3-5 employers in the certification pipeline (at least 2 certified)</li>
+                            <li>Partner agreements signed and filed</li>
+                            <li>Every team member can explain the Four Non-Negotiables without hesitation</li>
                         </ul>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl shadow-sm border-2 border-tps-green">
-                        <h4 class="font-bold text-tps-green mb-2">Growth</h4>
-                        <ul class="text-sm space-y-1 text-gray-600">
-                            <li>2-3 Navigators</li>
-                            <li>Full dashboard</li>
-                            <li>5+ certified employers</li>
-                            <li>Serve 100-200 families</li>
+
+                        <h2 id="phase-2">Phase 2: Activation (Months 6-12)</h2>
+
+                        <p class="text-lg font-semibold text-tps-green">
+                            Goal: Serve families. Prove the model works.
+                        </p>
+
+                        <p>
+                            Now you bring families in. Start small. This is still a learning phase. You are testing processes, finding friction, and refining before you scale.
+                        </p>
+
+                        <div class="callout callout-green">
+                            <h4 class="font-bold text-tps-dark mb-4">Phase 2 Checklist</h4>
+                            <div class="space-y-3 text-sm">
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Enroll your first cohort</strong> — Start with 25-50 families. Small enough to learn from. Large enough to see patterns.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Finish employer certifications</strong> — Get anchor employers across the line. Start recruiting the next tier.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Map the benefits cliff for every family</strong> — Each enrolled family gets their cliff map within the first month. No exceptions.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Set the coordination rhythm</strong> — Weekly navigator huddles. Monthly partner check-ins. Quarterly leadership reviews.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Collect baseline data for every family</strong> — Income, benefits, barriers, goals. You cannot measure outcomes without a starting point.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Place families in livable-wage careers</strong> — The pipeline is working. Families are getting placed with certified employers.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <h3>How You Know Phase 2 Is Working</h3>
+
+                        <ul>
+                            <li>X families enrolled with complete intake data</li>
+                            <li>X employers certified</li>
+                            <li>First job placements documented and tracked</li>
+                            <li>Coordination rhythm running on schedule</li>
+                            <li>Zero families lost to fragmentation — every person has an active navigator</li>
+                            <li>Early income gains showing up in the dashboard</li>
                         </ul>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                        <h4 class="font-bold text-empower-rust mb-2">Full Model</h4>
-                        <ul class="text-sm space-y-1 text-gray-600">
-                            <li>Full team (see Ch. 8)</li>
-                            <li>All Four Non-Negotiables</li>
-                            <li>15+ certified employers</li>
-                            <li>Serve 500+ families</li>
+
+                        <h2 id="phase-3">Phase 3: Momentum (Months 12-24)</h2>
+
+                        <p class="text-lg font-semibold text-part3-blue">
+                            Goal: Scale what works. Fix what does not.
+                        </p>
+
+                        <p>
+                            By now you know what works in your community. Phase 3 scales the model without sacrificing quality. This is also when you see graduates — families who have crossed the ALICE threshold and no longer need the system to hold them up.
+                        </p>
+
+                        <div class="callout" style="background: rgba(86, 157, 183, 0.1); border: 1px solid rgba(86, 157, 183, 0.3);">
+                            <h4 class="font-bold text-part3-blue mb-4">Phase 3 Checklist</h4>
+                            <div class="space-y-3 text-sm">
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Expand enrollment deliberately</strong> — Grow only as fast as navigator capacity allows. Never faster.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Families hitting income targets</strong> — Document every outcome. These are your proof points.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Refine training based on employer feedback</strong> — What do employers actually need? Adjust accordingly.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Tell the stories</strong> — Ethical storytelling (see Appendix). Real families, real outcomes. Build your case for funders.</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Build a funding sustainability plan</strong> — TANF will not last forever. What is your diversified funding strategy?</span>
+                                </label>
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="mt-1 mr-3">
+                                    <span><strong>Prepare for what comes next</strong> — Ready to expand regionally? Ready to help another community launch?</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <h3>How You Know Phase 3 Is Working</h3>
+
+                        <ul>
+                            <li>Families graduating above the ALICE threshold</li>
+                            <li>The system runs without daily firefighting</li>
+                            <li>ROI documented and in funders' hands</li>
+                            <li>Employers on a waiting list for certification</li>
+                            <li>Real transformation stories documented</li>
+                            <li>12+ months of funding runway secured</li>
                         </ul>
+
+                        <h2 id="minimum-viable">The Minimum Viable Implementation</h2>
+
+                        <p>
+                            Not every community starts with full funding. We know that. Here is how to right-size the launch:
+                        </p>
+
+                        <div class="grid md:grid-cols-3 gap-4 my-8">
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-empower-blue mb-2">Starter</h4>
+                                <ul class="text-sm space-y-1 text-gray-600">
+                                    <li>1 Navigator</li>
+                                    <li>Benefits cliff tool</li>
+                                    <li>Basic tracking (spreadsheet OK)</li>
+                                    <li>Serve 25-50 families</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border-2 border-tps-green">
+                                <h4 class="font-bold text-tps-green mb-2">Growth</h4>
+                                <ul class="text-sm space-y-1 text-gray-600">
+                                    <li>2-3 Navigators</li>
+                                    <li>Full dashboard</li>
+                                    <li>5+ certified employers</li>
+                                    <li>Serve 100-200 families</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-part3-blue mb-2">Full Model</h4>
+                                <ul class="text-sm space-y-1 text-gray-600">
+                                    <li>Full team (see Ch. 8)</li>
+                                    <li>All Four Non-Negotiables</li>
+                                    <li>15+ certified employers</li>
+                                    <li>Serve 500+ families</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <p>
+                            <strong>The rule:</strong> Start where you can. But never compromise the Four Non-Negotiables. A small implementation with all four beats a large one missing even one.
+                        </p>
+
+                        <!-- Key Takeaway -->
+                        <div class="key-takeaway">
+                            <span class="badge">Key Takeaway</span>
+                            <p>
+                                The phased approach protects families and your team:
+                            </p>
+                            <ul style="list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem;">
+                                <li style="color: rgba(255,255,255,0.85); font-size: 0.95rem; margin-bottom: 0.5rem;"><strong style="color: #ffffff;">Phase 1 (0-6 mo):</strong> Build infrastructure. No families yet.</li>
+                                <li style="color: rgba(255,255,255,0.85); font-size: 0.95rem; margin-bottom: 0.5rem;"><strong style="color: #ffffff;">Phase 2 (6-12 mo):</strong> Small cohort. Learn. Refine.</li>
+                                <li style="color: rgba(255,255,255,0.85); font-size: 0.95rem;"><strong style="color: #ffffff;">Phase 3 (12-24 mo):</strong> Scale what works. Graduate families.</li>
+                            </ul>
+                            <p class="highlight">
+                                Rushing families into a broken system creates the fragmentation you set out to fix. Build it right. Then open the doors.
+                            </p>
+                        </div>
+
                     </div>
+
+                    <!-- Table of Contents (Desktop only) -->
+                    <aside class="hidden xl:block">
+                        <nav class="toc" aria-label="Table of contents">
+                            <p class="toc-title">On this page</p>
+                            <a href="#phase-1" class="toc-link active">Phase 1: Foundation</a>
+                            <a href="#phase-2" class="toc-link">Phase 2: Activation</a>
+                            <a href="#phase-3" class="toc-link">Phase 3: Momentum</a>
+                            <a href="#minimum-viable" class="toc-link">Minimum Viable</a>
+                        </nav>
+                    </aside>
+
                 </div>
 
-                <p>
-                    <strong>Key principle:</strong> Start where you can, but don't compromise the Four Non-Negotiables. A small implementation with all four is better than a large implementation missing one.
-                </p>
-
-                <div class="bg-tps-dark text-white p-6 rounded-xl mt-10 not-prose">
-                    <h3 style="color: #a3c520;" class="font-bold text-lg mb-3">Key Takeaway</h3>
-                    <p style="color: #ffffff;" class="mb-4">
-                        The phased approach protects both families and your team:
-                    </p>
-                    <ul style="list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem;">
-                        <li style="color: #ffffff; font-size: 0.875rem; margin-bottom: 0.5rem;"><strong style="color: #ffffff;">Phase 1 (0-6 mo):</strong> <span style="color: #ffffff;">Build infrastructure. No families yet.</span></li>
-                        <li style="color: #ffffff; font-size: 0.875rem; margin-bottom: 0.5rem;"><strong style="color: #ffffff;">Phase 2 (6-12 mo):</strong> <span style="color: #ffffff;">Small cohort. Learn and refine.</span></li>
-                        <li style="color: #ffffff; font-size: 0.875rem;"><strong style="color: #ffffff;">Phase 3 (12-24 mo):</strong> <span style="color: #ffffff;">Scale what works. First graduates.</span></li>
-                    </ul>
-                    <p style="color: #ffffff;" class="font-semibold">
-                        Rushing to serve families before infrastructure is ready creates the fragmentation you're trying to solve. Take the time to build it right.
-                    </p>
+                <!-- Chapter Navigation -->
+                <div class="chapter-nav">
+                    <a href="chapter-6.html" class="chapter-nav-link">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Previous: Certified Employer Program
+                    </a>
+                    <a href="chapter-8.html" class="chapter-nav-next">
+                        Next: Building Your Team
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
                 </div>
 
-            </div>
-
-            <!-- On This Page TOC -->
-            <aside class="hidden xl:block">
-                <div class="toc">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
-                    <nav>
-                        <a href="#phase-1" class="toc-link active">Phase 1: Foundation</a>
-                        <a href="#phase-2" class="toc-link">Phase 2: Activation</a>
-                        <a href="#phase-3" class="toc-link">Phase 3: Momentum</a>
-                        <a href="#minimum-viable" class="toc-link">Minimum Viable</a>
-                    </nav>
-                </div>
-            </aside>
-            </div>
-
-            <!-- Chapter Navigation -->
-            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
-                <a href="chapter-6.html" class="text-gray-500 hover:text-part3-blue transition text-sm">
-                    ← Previous: Certified Employer Program
-                </a>
-                <a href="chapter-8.html" class="bg-part3-blue text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#2d3d4d] transition">
-                    Next: Building Your Team →
-                </a>
             </div>
         </div>
 
         <!-- Footer -->
         <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
-            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
-            <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            <div class="max-w-7xl mx-auto">
+                <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+                <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            </div>
         </footer>
+
     </main>
 
     <!-- Floating Chapter Navigation -->
-    <div class="floating-nav">
-        <a href="chapter-6.html" title="Previous: Certified Employer Program" class="text-gray-600 hover:text-part3-blue">
+    <div class="floating-nav" id="floatingNav">
+        <a href="chapter-6.html" class="text-gray-600 hover:bg-gray-100 rounded-lg p-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
         </a>
-        <a href="chapter-8.html" title="Next: Building Your Team" class="text-gray-600 hover:text-part3-blue">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
+        <a href="chapter-8.html" class="bg-part3-blue text-white hover:bg-part3-blue/90 rounded-lg px-4 py-2">
+            Next Chapter →
         </a>
     </div>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <a href="../index.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="chapter-4.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span>Core</span>
+        </a>
+        <a href="chapter-14.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span>Training</span>
+        </a>
+        <button onclick="openSidebar()" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span>Menu</span>
+        </button>
+    </nav>
+
+    <!-- JavaScript -->
     <script>
-        function openSidebar() {
-            document.getElementById('sidebar').classList.add('open');
-            document.getElementById('overlay').classList.add('show');
+        // Reading progress bar
+        function updateProgress() {
+            const content = document.getElementById('chapter-content');
+            const progress = document.getElementById('progress');
+            const scrolled = window.scrollY;
+            const height = content.scrollHeight - window.innerHeight;
+            const percent = Math.min(scrolled / height, 1);
+            progress.style.transform = `scaleX(${percent})`;
+
+            // Show floating nav after scrolling
+            const floatingNav = document.getElementById('floatingNav');
+            if (scrolled > 500) {
+                floatingNav.classList.add('show');
+            } else {
+                floatingNav.classList.remove('show');
+            }
         }
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
 
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
-        }
-
-        // Reading Progress Bar
-        window.addEventListener('scroll', function() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('readingProgress').style.width = scrolled + '%';
-        });
-
-        // TOC Active State
+        // TOC active state
         const tocLinks = document.querySelectorAll('.toc-link');
         const sections = document.querySelectorAll('h2[id]');
+
         function updateTOC() {
             let current = '';
             sections.forEach(section => {
@@ -759,25 +652,36 @@
         }
         window.addEventListener('scroll', updateTOC);
 
-        // Keyboard Navigation
-        document.addEventListener('keydown', function(e) {
-            // Left arrow - previous chapter
-            if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                const activeElement = document.activeElement;
-                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
-                if (!isInput) {
-                    window.location.href = 'chapter-6.html';
-                }
-            }
-            // Right arrow - next chapter
-            if (e.key === 'ArrowRight' && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                const activeElement = document.activeElement;
-                const isInput = activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable;
-                if (!isInput) {
-                    window.location.href = 'chapter-8.html';
-                }
-            }
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebar();
+            if (e.key === 'ArrowLeft') window.location.href = 'chapter-6.html';
+            if (e.key === 'ArrowRight') window.location.href = 'chapter-8.html';
+        });
+
+        // Swipe to close sidebar on mobile
+        let touchStartX = 0;
+        document.getElementById('sidebar').addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        document.getElementById('sidebar').addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) closeSidebar();
         });
     </script>
+
 </body>
 </html>

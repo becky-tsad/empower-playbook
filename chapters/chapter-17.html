@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 17: Scaling with Fidelity | The Empower Playbook</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind (for utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -16,9 +20,9 @@
                         'tps-green': '#a3c520',
                         'tps-dark': '#111111',
                         'empower-blue': '#1e3a5f',
-                        'part3-blue': '#569db7',
-                        'part4-grey': '#545454',
-                        'part5-research': '#2d5a7b',
+                        'part3-blue': '#46729d',
+                        'part4-grey': '#2a4571',
+                        'part5-blue': '#545454',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -27,315 +31,165 @@
             }
         }
     </script>
-    <style>
-        html { scroll-behavior: smooth; }
-        body { background: #fafafa; }
 
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: #1e3a5f;
-            color: white;
-            padding: 8px 16px;
-            z-index: 100;
-            transition: top 0.3s;
-        }
-        .skip-link:focus { top: 0; }
-
-        .reading-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #2d5a7b, #1e3a5f);
-            z-index: 100;
-            transition: width 0.1s ease-out;
-        }
-
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: #fff;
-            border-right: 1px solid #eee;
-            overflow-y: auto;
-            z-index: 40;
-        }
-        .sidebar::-webkit-scrollbar { width: 3px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
-
-        .main-content { margin-left: 280px; }
-
-        .nav-section { padding: 4px 12px; }
-        .nav-section-title {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #999;
-            padding: 12px 12px 6px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #555;
-            transition: all 0.15s;
-            margin-bottom: 1px;
-        }
-        .nav-item:hover { background: #f5f5f5; color: #111; }
-        .nav-item.active { background: #f3f4f6; color: #545454; font-weight: 500; }
-        .nav-item .num {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .prose h2 {
-            font-size: 1.625rem;
-            font-weight: 700;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            color: #1e3a5f;
-            letter-spacing: -0.025em;
-        }
-        .prose h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 0.75rem;
-            color: #333;
-        }
-        .prose p {
-            margin-bottom: 1.25rem;
-            line-height: 1.8;
-            color: #374151;
-        }
-        .prose ul, .prose ol {
-            margin-bottom: 1.25rem;
-            margin-left: 1.5rem;
-        }
-        .prose ul { list-style-type: disc; }
-        .prose ol { list-style-type: decimal; }
-        .prose li {
-            margin-bottom: 0.625rem;
-            line-height: 1.7;
-            color: #374151;
-        }
-        .prose blockquote {
-            border-left: 4px solid #2d5a7b;
-            padding: 1rem 1.25rem;
-            font-style: italic;
-            color: #4b5563;
-            margin: 1.75rem 0;
-            background: linear-gradient(to right, #f3f4f6, transparent);
-            border-radius: 0 8px 8px 0;
-        }
-        .prose strong { color: #111827; }
-        .prose hr {
-            border: none;
-            border-top: 1px solid #e5e5e5;
-            margin: 2.5rem 0;
-        }
-
-        .prose-lead {
-            font-size: 1.25rem;
-            line-height: 1.75;
-            color: #4b5563;
-        }
-
-        .fidelity-card {
-            background: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.2s;
-        }
-        .fidelity-card:hover {
-            border-color: #2d5a7b;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            padding: 12px 16px;
-            border-bottom: 1px solid #f3f4f6;
-            transition: background 0.15s;
-        }
-        .checklist-item:hover {
-            background: #f9fafb;
-        }
-        .checklist-item:last-child {
-            border-bottom: none;
-        }
-        .checklist-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #2d5a7b;
-            border-radius: 4px;
-            margin-right: 12px;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .floating-nav {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 0.5rem;
-            z-index: 50;
-        }
-        .floating-nav a {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: white;
-            border: 1px solid #e5e5e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .floating-nav a:hover {
-            background: #2d5a7b;
-            border-color: #2d5a7b;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .source-citation {
-            font-size: 0.75rem;
-            color: #6b7280;
-            font-style: italic;
-            margin-top: 0.5rem;
-        }
-
-        /* TOC Styles */
-        .toc { position: sticky; top: 100px; }
-        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
-        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
-        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
-        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
-
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-                z-index: 50;
-            }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .mobile-overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0,0,0,0.3);
-                z-index: 45;
-                display: none;
-            }
-            .mobile-overlay.show { display: block; }
-        }
-    </style>
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="../styles/design-system.css">
 </head>
+
 <body class="font-sans text-gray-800 antialiased">
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="reading-progress" id="readingProgress"></div>
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="progress"></div>
+
+    <!-- Skip to content (Accessibility) -->
+    <a href="#chapter-content" class="skip-link">Skip to chapter content</a>
+
+    <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <aside class="sidebar" id="sidebar">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+
+        <!-- Logo -->
         <div class="p-5 border-b border-gray-100">
-            <a href="../index.html" class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
-                    <span class="text-tps-green font-bold text-sm">E</span>
+            <a href="../index.html" class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-tps-dark to-gray-800 rounded-xl flex items-center justify-center shadow-lg">
+                    <span class="text-tps-green font-bold text-lg">E</span>
                 </div>
                 <div>
-                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <h1 class="font-bold text-gray-900 text-sm">Empower Playbook</h1>
                     <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
                 </div>
             </a>
         </div>
 
+        <!-- Navigation -->
         <nav class="py-4">
+            <!-- Overview -->
             <div class="nav-section">
                 <a href="../index.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
                     Overview
                 </a>
             </div>
 
+            <!-- Part 1: The Case -->
             <p class="nav-section-title">Part 1 — The Case</p>
             <div class="nav-section">
-                <a href="chapter-1.html" class="nav-item"><span class="num bg-empower-blue text-white">1</span>Why Rural Needs Different</a>
-                <a href="chapter-2.html" class="nav-item"><span class="num bg-empower-blue text-white">2</span>The Problem We're Solving</a>
-                <a href="chapter-3.html" class="nav-item"><span class="num bg-empower-blue text-white">3</span>The Proof</a>
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num part1">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num part1">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num part1">3</span>
+                    The Proof
+                </a>
             </div>
 
+            <!-- Part 2: The Method -->
             <p class="nav-section-title">Part 2 — The Method</p>
             <div class="nav-section">
-                <a href="chapter-4.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">4</span>Four Non-Negotiables</a>
-                <a href="chapter-5.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">5</span>Adaptable Components</a>
-                <a href="chapter-6.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">6</span>Certified Employer Program</a>
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num part2">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num part2">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num part2">6</span>
+                    Certified Employer Program
+                </a>
             </div>
 
+            <!-- Part 3: Implementation -->
             <p class="nav-section-title">Part 3 — Implementation</p>
             <div class="nav-section">
-                <a href="chapter-7.html" class="nav-item"><span class="num bg-part3-blue text-white">7</span>The Phased Approach</a>
-                <a href="chapter-8.html" class="nav-item"><span class="num bg-part3-blue text-white">8</span>Building Your Team</a>
-                <a href="chapter-9.html" class="nav-item"><span class="num bg-red-700 text-white">9</span>What Kills Programs</a>
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num part3">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num part3">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num warning">9</span>
+                    What Kills Programs
+                </a>
             </div>
 
+            <!-- Part 4: Scale -->
             <p class="nav-section-title">Part 4 — Scale</p>
             <div class="nav-section">
-                <a href="chapter-10.html" class="nav-item"><span class="num bg-part4-grey text-white">10</span>Funding</a>
-                <a href="chapter-11.html" class="nav-item"><span class="num bg-part4-grey text-white">11</span>Adapting the Model</a>
-                <a href="chapter-12.html" class="nav-item"><span class="num bg-part4-grey text-white">12</span>Scaling Beyond</a>
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num part4">10</span>
+                    Funding & Unit Economics
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num part4">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num part4">12</span>
+                    Scaling Beyond
+                </a>
             </div>
 
+            <!-- Part 5: Research -->
             <p class="nav-section-title">Part 5 — Research</p>
             <div class="nav-section">
-                <a href="chapter-15.html" class="nav-item"><span class="num bg-part4-grey text-white">15</span>The Evidence Base</a>
-                <a href="chapter-16.html" class="nav-item"><span class="num bg-part4-grey text-white">16</span>Competitive Landscape</a>
-                <a href="chapter-17.html" class="nav-item active"><span class="num bg-part4-grey text-white">17</span>Scaling with Fidelity</a>
+                <a href="chapter-15.html" class="nav-item">
+                    <span class="num part5">15</span>
+                    The Evidence Base
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num part5">16</span>
+                    Competitive Landscape
+                </a>
+                <a href="chapter-17.html" class="nav-item active">
+                    <span class="num part5">17</span>
+                    Scaling with Fidelity
+                </a>
             </div>
 
+            <!-- Training Academy -->
             <p class="nav-section-title">Training Academy</p>
             <div class="nav-section">
                 <a href="chapter-14.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
                     Poverty IQ for Employers
                 </a>
                 <a href="chapter-13.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                     Templates & Tools
                 </a>
             </div>
+
+            <!-- Tools -->
+            <p class="nav-section-title">Tools</p>
+            <div class="nav-section">
+                <a href="../tools/employer-roi-calculator.html" class="nav-item">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    Employer ROI Calculator
+                </a>
+            </div>
         </nav>
 
+        <!-- Footer -->
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
             <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -346,944 +200,1021 @@
         </div>
     </aside>
 
-    <main class="main-content min-h-screen" id="main-content">
-        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
-            <div class="flex items-center justify-between">
+    <!-- MAIN CONTENT -->
+    <main class="main-content min-h-screen" id="chapter-content">
+
+        <!-- Top Bar (sticky) -->
+        <header class="top-header">
+            <div class="flex items-center justify-between max-w-7xl mx-auto">
                 <div class="flex items-center space-x-3">
-                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()" aria-label="Open navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
                     <span class="text-sm text-gray-400">Part 5 — Research</span>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs bg-part5-research/20 text-part5-research px-2 py-1 rounded font-medium">RESEARCH-BASED</span>
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs text-gray-400 hide-mobile">22 min read</span>
+                    <span class="badge badge-blue">IMPLEMENTATION SCIENCE</span>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Header -->
-        <div class="bg-gradient-to-br from-[#2d5a7b] to-[#1e3a5f] text-white px-6 lg:px-12 py-12">
+        <!-- Chapter Header (Hero) - Part 5 Blue -->
+        <div class="chapter-header part5 text-white px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
                 <div class="flex items-center gap-3 mb-4">
-                    <p class="text-white/80 text-sm font-medium">Chapter 17</p>
-                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">22 min read</span>
-                    <span class="text-xs bg-tps-green text-tps-dark px-2 py-1 rounded-full font-semibold">IMPLEMENTATION SCIENCE</span>
+                    <span class="badge badge-white">Chapter 17</span>
+                    <span class="badge badge-green flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        22 min read
+                    </span>
                 </div>
-                <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight mb-4">
                     Scaling with Fidelity
                 </h1>
-                <p class="text-white/90 text-xl max-w-2xl">
-                    Why most programs fail at scale, how the Nurse-Family Partnership became the gold standard, and the Empower Fidelity Framework for maintaining effectiveness while growing.
+                <p class="text-lg text-white/80 max-w-2xl">
+                    Most programs fail at scale. The Nurse-Family Partnership didn't. Here's how Empower's Fidelity Framework keeps the model working as it grows.
                 </p>
             </div>
         </div>
 
+        <!-- Chapter Content -->
         <div class="px-6 lg:px-12 py-10">
-            <div class="max-w-7xl mx-auto content-with-toc">
-            <div class="prose">
+            <div class="max-w-7xl mx-auto">
 
-                <p class="prose-lead mb-8">
-                    Evidence-based programs don't fail because they stop working. They fail because as they scale, they drift from the core elements that made them work in the first place. This chapter draws on implementation science research and the Nurse-Family Partnership's 45-year track record to build Empower's framework for <strong>scaling without losing effectiveness</strong>.
-                </p>
+                <!-- Content with TOC sidebar -->
+                <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
 
-                <!-- Core Principle Box -->
-                <div style="background: #111111; padding: 2rem; border-radius: 1rem; margin-bottom: 3rem;">
-                    <h3 style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin-bottom: 1rem;">The Fidelity Paradox</h3>
-                    <p style="color: rgba(255,255,255,0.9); font-size: 1.125rem; margin-bottom: 1.5rem;">Programs that allow unlimited local adaptation lose effectiveness. Programs that allow no adaptation fail to fit local contexts. The solution is defining what's <strong style="color: #a3c520;">non-negotiable</strong> (Core Model Elements) vs. what's <strong style="color: #ffffff;">adaptable</strong> (local implementation choices).</p>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; font-style: italic;">Source: Durlak & DuPre (2008), "Implementation Matters: A Review of Research on the Influence of Implementation on Program Outcomes"</p>
-                </div>
+                    <!-- Main Prose Content -->
+                    <div class="prose">
 
-                <h2 id="why-fail">17.1 Why Programs Fail at Scale</h2>
+                        <!-- Lead paragraph -->
+                        <p class="text-xl text-gray-500 mb-10 leading-relaxed">
+                            Good programs don't fail because they stop working. They fail because they drift. As they scale, they quietly abandon the core elements that produced results. This chapter draws on 45 years of Nurse-Family Partnership data and implementation science to build Empower's framework for <strong>scaling without losing what works</strong>.
+                        </p>
 
-                <p>
-                    The research is sobering: most evidence-based programs lose their effectiveness when they scale beyond the original pilot site. Understanding why this happens is the first step to preventing it.
-                </p>
+                        <!-- The Fidelity Paradox Callout -->
+                        <div class="callout callout-dark">
+                            <h4 class="font-bold mb-3" style="color: var(--tps-green);">The Fidelity Paradox</h4>
+                            <p style="color: rgba(255,255,255,0.9);">
+                                Too much local adaptation kills effectiveness. Too little kills adoption. The answer: define what's <strong style="color: var(--tps-green);">non-negotiable</strong> (Core Model Elements) and what's <strong style="color: white;">adaptable</strong> (local implementation choices). Then hold the line.
+                            </p>
+                            <p style="color: rgba(255,255,255,0.7); font-size: var(--text-sm); margin-top: var(--space-4); font-style: italic; margin-bottom: 0;">
+                                Source: Durlak & DuPre (2008), "Implementation Matters: A Review of Research on the Influence of Implementation on Program Outcomes"
+                            </p>
+                        </div>
 
-                <h3>The Scale-Up Problem by the Numbers</h3>
+                        <h2 id="why-fail">17.1 Why Programs Fail at Scale</h2>
 
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #b91c1c;" class="mb-2">52%</p>
-                        <p class="text-gray-700 font-medium">of nonprofits modify programs to fit available funding</p>
-                        <p class="text-xs text-gray-500 mt-2 italic">Source: Nonprofit Finance Fund Survey, 2018</p>
-                    </div>
-                    <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-6 text-center">
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #b45309;" class="mb-2">40-60%</p>
-                        <p class="text-gray-700 font-medium">reduction in effect sizes in real-world vs. controlled settings</p>
-                        <p class="text-xs text-gray-500 mt-2 italic">Source: Weisz et al., "Promoting and Protecting Youth Mental Health"</p>
-                    </div>
-                </div>
+                        <p>
+                            The research is sobering. Most evidence-based programs lose effectiveness when they scale beyond the original pilot. Knowing why it happens is step one to preventing it.
+                        </p>
 
-                <h3>Five Root Causes of Program Drift</h3>
+                        <h3>The Scale-Up Problem by the Numbers</h3>
 
-                <div class="fidelity-card my-8 not-prose">
-                    <div class="bg-red-700 text-white p-5">
-                        <h4 class="font-bold text-lg">Why Scaling Fails</h4>
-                    </div>
-                    <div class="p-6">
-                        <div class="space-y-6">
-                            <div class="flex items-start">
-                                <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">1</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Mission Drift from Funding Pressure</p>
-                                    <p class="text-gray-600 text-sm mt-1">Programs modify their model to match what funders will pay for, rather than what works. "We'll just skip the home visits to fit the budget" becomes acceptable.</p>
-                                </div>
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="stat-card" style="border-color: #fecaca; background: linear-gradient(135deg, #fef2f2 0%, white 100%);">
+                                <p class="stat-number" style="color: #b91c1c;">52%</p>
+                                <p class="stat-label text-gray-700 font-medium">of nonprofits modify programs to fit available funding</p>
+                                <p class="text-xs text-gray-500 mt-2 italic">Source: Nonprofit Finance Fund Survey, 2018</p>
                             </div>
-                            <div class="flex items-start">
-                                <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">2</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Staff Turnover Creates Knowledge Loss</p>
-                                    <p class="text-gray-600 text-sm mt-1">When experienced staff leave and institutional knowledge isn't documented, each new hire makes different decisions. The "why" behind practices gets lost.</p>
-                                </div>
+                            <div class="stat-card" style="border-color: #fde68a; background: linear-gradient(135deg, #fffbeb 0%, white 100%);">
+                                <p class="stat-number" style="color: #b45309;">40-60%</p>
+                                <p class="stat-label text-gray-700 font-medium">reduction in effect sizes in real-world vs. controlled settings</p>
+                                <p class="text-xs text-gray-500 mt-2 italic">Source: Weisz et al., "Promoting and Protecting Youth Mental Health"</p>
                             </div>
-                            <div class="flex items-start">
-                                <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">3</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Lack of Standardization</p>
-                                    <p class="text-gray-600 text-sm mt-1">Without a written operations guide, each site implements based on interpretation. "What we think the model is" diverges from "what the model actually is."</p>
-                                </div>
+                        </div>
+
+                        <h3>Five Root Causes of Program Drift</h3>
+
+                        <div class="content-card my-8 not-prose">
+                            <div class="bg-red-700 text-white p-5 rounded-t-xl">
+                                <h4 class="font-bold text-lg">Why Scaling Fails</h4>
                             </div>
-                            <div class="flex items-start">
-                                <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">4</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Quality Reduction Under Resource Constraints</p>
-                                    <p class="text-gray-600 text-sm mt-1">Caseloads creep from 1:25 to 1:40 to 1:60. Visit frequency drops. Training shortens. Each change seems minor; cumulative effect is catastrophic.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">5</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Incremental "Improvements" Without Testing</p>
-                                    <p class="text-gray-600 text-sm mt-1">Local sites make small changes they believe are improvements. Without evaluation, harmful modifications appear helpful until outcomes collapse.</p>
+                            <div class="p-6">
+                                <div class="space-y-6">
+                                    <div class="flex items-start">
+                                        <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">1</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Mission Drift from Funding Pressure</p>
+                                            <p class="text-gray-600 text-sm mt-1">Programs reshape themselves around what funders will pay for instead of what works. "We'll just skip the home visits to fit the budget." Then it becomes permanent.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">2</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Staff Turnover Destroys Knowledge</p>
+                                            <p class="text-gray-600 text-sm mt-1">Experienced staff leave. Nothing's documented. Each new hire makes different decisions. The "why" behind every practice disappears.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">3</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">No Standardization</p>
+                                            <p class="text-gray-600 text-sm mt-1">No written operations guide means every site runs on interpretation. "What we think the model is" slowly diverges from "what the model actually is."</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">4</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Death by a Thousand Cuts</p>
+                                            <p class="text-gray-600 text-sm mt-1">Caseloads creep from 1:25 to 1:40 to 1:60. Visits drop. Training shortens. Each change seems small. The cumulative effect is catastrophic.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">5</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Untested "Improvements"</p>
+                                            <p class="text-gray-600 text-sm mt-1">Local sites make small tweaks they believe are better. Without evaluation, harmful changes look like good ideas -- until outcomes collapse.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <blockquote>
-                    "The gap between knowledge about effective programs and knowledge about how to implement them successfully is perhaps the most significant issue facing prevention science."
-                    <footer class="text-sm text-gray-500 mt-2 not-italic">— Fixsen et al., Implementation Research: A Synthesis of the Literature (2005)</footer>
-                </blockquote>
+                        <blockquote>
+                            "The gap between knowledge about effective programs and knowledge about how to implement them successfully is perhaps the most significant issue facing prevention science."
+                            <footer class="blockquote-author">— Fixsen et al., Implementation Research: A Synthesis of the Literature (2005)</footer>
+                        </blockquote>
 
-                <hr>
+                        <hr class="my-10 border-gray-200">
 
-                <h2 id="nfp-model">17.2 The NFP Model - Gold Standard for Scaling</h2>
+                        <h2 id="nfp-model">17.2 The NFP Model - Gold Standard for Scaling</h2>
 
-                <p>
-                    The Nurse-Family Partnership (NFP) is one of the few social programs that has successfully scaled while maintaining—and even improving—effectiveness. With 45 years of implementation research and over 300,000 families served annually, NFP offers critical lessons for any program seeking to scale with fidelity.
-                </p>
+                        <p>
+                            The Nurse-Family Partnership (NFP) is one of the few social programs that scaled while maintaining effectiveness -- and even improving it. 45 years of data. 300,000+ families served annually. NFP proves it can be done.
+                        </p>
 
-                <div style="background: #111111; padding: 2rem; border-radius: 1rem; margin: 2rem 0;">
-                    <h3 style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin-bottom: 1rem;">The NFP Results That Matter</h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6); padding: 1rem; border-radius: 0.75rem; text-align: center;">
-                            <p style="color: #a3c520; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">$8,860</p>
-                            <p style="color: #ffffff; font-size: 0.875rem;">Cost per family AT SCALE</p>
-                        </div>
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6); padding: 1rem; border-radius: 0.75rem; text-align: center;">
-                            <p style="color: #a3c520; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">$12,398</p>
-                            <p style="color: #ffffff; font-size: 0.875rem;">Cost per family in original RCTs</p>
-                        </div>
-                    </div>
-                    <p style="color: rgba(255,255,255,0.8); font-size: 0.875rem; margin-top: 1.5rem; text-align: center;"><strong style="color: #a3c520;">Key insight:</strong> NFP achieved LOWER costs at scale while maintaining outcomes—the opposite of typical program decline.</p>
-                    <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 0.5rem; font-style: italic; text-align: center;">Source: Miller (2015), "Projected Outcomes of Nurse-Family Partnership Home Visitation"</p>
-                </div>
-
-                <h3>How NFP Maintains Fidelity</h3>
-
-                <div class="fidelity-card my-8 not-prose">
-                    <div class="bg-part5-research text-white p-5">
-                        <h4 class="font-bold text-lg">The NFP Fidelity Architecture</h4>
-                    </div>
-                    <div class="p-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <h5 class="font-semibold text-gray-900 mb-3 flex items-center">
-                                    <span class="w-8 h-8 bg-part5-research text-white rounded-lg flex items-center justify-center text-sm font-bold mr-3">19</span>
-                                    Fidelity Standards
-                                </h5>
-                                <p class="text-sm text-gray-600 mb-4">Specific, measurable standards that define implementation quality. Sites must meet these standards to remain certified.</p>
-
-                                <h5 class="font-semibold text-gray-900 mb-3 flex items-center">
-                                    <span class="w-8 h-8 bg-part5-research text-white rounded-lg flex items-center justify-center text-sm font-bold mr-3">18</span>
-                                    Core Model Elements (CMEs)
-                                </h5>
-                                <p class="text-sm text-gray-600">Non-negotiable components that must be present. These are the "active ingredients" that produce outcomes.</p>
+                        <div class="data-box">
+                            <h4>The NFP Results That Matter</h4>
+                            <div class="data-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div>
+                                    <p class="data-value">$8,860</p>
+                                    <p class="data-label">Cost per family AT SCALE</p>
+                                </div>
+                                <div>
+                                    <p class="data-value">$12,398</p>
+                                    <p class="data-label">Cost per family in original RCTs</p>
+                                </div>
                             </div>
-                            <div class="bg-gray-50 p-5 rounded-xl">
-                                <h5 class="font-semibold text-gray-900 mb-3">National Service Office Provides:</h5>
-                                <ul class="text-sm text-gray-600 space-y-2">
+                            <p style="color: rgba(255,255,255,0.8); font-size: var(--text-sm); margin-top: var(--space-6); text-align: center;">
+                                <strong style="color: var(--tps-green);">Key insight:</strong> NFP got CHEAPER at scale while keeping outcomes strong. The opposite of what usually happens.
+                            </p>
+                            <p style="color: rgba(255,255,255,0.5); font-size: var(--text-xs); margin-top: var(--space-2); font-style: italic; text-align: center; margin-bottom: 0;">
+                                Source: Miller (2015), "Projected Outcomes of Nurse-Family Partnership Home Visitation"
+                            </p>
+                        </div>
+
+                        <h3>How NFP Maintains Fidelity</h3>
+
+                        <div class="content-card my-8 not-prose">
+                            <div class="bg-part5-blue text-white p-5 rounded-t-xl">
+                                <h4 class="font-bold text-lg">The NFP Fidelity Architecture</h4>
+                            </div>
+                            <div class="p-6">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="font-semibold text-gray-900 mb-3 flex items-center">
+                                            <span class="w-8 h-8 bg-part5-blue text-white rounded-lg flex items-center justify-center text-sm font-bold mr-3">19</span>
+                                            Fidelity Standards
+                                        </h5>
+                                        <p class="text-sm text-gray-600 mb-4">Specific, measurable standards that define quality. Meet them or lose certification.</p>
+
+                                        <h5 class="font-semibold text-gray-900 mb-3 flex items-center">
+                                            <span class="w-8 h-8 bg-part5-blue text-white rounded-lg flex items-center justify-center text-sm font-bold mr-3">18</span>
+                                            Core Model Elements (CMEs)
+                                        </h5>
+                                        <p class="text-sm text-gray-600">The non-negotiable components. The active ingredients that produce outcomes. Remove one and the formula breaks.</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-5 rounded-xl">
+                                        <h5 class="font-semibold text-gray-900 mb-3">National Service Office Provides:</h5>
+                                        <ul class="text-sm text-gray-600 space-y-2">
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Standardized training curriculum
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Real-time performance monitoring
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Weekly supervision protocols
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Coaching paired with feedback
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Data systems for continuous monitoring
+                                            </li>
+                                            <li class="flex items-start">
+                                                <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Quality improvement support
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-500 italic">
+                            Sources: NFP National Service Office (2024); Olds et al., "Effects of Nurse Home-Visiting on Maternal Life Course and Child Development" (2004)
+                        </p>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="fidelity-framework">17.3 Empower's Fidelity Framework</h2>
+
+                        <p>
+                            Empower's Fidelity Framework borrows from NFP and implementation science. It draws a hard line between <strong>Core Model Elements</strong> (non-negotiable) and <strong>Adaptable Elements</strong> (your call locally).
+                        </p>
+
+                        <h3>Core Model Elements (Non-Negotiable)</h3>
+
+                        <p>These eight elements are the active ingredients. Weaken any of them and the model stops working.</p>
+
+                        <div class="callout callout-green my-8 not-prose" style="border: 2px solid var(--tps-green);">
+                            <h4 class="font-bold text-tps-dark mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                                Empower Core Model Elements
+                            </h4>
+                            <div class="space-y-4">
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">1</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Benefits Cliff Assessment Before Employment Planning</p>
+                                        <p class="text-sm text-gray-600 mt-1">Every family gets a full benefits cliff analysis BEFORE any employment planning begins. No exceptions.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Single Navigator Relationship for 18-24 Months Minimum</p>
+                                        <p class="text-sm text-gray-600 mt-1">Same navigator, start to finish. No handoffs. No reassignments for convenience. The relationship IS the model.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">3</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">1:25 or Lower Caseload Ratio for Intensive Phase</p>
+                                        <p class="text-sm text-gray-600 mt-1">During the first 12 months, no navigator carries more than 25 intensive cases. The depth of the relationship produces the outcomes.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Wraparound Coordination with Documented Partner MOUs</p>
+                                        <p class="text-sm text-gray-600 mt-1">Formal MOUs with partners define referral pathways, data sharing, and coordination. Informal "relationships" aren't enough.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">5</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Real-Time Data Dashboard Tracking Outcomes</p>
+                                        <p class="text-sm text-gray-600 mt-1">Not annual reports. Real-time. Leaders and navigators see current outcomes weekly. Problems get caught fast.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">6</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">225% FPL / ALICE Threshold as Self-Sufficiency Target</p>
+                                        <p class="text-sm text-gray-600 mt-1">Families graduate when they hit economic stability. Not when funding runs out. Not when an arbitrary timeline expires.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">7</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Employer Certification with Cliff Awareness Training</p>
+                                        <p class="text-sm text-gray-600 mt-1">Employers hiring families in the program must complete Poverty IQ training. The workplace has to support progress, not undermine it.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start bg-white p-4 rounded-lg">
+                                    <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">8</span>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Monthly Case Review with Supervisor</p>
+                                        <p class="text-sm text-gray-600 mt-1">Every active case reviewed monthly with a supervisor. Prevents burnout. Catches drift early. Keeps quality consistent.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>Adaptable Elements (Local Choice)</h3>
+
+                        <p>These elements should flex to fit local context, population, and resources. Adapting them doesn't compromise fidelity -- it strengthens fit.</p>
+
+                        <div class="bg-gray-100 rounded-xl p-6 my-8 not-prose">
+                            <h4 class="font-bold text-gray-700 mb-4 flex items-center">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                Adaptable Elements
+                            </h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-gray-900 mb-2">Specific Benefits Tracked</p>
+                                    <p class="text-sm text-gray-600">Varies by state. Some have stronger SNAP. Others have better childcare subsidies. Match the cliff analysis to the local benefit landscape.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-gray-900 mb-2">Partner Organizations</p>
+                                    <p class="text-sm text-gray-600">Every community has different organizations. The requirement is formal MOUs. Which partners you choose is up to you.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-gray-900 mb-2">Soft Skills Curriculum Content</p>
+                                    <p class="text-sm text-gray-600">Tailor it to your population -- youth vs. adults, recovery vs. re-entry. The requirement is that soft skills development happens. The content is your call.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-gray-900 mb-2">Timeline Beyond 18 Months</p>
+                                    <p class="text-sm text-gray-600">18 months is the floor. Extend to 24, 36, or longer based on what families need and funding allows.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-gray-900 mb-2">Primary Outcome Emphasis</p>
+                                    <p class="text-sm text-gray-600">Livable-wage careers, graduation, housing stability, recovery milestones -- the primary target varies by program focus.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-gray-900 mb-2">Communication Methods</p>
+                                    <p class="text-sm text-gray-600">Text, app, phone, in-person. Whatever works for families, as long as contact frequency stays consistent.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="checklist">17.4 Fidelity Standards Checklist</h2>
+
+                        <p>
+                            Run this checklist annually. Sites need 85% compliance to keep certification.
+                        </p>
+
+                        <div class="content-card my-8 not-prose">
+                            <div class="bg-part5-blue text-white p-5 rounded-t-xl">
+                                <h4 class="font-bold text-lg">Empower Fidelity Standards Assessment</h4>
+                                <p class="text-white/80 text-sm mt-1">Complete annually; minimum 85% compliance for certification</p>
+                            </div>
+                            <div class="divide-y divide-gray-100">
+                                <div class="p-4 bg-gray-50">
+                                    <p class="font-semibold text-part5-blue">Navigator Certification & Training</p>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">All navigators have completed certification training</p>
+                                        <p class="text-sm text-gray-500">40-hour initial training + annual refresher</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Benefits cliff tool proficiency demonstrated</p>
+                                        <p class="text-sm text-gray-500">Navigator can independently run cliff analysis for any participant</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Motivational interviewing training completed</p>
+                                        <p class="text-sm text-gray-500">Minimum 16 hours of MI training with observation</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-gray-50">
+                                    <p class="font-semibold text-part5-blue">Caseload & Relationship Standards</p>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Caseload ratio documented and monitored monthly</p>
+                                        <p class="text-sm text-gray-500">Written policy; actual ratios tracked in dashboard</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Intensive phase caseloads at or below 1:25</p>
+                                        <p class="text-sm text-gray-500">No navigator exceeds 25 intensive cases</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Navigator-participant assignments maintained through completion</p>
+                                        <p class="text-sm text-gray-500">Less than 10% reassignment rate (excluding staff departure)</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-gray-50">
+                                    <p class="font-semibold text-part5-blue">Assessment & Planning</p>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Benefits cliff assessment completed before employment planning</p>
+                                        <p class="text-sm text-gray-500">100% of participants have documented cliff analysis</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Comprehensive intake assessment on file</p>
+                                        <p class="text-sm text-gray-500">Includes housing, transportation, childcare, health, employment history</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Written service plan with measurable goals</p>
+                                        <p class="text-sm text-gray-500">Updated at minimum every 90 days</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-gray-50">
+                                    <p class="font-semibold text-part5-blue">Data & Monitoring</p>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Dashboard operational with real-time data</p>
+                                        <p class="text-sm text-gray-500">Data updated within 48 hours of entry</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Leadership reviews dashboard weekly</p>
+                                        <p class="text-sm text-gray-500">Documented meeting notes or review log</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Quarterly outcomes review conducted</p>
+                                        <p class="text-sm text-gray-500">Written report with comparison to benchmarks</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-gray-50">
+                                    <p class="font-semibold text-part5-blue">Partner Coordination</p>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Partner MOUs in place and current</p>
+                                        <p class="text-sm text-gray-500">Minimum 5 partner MOUs; reviewed annually</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Partner coordination meetings held regularly</p>
+                                        <p class="text-sm text-gray-500">Minimum monthly case coordination; documented</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Referral tracking system operational</p>
+                                        <p class="text-sm text-gray-500">Closed-loop tracking of all referrals</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-gray-50">
+                                    <p class="font-semibold text-part5-blue">Supervision & Quality</p>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Monthly supervision documented for all navigators</p>
+                                        <p class="text-sm text-gray-500">Written notes with action items</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Case reviews conducted monthly</p>
+                                        <p class="text-sm text-gray-500">Every active case reviewed at minimum monthly</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Annual fidelity self-assessment completed</p>
+                                        <p class="text-sm text-gray-500">Using this checklist with documentation</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-gray-50">
+                                    <p class="font-semibold text-part5-blue">Employer Engagement</p>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Certified employer network established</p>
+                                        <p class="text-sm text-gray-500">Minimum 10 certified employers in network</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start p-4 hover:bg-gray-50 transition">
+                                    <div class="w-5 h-5 border-2 border-part5-blue rounded mr-3 flex-shrink-0 mt-0.5"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Poverty IQ training delivered to employers</p>
+                                        <p class="text-sm text-gray-500">All certified employers complete training</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="qa-infrastructure">17.5 Quality Assurance Infrastructure</h2>
+
+                        <p>
+                            Fidelity doesn't happen by accident. It takes deliberate infrastructure: training, supervision, monitoring, and continuous improvement.
+                        </p>
+
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="content-card">
+                                <div class="bg-empower-blue text-white p-4 rounded-t-xl">
+                                    <h4 class="font-bold">Navigator Certification Pathway</h4>
+                                </div>
+                                <div class="p-5">
+                                    <ol class="space-y-3 text-sm">
+                                        <li class="flex items-start">
+                                            <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">1</span>
+                                            <div>
+                                                <p class="font-medium">Pre-Service Training (40 hours)</p>
+                                                <p class="text-gray-500">Before carrying any cases</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">2</span>
+                                            <div>
+                                                <p class="font-medium">Supervised Practice (3 months)</p>
+                                                <p class="text-gray-500">Reduced caseload with intensive supervision</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">3</span>
+                                            <div>
+                                                <p class="font-medium">Competency Assessment</p>
+                                                <p class="text-gray-500">Observed skills demonstration</p>
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">4</span>
+                                            <div>
+                                                <p class="font-medium">Certification</p>
+                                                <p class="text-gray-500">Annual renewal with continuing education</p>
+                                            </div>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="content-card">
+                                <div class="bg-tps-green text-tps-dark p-4 rounded-t-xl">
+                                    <h4 class="font-bold">Training Curriculum Requirements</h4>
+                                </div>
+                                <div class="p-5">
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Benefits cliff modeling (8 hours)
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Motivational interviewing (16 hours)
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Trauma-informed practice (8 hours)
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Local benefits landscape (4 hours)
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Data system proficiency (4 hours)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="content-card">
+                                <div class="bg-purple-700 text-white p-4 rounded-t-xl">
+                                    <h4 class="font-bold">Supervision Protocols</h4>
+                                </div>
+                                <div class="p-5">
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Weekly team meetings (group supervision)
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Monthly individual supervision (1:1)
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Quarterly field observation
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Annual performance review with competency assessment
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="content-card">
+                                <div class="bg-part5-blue text-white p-4 rounded-t-xl">
+                                    <h4 class="font-bold">Data Systems for Monitoring</h4>
+                                </div>
+                                <div class="p-5">
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-part5-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Real-time outcome dashboard
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-part5-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Caseload monitoring alerts
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-part5-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Contact frequency tracking
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-part5-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Referral completion rates
+                                        </li>
+                                        <li class="flex items-start">
+                                            <svg class="w-4 h-4 text-part5-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Fidelity metrics by site
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="callout callout-dark">
+                            <h4 class="font-bold mb-3" style="color: var(--tps-green);">The NFP Lesson: Coaching Paired with Feedback</h4>
+                            <p style="color: rgba(255,255,255,0.9);">
+                                NFP proved that training alone doesn't keep fidelity. You need <strong style="color: var(--tps-green);">real-time performance data</strong> + <strong style="color: var(--tps-green);">coaching support</strong> together. That's what prevents drift.
+                            </p>
+                            <p style="color: rgba(255,255,255,0.7); margin-top: var(--space-3);">
+                                When supervisors see a navigator's contact frequency dropping, they intervene immediately. Before outcomes suffer. Data without coaching is surveillance. Coaching without data is guessing.
+                            </p>
+                            <p style="color: rgba(255,255,255,0.5); font-size: var(--text-xs); margin-top: var(--space-4); font-style: italic; margin-bottom: 0;">
+                                Source: Fixsen et al. (2009), "Core Implementation Components"
+                            </p>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="warning-signs">17.6 Warning Signs of Model Drift</h2>
+
+                        <p>
+                            Drift never announces itself. It creeps in through small compromises that seem reasonable in the moment. Train your leaders to spot these warning signs.
+                        </p>
+
+                        <div class="content-card my-8 not-prose">
+                            <div class="bg-red-700 text-white p-5 rounded-t-xl">
+                                <div class="flex items-center">
+                                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                    <h4 class="font-bold text-lg">Early Warning Signs of Model Drift</h4>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Caseloads creeping above 1:30</p>
+                                            <p class="text-sm text-gray-600 mt-1">"Just temporarily -- 32 cases until we hire someone." Temporary becomes permanent. The 1:25 ratio exists because the research says so.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Benefits cliff assessment skipped "to save time"</p>
+                                            <p class="text-sm text-gray-600 mt-1">"They just need a job -- we'll do the cliff analysis later." Later never comes. Families hit cliffs that could have been avoided.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Navigator reassignments breaking relationships</p>
+                                            <p class="text-sm text-gray-600 mt-1">"It's more efficient to specialize navigators." Efficiency kills the relationship. The entire model depends on continuity.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Dashboard data not reviewed regularly</p>
+                                            <p class="text-sm text-gray-600 mt-1">"We're too busy serving families to look at data." You can't know if you're succeeding without looking. Flying blind leads to crashes.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Partner coordination meetings cancelled</p>
+                                            <p class="text-sm text-gray-600 mt-1">"Everyone's too busy this month." One cancellation becomes the norm. Wraparound coordination degrades into referrals that go nowhere.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Outcomes not measured or reported</p>
+                                            <p class="text-sm text-gray-600 mt-1">"We know we're making a difference." Anecdotes replace evidence. Without measurement, hope is your only strategy.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Supervision sessions becoming "check-ins"</p>
+                                            <p class="text-sm text-gray-600 mt-1">"Let's just do a quick update." Supervision without case review and skill coaching doesn't prevent drift. It enables it.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">New staff "learning as they go"</p>
+                                            <p class="text-sm text-gray-600 mt-1">"We'll train them on the job." Without structured pre-service training, every new generation of staff drifts further from the model.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="cost-of-fidelity">17.7 The Cost of Fidelity</h2>
+
+                        <p>
+                            Quality assurance costs money. Training takes time. Supervision requires investment. Some leaders see fidelity as overhead. That thinking destroys programs.
+                        </p>
+
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="callout callout-warning">
+                                <h4 class="font-bold mb-4" style="color: #991b1b;">The Cost of Drift</h4>
+                                <ul class="text-sm text-gray-700 space-y-3">
                                     <li class="flex items-start">
-                                        <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                        Standardized training curriculum
+                                        <span class="text-red-600 mr-2 font-bold">X</span>
+                                        <span><strong>Outcomes collapse</strong> -- The program stops working. Nobody notices until it's too late.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                        Real-time performance monitoring
+                                        <span class="text-red-600 mr-2 font-bold">X</span>
+                                        <span><strong>Reputation destroyed</strong> -- Funders and partners lose trust when results don't match promises.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                        Weekly supervision protocols
+                                        <span class="text-red-600 mr-2 font-bold">X</span>
+                                        <span><strong>Funding evaporates</strong> -- Can't call yourself evidence-based without fidelity to back it up.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                        Coaching paired with feedback
+                                        <span class="text-red-600 mr-2 font-bold">X</span>
+                                        <span><strong>Navigators burn out</strong> -- Without proper support, good people leave.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                        Data systems for continuous monitoring
+                                        <span class="text-red-600 mr-2 font-bold">X</span>
+                                        <span><strong>Families get hurt</strong> -- They trust you with their futures. Drift betrays that trust.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="callout callout-green" style="border: 2px solid var(--tps-green);">
+                                <h4 class="font-bold text-tps-dark mb-4">The Return on Fidelity</h4>
+                                <ul class="text-sm text-gray-700 space-y-3">
+                                    <li class="flex items-start">
+                                        <span class="text-tps-green mr-2 font-bold">+</span>
+                                        <span><strong>Sustained outcomes</strong> -- The program keeps working as it grows.</span>
                                     </li>
                                     <li class="flex items-start">
-                                        <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                        </svg>
-                                        Quality improvement support
+                                        <span class="text-tps-green mr-2 font-bold">+</span>
+                                        <span><strong>Costs drop at scale</strong> -- NFP proves it: $8,860 vs. $12,398 in original trials.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-tps-green mr-2 font-bold">+</span>
+                                        <span><strong>Funders stay</strong> -- Demonstrated fidelity attracts continued investment.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-tps-green mr-2 font-bold">+</span>
+                                        <span><strong>Staff stay</strong> -- Good supervision and support keeps navigators from burning out.</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-tps-green mr-2 font-bold">+</span>
+                                        <span><strong>Ready to replicate</strong> -- Documented fidelity makes expansion to new sites possible.</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
+                        <div class="callout callout-dark">
+                            <h4 class="font-bold mb-3" style="color: var(--tps-green);">The Bottom Line</h4>
+                            <p style="color: rgba(255,255,255,0.9); margin-bottom: var(--space-3);">
+                                Drift kills programs. First effectiveness goes. Then funding. Then the program itself. Fidelity keeps outcomes strong, investment flowing, and impact growing.
+                            </p>
+                            <p style="color: var(--tps-green); font-size: var(--text-xl); font-weight: 700; margin-bottom: 0;">
+                                Fidelity isn't overhead. It's the reason the program works. Period.
+                            </p>
+                        </div>
+
+                        <blockquote>
+                            "The question isn't whether to scale evidence-based programs. It's how to scale them without losing their essence. The alternative -- scaling programs that have drifted into ineffectiveness -- wastes money and betrays the families they were designed to serve."
+                            <footer class="blockquote-author">— Adapted from Horowitz et al., "Scaling Up Evidence-Based Practices"</footer>
+                        </blockquote>
+
+                        <!-- Key Takeaway -->
+                        <div class="key-takeaway">
+                            <span class="badge">Key Takeaway</span>
+                            <p>
+                                Scaling with fidelity comes down to three commitments:
+                            </p>
+                            <div class="space-y-3 mt-4">
+                                <div class="flex items-center">
+                                    <span style="color: var(--tps-green); font-weight: 700; font-size: var(--text-2xl); margin-right: var(--space-4);">1</span>
+                                    <span><strong>Define what can't bend</strong> -- The 8 Core Model Elements are the line.</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span style="color: var(--tps-green); font-weight: 700; font-size: var(--text-2xl); margin-right: var(--space-4);">2</span>
+                                    <span><strong>Build the infrastructure</strong> -- Training. Supervision. Data. Coaching.</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span style="color: var(--tps-green); font-weight: 700; font-size: var(--text-2xl); margin-right: var(--space-4);">3</span>
+                                    <span><strong>Watch for drift</strong> -- Catch warning signs before outcomes collapse.</span>
+                                </div>
+                            </div>
+                            <p class="highlight mt-6">
+                                NFP proves it's possible. Empower's framework gives you the blueprint.
+                            </p>
+                        </div>
+
+                        <!-- Sources Section -->
+                        <div class="bg-gray-100 rounded-xl p-6 my-8 not-prose">
+                            <h4 class="font-bold text-gray-900 mb-4">Sources & Further Reading</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>Durlak, J.A. & DuPre, E.P. (2008). "Implementation Matters: A Review of Research on the Influence of Implementation on Program Outcomes." American Journal of Community Psychology.</li>
+                                <li>Fixsen, D.L. et al. (2005). "Implementation Research: A Synthesis of the Literature." University of South Florida, Louis de la Parte Florida Mental Health Institute.</li>
+                                <li>Fixsen, D.L. et al. (2009). "Core Implementation Components." Research on Social Work Practice.</li>
+                                <li>Miller, T.R. (2015). "Projected Outcomes of Nurse-Family Partnership Home Visitation During 1996-2013, USA." Prevention Science.</li>
+                                <li>Nurse-Family Partnership National Service Office (2024). "Model Elements and Fidelity Standards."</li>
+                                <li>Olds, D.L. et al. (2004). "Effects of Nurse Home-Visiting on Maternal Life Course and Child Development." Pediatrics.</li>
+                                <li>Weisz, J.R. et al. (2006). "Promoting and Protecting Youth Mental Health Through Evidence-Based Prevention and Treatment." American Psychologist.</li>
+                            </ul>
+                        </div>
+
                     </div>
+
+                    <!-- Table of Contents (Desktop only) -->
+                    <aside class="hidden xl:block">
+                        <nav class="toc" aria-label="Table of contents">
+                            <p class="toc-title">On this page</p>
+                            <a href="#why-fail" class="toc-link active">Why Programs Fail</a>
+                            <a href="#nfp-model" class="toc-link">NFP Gold Standard</a>
+                            <a href="#fidelity-framework" class="toc-link">Fidelity Framework</a>
+                            <a href="#checklist" class="toc-link">Standards Checklist</a>
+                            <a href="#qa-infrastructure" class="toc-link">QA Infrastructure</a>
+                            <a href="#warning-signs" class="toc-link">Warning Signs</a>
+                            <a href="#cost-of-fidelity" class="toc-link">Cost of Fidelity</a>
+                        </nav>
+                    </aside>
+
                 </div>
 
-                <p class="source-citation">
-                    Sources: NFP National Service Office (2024); Olds et al., "Effects of Nurse Home-Visiting on Maternal Life Course and Child Development" (2004)
-                </p>
-
-                <hr>
-
-                <h2 id="fidelity-framework">17.3 Empower's Fidelity Framework</h2>
-
-                <p>
-                    Drawing on NFP's approach and implementation science research, we've developed Empower's Fidelity Framework. This distinguishes between <strong>Core Model Elements</strong> (non-negotiable) and <strong>Adaptable Elements</strong> (local choice).
-                </p>
-
-                <h3>Core Model Elements (Non-Negotiable)</h3>
-
-                <p>These eight elements are the "active ingredients" that produce outcomes. Remove or weaken any of them and the model loses effectiveness.</p>
-
-                <div class="bg-tps-green/10 border-2 border-tps-green rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-tps-dark mb-4 flex items-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                <!-- Chapter Navigation -->
+                <div class="chapter-nav">
+                    <a href="chapter-16.html" class="chapter-nav-link">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
-                        Empower Core Model Elements
-                    </h4>
-                    <div class="space-y-4">
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">1</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">Benefits Cliff Assessment Before Employment Planning</p>
-                                <p class="text-sm text-gray-600 mt-1">Every participant receives a comprehensive benefits cliff analysis BEFORE any employment or advancement planning begins. This is foundational—not optional.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">Single Navigator Relationship for 18-24 Months Minimum</p>
-                                <p class="text-sm text-gray-600 mt-1">The same navigator stays with the participant throughout the entire journey. No handoffs between staff, no reassignments for convenience.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">3</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">1:25 or Lower Caseload Ratio for Intensive Phase</p>
-                                <p class="text-sm text-gray-600 mt-1">During the first 12 months, navigators cannot carry more than 25 intensive cases. This enables the relationship depth that produces outcomes.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">Wraparound Coordination with Documented Partner MOUs</p>
-                                <p class="text-sm text-gray-600 mt-1">Formal agreements with partner organizations define referral pathways, data sharing, and coordination protocols. Informal "relationships" aren't sufficient.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">5</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">Real-Time Data Dashboard Tracking Outcomes</p>
-                                <p class="text-sm text-gray-600 mt-1">Not annual reports—real-time. Leaders and navigators must see current outcomes weekly. This enables rapid course correction.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">6</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">225% FPL / ALICE Threshold as Self-Sufficiency Target</p>
-                                <p class="text-sm text-gray-600 mt-1">Exit criteria is defined by a measurable threshold, not arbitrary timelines. Participants graduate when they reach economic stability, not when funding runs out.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">7</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">Employer Certification with Cliff Awareness Training</p>
-                                <p class="text-sm text-gray-600 mt-1">Employers who hire participants must complete Poverty IQ training. This ensures the receiving workplace supports—rather than undermines—participant progress.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start bg-white p-4 rounded-lg">
-                            <span class="bg-tps-green text-tps-dark w-8 h-8 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0">8</span>
-                            <div>
-                                <p class="font-semibold text-gray-900">Monthly Case Review with Supervisor</p>
-                                <p class="text-sm text-gray-600 mt-1">Every active case is reviewed monthly with a supervisor. This prevents navigator burnout, catches drift early, and ensures consistent quality.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h3>Adaptable Elements (Local Choice)</h3>
-
-                <p>These elements can and should be adapted to local context, population, and resources—without compromising fidelity.</p>
-
-                <div class="bg-gray-100 rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-gray-700 mb-4 flex items-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        Previous: Competitive Landscape
+                    </a>
+                    <a href="../index.html" class="chapter-nav-next">
+                        Back to Overview
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
-                        Adaptable Elements
-                    </h4>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-gray-900 mb-2">Specific Benefits Tracked</p>
-                            <p class="text-sm text-gray-600">Varies by state—some states have more robust SNAP, others have better childcare subsidies. Adapt the cliff analysis to local benefit landscape.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-gray-900 mb-2">Partner Organizations</p>
-                            <p class="text-sm text-gray-600">Every community has different organizations. The requirement is formal MOUs; which partners is local choice.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-gray-900 mb-2">Soft Skills Curriculum Content</p>
-                            <p class="text-sm text-gray-600">The specific curriculum can be tailored to population (youth vs. adults, recovery vs. re-entry) while maintaining the requirement for soft skills development.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-gray-900 mb-2">Timeline Beyond 18 Months</p>
-                            <p class="text-sm text-gray-600">18 months is the minimum; programs can extend to 24, 36, or longer based on population needs and funding.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-gray-900 mb-2">Primary Outcome Emphasis</p>
-                            <p class="text-sm text-gray-600">Employment, graduation, housing stability, recovery milestones—the primary outcome varies by program focus.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-gray-900 mb-2">Communication Methods</p>
-                            <p class="text-sm text-gray-600">Text, app, phone, in-person meetings—whatever works for the population, as long as contact frequency is maintained.</p>
-                        </div>
-                    </div>
+                    </a>
                 </div>
 
-                <hr>
-
-                <h2 id="checklist">17.4 Fidelity Standards Checklist</h2>
-
-                <p>
-                    Use this checklist for annual fidelity assessment. Sites should meet at least 85% of standards to maintain certification.
-                </p>
-
-                <div class="fidelity-card my-8 not-prose">
-                    <div class="bg-part5-research text-white p-5">
-                        <h4 class="font-bold text-lg">Empower Fidelity Standards Assessment</h4>
-                        <p class="text-white/80 text-sm mt-1">Complete annually; minimum 85% compliance for certification</p>
-                    </div>
-                    <div class="divide-y divide-gray-100">
-                        <div class="p-4 bg-gray-50">
-                            <p class="font-semibold text-part5-research">Navigator Certification & Training</p>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">All navigators have completed certification training</p>
-                                <p class="text-sm text-gray-500">40-hour initial training + annual refresher</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Benefits cliff tool proficiency demonstrated</p>
-                                <p class="text-sm text-gray-500">Navigator can independently run cliff analysis for any participant</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Motivational interviewing training completed</p>
-                                <p class="text-sm text-gray-500">Minimum 16 hours of MI training with observation</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50">
-                            <p class="font-semibold text-part5-research">Caseload & Relationship Standards</p>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Caseload ratio documented and monitored monthly</p>
-                                <p class="text-sm text-gray-500">Written policy; actual ratios tracked in dashboard</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Intensive phase caseloads at or below 1:25</p>
-                                <p class="text-sm text-gray-500">No navigator exceeds 25 intensive cases</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Navigator-participant assignments maintained through completion</p>
-                                <p class="text-sm text-gray-500">Less than 10% reassignment rate (excluding staff departure)</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50">
-                            <p class="font-semibold text-part5-research">Assessment & Planning</p>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Benefits cliff assessment completed before employment planning</p>
-                                <p class="text-sm text-gray-500">100% of participants have documented cliff analysis</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Comprehensive intake assessment on file</p>
-                                <p class="text-sm text-gray-500">Includes housing, transportation, childcare, health, employment history</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Written service plan with measurable goals</p>
-                                <p class="text-sm text-gray-500">Updated at minimum every 90 days</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50">
-                            <p class="font-semibold text-part5-research">Data & Monitoring</p>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Dashboard operational with real-time data</p>
-                                <p class="text-sm text-gray-500">Data updated within 48 hours of entry</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Leadership reviews dashboard weekly</p>
-                                <p class="text-sm text-gray-500">Documented meeting notes or review log</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Quarterly outcomes review conducted</p>
-                                <p class="text-sm text-gray-500">Written report with comparison to benchmarks</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50">
-                            <p class="font-semibold text-part5-research">Partner Coordination</p>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Partner MOUs in place and current</p>
-                                <p class="text-sm text-gray-500">Minimum 5 partner MOUs; reviewed annually</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Partner coordination meetings held regularly</p>
-                                <p class="text-sm text-gray-500">Minimum monthly case coordination; documented</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Referral tracking system operational</p>
-                                <p class="text-sm text-gray-500">Closed-loop tracking of all referrals</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50">
-                            <p class="font-semibold text-part5-research">Supervision & Quality</p>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Monthly supervision documented for all navigators</p>
-                                <p class="text-sm text-gray-500">Written notes with action items</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Case reviews conducted monthly</p>
-                                <p class="text-sm text-gray-500">Every active case reviewed at minimum monthly</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Annual fidelity self-assessment completed</p>
-                                <p class="text-sm text-gray-500">Using this checklist with documentation</p>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-gray-50">
-                            <p class="font-semibold text-part5-research">Employer Engagement</p>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Certified employer network established</p>
-                                <p class="text-sm text-gray-500">Minimum 10 certified employers in network</p>
-                            </div>
-                        </div>
-                        <div class="checklist-item">
-                            <div class="checklist-checkbox"></div>
-                            <div>
-                                <p class="font-medium text-gray-900">Poverty IQ training delivered to employers</p>
-                                <p class="text-sm text-gray-500">All certified employers complete training</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h2 id="qa-infrastructure">17.5 Quality Assurance Infrastructure</h2>
-
-                <p>
-                    Fidelity doesn't happen by accident. It requires deliberate infrastructure for training, supervision, monitoring, and continuous improvement.
-                </p>
-
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="fidelity-card">
-                        <div class="bg-empower-blue text-white p-4">
-                            <h4 class="font-bold">Navigator Certification Pathway</h4>
-                        </div>
-                        <div class="p-5">
-                            <ol class="space-y-3 text-sm">
-                                <li class="flex items-start">
-                                    <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">1</span>
-                                    <div>
-                                        <p class="font-medium">Pre-Service Training (40 hours)</p>
-                                        <p class="text-gray-500">Before carrying any cases</p>
-                                    </div>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">2</span>
-                                    <div>
-                                        <p class="font-medium">Supervised Practice (3 months)</p>
-                                        <p class="text-gray-500">Reduced caseload with intensive supervision</p>
-                                    </div>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">3</span>
-                                    <div>
-                                        <p class="font-medium">Competency Assessment</p>
-                                        <p class="text-gray-500">Observed skills demonstration</p>
-                                    </div>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="bg-empower-blue text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0">4</span>
-                                    <div>
-                                        <p class="font-medium">Certification</p>
-                                        <p class="text-gray-500">Annual renewal with continuing education</p>
-                                    </div>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <div class="fidelity-card">
-                        <div class="bg-tps-green text-tps-dark p-4">
-                            <h4 class="font-bold">Training Curriculum Requirements</h4>
-                        </div>
-                        <div class="p-5">
-                            <ul class="space-y-2 text-sm">
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Benefits cliff modeling (8 hours)
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Motivational interviewing (16 hours)
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Trauma-informed practice (8 hours)
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Local benefits landscape (4 hours)
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-tps-green mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Data system proficiency (4 hours)
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="fidelity-card">
-                        <div class="bg-purple-700 text-white p-4">
-                            <h4 class="font-bold">Supervision Protocols</h4>
-                        </div>
-                        <div class="p-5">
-                            <ul class="space-y-2 text-sm">
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Weekly team meetings (group supervision)
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Monthly individual supervision (1:1)
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Quarterly field observation
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Annual performance review with competency assessment
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="fidelity-card">
-                        <div class="bg-part5-research text-white p-4">
-                            <h4 class="font-bold">Data Systems for Monitoring</h4>
-                        </div>
-                        <div class="p-5">
-                            <ul class="space-y-2 text-sm">
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-part5-research mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Real-time outcome dashboard
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-part5-research mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Caseload monitoring alerts
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-part5-research mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Contact frequency tracking
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-part5-research mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Referral completion rates
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-4 h-4 text-part5-research mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Fidelity metrics by site
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="background: #111111; padding: 2rem; border-radius: 1rem; margin: 2rem 0;">
-                    <h3 style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin-bottom: 1rem;">The NFP Lesson: Coaching Paired with Feedback</h3>
-                    <p style="color: rgba(255,255,255,0.9); font-size: 1rem; margin-bottom: 1rem;">NFP research shows that training alone doesn't maintain fidelity. The combination of <strong style="color: #a3c520;">real-time performance data</strong> + <strong style="color: #a3c520;">coaching support</strong> is what prevents drift.</p>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">When supervisors see that a navigator's contact frequency is dropping, they can intervene immediately—before outcomes suffer. Data without coaching is just surveillance; coaching without data is just opinion.</p>
-                    <p style="color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-top: 1rem; font-style: italic;">Source: Fixsen et al. (2009), "Core Implementation Components"</p>
-                </div>
-
-                <hr>
-
-                <h2 id="warning-signs">17.6 Warning Signs of Model Drift</h2>
-
-                <p>
-                    Drift rarely announces itself. It happens gradually, through small compromises that seem reasonable in the moment. Train supervisors and leaders to recognize these warning signs.
-                </p>
-
-                <div class="fidelity-card my-8 not-prose">
-                    <div class="bg-red-700 text-white p-5">
-                        <div class="flex items-center">
-                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                            </svg>
-                            <h4 class="font-bold text-lg">Early Warning Signs of Model Drift</h4>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="space-y-4">
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Caseloads creeping above 1:30</p>
-                                    <p class="text-sm text-gray-600 mt-1">"We'll just temporarily go to 32 cases until we hire someone." Temporary becomes permanent. The 1:25 ratio exists for a reason.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Benefits cliff assessment skipped "to save time"</p>
-                                    <p class="text-sm text-gray-600 mt-1">"They just need a job, we can do the cliff analysis later." Later never comes. Participants hit cliffs that could have been avoided.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Navigator reassignments breaking relationships</p>
-                                    <p class="text-sm text-gray-600 mt-1">"It's more efficient to have navigators specialize." Efficiency kills the relationship. The whole model depends on continuity.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Dashboard data not reviewed regularly</p>
-                                    <p class="text-sm text-gray-600 mt-1">"We're too busy serving participants to look at data." You can't know if you're succeeding without looking. Flying blind leads to crashes.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Partner coordination meetings cancelled</p>
-                                    <p class="text-sm text-gray-600 mt-1">"Everyone's too busy this month." One cancellation becomes the norm. Wraparound coordination degrades to referrals into a void.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Outcomes not measured or reported</p>
-                                    <p class="text-sm text-gray-600 mt-1">"We know we're making a difference." Anecdotes replace evidence. Without measurement, you're just hoping.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Supervision sessions becoming "check-ins"</p>
-                                    <p class="text-sm text-gray-600 mt-1">"Let's just do a quick update." Supervision without case review and skill coaching doesn't prevent drift—it enables it.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                                <div>
-                                    <p class="font-semibold text-gray-900">New staff "learning as they go"</p>
-                                    <p class="text-sm text-gray-600 mt-1">"We'll train them on the job." Without structured pre-service training, each generation of staff drifts further from the model.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h2 id="cost-of-fidelity">17.7 The Cost of Fidelity</h2>
-
-                <p>
-                    Quality assurance infrastructure costs money. Training takes time. Supervision requires investment. Some leaders see fidelity as overhead to be minimized. This is a catastrophic mistake.
-                </p>
-
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-                        <h4 class="font-bold text-red-800 mb-4">The Cost of Drift</h4>
-                        <ul class="text-sm text-gray-700 space-y-3">
-                            <li class="flex items-start">
-                                <span class="text-red-600 mr-2">X</span>
-                                <span><strong>Outcomes decline</strong> — The program stops working, but nobody knows until it's too late</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-red-600 mr-2">X</span>
-                                <span><strong>Reputation damage</strong> — Funders and partners lose trust when results don't match promises</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-red-600 mr-2">X</span>
-                                <span><strong>Funding loss</strong> — Evidence-based claims become indefensible without fidelity</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-red-600 mr-2">X</span>
-                                <span><strong>Staff burnout</strong> — Without proper support, navigators burn out faster</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-red-600 mr-2">X</span>
-                                <span><strong>Participant harm</strong> — Families trust you with their futures; drift betrays that trust</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bg-tps-green/10 border-2 border-tps-green rounded-xl p-6">
-                        <h4 class="font-bold text-tps-dark mb-4">The Return on Fidelity</h4>
-                        <ul class="text-sm text-gray-700 space-y-3">
-                            <li class="flex items-start">
-                                <span class="text-tps-green mr-2">+</span>
-                                <span><strong>Sustained outcomes</strong> — The program keeps working as it scales</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-tps-green mr-2">+</span>
-                                <span><strong>NFP proves scale reduces cost</strong> — $8,860 at scale vs. $12,398 in trials</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-tps-green mr-2">+</span>
-                                <span><strong>Funder confidence</strong> — Evidence of fidelity attracts continued investment</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-tps-green mr-2">+</span>
-                                <span><strong>Staff retention</strong> — Good supervision and support reduces turnover</span>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-tps-green mr-2">+</span>
-                                <span><strong>Replication readiness</strong> — Documented fidelity enables expansion to new sites</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div style="background: #111111; padding: 2rem; border-radius: 1rem; margin: 2rem 0;">
-                    <h3 style="color: #a3c520; font-weight: 700; font-size: 1.25rem; margin-bottom: 1rem;">The Bottom Line</h3>
-                    <p style="color: rgba(255,255,255,0.9); font-size: 1.125rem; margin-bottom: 1rem;">Programs that drift lose effectiveness, then funding, then existence. Programs that maintain fidelity keep producing outcomes, attracting investment, and growing impact.</p>
-                    <p style="color: #a3c520; font-size: 1.25rem; font-weight: 700;">Fidelity isn't overhead. It's the reason the program works.</p>
-                </div>
-
-                <blockquote>
-                    "The key issue is not whether to scale up evidence-based programs but how to scale them up without losing their essence. The alternative—scaling programs that have drifted into ineffectiveness—wastes resources and betrays the people the programs were designed to serve."
-                    <footer class="text-sm text-gray-500 mt-2 not-italic">— Adapted from Horowitz et al., "Scaling Up Evidence-Based Practices"</footer>
-                </blockquote>
-
-                <!-- Key Takeaway -->
-                <div style="background: #111111; padding: 2rem; border-radius: 1rem; margin: 2rem 0;">
-                    <h3 style="color: #a3c520; font-weight: 700; font-size: 1.5rem; margin-bottom: 1rem;">Key Takeaway</h3>
-                    <p style="color: rgba(255,255,255,0.9); font-size: 1.125rem; line-height: 1.75; margin-bottom: 1.5rem;">
-                        Scaling with fidelity requires three commitments:
-                    </p>
-                    <div style="display: grid; gap: 1rem;">
-                        <div style="display: flex; align-items: center; color: #ffffff;">
-                            <span style="color: #a3c520; font-weight: 700; font-size: 1.5rem; margin-right: 1rem;">1</span>
-                            <span><strong>Define what's non-negotiable</strong> — The 8 Core Model Elements cannot bend</span>
-                        </div>
-                        <div style="display: flex; align-items: center; color: #ffffff;">
-                            <span style="color: #a3c520; font-weight: 700; font-size: 1.5rem; margin-right: 1rem;">2</span>
-                            <span><strong>Build quality assurance infrastructure</strong> — Training, supervision, data, coaching</span>
-                        </div>
-                        <div style="display: flex; align-items: center; color: #ffffff;">
-                            <span style="color: #a3c520; font-weight: 700; font-size: 1.5rem; margin-right: 1rem;">3</span>
-                            <span><strong>Monitor continuously</strong> — Watch for warning signs before outcomes collapse</span>
-                        </div>
-                    </div>
-                    <p style="color: #a3c520; font-size: 1.25rem; font-weight: 700; margin-top: 1.5rem;">
-                        The Nurse-Family Partnership proves it's possible. Empower's framework provides the blueprint.
-                    </p>
-                </div>
-
-                <!-- Sources Section -->
-                <div class="bg-gray-50 rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-gray-900 mb-4">Sources & Further Reading</h4>
-                    <ul class="text-sm text-gray-600 space-y-2">
-                        <li>Durlak, J.A. & DuPre, E.P. (2008). "Implementation Matters: A Review of Research on the Influence of Implementation on Program Outcomes." American Journal of Community Psychology.</li>
-                        <li>Fixsen, D.L. et al. (2005). "Implementation Research: A Synthesis of the Literature." University of South Florida, Louis de la Parte Florida Mental Health Institute.</li>
-                        <li>Fixsen, D.L. et al. (2009). "Core Implementation Components." Research on Social Work Practice.</li>
-                        <li>Miller, T.R. (2015). "Projected Outcomes of Nurse-Family Partnership Home Visitation During 1996-2013, USA." Prevention Science.</li>
-                        <li>Nurse-Family Partnership National Service Office (2024). "Model Elements and Fidelity Standards."</li>
-                        <li>Olds, D.L. et al. (2004). "Effects of Nurse Home-Visiting on Maternal Life Course and Child Development." Pediatrics.</li>
-                        <li>Weisz, J.R. et al. (2006). "Promoting and Protecting Youth Mental Health Through Evidence-Based Prevention and Treatment." American Psychologist.</li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <!-- On This Page TOC -->
-            <aside class="hidden xl:block">
-                <div class="toc">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
-                    <nav>
-                        <a href="#why-fail" class="toc-link active">Why Programs Fail</a>
-                        <a href="#nfp-model" class="toc-link">NFP Gold Standard</a>
-                        <a href="#fidelity-framework" class="toc-link">Fidelity Framework</a>
-                        <a href="#checklist" class="toc-link">Standards Checklist</a>
-                        <a href="#qa-infrastructure" class="toc-link">QA Infrastructure</a>
-                        <a href="#warning-signs" class="toc-link">Warning Signs</a>
-                        <a href="#cost-of-fidelity" class="toc-link">Cost of Fidelity</a>
-                    </nav>
-                </div>
-            </aside>
-            </div>
-
-            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
-                <a href="chapter-12.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
-                    ← Previous: Scaling Beyond
-                </a>
-                <a href="../index.html" class="bg-part5-research text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-empower-blue transition">
-                    Back to Overview →
-                </a>
             </div>
         </div>
 
+        <!-- Footer -->
         <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
-            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
-            <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            <div class="max-w-7xl mx-auto">
+                <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+                <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            </div>
         </footer>
+
     </main>
 
-    <div class="floating-nav">
-        <a href="chapter-12.html" title="Previous: Scaling Beyond">
+    <!-- Floating Chapter Navigation -->
+    <div class="floating-nav" id="floatingNav">
+        <a href="chapter-16.html" class="text-gray-600 hover:bg-gray-100 rounded-lg p-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
         </a>
-        <a href="../index.html" title="Back to Overview">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-            </svg>
+        <a href="../index.html" class="bg-part5-blue text-white hover:bg-empower-blue rounded-lg px-4 py-2">
+            Back to Overview
         </a>
     </div>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <a href="../index.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="chapter-4.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span>Core</span>
+        </a>
+        <a href="chapter-14.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span>Training</span>
+        </a>
+        <button onclick="openSidebar()" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span>Menu</span>
+        </button>
+    </nav>
+
+    <!-- JavaScript -->
     <script>
-        function openSidebar() {
-            document.getElementById('sidebar').classList.add('open');
-            document.getElementById('overlay').classList.add('show');
+        // Reading progress bar
+        function updateProgress() {
+            const content = document.getElementById('chapter-content');
+            const progress = document.getElementById('progress');
+            const scrolled = window.scrollY;
+            const height = content.scrollHeight - window.innerHeight;
+            const percent = Math.min(scrolled / height, 1);
+            progress.style.transform = `scaleX(${percent})`;
+
+            // Show floating nav after scrolling
+            const floatingNav = document.getElementById('floatingNav');
+            if (scrolled > 500) {
+                floatingNav.classList.add('show');
+            } else {
+                floatingNav.classList.remove('show');
+            }
         }
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
 
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
-        }
-
-        window.addEventListener('scroll', function() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('readingProgress').style.width = scrolled + '%';
-        });
-
-        // TOC Active State
+        // TOC active state
         const tocLinks = document.querySelectorAll('.toc-link');
         const sections = document.querySelectorAll('h2[id]');
+
         function updateTOC() {
             let current = '';
             sections.forEach(section => {
@@ -1301,11 +1232,36 @@
         }
         window.addEventListener('scroll', updateTOC);
 
-        document.addEventListener('keydown', function(e) {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.key === 'ArrowLeft') window.location.href = 'chapter-12.html';
-            else if (e.key === 'ArrowRight') window.location.href = '../index.html';
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebar();
+            if (e.key === 'ArrowLeft') window.location.href = 'chapter-16.html';
+            if (e.key === 'ArrowRight') window.location.href = '../index.html';
+        });
+
+        // Swipe to close sidebar on mobile
+        let touchStartX = 0;
+        document.getElementById('sidebar').addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        document.getElementById('sidebar').addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) closeSidebar();
         });
     </script>
+
 </body>
 </html>

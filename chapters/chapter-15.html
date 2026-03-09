@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 15: The Evidence Base | The Empower Playbook</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind (for utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -16,9 +20,9 @@
                         'tps-green': '#a3c520',
                         'tps-dark': '#111111',
                         'empower-blue': '#1e3a5f',
-                        'part3-blue': '#569db7',
-                        'part4-grey': '#545454',
-                        'part5-research': '#2d5a7b',
+                        'part3-blue': '#46729d',
+                        'part4-grey': '#2a4571',
+                        'part5-blue': '#545454',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -27,302 +31,165 @@
             }
         }
     </script>
-    <style>
-        html { scroll-behavior: smooth; }
-        body { background: #fafafa; }
 
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: #1e3a5f;
-            color: white;
-            padding: 8px 16px;
-            z-index: 100;
-            transition: top 0.3s;
-        }
-        .skip-link:focus { top: 0; }
-
-        .reading-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #2d5a7b, #4a7c9b);
-            z-index: 100;
-            transition: width 0.1s ease-out;
-        }
-
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: #fff;
-            border-right: 1px solid #eee;
-            overflow-y: auto;
-            z-index: 40;
-        }
-        .sidebar::-webkit-scrollbar { width: 3px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
-
-        .main-content { margin-left: 280px; }
-
-        .nav-section { padding: 4px 12px; }
-        .nav-section-title {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #999;
-            padding: 12px 12px 6px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #555;
-            transition: all 0.15s;
-            margin-bottom: 1px;
-        }
-        .nav-item:hover { background: #f5f5f5; color: #111; }
-        .nav-item.active { background: #f3f4f6; color: #545454; font-weight: 500; }
-        .nav-item .num {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .prose h2 {
-            font-size: 1.625rem;
-            font-weight: 700;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            color: #1e3a5f;
-            letter-spacing: -0.025em;
-        }
-        .prose h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 0.75rem;
-            color: #333;
-        }
-        .prose p {
-            margin-bottom: 1.25rem;
-            line-height: 1.8;
-            color: #374151;
-        }
-        .prose ul, .prose ol {
-            margin-bottom: 1.25rem;
-            margin-left: 1.5rem;
-        }
-        .prose ul { list-style-type: disc; }
-        .prose li {
-            margin-bottom: 0.625rem;
-            line-height: 1.7;
-            color: #374151;
-        }
-        .prose blockquote {
-            border-left: 4px solid #2d5a7b;
-            padding: 1rem 1.25rem;
-            font-style: italic;
-            color: #4b5563;
-            margin: 1.75rem 0;
-            background: linear-gradient(to right, #f3f4f6, transparent);
-            border-radius: 0 8px 8px 0;
-        }
-        .prose strong { color: #111827; }
-        .prose hr {
-            border: none;
-            border-top: 1px solid #e5e5e5;
-            margin: 2.5rem 0;
-        }
-
-        .prose-lead {
-            font-size: 1.25rem;
-            line-height: 1.75;
-            color: #4b5563;
-        }
-
-        .stat-card {
-            background: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.2s;
-        }
-        .stat-card:hover {
-            border-color: #2d5a7b;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-
-        .evidence-section {
-            background: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 16px;
-            overflow: hidden;
-            margin: 2rem 0;
-        }
-
-        .source-link {
-            color: #2d5a7b;
-            text-decoration: underline;
-            text-decoration-color: rgba(45, 90, 123, 0.3);
-            transition: all 0.2s;
-        }
-        .source-link:hover {
-            text-decoration-color: #2d5a7b;
-        }
-
-        .floating-nav {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 0.5rem;
-            z-index: 50;
-        }
-        .floating-nav a {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: white;
-            border: 1px solid #e5e5e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .floating-nav a:hover {
-            background: #2d5a7b;
-            border-color: #2d5a7b;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* TOC Styles */
-        .toc { position: sticky; top: 100px; }
-        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
-        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
-        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
-        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
-
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-                z-index: 50;
-            }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .mobile-overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0,0,0,0.3);
-                z-index: 45;
-                display: none;
-            }
-            .mobile-overlay.show { display: block; }
-        }
-    </style>
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="../styles/design-system.css">
 </head>
+
 <body class="font-sans text-gray-800 antialiased">
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="reading-progress" id="readingProgress"></div>
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="progress"></div>
+
+    <!-- Skip to content (Accessibility) -->
+    <a href="#chapter-content" class="skip-link">Skip to chapter content</a>
+
+    <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <aside class="sidebar" id="sidebar">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+
+        <!-- Logo -->
         <div class="p-5 border-b border-gray-100">
-            <a href="../index.html" class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
-                    <span class="text-tps-green font-bold text-sm">E</span>
+            <a href="../index.html" class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-tps-dark to-gray-800 rounded-xl flex items-center justify-center shadow-lg">
+                    <span class="text-tps-green font-bold text-lg">E</span>
                 </div>
                 <div>
-                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <h1 class="font-bold text-gray-900 text-sm">Empower Playbook</h1>
                     <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
                 </div>
             </a>
         </div>
 
+        <!-- Navigation -->
         <nav class="py-4">
+            <!-- Overview -->
             <div class="nav-section">
                 <a href="../index.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
                     Overview
                 </a>
             </div>
 
+            <!-- Part 1: The Case -->
             <p class="nav-section-title">Part 1 — The Case</p>
             <div class="nav-section">
-                <a href="chapter-1.html" class="nav-item"><span class="num bg-empower-blue text-white">1</span>Why Rural Needs Different</a>
-                <a href="chapter-2.html" class="nav-item"><span class="num bg-empower-blue text-white">2</span>The Problem We're Solving</a>
-                <a href="chapter-3.html" class="nav-item"><span class="num bg-empower-blue text-white">3</span>The Proof</a>
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num part1">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num part1">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num part1">3</span>
+                    The Proof
+                </a>
             </div>
 
+            <!-- Part 2: The Method -->
             <p class="nav-section-title">Part 2 — The Method</p>
             <div class="nav-section">
-                <a href="chapter-4.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">4</span>Four Non-Negotiables</a>
-                <a href="chapter-5.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">5</span>Adaptable Components</a>
-                <a href="chapter-6.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">6</span>Certified Employer Program</a>
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num part2">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num part2">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num part2">6</span>
+                    Certified Employer Program
+                </a>
             </div>
 
+            <!-- Part 3: Implementation -->
             <p class="nav-section-title">Part 3 — Implementation</p>
             <div class="nav-section">
-                <a href="chapter-7.html" class="nav-item"><span class="num bg-part3-blue text-white">7</span>The Phased Approach</a>
-                <a href="chapter-8.html" class="nav-item"><span class="num bg-part3-blue text-white">8</span>Building Your Team</a>
-                <a href="chapter-9.html" class="nav-item"><span class="num bg-red-700 text-white">9</span>What Kills Programs</a>
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num part3">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num part3">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num warning">9</span>
+                    What Kills Programs
+                </a>
             </div>
 
+            <!-- Part 4: Scale -->
             <p class="nav-section-title">Part 4 — Scale</p>
             <div class="nav-section">
-                <a href="chapter-10.html" class="nav-item"><span class="num bg-part4-grey text-white">10</span>Funding</a>
-                <a href="chapter-11.html" class="nav-item"><span class="num bg-part4-grey text-white">11</span>Adapting the Model</a>
-                <a href="chapter-12.html" class="nav-item"><span class="num bg-part4-grey text-white">12</span>Scaling Beyond</a>
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num part4">10</span>
+                    Funding & Unit Economics
+                </a>
+                <a href="chapter-11.html" class="nav-item">
+                    <span class="num part4">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num part4">12</span>
+                    Scaling Beyond
+                </a>
             </div>
 
+            <!-- Part 5: Research -->
             <p class="nav-section-title">Part 5 — Research</p>
             <div class="nav-section">
-                <a href="chapter-15.html" class="nav-item active"><span class="num bg-part4-grey text-white">15</span>The Evidence Base</a>
-                <a href="chapter-16.html" class="nav-item"><span class="num bg-part4-grey text-white">16</span>Competitive Landscape</a>
-                <a href="chapter-17.html" class="nav-item"><span class="num bg-part4-grey text-white">17</span>Scaling with Fidelity</a>
+                <a href="chapter-15.html" class="nav-item active">
+                    <span class="num part5">15</span>
+                    The Evidence Base
+                </a>
+                <a href="chapter-16.html" class="nav-item">
+                    <span class="num part5">16</span>
+                    Competitive Landscape
+                </a>
+                <a href="chapter-17.html" class="nav-item">
+                    <span class="num part5">17</span>
+                    Scaling with Fidelity
+                </a>
             </div>
 
+            <!-- Training Academy -->
             <p class="nav-section-title">Training Academy</p>
             <div class="nav-section">
                 <a href="chapter-14.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
                     Poverty IQ for Employers
                 </a>
                 <a href="chapter-13.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                     Templates & Tools
                 </a>
             </div>
+
+            <!-- Tools -->
+            <p class="nav-section-title">Tools</p>
+            <div class="nav-section">
+                <a href="../tools/employer-roi-calculator.html" class="nav-item">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    Employer ROI Calculator
+                </a>
+            </div>
         </nav>
 
+        <!-- Footer -->
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
             <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -333,989 +200,1053 @@
         </div>
     </aside>
 
-    <main class="main-content min-h-screen" id="main-content">
-        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
-            <div class="flex items-center justify-between">
+    <!-- MAIN CONTENT -->
+    <main class="main-content min-h-screen" id="chapter-content">
+
+        <!-- Top Bar (sticky) -->
+        <header class="top-header">
+            <div class="flex items-center justify-between max-w-7xl mx-auto">
                 <div class="flex items-center space-x-3">
-                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()" aria-label="Open navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
                     <span class="text-sm text-gray-400">Part 5 — Research</span>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs bg-part5-research/20 text-part5-research px-2 py-1 rounded font-medium">EVIDENCE-BASED</span>
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs text-gray-400 hide-mobile">25 min read</span>
+                    <span class="badge badge-blue">RESEARCH COMPENDIUM</span>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Header -->
-        <div class="bg-gradient-to-br from-[#2d5a7b] to-[#1e3a5f] text-white px-6 lg:px-12 py-12">
+        <!-- Chapter Header (Hero) - Part 5 Blue -->
+        <div class="chapter-header part5 text-white px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
                 <div class="flex items-center gap-3 mb-4">
-                    <p class="text-white/80 text-sm font-medium">Chapter 15</p>
-                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">25 min read</span>
-                    <span class="text-xs bg-tps-green text-tps-dark px-2 py-1 rounded-full font-semibold">RESEARCH COMPENDIUM</span>
+                    <span class="badge badge-white">Chapter 15</span>
+                    <span class="badge badge-green flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        25 min read
+                    </span>
                 </div>
-                <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight mb-4">
                     The Evidence Base
                 </h1>
-                <p class="text-white/90 text-xl max-w-2xl">
-                    A comprehensive compilation of research evidence supporting the Empower model—from benefits cliff data to navigator outcomes to policy innovations that work.
+                <p class="text-lg text-white/80 max-w-2xl">
+                    The research behind every piece of the Empower model. Benefits cliff data. Navigator outcomes. Policy innovations that actually move the needle.
                 </p>
             </div>
         </div>
 
+        <!-- Chapter Content -->
         <div class="px-6 lg:px-12 py-10">
-            <div class="max-w-7xl mx-auto content-with-toc">
-            <div class="prose">
+            <div class="max-w-7xl mx-auto">
 
-                <p class="prose-lead mb-8">
-                    The Empower model isn't built on intuition—it's built on evidence. This chapter compiles the research foundation for every core component, providing citations and data you can use when advocating for implementation, seeking funding, or training staff.
-                </p>
+                <!-- Content with TOC sidebar -->
+                <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
 
-                <!-- Why Evidence Matters Box -->
-                <div class="bg-black p-8 rounded-2xl mb-12 not-prose">
-                    <h3 style="color: #a3c520;" class="font-bold text-xl mb-4">Why This Chapter Exists</h3>
-                    <p style="color: rgba(255,255,255,0.9);" class="text-lg mb-6">When funders ask "Where's the evidence?" or skeptics say "This won't work here," you need data. This chapter is your ammunition.</p>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                        <div style="border: 2px solid rgba(45, 90, 123, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">50+</p>
-                            <p style="color: #ffffff;" class="font-medium text-sm">Research Citations</p>
-                        </div>
-                        <div style="border: 2px solid rgba(45, 90, 123, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">7</p>
-                            <p style="color: #ffffff;" class="font-medium text-sm">Evidence Categories</p>
-                        </div>
-                        <div style="border: 2px solid rgba(45, 90, 123, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">20+</p>
-                            <p style="color: #ffffff;" class="font-medium text-sm">Years of Research</p>
-                        </div>
-                        <div style="border: 2px solid rgba(45, 90, 123, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">6</p>
-                            <p style="color: #ffffff;" class="font-medium text-sm">Policy Innovations</p>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Main Prose Content -->
+                    <div class="prose">
 
-                <hr>
+                        <!-- Lead paragraph -->
+                        <p class="text-xl text-gray-500 mb-10 leading-relaxed">
+                            Empower isn't built on good intentions. It's built on evidence. This chapter gives you the research behind every core component -- the citations and data you need when talking to funders, training staff, or making the case for implementation.
+                        </p>
 
-                <h2 id="benefits-cliff">15.1 Benefits Cliff Research</h2>
-
-                <p>
-                    The benefits cliff is not a theoretical concept—it's a documented, measurable phenomenon affecting millions of American families. The research below quantifies the scale of the problem and demonstrates why cliff navigation is non-negotiable.
-                </p>
-
-                <!-- Key Stats Grid -->
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="stat-card p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #dc2626;" class="mb-2">3+ Million</p>
-                        <p class="text-gray-600 font-medium mb-2">Households face benefits cliffs</p>
-                        <p class="text-sm text-gray-500">The Atlanta Fed's CLIFF Dashboard estimates over 3 million American households face significant benefits cliffs that create disincentives to work or advance.</p>
-                        <a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families/policy-rules-database" target="_blank" class="source-link text-sm mt-3 inline-block">Source: Atlanta Fed CLIFF Dashboard</a>
-                    </div>
-
-                    <div class="stat-card p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #ea580c;" class="mb-2">51%</p>
-                        <p class="text-gray-600 font-medium mb-2">Median effective marginal tax rate</p>
-                        <p class="text-sm text-gray-500">For families with children receiving multiple benefits, research shows a median effective marginal tax rate of 51%—meaning families lose 51 cents of every additional dollar earned.</p>
-                        <a href="https://www.nber.org/papers/w27164" target="_blank" class="source-link text-sm mt-3 inline-block">Source: NBER Working Paper</a>
-                    </div>
-
-                    <div class="stat-card p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #9333ea;" class="mb-2">95%+</p>
-                        <p class="text-gray-600 font-medium mb-2">Marginal tax rate when Medicaid is lost</p>
-                        <p class="text-sm text-gray-500">The Medicaid cliff is particularly severe. When families cross income thresholds and lose coverage, the effective marginal tax rate can exceed 95%, making advancement economically devastating.</p>
-                        <a href="https://www.kff.org/medicaid/issue-brief/medicaid-cliff-effect/" target="_blank" class="source-link text-sm mt-3 inline-block">Source: Kaiser Family Foundation</a>
-                    </div>
-
-                    <div class="stat-card p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #2563eb;" class="mb-2">$5,991 - $6,000+</p>
-                        <p class="text-gray-600 font-medium mb-2">Childcare subsidy loss at cliff</p>
-                        <p class="text-sm text-gray-500">Childcare subsidies represent one of the steepest cliffs. Families can lose $6,000+ in annual childcare support with a small income increase, making work advancement economically irrational.</p>
-                        <a href="https://www.clasp.org/publications/report/brief/child-care-cliff-effect/" target="_blank" class="source-link text-sm mt-3 inline-block">Source: CLASP Research</a>
-                    </div>
-                </div>
-
-                <!-- Employer Impact -->
-                <div class="bg-gradient-to-r from-part5-research/10 to-empower-blue/10 border-2 border-part5-research/30 rounded-2xl p-6 my-8 not-prose">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-14 h-14 bg-part5-research rounded-xl flex items-center justify-center flex-shrink-0">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-part5-research text-lg mb-2">Employer-Reported Impact</h3>
-                            <p style="font-size: 1.875rem; font-weight: 800; color: #111827;" class="mb-2">1 in 3 businesses</p>
-                            <p class="text-gray-600 mb-3">report employees declining promotions, raises, or additional hours due to benefits cliff concerns.</p>
-                            <p class="text-sm text-gray-500">This finding from employer surveys demonstrates that benefits cliffs don't just affect families—they constrain business operations and workforce development.</p>
-                            <a href="https://www.atlantafed.org/community-development/publications/partners-update/2021/06/employer-perspectives-on-workforce-challenges" target="_blank" class="source-link text-sm mt-2 inline-block">Source: Atlanta Fed Employer Survey</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CLIFF Coaching Results -->
-                <div class="bg-tps-green/10 border-2 border-tps-green rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-tps-dark text-lg mb-4">CLIFF Coaching Effectiveness</h4>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <p style="font-size: 2.5rem; font-weight: 800; color: #111111;" class="mb-2">90%</p>
-                            <p class="text-gray-700 font-medium">Made action plans with CLIFF coaching</p>
-                            <p class="text-sm text-gray-600 mt-2">In the Atlanta Fed's pilot program, 90% of participants who received benefits cliff coaching developed concrete action plans for navigating their cliff.</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-4">
-                            <h5 class="font-semibold text-gray-900 mb-3">Key Tool: Atlanta Fed CLIFF Dashboard</h5>
-                            <p class="text-sm text-gray-600 mb-3">The Federal Reserve Bank of Atlanta developed the Career Ladder Identifier and Financial Forecaster (CLIFF) tools to help families and case managers visualize benefits cliffs.</p>
-                            <a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families/cliff-tool" target="_blank" class="inline-flex items-center text-sm font-medium text-part5-research hover:underline">
-                                Access CLIFF Dashboard
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h2 id="navigator-model">15.2 Navigator Model Evidence</h2>
-
-                <p>
-                    The navigator model isn't just a nice idea—it's evidence-based practice with documented outcomes. Research from EMPath and other intensive coaching programs demonstrates what works and what doesn't in relationship-based support.
-                </p>
-
-                <!-- Caseload Ratios -->
-                <div class="evidence-section not-prose">
-                    <div class="bg-part5-research text-white p-5">
-                        <h3 class="font-bold text-xl">Recommended Caseload Ratios</h3>
-                    </div>
-                    <div class="p-6">
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div class="bg-gray-50 p-5 rounded-xl">
-                                <p style="font-size: 2.25rem; font-weight: 800; color: #2d5a7b;" class="mb-2">1:25</p>
-                                <p class="font-semibold text-gray-900 mb-2">Ratio for intensive work</p>
-                                <p class="text-sm text-gray-600">EMPath research indicates that navigators working with ALICE populations need caseloads of approximately 1:25 to provide the intensive support required for economic mobility.</p>
-                            </div>
-                            <div class="bg-gray-50 p-5 rounded-xl">
-                                <p style="font-size: 2.25rem; font-weight: 800; color: #2d5a7b;" class="mb-2">1:15</p>
-                                <p class="font-semibold text-gray-900 mb-2">Or lower for complex cases</p>
-                                <p class="text-sm text-gray-600">For populations with multiple barriers (recovery, re-entry, complex trauma), research suggests ratios of 1:15 or lower for effective support.</p>
-                            </div>
-                        </div>
-                        <a href="https://www.empathways.org/research-policy/research-publications" target="_blank" class="source-link text-sm">Source: EMPath Research Publications</a>
-                    </div>
-                </div>
-
-                <!-- Relationship Duration -->
-                <div class="bg-red-50 border-l-4 border-red-500 p-6 my-8 not-prose">
-                    <h4 class="font-bold text-red-800 text-lg mb-3">Critical Finding: Relationship Duration</h4>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <p style="font-size: 1.875rem; font-weight: 800; color: #b91c1c;" class="mb-2">&lt; 6 Months</p>
-                            <p class="text-gray-700 font-medium">Produces negative outcomes</p>
-                            <p class="text-sm text-gray-600 mt-2">Research shows that relationships of less than 6 months can actually produce worse outcomes than no intervention—the disruption of ending the relationship before progress is made can be harmful.</p>
-                        </div>
-                        <div>
-                            <p style="font-size: 1.875rem; font-weight: 800; color: #15803d;" class="mb-2">18-24 Months</p>
-                            <p class="text-gray-700 font-medium">Minimum for mobility impact</p>
-                            <p class="text-sm text-gray-600 mt-2">Sustained relationships of 18-24 months are the minimum threshold for achieving meaningful economic mobility outcomes. This is why Empower commits to long-term engagement.</p>
-                        </div>
-                    </div>
-                    <a href="https://www.empathways.org/our-work/bridge-to-self-sufficiency" target="_blank" class="source-link text-sm mt-4 inline-block">Source: EMPath Bridge to Self-Sufficiency Research</a>
-                </div>
-
-                <!-- Trust Effect -->
-                <div class="bg-black p-8 rounded-2xl my-8 not-prose">
-                    <h3 style="color: #a3c520;" class="font-bold text-xl mb-4">The Amplifying Effect of Trust</h3>
-                    <p style="color: rgba(255,255,255,0.9);" class="text-lg mb-6">
-                        Research documents that trust-based relationships between navigators and participants produce an "amplifying effect"—every dollar invested in services produces better outcomes when delivered through trusted relationships versus transactional service delivery.
-                    </p>
-                    <div class="bg-white/10 p-4 rounded-xl">
-                        <p style="color: #a3c520;" class="font-semibold mb-2">Why Trust Matters:</p>
-                        <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-2">
-                            <li>* Participants share more complete information about barriers</li>
-                            <li>* Follow-through on referrals increases dramatically</li>
-                            <li>* Crisis intervention happens earlier (before emergencies)</li>
-                            <li>* Goal-setting becomes more ambitious and realistic</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- EMPath Outcomes -->
-                <div class="bg-gradient-to-r from-tps-green/10 to-emerald-100 border-2 border-tps-green rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-tps-dark text-lg mb-4">EMPath Documented Outcomes</h4>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-xl p-5">
-                            <p style="font-size: 2.5rem; font-weight: 800; color: #111111;" class="mb-2">97%</p>
-                            <p class="font-semibold text-gray-900 mb-2">Employment at exit</p>
-                            <p class="text-sm text-gray-600">97% of EMPath participants who complete the program are employed at exit—demonstrating that intensive navigation produces employment outcomes.</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-5">
-                            <p style="font-size: 2.5rem; font-weight: 800; color: #111111;" class="mb-2">$32,548</p>
-                            <p class="font-semibold text-gray-900 mb-2">Average income at exit</p>
-                            <p class="text-sm text-gray-600">Participants achieve average annual income of $32,548 at program exit—above the ALICE threshold for most areas.</p>
-                        </div>
-                    </div>
-                    <a href="https://www.empathways.org/research-policy/what-works" target="_blank" class="source-link text-sm mt-4 inline-block">Source: EMPath "What Works" Research</a>
-                </div>
-
-                <hr>
-
-                <h2 id="rural-poverty">15.3 Rural Poverty Data</h2>
-
-                <p>
-                    Rural communities face distinct challenges that urban-designed programs often fail to address. The evidence below documents why the Empower model's rural-first design is essential.
-                </p>
-
-                <!-- Rural vs Urban Comparison -->
-                <div class="evidence-section not-prose">
-                    <div class="bg-amber-600 text-white p-5">
-                        <h3 class="font-bold text-xl">Rural vs. Urban: The Data Gap</h3>
-                    </div>
-                    <div class="p-6">
-                        <div class="space-y-4 mb-6">
-                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Households Below ALICE Threshold</p>
-                                    <p class="text-sm text-gray-500">Families earning below survival budget</p>
+                        <!-- Why Evidence Matters Box -->
+                        <div class="callout callout-dark">
+                            <h4 class="font-bold mb-4">Why This Chapter Exists</h4>
+                            <p class="text-lg mb-6">Funders ask "Where's the evidence?" Skeptics say "This won't work here." This chapter gives you the data to answer both.</p>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div class="p-4 rounded-xl border-2 border-part5-blue/40">
+                                    <p class="text-tps-green text-4xl font-extrabold mb-2">50+</p>
+                                    <p class="text-white font-medium text-sm">Research Citations</p>
                                 </div>
-                                <div class="flex items-center gap-4">
-                                    <div class="text-center">
-                                        <p style="font-size: 1.5rem; font-weight: 800; color: #d97706;">52%</p>
-                                        <p class="text-xs text-gray-500">Rural</p>
-                                    </div>
-                                    <div class="text-gray-300">vs.</div>
-                                    <div class="text-center">
-                                        <p style="font-size: 1.5rem; font-weight: 800; color: #9ca3af;">47%</p>
-                                        <p class="text-xs text-gray-500">Urban</p>
+                                <div class="p-4 rounded-xl border-2 border-part5-blue/40">
+                                    <p class="text-tps-green text-4xl font-extrabold mb-2">7</p>
+                                    <p class="text-white font-medium text-sm">Evidence Categories</p>
+                                </div>
+                                <div class="p-4 rounded-xl border-2 border-part5-blue/40">
+                                    <p class="text-tps-green text-4xl font-extrabold mb-2">20+</p>
+                                    <p class="text-white font-medium text-sm">Years of Research</p>
+                                </div>
+                                <div class="p-4 rounded-xl border-2 border-part5-blue/40">
+                                    <p class="text-tps-green text-4xl font-extrabold mb-2">6</p>
+                                    <p class="text-white font-medium text-sm">Policy Innovations</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="benefits-cliff">15.1 Benefits Cliff Research</h2>
+
+                        <p>
+                            The benefits cliff is real, measurable, and affecting millions of families. Here's how big the problem is -- and why cliff navigation isn't optional.
+                        </p>
+
+                        <!-- Key Stats Grid -->
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+                                        </svg>
                                     </div>
                                 </div>
+                                <p class="text-4xl font-extrabold text-red-600 mb-2">3+ Million</p>
+                                <p class="text-gray-600 font-medium mb-2">Households face benefits cliffs</p>
+                                <p class="text-sm text-gray-500">The Atlanta Fed's CLIFF Dashboard shows over 3 million American families face benefits cliffs that punish them for earning more.</p>
+                                <a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families/policy-rules-database" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: Atlanta Fed CLIFF Dashboard</a>
                             </div>
 
-                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Working Poor Rate</p>
-                                    <p class="text-sm text-gray-500">Employed but below poverty line</p>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <div class="text-center">
-                                        <p style="font-size: 1.5rem; font-weight: 800; color: #d97706;">9.8%</p>
-                                        <p class="text-xs text-gray-500">Rural</p>
-                                    </div>
-                                    <div class="text-gray-300">vs.</div>
-                                    <div class="text-center">
-                                        <p style="font-size: 1.5rem; font-weight: 800; color: #9ca3af;">6.8%</p>
-                                        <p class="text-xs text-gray-500">Urban</p>
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
                                     </div>
                                 </div>
+                                <p class="text-4xl font-extrabold text-orange-600 mb-2">51%</p>
+                                <p class="text-gray-600 font-medium mb-2">Median effective marginal tax rate</p>
+                                <p class="text-sm text-gray-500">Families with children on multiple benefits lose 51 cents of every additional dollar earned. The system literally taxes them for trying to get ahead.</p>
+                                <a href="https://www.nber.org/papers/w27164" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: NBER Working Paper</a>
                             </div>
 
-                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Broadband Access</p>
-                                    <p class="text-sm text-gray-500">Access to high-speed internet</p>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <div class="text-center">
-                                        <p style="font-size: 1.5rem; font-weight: 800; color: #d97706;">65%</p>
-                                        <p class="text-xs text-gray-500">Rural</p>
-                                    </div>
-                                    <div class="text-gray-300">vs.</div>
-                                    <div class="text-center">
-                                        <p style="font-size: 1.5rem; font-weight: 800; color: #9ca3af;">97%</p>
-                                        <p class="text-xs text-gray-500">Urban</p>
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                        </svg>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <a href="https://www.unitedforalice.org/research-publications" target="_blank" class="source-link text-sm">Source: United For ALICE Research</a>
-                    </div>
-                </div>
-
-                <!-- Infrastructure Gaps -->
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="stat-card p-6">
-                        <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center mb-4">
-                            <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                            </svg>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #e11d48;" class="mb-2">3 in 5</p>
-                        <p class="text-gray-600 font-medium mb-2">Rural areas are childcare deserts</p>
-                        <p class="text-sm text-gray-500">Rural areas are significantly more likely to be childcare deserts, with 3 in 5 rural areas having insufficient licensed childcare capacity for their population.</p>
-                        <a href="https://www.americanprogress.org/article/americas-child-care-deserts-2018/" target="_blank" class="source-link text-sm mt-3 inline-block">Source: Center for American Progress</a>
-                    </div>
-
-                    <div class="stat-card p-6">
-                        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
-                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-                            </svg>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #4f46e5;" class="mb-2">60 Million</p>
-                        <p class="text-gray-600 font-medium mb-2">Lack adequate transportation</p>
-                        <p class="text-sm text-gray-500">Over 60 million Americans—disproportionately in rural areas—lack adequate transportation, creating barriers to employment, healthcare, and services.</p>
-                        <a href="https://www.transportation.gov/rural" target="_blank" class="source-link text-sm mt-3 inline-block">Source: U.S. DOT Rural Transportation</a>
-                    </div>
-                </div>
-
-                <!-- Why Urban Programs Fail -->
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-6 my-8 not-prose">
-                    <h4 class="font-bold text-amber-800 text-lg mb-3">Why Urban-Designed Programs Fail in Rural Contexts</h4>
-                    <ul class="text-gray-700 space-y-2">
-                        <li><strong>Transit assumptions:</strong> Urban programs assume public transportation exists; rural workers need vehicle solutions</li>
-                        <li><strong>Service density:</strong> Urban programs assume services are nearby; rural families travel 30+ miles for basics</li>
-                        <li><strong>Anonymity assumptions:</strong> Urban programs assume client privacy; in rural areas, everyone knows everyone</li>
-                        <li><strong>Employer diversity:</strong> Urban programs assume job options; rural areas may have 1-2 major employers</li>
-                        <li><strong>Technology access:</strong> Urban programs assume internet; rural broadband gaps remain significant</li>
-                    </ul>
-                </div>
-
-                <hr>
-
-                <h2 id="two-generation">15.4 Two-Generation Evidence</h2>
-
-                <p>
-                    The two-generation approach—addressing child and parent needs simultaneously—is backed by substantial research demonstrating that family-level intervention produces better outcomes than serving individuals in isolation.
-                </p>
-
-                <!-- CAP Tulsa Results -->
-                <div class="evidence-section not-prose">
-                    <div class="bg-gradient-to-r from-pink-500 to-rose-600 text-white p-5">
-                        <h3 class="font-bold text-xl">CAP Tulsa CareerAdvance</h3>
-                        <p class="text-white/80 text-sm mt-1">Landmark two-generation study results</p>
-                    </div>
-                    <div class="p-6">
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div class="bg-pink-50 p-5 rounded-xl">
-                                <p style="font-size: 2.5rem; font-weight: 800; color: #db2777;" class="mb-2">82%</p>
-                                <p class="font-semibold text-gray-900 mb-2">Parent certification rate</p>
-                                <p class="text-sm text-gray-600">82% of parents in the CareerAdvance program earned career certifications—dramatically higher than traditional workforce programs serving similar populations.</p>
-                            </div>
-                            <div class="bg-rose-50 p-5 rounded-xl">
-                                <p style="font-size: 2.5rem; font-weight: 800; color: #e11d48;" class="mb-2">$3,000</p>
-                                <p class="font-semibold text-gray-900 mb-2">Income increase = 17% child earnings boost</p>
-                                <p class="text-sm text-gray-600">Research shows that a $3,000 increase in parent income during childhood correlates with a 17% increase in the child's adult earnings.</p>
-                            </div>
-                        </div>
-                        <a href="https://www.captulsa.org/careeradvance" target="_blank" class="source-link text-sm">Source: CAP Tulsa CareerAdvance Research</a>
-                    </div>
-                </div>
-
-                <!-- Community Schools Evidence -->
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-2xl my-8 not-prose">
-                    <h4 class="font-bold text-xl mb-4">Community Schools Research</h4>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white/10 p-5 rounded-xl">
-                            <p style="font-size: 2.25rem; font-weight: 800; color: #ffffff;" class="mb-2">$15</p>
-                            <p class="text-blue-100 font-medium mb-2">Return per $1 spent</p>
-                            <p class="text-blue-200 text-sm">Community schools—which wrap family services around schools—produce $15 in economic returns for every $1 invested.</p>
-                        </div>
-                        <div class="bg-white/10 p-5 rounded-xl">
-                            <p style="font-size: 2.25rem; font-weight: 800; color: #ffffff;" class="mb-2">143</p>
-                            <p class="text-blue-100 font-medium mb-2">Studies showing improvement</p>
-                            <p class="text-blue-200 text-sm">A meta-analysis found 143 studies demonstrating improvement in student outcomes when community school models are implemented.</p>
-                        </div>
-                    </div>
-                    <a href="https://learningpolicyinstitute.org/product/community-schools-effective-school-improvement-brief" target="_blank" class="text-blue-200 hover:text-white text-sm mt-4 inline-block">Source: Learning Policy Institute</a>
-                </div>
-
-                <!-- Family Stability Chain -->
-                <div class="bg-tps-green/10 border-2 border-tps-green rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-tps-dark text-lg mb-4">The Family Stability Chain</h4>
-                    <p class="text-gray-600 mb-4">Research documents a clear causal chain connecting family economic stability to child outcomes:</p>
-                    <div class="flex flex-wrap items-center justify-center gap-2 text-sm font-medium">
-                        <span class="bg-tps-green text-tps-dark px-4 py-2 rounded-full">Family Stability</span>
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                        <span class="bg-tps-green/80 text-tps-dark px-4 py-2 rounded-full">Student Attendance</span>
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                        <span class="bg-tps-green/60 text-tps-dark px-4 py-2 rounded-full">Academic Performance</span>
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                        <span class="bg-empower-blue text-white px-4 py-2 rounded-full">Graduation</span>
-                    </div>
-                    <p class="text-sm text-gray-500 mt-4 text-center">When you address family economic barriers, you address the root cause of student disengagement.</p>
-                </div>
-
-                <hr>
-
-                <h2 id="employer-roi">15.5 Employer ROI Research</h2>
-
-                <p>
-                    The business case for addressing employee economic instability is clear. Research documents substantial costs from financial stress and significant returns from employer-supported interventions.
-                </p>
-
-                <!-- Cost of Financial Stress -->
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="stat-card p-6 border-red-200">
-                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
-                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #dc2626;" class="mb-2">$250 Billion</p>
-                        <p class="text-gray-600 font-medium mb-2">Lost productivity from financial stress</p>
-                        <p class="text-sm text-gray-500">Employee financial stress costs U.S. employers an estimated $250 billion annually in lost productivity, including absenteeism, presenteeism, and turnover.</p>
-                        <a href="https://www.pwc.com/us/en/services/consulting/workforce-of-the-future/library/employee-financial-wellness-survey.html" target="_blank" class="source-link text-sm mt-3 inline-block">Source: PwC Financial Wellness Survey</a>
-                    </div>
-
-                    <div class="stat-card p-6 border-orange-200">
-                        <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
-                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                            </svg>
-                        </div>
-                        <p style="font-size: 2.25rem; font-weight: 800; color: #ea580c;" class="mb-2">2.2x</p>
-                        <p class="text-gray-600 font-medium mb-2">Higher turnover among stressed employees</p>
-                        <p class="text-sm text-gray-500">Employees experiencing financial stress are 2.2 times more likely to look for a new job than their financially stable counterparts.</p>
-                        <a href="https://www.shrm.org/hr-today/trends-and-forecasting/research-and-surveys" target="_blank" class="source-link text-sm mt-3 inline-block">Source: SHRM Research</a>
-                    </div>
-                </div>
-
-                <!-- Intervention Returns -->
-                <div class="evidence-section not-prose">
-                    <div class="bg-tps-green text-tps-dark p-5">
-                        <h3 class="font-bold text-xl">Returns on Employer Interventions</h3>
-                    </div>
-                    <div class="p-6">
-                        <div class="space-y-4 mb-6">
-                            <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Financial Wellness Programs</p>
-                                    <p class="text-sm text-gray-500">Turnover reduction from wellness programs</p>
-                                </div>
-                                <p style="font-size: 1.875rem; font-weight: 800; color: #16a34a;">25-31%</p>
+                                <p class="text-4xl font-extrabold text-purple-600 mb-2">95%+</p>
+                                <p class="text-gray-600 font-medium mb-2">Marginal tax rate when Medicaid is lost</p>
+                                <p class="text-sm text-gray-500">The Medicaid cliff is the worst. When families cross income thresholds and lose coverage, they keep just 5 cents of every new dollar. Getting a raise becomes economic devastation.</p>
+                                <a href="https://www.kff.org/medicaid/issue-brief/medicaid-cliff-effect/" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: Kaiser Family Foundation</a>
                             </div>
 
-                            <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Average Replacement Cost</p>
-                                    <p class="text-sm text-gray-500">Cost to replace hourly employee</p>
-                                </div>
-                                <p style="font-size: 1.875rem; font-weight: 800; color: #2563eb;">$15,000</p>
-                            </div>
-
-                            <div class="flex items-center justify-between p-4 bg-tps-green/20 rounded-xl">
-                                <div>
-                                    <p class="font-semibold text-gray-900">Childcare Support ROI</p>
-                                    <p class="text-sm text-gray-500">Return on employer childcare investment</p>
-                                </div>
-                                <p style="font-size: 1.875rem; font-weight: 800; color: #111111;">425%</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-600">Sources: Society for Human Resource Management, U.S. Chamber of Commerce, various employer case studies</p>
-                    </div>
-                </div>
-
-                <!-- Business Case Summary -->
-                <div class="bg-black p-8 rounded-2xl my-8 not-prose">
-                    <h3 style="color: #a3c520;" class="font-bold text-xl mb-4">The Business Case Summary</h3>
-                    <p style="color: rgba(255,255,255,0.9);" class="text-lg mb-6">
-                        When employers invest in addressing employee financial instability—through benefits cliff navigation, emergency support funds, or childcare assistance—they see measurable returns:
-                    </p>
-                    <div class="grid md:grid-cols-3 gap-4">
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl text-center">
-                            <p style="color: #a3c520; font-size: 1.875rem; font-weight: 800;" class="mb-2">Lower Turnover</p>
-                            <p style="color: #ffffff;" class="text-sm">Reduced recruitment and training costs</p>
-                        </div>
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl text-center">
-                            <p style="color: #a3c520; font-size: 1.875rem; font-weight: 800;" class="mb-2">Higher Productivity</p>
-                            <p style="color: #ffffff;" class="text-sm">Less presenteeism and absenteeism</p>
-                        </div>
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl text-center">
-                            <p style="color: #a3c520; font-size: 1.875rem; font-weight: 800;" class="mb-2">Better Advancement</p>
-                            <p style="color: #ffffff;" class="text-sm">Employees accept promotions</p>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h2 id="recovery-mobility">15.6 Recovery & Economic Mobility</h2>
-
-                <p>
-                    Substance use disorder recovery and economic mobility are deeply interconnected. Research shows that addressing employment during recovery produces better outcomes—and that policy choices significantly impact recovery success rates.
-                </p>
-
-                <!-- Employment During Treatment -->
-                <div class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-6 rounded-2xl my-8 not-prose">
-                    <h4 class="font-bold text-xl mb-4">Employment & Recovery: The Evidence</h4>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white/10 p-5 rounded-xl">
-                            <h5 class="font-semibold mb-2">Employment During Treatment</h5>
-                            <p class="text-teal-100 text-sm mb-3">Research consistently shows that employment during treatment predicts better long-term recovery outcomes. Work provides structure, purpose, income, and social connection—all protective factors against relapse.</p>
-                        </div>
-                        <div class="bg-white/10 p-5 rounded-xl">
-                            <h5 class="font-semibold mb-2">IPS Model: Most Evidence-Based</h5>
-                            <p class="text-teal-100 text-sm mb-3">Individual Placement and Support (IPS) is the most evidence-based model for employment in recovery, emphasizing rapid job placement with ongoing support rather than "train then place."</p>
-                        </div>
-                    </div>
-                    <a href="https://ipsworks.org/index.php/evidence-for-ips/" target="_blank" class="text-teal-200 hover:text-white text-sm mt-4 inline-block">Source: IPS Employment Center</a>
-                </div>
-
-                <!-- Medicaid Expansion Impact -->
-                <div class="evidence-section not-prose">
-                    <div class="bg-purple-700 text-white p-5">
-                        <h3 class="font-bold text-xl">Medicaid Expansion & Substance Use Treatment</h3>
-                    </div>
-                    <div class="p-6">
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div class="bg-purple-50 p-5 rounded-xl">
-                                <p class="text-sm text-purple-700 font-semibold mb-2">Uninsured Rate for Opioid Hospitalizations</p>
-                                <div class="flex items-end gap-4">
-                                    <div>
-                                        <p style="font-size: 2.25rem; font-weight: 800; color: #9333ea;">13.4%</p>
-                                        <p class="text-xs text-gray-500">Before expansion</p>
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                        </svg>
                                     </div>
-                                    <svg class="w-6 h-6 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </div>
+                                <p class="text-4xl font-extrabold text-blue-600 mb-2">$5,991 - $6,000+</p>
+                                <p class="text-gray-600 font-medium mb-2">Childcare subsidy loss at cliff</p>
+                                <p class="text-sm text-gray-500">Childcare subsidies create one of the steepest cliffs. A small raise can wipe out $6,000+ in annual childcare support. No rational person takes that deal.</p>
+                                <a href="https://www.clasp.org/publications/report/brief/child-care-cliff-effect/" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: CLASP Research</a>
+                            </div>
+                        </div>
+
+                        <!-- Employer Impact -->
+                        <div class="callout callout-blue my-8 not-prose">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-14 h-14 bg-part5-blue rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                     </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-part5-blue text-lg mb-2">Employer-Reported Impact</h3>
+                                    <p class="text-4xl font-extrabold text-gray-900 mb-2">1 in 3 businesses</p>
+                                    <p class="text-gray-600 mb-3">report employees turning down promotions, raises, or extra hours because of benefits cliff concerns.</p>
+                                    <p class="text-sm text-gray-500">Benefits cliffs don't just trap families. They strangle businesses trying to grow their workforce.</p>
+                                    <a href="https://www.atlantafed.org/community-development/publications/partners-update/2021/06/employer-perspectives-on-workforce-challenges" target="_blank" class="text-part5-blue underline text-sm mt-2 inline-block hover:text-empower-blue">Source: Atlanta Fed Employer Survey</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CLIFF Coaching Results -->
+                        <div class="callout callout-green my-8 not-prose">
+                            <h4 class="font-bold text-tps-dark text-lg mb-4">CLIFF Coaching Effectiveness</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <p class="text-5xl font-extrabold text-tps-dark mb-2">90%</p>
+                                    <p class="text-gray-700 font-medium">Made action plans with CLIFF coaching</p>
+                                    <p class="text-sm text-gray-600 mt-2">In the Atlanta Fed's pilot, 90% of families who got benefits cliff coaching built concrete action plans. Give people the map, and they move.</p>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <h5 class="font-semibold text-gray-900 mb-3">Key Tool: Atlanta Fed CLIFF Dashboard</h5>
+                                    <p class="text-sm text-gray-600 mb-3">The Atlanta Fed built the Career Ladder Identifier and Financial Forecaster (CLIFF) tools so families and navigators can see exactly where the cliffs are.</p>
+                                    <a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families/cliff-tool" target="_blank" class="inline-flex items-center text-sm font-medium text-part5-blue hover:underline">
+                                        Access CLIFF Dashboard
+                                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="navigator-model">15.2 Navigator Model Evidence</h2>
+
+                        <p>
+                            The navigator model isn't a nice idea. It's evidence-based practice with documented outcomes. EMPath and other intensive coaching programs prove what works -- and what doesn't -- in relationship-based support.
+                        </p>
+
+                        <!-- Caseload Ratios -->
+                        <div class="content-card overflow-hidden not-prose my-8">
+                            <div class="bg-part5-blue text-white p-5">
+                                <h3 class="font-bold text-xl">Recommended Caseload Ratios</h3>
+                            </div>
+                            <div class="p-6">
+                                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                    <div class="bg-gray-50 p-5 rounded-xl">
+                                        <p class="text-4xl font-extrabold text-part5-blue mb-2">1:25</p>
+                                        <p class="font-semibold text-gray-900 mb-2">Ratio for intensive work</p>
+                                        <p class="text-sm text-gray-600">EMPath's research is clear: navigators working with ALICE families need caseloads around 1:25. Go higher, and the intensity that drives results disappears.</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-5 rounded-xl">
+                                        <p class="text-4xl font-extrabold text-part5-blue mb-2">1:15</p>
+                                        <p class="font-semibold text-gray-900 mb-2">Or lower for complex cases</p>
+                                        <p class="text-sm text-gray-600">For families facing multiple barriers -- recovery, re-entry, complex trauma -- the research says 1:15 or lower. More barriers demand more support.</p>
+                                    </div>
+                                </div>
+                                <a href="https://www.empathways.org/research-policy/research-publications" target="_blank" class="text-part5-blue underline text-sm hover:text-empower-blue">Source: EMPath Research Publications</a>
+                            </div>
+                        </div>
+
+                        <!-- Relationship Duration -->
+                        <div class="callout callout-warning my-8 not-prose">
+                            <h4 class="font-bold text-red-800 text-lg mb-3">Critical Finding: Relationship Duration</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <p class="text-4xl font-extrabold text-red-700 mb-2">&lt; 6 Months</p>
+                                    <p class="text-gray-700 font-medium">Produces negative outcomes</p>
+                                    <p class="text-sm text-gray-600 mt-2">Relationships under 6 months can produce worse outcomes than no intervention at all. Ending the relationship before progress takes hold does real harm.</p>
+                                </div>
+                                <div>
+                                    <p class="text-4xl font-extrabold text-green-700 mb-2">18-24 Months</p>
+                                    <p class="text-gray-700 font-medium">Minimum for mobility impact</p>
+                                    <p class="text-sm text-gray-600 mt-2">18-24 months is the minimum for real economic mobility. That's why Empower commits to staying with families for the long haul.</p>
+                                </div>
+                            </div>
+                            <a href="https://www.empathways.org/our-work/bridge-to-self-sufficiency" target="_blank" class="text-part5-blue underline text-sm mt-4 inline-block hover:text-empower-blue">Source: EMPath Bridge to Self-Sufficiency Research</a>
+                        </div>
+
+                        <!-- Trust Effect -->
+                        <div class="callout callout-dark my-8 not-prose">
+                            <h3 class="font-bold text-xl mb-4">The Amplifying Effect of Trust</h3>
+                            <p class="text-lg mb-6">
+                                Trust amplifies everything. Every dollar invested in services produces better outcomes when delivered through a trusted navigator relationship versus transactional service delivery.
+                            </p>
+                            <div class="bg-white/10 p-4 rounded-xl">
+                                <p class="text-tps-green font-semibold mb-2">Why Trust Matters:</p>
+                                <ul class="text-white/80 text-sm space-y-2">
+                                    <li>* Families share the full picture of what they're facing</li>
+                                    <li>* Follow-through on referrals jumps dramatically</li>
+                                    <li>* Crises get caught early -- before they become emergencies</li>
+                                    <li>* Goals get bigger and more realistic at the same time</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- EMPath Outcomes -->
+                        <div class="callout callout-green my-8 not-prose">
+                            <h4 class="font-bold text-tps-dark text-lg mb-4">EMPath Documented Outcomes</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-white rounded-xl p-5">
+                                    <p class="text-5xl font-extrabold text-tps-dark mb-2">97%</p>
+                                    <p class="font-semibold text-gray-900 mb-2">Employment at exit</p>
+                                    <p class="text-sm text-gray-600">97% of families who complete EMPath's program are employed at exit. Intensive navigation works.</p>
+                                </div>
+                                <div class="bg-white rounded-xl p-5">
+                                    <p class="text-5xl font-extrabold text-tps-dark mb-2">$32,548</p>
+                                    <p class="font-semibold text-gray-900 mb-2">Average income at exit</p>
+                                    <p class="text-sm text-gray-600">Families reach $32,548 average annual income at exit -- above the ALICE threshold for most areas.</p>
+                                </div>
+                            </div>
+                            <a href="https://www.empathways.org/research-policy/what-works" target="_blank" class="text-part5-blue underline text-sm mt-4 inline-block hover:text-empower-blue">Source: EMPath "What Works" Research</a>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="rural-poverty">15.3 Rural Poverty Data</h2>
+
+                        <p>
+                            Rural communities face challenges that urban-designed programs ignore. The data shows exactly why Empower's rural-first design matters.
+                        </p>
+
+                        <!-- Rural vs Urban Comparison -->
+                        <div class="content-card overflow-hidden not-prose my-8">
+                            <div class="bg-amber-600 text-white p-5">
+                                <h3 class="font-bold text-xl">Rural vs. Urban: The Data Gap</h3>
+                            </div>
+                            <div class="p-6">
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Households Below ALICE Threshold</p>
+                                            <p class="text-sm text-gray-500">Families earning below survival budget</p>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-center">
+                                                <p class="text-2xl font-extrabold text-amber-600">52%</p>
+                                                <p class="text-xs text-gray-500">Rural</p>
+                                            </div>
+                                            <div class="text-gray-300">vs.</div>
+                                            <div class="text-center">
+                                                <p class="text-2xl font-extrabold text-gray-400">47%</p>
+                                                <p class="text-xs text-gray-500">Urban</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Working Poor Rate</p>
+                                            <p class="text-sm text-gray-500">Employed but below poverty line</p>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-center">
+                                                <p class="text-2xl font-extrabold text-amber-600">9.8%</p>
+                                                <p class="text-xs text-gray-500">Rural</p>
+                                            </div>
+                                            <div class="text-gray-300">vs.</div>
+                                            <div class="text-center">
+                                                <p class="text-2xl font-extrabold text-gray-400">6.8%</p>
+                                                <p class="text-xs text-gray-500">Urban</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Broadband Access</p>
+                                            <p class="text-sm text-gray-500">Access to high-speed internet</p>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <div class="text-center">
+                                                <p class="text-2xl font-extrabold text-amber-600">65%</p>
+                                                <p class="text-xs text-gray-500">Rural</p>
+                                            </div>
+                                            <div class="text-gray-300">vs.</div>
+                                            <div class="text-center">
+                                                <p class="text-2xl font-extrabold text-gray-400">97%</p>
+                                                <p class="text-xs text-gray-500">Urban</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="https://www.unitedforalice.org/research-publications" target="_blank" class="text-part5-blue underline text-sm hover:text-empower-blue">Source: United For ALICE Research</a>
+                            </div>
+                        </div>
+
+                        <!-- Infrastructure Gaps -->
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="stat-card p-6 text-left">
+                                <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                    </svg>
+                                </div>
+                                <p class="text-4xl font-extrabold text-rose-600 mb-2">3 in 5</p>
+                                <p class="text-gray-600 font-medium mb-2">Rural areas are childcare deserts</p>
+                                <p class="text-sm text-gray-500">3 in 5 rural areas don't have enough licensed childcare for their families. You can't work if you can't find care.</p>
+                                <a href="https://www.americanprogress.org/article/americas-child-care-deserts-2018/" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: Center for American Progress</a>
+                            </div>
+
+                            <div class="stat-card p-6 text-left">
+                                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                    </svg>
+                                </div>
+                                <p class="text-4xl font-extrabold text-indigo-600 mb-2">60 Million</p>
+                                <p class="text-gray-600 font-medium mb-2">Lack adequate transportation</p>
+                                <p class="text-sm text-gray-500">60 million Americans -- disproportionately in rural areas -- can't get where they need to go. No ride means no job, no doctor, no services.</p>
+                                <a href="https://www.transportation.gov/rural" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: U.S. DOT Rural Transportation</a>
+                            </div>
+                        </div>
+
+                        <!-- Why Urban Programs Fail -->
+                        <div class="callout callout-warning my-8 not-prose">
+                            <h4 class="font-bold text-amber-800 text-lg mb-3">Why Urban-Designed Programs Fail in Rural Contexts</h4>
+                            <ul class="text-gray-700 space-y-2">
+                                <li><strong>Transit:</strong> Urban programs assume buses exist. Rural families need vehicle solutions.</li>
+                                <li><strong>Service density:</strong> Urban programs assume services are nearby. Rural families drive 30+ miles for basics.</li>
+                                <li><strong>Anonymity:</strong> Urban programs assume privacy. In rural communities, everyone knows everyone.</li>
+                                <li><strong>Employer options:</strong> Urban programs assume job choices. Rural areas may have 1-2 major employers.</li>
+                                <li><strong>Technology:</strong> Urban programs assume internet. Rural broadband gaps are still massive.</li>
+                            </ul>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="two-generation">15.4 Two-Generation Evidence</h2>
+
+                        <p>
+                            The two-generation approach -- addressing kids and parents at the same time -- produces better outcomes than serving either alone. The research is clear: families rise together or they don't rise at all.
+                        </p>
+
+                        <!-- CAP Tulsa Results -->
+                        <div class="content-card overflow-hidden not-prose my-8">
+                            <div class="bg-gradient-to-r from-pink-500 to-rose-600 text-white p-5">
+                                <h3 class="font-bold text-xl">CAP Tulsa CareerAdvance</h3>
+                                <p class="text-white/80 text-sm mt-1">Landmark two-generation study results</p>
+                            </div>
+                            <div class="p-6">
+                                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                    <div class="bg-pink-50 p-5 rounded-xl">
+                                        <p class="text-5xl font-extrabold text-pink-600 mb-2">82%</p>
+                                        <p class="font-semibold text-gray-900 mb-2">Parent certification rate</p>
+                                        <p class="text-sm text-gray-600">82% of parents in CareerAdvance earned career certifications. That blows past typical workforce program results for similar families.</p>
+                                    </div>
+                                    <div class="bg-rose-50 p-5 rounded-xl">
+                                        <p class="text-5xl font-extrabold text-rose-600 mb-2">$3,000</p>
+                                        <p class="font-semibold text-gray-900 mb-2">Income increase = 17% child earnings boost</p>
+                                        <p class="text-sm text-gray-600">A $3,000 boost in parent income during childhood correlates with 17% higher earnings for the child as an adult. Invest in the parent, change the child's trajectory.</p>
+                                    </div>
+                                </div>
+                                <a href="https://www.captulsa.org/careeradvance" target="_blank" class="text-part5-blue underline text-sm hover:text-empower-blue">Source: CAP Tulsa CareerAdvance Research</a>
+                            </div>
+                        </div>
+
+                        <!-- Community Schools Evidence -->
+                        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-2xl my-8 not-prose">
+                            <h4 class="font-bold text-xl mb-4">Community Schools Research</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-white/10 p-5 rounded-xl">
+                                    <p class="text-4xl font-extrabold text-white mb-2">$15</p>
+                                    <p class="text-blue-100 font-medium mb-2">Return per $1 spent</p>
+                                    <p class="text-blue-200 text-sm">Community schools -- wrapping family services around schools -- return $15 for every $1 invested. That's not charity. That's smart economics.</p>
+                                </div>
+                                <div class="bg-white/10 p-5 rounded-xl">
+                                    <p class="text-4xl font-extrabold text-white mb-2">143</p>
+                                    <p class="text-blue-100 font-medium mb-2">Studies showing improvement</p>
+                                    <p class="text-blue-200 text-sm">143 studies. All showing student outcomes improve when community school models wrap services around families.</p>
+                                </div>
+                            </div>
+                            <a href="https://learningpolicyinstitute.org/product/community-schools-effective-school-improvement-brief" target="_blank" class="text-blue-200 hover:text-white text-sm mt-4 inline-block">Source: Learning Policy Institute</a>
+                        </div>
+
+                        <!-- Family Stability Chain -->
+                        <div class="callout callout-green my-8 not-prose">
+                            <h4 class="font-bold text-tps-dark text-lg mb-4">The Family Stability Chain</h4>
+                            <p class="text-gray-600 mb-4">The causal chain is clear. Family economic stability drives child outcomes:</p>
+                            <div class="flex flex-wrap items-center justify-center gap-2 text-sm font-medium">
+                                <span class="bg-tps-green text-tps-dark px-4 py-2 rounded-full">Family Stability</span>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                                <span class="bg-tps-green/80 text-tps-dark px-4 py-2 rounded-full">Student Attendance</span>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                                <span class="bg-tps-green/60 text-tps-dark px-4 py-2 rounded-full">Academic Performance</span>
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                                <span class="bg-empower-blue text-white px-4 py-2 rounded-full">Graduation</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-4 text-center">Fix the family's economic barriers and you fix the root cause of student disengagement.</p>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="employer-roi">15.5 Employer ROI Research</h2>
+
+                        <p>
+                            Financial stress costs employers real money. The research proves it -- and proves that addressing it delivers serious returns.
+                        </p>
+
+                        <!-- Cost of Financial Stress -->
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="stat-card p-6 text-left border-red-200">
+                                <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <p class="text-4xl font-extrabold text-red-600 mb-2">$250 Billion</p>
+                                <p class="text-gray-600 font-medium mb-2">Lost productivity from financial stress</p>
+                                <p class="text-sm text-gray-500">Financial stress costs U.S. employers $250 billion a year. Absenteeism, presenteeism, turnover. The money is already being spent -- just on the wrong thing.</p>
+                                <a href="https://www.pwc.com/us/en/services/consulting/workforce-of-the-future/library/employee-financial-wellness-survey.html" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: PwC Financial Wellness Survey</a>
+                            </div>
+
+                            <div class="stat-card p-6 text-left border-orange-200">
+                                <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
+                                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                    </svg>
+                                </div>
+                                <p class="text-4xl font-extrabold text-orange-600 mb-2">2.2x</p>
+                                <p class="text-gray-600 font-medium mb-2">Higher turnover among stressed employees</p>
+                                <p class="text-sm text-gray-500">Financially stressed employees are 2.2x more likely to job-hunt. You're not just losing productivity -- you're losing people.</p>
+                                <a href="https://www.shrm.org/hr-today/trends-and-forecasting/research-and-surveys" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Source: SHRM Research</a>
+                            </div>
+                        </div>
+
+                        <!-- Intervention Returns -->
+                        <div class="content-card overflow-hidden not-prose my-8">
+                            <div class="bg-tps-green text-tps-dark p-5">
+                                <h3 class="font-bold text-xl">Returns on Employer Interventions</h3>
+                            </div>
+                            <div class="p-6">
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Financial Wellness Programs</p>
+                                            <p class="text-sm text-gray-500">Turnover reduction from wellness programs</p>
+                                        </div>
+                                        <p class="text-4xl font-extrabold text-green-600">25-31%</p>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Average Replacement Cost</p>
+                                            <p class="text-sm text-gray-500">Cost to replace hourly employee</p>
+                                        </div>
+                                        <p class="text-4xl font-extrabold text-blue-600">$15,000</p>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-4 bg-tps-green/20 rounded-xl">
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Childcare Support ROI</p>
+                                            <p class="text-sm text-gray-500">Return on employer childcare investment</p>
+                                        </div>
+                                        <p class="text-4xl font-extrabold text-tps-dark">425%</p>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-600">Sources: Society for Human Resource Management, U.S. Chamber of Commerce, various employer case studies</p>
+                            </div>
+                        </div>
+
+                        <!-- Business Case Summary -->
+                        <div class="callout callout-dark my-8 not-prose">
+                            <h3 class="font-bold text-xl mb-4">The Business Case Summary</h3>
+                            <p class="text-lg mb-6">
+                                When employers invest in solving employee financial instability -- benefits cliff navigation, emergency support funds, childcare assistance -- the returns are measurable:
+                            </p>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="p-4 rounded-xl text-center border-2 border-tps-green/40">
+                                    <p class="text-tps-green text-2xl font-extrabold mb-2">Lower Turnover</p>
+                                    <p class="text-white text-sm">Reduced recruitment and training costs</p>
+                                </div>
+                                <div class="p-4 rounded-xl text-center border-2 border-tps-green/40">
+                                    <p class="text-tps-green text-2xl font-extrabold mb-2">Higher Productivity</p>
+                                    <p class="text-white text-sm">Less presenteeism and absenteeism</p>
+                                </div>
+                                <div class="p-4 rounded-xl text-center border-2 border-tps-green/40">
+                                    <p class="text-tps-green text-2xl font-extrabold mb-2">Better Advancement</p>
+                                    <p class="text-white text-sm">Employees accept promotions</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="recovery-mobility">15.6 Recovery & Economic Mobility</h2>
+
+                        <p>
+                            Recovery and economic mobility are inseparable. Employment during recovery produces better outcomes. Policy choices directly impact whether people stay clean or relapse.
+                        </p>
+
+                        <!-- Employment During Treatment -->
+                        <div class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white p-6 rounded-2xl my-8 not-prose">
+                            <h4 class="font-bold text-xl mb-4">Employment & Recovery: The Evidence</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="bg-white/10 p-5 rounded-xl">
+                                    <h5 class="font-semibold mb-2">Employment During Treatment</h5>
+                                    <p class="text-teal-100 text-sm mb-3">Employment during treatment predicts better long-term recovery. Work provides structure, purpose, income, and connection -- all protective factors against relapse.</p>
+                                </div>
+                                <div class="bg-white/10 p-5 rounded-xl">
+                                    <h5 class="font-semibold mb-2">IPS Model: Most Evidence-Based</h5>
+                                    <p class="text-teal-100 text-sm mb-3">Individual Placement and Support (IPS) is the gold standard: rapid job placement with ongoing support. Place first, then train on the job. Not the other way around.</p>
+                                </div>
+                            </div>
+                            <a href="https://ipsworks.org/index.php/evidence-for-ips/" target="_blank" class="text-teal-200 hover:text-white text-sm mt-4 inline-block">Source: IPS Employment Center</a>
+                        </div>
+
+                        <!-- Medicaid Expansion Impact -->
+                        <div class="content-card overflow-hidden not-prose my-8">
+                            <div class="bg-purple-700 text-white p-5">
+                                <h3 class="font-bold text-xl">Medicaid Expansion & Substance Use Treatment</h3>
+                            </div>
+                            <div class="p-6">
+                                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                    <div class="bg-purple-50 p-5 rounded-xl">
+                                        <p class="text-sm text-purple-700 font-semibold mb-2">Uninsured Rate for Opioid Hospitalizations</p>
+                                        <div class="flex items-end gap-4">
+                                            <div>
+                                                <p class="text-4xl font-extrabold text-purple-600">13.4%</p>
+                                                <p class="text-xs text-gray-500">Before expansion</p>
+                                            </div>
+                                            <svg class="w-6 h-6 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                            </svg>
+                                            <div>
+                                                <p class="text-4xl font-extrabold text-green-600">2.9%</p>
+                                                <p class="text-xs text-gray-500">After expansion</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-green-50 p-5 rounded-xl">
+                                        <p class="text-sm text-green-700 font-semibold mb-2">Overdose Rates in Expansion States</p>
+                                        <p class="text-4xl font-extrabold text-green-600 mb-2">6% Lower</p>
+                                        <p class="text-sm text-gray-600">Medicaid expansion states: 6% fewer overdose deaths. Coverage saves lives. Full stop.</p>
+                                    </div>
+                                </div>
+                                <a href="https://www.kff.org/medicaid/issue-brief/medicaid-and-the-opioid-epidemic/" target="_blank" class="text-part5-blue underline text-sm hover:text-empower-blue">Source: Kaiser Family Foundation</a>
+                            </div>
+                        </div>
+
+                        <!-- Connection to Empower -->
+                        <div class="bg-teal-50 border-l-4 border-teal-500 p-6 my-8 not-prose rounded-r-xl">
+                            <h4 class="font-bold text-teal-800 text-lg mb-3">Why This Matters for Empower</h4>
+                            <p class="text-gray-700">Many people in recovery depend on Medicaid, SNAP, and other benefits. Losing healthcare coverage during early recovery can trigger relapse. Empower's cliff navigation protects families during the exact transition point where the stakes are highest.</p>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="policy-innovations">15.7 Policy Innovations That Work</h2>
+
+                        <p>
+                            Several states have found ways to smooth the cliffs. These policies work. They show what's possible when lawmakers actually understand the problem.
+                        </p>
+
+                        <!-- Policy Grid -->
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-blue-600 font-bold text-sm">DC</span>
+                                    </div>
                                     <div>
-                                        <p style="font-size: 2.25rem; font-weight: 800; color: #16a34a;">2.9%</p>
-                                        <p class="text-xs text-gray-500">After expansion</p>
+                                        <p class="font-semibold text-gray-900">DC Career MAP</p>
+                                        <p class="text-xs text-gray-500">District of Columbia</p>
+                                    </div>
+                                </div>
+                                <p class="text-2xl font-extrabold text-blue-600 mb-2">5-Year Transitional Assistance</p>
+                                <p class="text-sm text-gray-600">Career MAP gives families 5 years of transitional TANF assistance. Benefits phase out gradually -- not cliff-style. Families can earn more without losing everything overnight.</p>
+                                <a href="https://dhs.dc.gov/service/career-map" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Learn more</a>
+                            </div>
+
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-green-600 font-bold text-sm">ME</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Maine STEP Bill</p>
+                                        <p class="text-xs text-gray-500">State of Maine</p>
+                                    </div>
+                                </div>
+                                <p class="text-2xl font-extrabold text-green-600 mb-2">75% Earned Income Disregard</p>
+                                <p class="text-sm text-gray-600">Maine's STEP bill lets families keep 75% of earned income without it touching their benefit calculations. The cliff doesn't disappear, but it gets a lot less steep.</p>
+                                <a href="https://www.maine.gov/dhhs/ofi/programs-services" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Learn more</a>
+                            </div>
+
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-purple-600 font-bold text-sm">CO</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Colorado Works</p>
+                                        <p class="text-xs text-gray-500">State of Colorado</p>
+                                    </div>
+                                </div>
+                                <p class="text-2xl font-extrabold text-purple-600 mb-2">100% Earned Income Disregard</p>
+                                <p class="text-sm text-gray-600">Colorado disregards 100% of earned income in the first months of employment. Starting a new job never triggers immediate benefit loss.</p>
+                                <a href="https://cdhs.colorado.gov/colorado-works" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Learn more</a>
+                            </div>
+
+                            <div class="stat-card p-6 text-left">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-red-600 font-bold text-sm">MA</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Massachusetts DTA</p>
+                                        <p class="text-xs text-gray-500">Commonwealth of Massachusetts</p>
+                                    </div>
+                                </div>
+                                <p class="text-2xl font-extrabold text-red-600 mb-2">6-Month 100% Disregard</p>
+                                <p class="text-sm text-gray-600">Massachusetts gives TAFDC families 6 months of 100% earned income disregard when they start working. A real bridge to let families stabilize.</p>
+                                <a href="https://www.mass.gov/orgs/department-of-transitional-assistance" target="_blank" class="text-part5-blue underline text-sm mt-3 inline-block hover:text-empower-blue">Learn more</a>
+                            </div>
+                        </div>
+
+                        <!-- Policy Advocacy Box -->
+                        <div class="callout callout-blue my-8 not-prose">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-14 h-14 bg-part5-blue rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-part5-blue text-lg mb-2">Using This Evidence for Policy Advocacy</h3>
+                                    <p class="text-gray-600 mb-3">These states prove cliff-smoothing works. When you advocate for policy changes in your state:</p>
+                                    <ul class="text-sm text-gray-600 space-y-1">
+                                        <li>* Point to states that already did it successfully</li>
+                                        <li>* Connect policy changes to workforce outcomes employers care about</li>
+                                        <li>* Emphasize these are state-level decisions using existing flexibility</li>
+                                        <li>* Partner with employer associations who get the business impact</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-10 border-gray-200">
+
+                        <h2 id="methodology">15.8 Methodology & Limitations</h2>
+
+                        <p>
+                            We're going to be straight about what we know, what we don't know, and what we're doing to close the gap. Transparency builds credibility. Overpromising destroys it.
+                        </p>
+
+                        <!-- Evidence Hierarchy -->
+                        <div class="content-card overflow-hidden not-prose my-8">
+                            <div class="bg-gray-700 text-white p-5">
+                                <h3 class="font-bold text-xl">Understanding Evidence Quality</h3>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-4">Not all evidence is equal. Here's where the research in this playbook falls on the quality scale:</p>
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4 p-4 bg-green-50 rounded-xl">
+                                        <div class="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <span class="text-white font-bold">1</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-green-800">RCTs & Quasi-Experimental Studies</p>
+                                            <p class="text-sm text-gray-600">Benefits cliff research (Atlanta Fed), IPS employment model, some CAP Tulsa findings. <strong>Strongest evidence.</strong></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
+                                        <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <span class="text-white font-bold">2</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-blue-800">Longitudinal Observational Studies</p>
+                                            <p class="text-sm text-gray-600">EMPath outcomes, ALICE data, employer survey research. <strong>Good evidence, but no control groups.</strong></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-4 p-4 bg-amber-50 rounded-xl">
+                                        <div class="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <span class="text-white font-bold">3</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-amber-800">Program-Level Outcome Data</p>
+                                            <p class="text-sm text-gray-600">Empower Upper Cumberland pilot results. <strong>Promising but preliminary; requires independent validation.</strong></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start gap-4 p-4 bg-gray-100 rounded-xl">
+                                        <div class="w-12 h-12 bg-gray-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <span class="text-white font-bold">4</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-gray-700">Expert Consensus & Practice Wisdom</p>
+                                            <p class="text-sm text-gray-600">Some implementation guidance, caseload recommendations. <strong>Useful for practice, but not proof of effectiveness.</strong></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="bg-green-50 p-5 rounded-xl">
-                                <p class="text-sm text-green-700 font-semibold mb-2">Overdose Rates in Expansion States</p>
-                                <p style="font-size: 2.25rem; font-weight: 800; color: #16a34a;" class="mb-2">6% Lower</p>
-                                <p class="text-sm text-gray-600">States that expanded Medicaid saw 6% lower overdose death rates compared to non-expansion states.</p>
-                            </div>
                         </div>
-                        <a href="https://www.kff.org/medicaid/issue-brief/medicaid-and-the-opioid-epidemic/" target="_blank" class="source-link text-sm">Source: Kaiser Family Foundation</a>
-                    </div>
-                </div>
 
-                <!-- Connection to Empower -->
-                <div class="bg-teal-50 border-l-4 border-teal-500 p-6 my-8 not-prose">
-                    <h4 class="font-bold text-teal-800 text-lg mb-3">Why This Matters for Empower</h4>
-                    <p class="text-gray-700">Many individuals in recovery receive Medicaid, SNAP, and other benefits. Benefits cliff navigation is critical during the transition from treatment to employment—losing healthcare coverage during early recovery can be catastrophic. The Empower model's cliff navigation protects this vulnerable population during economic advancement.</p>
-                </div>
-
-                <hr>
-
-                <h2 id="policy-innovations">15.7 Policy Innovations That Work</h2>
-
-                <p>
-                    Several states have implemented policy innovations that address benefits cliffs and support economic mobility. These proven approaches demonstrate what's possible when policymakers understand the cliff problem.
-                </p>
-
-                <!-- Policy Grid -->
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="stat-card p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <span class="text-blue-600 font-bold text-sm">DC</span>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">DC Career MAP</p>
-                                <p class="text-xs text-gray-500">District of Columbia</p>
-                            </div>
-                        </div>
-                        <p style="font-size: 1.5rem; font-weight: 800; color: #2563eb;" class="mb-2">5-Year Transitional Assistance</p>
-                        <p class="text-sm text-gray-600">Career MAP provides 5 years of transitional TANF assistance, allowing families to increase earnings gradually while maintaining support. Benefits phase out slowly rather than cliff-style.</p>
-                        <a href="https://dhs.dc.gov/service/career-map" target="_blank" class="source-link text-sm mt-3 inline-block">Learn more</a>
-                    </div>
-
-                    <div class="stat-card p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                <span class="text-green-600 font-bold text-sm">ME</span>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">Maine STEP Bill</p>
-                                <p class="text-xs text-gray-500">State of Maine</p>
-                            </div>
-                        </div>
-                        <p style="font-size: 1.5rem; font-weight: 800; color: #16a34a;" class="mb-2">75% Earned Income Disregard</p>
-                        <p class="text-sm text-gray-600">Maine's STEP (Strengthening Transitional Economic Prosperity) bill allows families to keep 75% of earned income without affecting benefit calculations, dramatically reducing cliff severity.</p>
-                        <a href="https://www.maine.gov/dhhs/ofi/programs-services" target="_blank" class="source-link text-sm mt-3 inline-block">Learn more</a>
-                    </div>
-
-                    <div class="stat-card p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                                <span class="text-purple-600 font-bold text-sm">CO</span>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">Colorado Works</p>
-                                <p class="text-xs text-gray-500">State of Colorado</p>
-                            </div>
-                        </div>
-                        <p style="font-size: 1.5rem; font-weight: 800; color: #9333ea;" class="mb-2">100% Earned Income Disregard</p>
-                        <p class="text-sm text-gray-600">Colorado implemented a 100% earned income disregard for the first months of employment, ensuring that starting a new job never causes immediate benefit loss.</p>
-                        <a href="https://cdhs.colorado.gov/colorado-works" target="_blank" class="source-link text-sm mt-3 inline-block">Learn more</a>
-                    </div>
-
-                    <div class="stat-card p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                                <span class="text-red-600 font-bold text-sm">MA</span>
-                            </div>
-                            <div>
-                                <p class="font-semibold text-gray-900">Massachusetts DTA</p>
-                                <p class="text-xs text-gray-500">Commonwealth of Massachusetts</p>
-                            </div>
-                        </div>
-                        <p style="font-size: 1.5rem; font-weight: 800; color: #dc2626;" class="mb-2">6-Month 100% Disregard</p>
-                        <p class="text-sm text-gray-600">Massachusetts provides a 6-month period of 100% earned income disregard for TAFDC recipients who begin employment, providing a bridge period for families to stabilize.</p>
-                        <a href="https://www.mass.gov/orgs/department-of-transitional-assistance" target="_blank" class="source-link text-sm mt-3 inline-block">Learn more</a>
-                    </div>
-                </div>
-
-                <!-- Policy Advocacy Box -->
-                <div class="bg-gradient-to-r from-part5-research/10 to-empower-blue/10 border-2 border-part5-research/30 rounded-2xl p-6 my-8 not-prose">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-14 h-14 bg-part5-research rounded-xl flex items-center justify-center flex-shrink-0">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-part5-research text-lg mb-2">Using This Evidence for Policy Advocacy</h3>
-                            <p class="text-gray-600 mb-3">These state examples demonstrate that cliff-smoothing policies are viable, implementable, and effective. When advocating for policy changes in your state:</p>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                <li>* Reference states that have successfully implemented similar approaches</li>
-                                <li>* Connect policy changes to workforce outcomes employers care about</li>
-                                <li>* Emphasize that these are state-level decisions using existing flexibility</li>
-                                <li>* Partner with employer associations who understand the business impact</li>
+                        <!-- Current Limitations -->
+                        <div class="callout callout-warning my-8 not-prose">
+                            <h4 class="font-bold text-red-800 text-lg mb-3">Acknowledged Limitations</h4>
+                            <p class="text-gray-700 mb-4">Here's what we don't have yet:</p>
+                            <ul class="text-gray-700 space-y-3">
+                                <li>
+                                    <strong>No Randomized Control Trial:</strong> Empower outcomes haven't been validated through an RCT yet. Current results are pre-post comparisons without a control group.
+                                </li>
+                                <li>
+                                    <strong>Selection Effects:</strong> Families who complete the program may be systematically different from those who don't. Motivated families might have achieved similar outcomes on their own.
+                                </li>
+                                <li>
+                                    <strong>Net Resources Metric Needed:</strong> Current metrics focus on wage gains. The better measure is "net resources" (income + remaining benefits - new costs). That tells you if families are actually better off.
+                                </li>
+                                <li>
+                                    <strong>Limited Longitudinal Data:</strong> We know what happens at exit. We don't yet know if gains hold 2-3 years later.
+                                </li>
+                                <li>
+                                    <strong>ROI Calculations:</strong> The 7.1:1 ROI figure is modeled, not measured. It assumes reduced benefit utilization, but actual savings haven't been directly tracked.
+                                </li>
+                                <li>
+                                    <strong>Generalizability:</strong> Upper Cumberland results may not transfer to every rural region. Different economies, demographics, and service landscapes matter.
+                                </li>
                             </ul>
                         </div>
-                    </div>
-                </div>
 
-                <hr>
+                        <!-- What Would Strengthen Evidence -->
+                        <div class="callout callout-blue my-8 not-prose">
+                            <h4 class="font-bold text-part5-blue text-lg mb-4">Building Stronger Evidence: Our Roadmap</h4>
+                            <p class="text-gray-600 mb-4">We're building toward rigorous proof. Here's the plan:</p>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-white rounded-xl p-4">
+                                    <p class="font-semibold text-gray-900 mb-2">Independent Evaluation</p>
+                                    <p class="text-sm text-gray-600">Partnering with university researchers for third-party outcome evaluation.</p>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <p class="font-semibold text-gray-900 mb-2">Comparison Group Design</p>
+                                    <p class="text-sm text-gray-600">Working with state agencies to build matched comparison groups from administrative data.</p>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <p class="font-semibold text-gray-900 mb-2">Net Resources Tracking</p>
+                                    <p class="text-sm text-gray-600">Tracking the full picture: income, benefits, and costs. The only way to measure if families are truly better off.</p>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <p class="font-semibold text-gray-900 mb-2">Longitudinal Follow-Up</p>
+                                    <p class="text-sm text-gray-600">Following families at 12, 24, and 36 months after exit. Do the gains stick?</p>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <p class="font-semibold text-gray-900 mb-2">Peer Review</p>
+                                    <p class="text-sm text-gray-600">Getting our findings published in peer-reviewed journals and pressure-tested by outside experts.</p>
+                                </div>
+                                <div class="bg-white rounded-xl p-4">
+                                    <p class="font-semibold text-gray-900 mb-2">Multi-Site Replication</p>
+                                    <p class="text-sm text-gray-600">As we scale, tracking outcomes across different sites to test whether results hold everywhere.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                <h2 id="methodology">15.8 Methodology & Limitations</h2>
+                        <!-- How to Use This Evidence -->
+                        <div class="callout callout-green my-8 not-prose">
+                            <h4 class="font-bold text-tps-dark text-lg mb-4">Guidance: Using This Evidence Responsibly</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <span class="text-tps-green font-bold">DO:</span>
+                                    <p class="text-gray-700">Cite evidence for specific claims. "Benefits cliffs affect 3+ million families" is well-documented. Use it.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-tps-green font-bold">DO:</span>
+                                    <p class="text-gray-700">Say Empower synthesizes evidence-based practices. The individual components are proven. The specific combination hasn't been RCT-validated yet.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-tps-green font-bold">DO:</span>
+                                    <p class="text-gray-700">Call pilot outcomes "promising preliminary results." Not "proven effectiveness."</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-red-500 font-bold">DON'T:</span>
+                                    <p class="text-gray-700">Call the 7.1:1 ROI "proven." It's a modeled estimate. It needs validation.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <span class="text-red-500 font-bold">DON'T:</span>
+                                    <p class="text-gray-700">Confuse "evidence-informed" with "rigorously proven." They're different. Credibility depends on knowing the difference.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                <p>
-                    Transparency about methodology is essential for credible evidence claims. This section documents the current state of Empower-specific evidence, acknowledges limitations, and outlines the path to stronger evaluation.
-                </p>
+                        <hr class="my-10 border-gray-200">
 
-                <!-- Evidence Hierarchy -->
-                <div class="evidence-section not-prose">
-                    <div class="bg-gray-700 text-white p-5">
-                        <h3 class="font-bold text-xl">Understanding Evidence Quality</h3>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-4">Not all evidence is equal. Here's how the evidence cited in this playbook maps to standard hierarchies:</p>
-                        <div class="space-y-4">
-                            <div class="flex items-start gap-4 p-4 bg-green-50 rounded-xl">
-                                <div class="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <span class="text-white font-bold">1</span>
+                        <!-- Summary and Sources -->
+                        <h2>Summary: The Evidence Foundation</h2>
+
+                        <p>
+                            Every piece of the Empower model is grounded in research. Not theory. Not hope. Documented, measured practice. When skeptics question the approach, the evidence answers.
+                        </p>
+
+                        <!-- Key Takeaway -->
+                        <div class="key-takeaway not-prose">
+                            <span class="badge">Key Takeaway</span>
+                            <p class="mb-6">
+                                Empower pulls from multiple research streams into one integrated approach:
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-3 mb-6">
+                                <div class="text-white flex items-center">
+                                    <span class="text-tps-green mr-2">✓</span>
+                                    <span><span class="text-tps-green font-bold">Benefits Cliff Research</span> — 3M+ affected, 51% marginal rates</span>
+                                </div>
+                                <div class="text-white flex items-center">
+                                    <span class="text-tps-green mr-2">✓</span>
+                                    <span><span class="text-tps-green font-bold">Navigator Evidence</span> — 1:25 ratios, 18-24 month relationships</span>
+                                </div>
+                                <div class="text-white flex items-center">
+                                    <span class="text-tps-green mr-2">✓</span>
+                                    <span><span class="text-tps-green font-bold">Rural Data</span> — 52% ALICE, infrastructure gaps</span>
+                                </div>
+                                <div class="text-white flex items-center">
+                                    <span class="text-tps-green mr-2">✓</span>
+                                    <span><span class="text-tps-green font-bold">Two-Gen Evidence</span> — 82% certification, $15:$1 ROI</span>
+                                </div>
+                                <div class="text-white flex items-center">
+                                    <span class="text-tps-green mr-2">✓</span>
+                                    <span><span class="text-tps-green font-bold">Employer ROI</span> — $250B lost, 425% childcare return</span>
+                                </div>
+                                <div class="text-white flex items-center">
+                                    <span class="text-tps-green mr-2">✓</span>
+                                    <span><span class="text-tps-green font-bold">Policy Innovations</span> — 6 state models that work</span>
+                                </div>
+                            </div>
+                            <p class="highlight">
+                                Evidence-based practice separates programs that work from programs that just mean well.
+                            </p>
+                        </div>
+
+                        <!-- Primary Sources List -->
+                        <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 my-8 not-prose">
+                            <h4 class="font-bold text-gray-900 mb-4">Primary Research Sources</h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <p class="font-semibold text-gray-700 mb-2">Benefits Cliff & Policy</p>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li><a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families" target="_blank" class="text-part5-blue underline hover:text-empower-blue">Atlanta Fed CLIFF Tools</a></li>
+                                        <li><a href="https://www.nber.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">NBER Working Papers</a></li>
+                                        <li><a href="https://www.kff.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">Kaiser Family Foundation</a></li>
+                                        <li><a href="https://www.clasp.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">CLASP Research</a></li>
+                                    </ul>
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-green-800">RCTs & Quasi-Experimental Studies</p>
-                                    <p class="text-sm text-gray-600">Benefits cliff research (Atlanta Fed), IPS employment model, some CAP Tulsa findings. <strong>Strongest evidence.</strong></p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
-                                <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <span class="text-white font-bold">2</span>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-blue-800">Longitudinal Observational Studies</p>
-                                    <p class="text-sm text-gray-600">EMPath outcomes, ALICE data, employer survey research. <strong>Good evidence, but no control groups.</strong></p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4 p-4 bg-amber-50 rounded-xl">
-                                <div class="w-12 h-12 bg-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <span class="text-white font-bold">3</span>
+                                    <p class="font-semibold text-gray-700 mb-2">Navigator & Coaching Models</p>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li><a href="https://www.empathways.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">EMPath Research</a></li>
+                                        <li><a href="https://ipsworks.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">IPS Employment Center</a></li>
+                                        <li><a href="https://aspe.hhs.gov" target="_blank" class="text-part5-blue underline hover:text-empower-blue">ASPE HHS Research</a></li>
+                                    </ul>
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-amber-800">Program-Level Outcome Data</p>
-                                    <p class="text-sm text-gray-600">Empower Upper Cumberland pilot results. <strong>Promising but preliminary; requires independent validation.</strong></p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4 p-4 bg-gray-100 rounded-xl">
-                                <div class="w-12 h-12 bg-gray-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <span class="text-white font-bold">4</span>
+                                    <p class="font-semibold text-gray-700 mb-2">Rural & ALICE Data</p>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li><a href="https://www.unitedforalice.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">United For ALICE</a></li>
+                                        <li><a href="https://www.ers.usda.gov" target="_blank" class="text-part5-blue underline hover:text-empower-blue">USDA Economic Research Service</a></li>
+                                        <li><a href="https://www.ruralhealthinfo.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">Rural Health Information Hub</a></li>
+                                    </ul>
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-gray-700">Expert Consensus & Practice Wisdom</p>
-                                    <p class="text-sm text-gray-600">Some implementation guidance, caseload recommendations. <strong>Useful for practice, but not proof of effectiveness.</strong></p>
+                                    <p class="font-semibold text-gray-700 mb-2">Two-Generation & Education</p>
+                                    <ul class="space-y-1 text-gray-600">
+                                        <li><a href="https://www.captulsa.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">CAP Tulsa</a></li>
+                                        <li><a href="https://learningpolicyinstitute.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">Learning Policy Institute</a></li>
+                                        <li><a href="https://ascend.aspeninstitute.org" target="_blank" class="text-part5-blue underline hover:text-empower-blue">Aspen Ascend</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+
                     </div>
+
+                    <!-- Table of Contents (Desktop only) -->
+                    <aside class="hidden xl:block">
+                        <nav class="toc" aria-label="Table of contents">
+                            <p class="toc-title">On this page</p>
+                            <a href="#benefits-cliff" class="toc-link active">Benefits Cliff</a>
+                            <a href="#navigator-model" class="toc-link">Navigator Model</a>
+                            <a href="#rural-poverty" class="toc-link">Rural Poverty</a>
+                            <a href="#two-generation" class="toc-link">Two-Generation</a>
+                            <a href="#employer-roi" class="toc-link">Employer ROI</a>
+                            <a href="#recovery-mobility" class="toc-link">Recovery & Mobility</a>
+                            <a href="#policy-innovations" class="toc-link">Policy Innovations</a>
+                            <a href="#methodology" class="toc-link">Methodology</a>
+                        </nav>
+                    </aside>
+
                 </div>
 
-                <!-- Current Limitations -->
-                <div class="bg-red-50 border-l-4 border-red-500 p-6 my-8 not-prose">
-                    <h4 class="font-bold text-red-800 text-lg mb-3">Acknowledged Limitations</h4>
-                    <p class="text-gray-700 mb-4">In the interest of transparency, we acknowledge the following limitations in the current Empower evidence base:</p>
-                    <ul class="text-gray-700 space-y-3">
-                        <li>
-                            <strong>No Randomized Control Trial:</strong> Empower-specific outcomes have not been validated through an RCT. Current results are based on pre-post comparisons without a formal control group.
-                        </li>
-                        <li>
-                            <strong>Selection Effects:</strong> Participants who complete the program may differ systematically from those who don't—motivated participants may have achieved similar outcomes without intervention.
-                        </li>
-                        <li>
-                            <strong>Net Resources Metric Needed:</strong> Current outcome metrics focus on wage gains. A more rigorous measure would be "net resources" (income + remaining benefits - new costs), which captures whether families are truly better off.
-                        </li>
-                        <li>
-                            <strong>Limited Longitudinal Data:</strong> We have data on outcomes at program exit but limited data on whether gains are sustained 2-3 years post-exit.
-                        </li>
-                        <li>
-                            <strong>ROI Calculations:</strong> The 7.1:1 ROI figure is based on modeled assumptions about reduced government benefit utilization; actual benefit savings have not been directly measured.
-                        </li>
-                        <li>
-                            <strong>Generalizability:</strong> Results from Upper Cumberland may not generalize to other rural regions with different economic conditions, demographics, or service landscapes.
-                        </li>
-                    </ul>
+                <!-- Chapter Navigation -->
+                <div class="chapter-nav">
+                    <a href="chapter-14.html" class="chapter-nav-link">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Previous: Poverty IQ for Employers
+                    </a>
+                    <a href="chapter-16.html" class="chapter-nav-next flex items-center">
+                        Next: Competitive Landscape
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
                 </div>
 
-                <!-- What Would Strengthen Evidence -->
-                <div class="bg-gradient-to-r from-part5-research/10 to-empower-blue/10 border-2 border-part5-research/30 rounded-2xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-part5-research text-lg mb-4">Building Stronger Evidence: Our Roadmap</h4>
-                    <p class="text-gray-600 mb-4">We're committed to building an evidence base that meets rigorous standards. Here's what we're pursuing:</p>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="bg-white rounded-xl p-4">
-                            <p class="font-semibold text-gray-900 mb-2">Independent Evaluation</p>
-                            <p class="text-sm text-gray-600">Partnering with university researchers to conduct third-party evaluation of outcomes.</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-4">
-                            <p class="font-semibold text-gray-900 mb-2">Comparison Group Design</p>
-                            <p class="text-sm text-gray-600">Working with state agencies to establish matched comparison groups from administrative data.</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-4">
-                            <p class="font-semibold text-gray-900 mb-2">Net Resources Tracking</p>
-                            <p class="text-sm text-gray-600">Implementing comprehensive tracking of income, benefits, and costs to measure true financial improvement.</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-4">
-                            <p class="font-semibold text-gray-900 mb-2">Longitudinal Follow-Up</p>
-                            <p class="text-sm text-gray-600">Establishing protocols for 12, 24, and 36-month post-exit outcome tracking.</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-4">
-                            <p class="font-semibold text-gray-900 mb-2">Peer Review</p>
-                            <p class="text-sm text-gray-600">Submitting findings to peer-reviewed journals and presenting at academic conferences.</p>
-                        </div>
-                        <div class="bg-white rounded-xl p-4">
-                            <p class="font-semibold text-gray-900 mb-2">Multi-Site Replication</p>
-                            <p class="text-sm text-gray-600">As the model scales, tracking outcomes across diverse sites to test generalizability.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- How to Use This Evidence -->
-                <div class="bg-tps-green/10 border-2 border-tps-green rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-tps-dark text-lg mb-4">Guidance: Using This Evidence Responsibly</h4>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-3">
-                            <span class="text-tps-green font-bold">DO:</span>
-                            <p class="text-gray-700">Cite the evidence for specific claims (e.g., "Benefits cliffs affect 3+ million households" is well-documented).</p>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <span class="text-tps-green font-bold">DO:</span>
-                            <p class="text-gray-700">Acknowledge that the Empower model synthesizes evidence-based practices, even if the specific combination hasn't been RCT-validated.</p>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <span class="text-tps-green font-bold">DO:</span>
-                            <p class="text-gray-700">Present pilot outcomes as "promising preliminary results" rather than "proven effectiveness."</p>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <span class="text-red-500 font-bold">DON'T:</span>
-                            <p class="text-gray-700">Claim the 7.1:1 ROI as definitively proven—it's a modeled estimate that requires validation.</p>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <span class="text-red-500 font-bold">DON'T:</span>
-                            <p class="text-gray-700">Overstate claims by confusing "evidence-informed" with "rigorously proven."</p>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <!-- Summary and Sources -->
-                <h2>Summary: The Evidence Foundation</h2>
-
-                <p>
-                    Every component of the Empower model is grounded in research. This isn't theory—it's documented, measured, proven practice. When skeptics question the approach, this evidence provides your response.
-                </p>
-
-                <!-- Key Takeaway -->
-                <div class="bg-black p-8 rounded-2xl not-prose">
-                    <h3 style="color: #a3c520;" class="font-bold text-2xl mb-4">Key Takeaway</h3>
-                    <p style="color: rgba(255,255,255,0.9);" class="text-lg leading-relaxed mb-6">
-                        The Empower model synthesizes evidence from multiple research streams into an integrated approach:
-                    </p>
-                    <div class="grid md:grid-cols-2 gap-3 mb-6">
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Benefits Cliff Research</span> — 3M+ affected, 51% marginal rates</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Navigator Evidence</span> — 1:25 ratios, 18-24 month relationships</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Rural Data</span> — 52% ALICE, infrastructure gaps</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Two-Gen Evidence</span> — 82% certification, $15:$1 ROI</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Employer ROI</span> — $250B lost, 425% childcare return</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Policy Innovations</span> — 6 state models that work</span>
-                        </div>
-                    </div>
-                    <p style="color: #a3c520;" class="font-bold text-xl">
-                        Evidence-based practice isn't optional—it's what separates effective programs from well-intentioned failures.
-                    </p>
-                </div>
-
-                <!-- Primary Sources List -->
-                <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 my-8 not-prose">
-                    <h4 class="font-bold text-gray-900 mb-4">Primary Research Sources</h4>
-                    <div class="grid md:grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <p class="font-semibold text-gray-700 mb-2">Benefits Cliff & Policy</p>
-                            <ul class="space-y-1 text-gray-600">
-                                <li><a href="https://www.atlantafed.org/economic-mobility-and-resilience/advancing-careers-for-low-income-families" target="_blank" class="source-link">Atlanta Fed CLIFF Tools</a></li>
-                                <li><a href="https://www.nber.org" target="_blank" class="source-link">NBER Working Papers</a></li>
-                                <li><a href="https://www.kff.org" target="_blank" class="source-link">Kaiser Family Foundation</a></li>
-                                <li><a href="https://www.clasp.org" target="_blank" class="source-link">CLASP Research</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-700 mb-2">Navigator & Coaching Models</p>
-                            <ul class="space-y-1 text-gray-600">
-                                <li><a href="https://www.empathways.org" target="_blank" class="source-link">EMPath Research</a></li>
-                                <li><a href="https://ipsworks.org" target="_blank" class="source-link">IPS Employment Center</a></li>
-                                <li><a href="https://aspe.hhs.gov" target="_blank" class="source-link">ASPE HHS Research</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-700 mb-2">Rural & ALICE Data</p>
-                            <ul class="space-y-1 text-gray-600">
-                                <li><a href="https://www.unitedforalice.org" target="_blank" class="source-link">United For ALICE</a></li>
-                                <li><a href="https://www.ers.usda.gov" target="_blank" class="source-link">USDA Economic Research Service</a></li>
-                                <li><a href="https://www.ruralhealthinfo.org" target="_blank" class="source-link">Rural Health Information Hub</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-700 mb-2">Two-Generation & Education</p>
-                            <ul class="space-y-1 text-gray-600">
-                                <li><a href="https://www.captulsa.org" target="_blank" class="source-link">CAP Tulsa</a></li>
-                                <li><a href="https://learningpolicyinstitute.org" target="_blank" class="source-link">Learning Policy Institute</a></li>
-                                <li><a href="https://ascend.aspeninstitute.org" target="_blank" class="source-link">Aspen Ascend</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- On This Page TOC -->
-            <aside class="hidden xl:block">
-                <div class="toc">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
-                    <nav>
-                        <a href="#benefits-cliff" class="toc-link active">Benefits Cliff</a>
-                        <a href="#navigator-model" class="toc-link">Navigator Model</a>
-                        <a href="#rural-poverty" class="toc-link">Rural Poverty</a>
-                        <a href="#two-generation" class="toc-link">Two-Generation</a>
-                        <a href="#employer-roi" class="toc-link">Employer ROI</a>
-                        <a href="#recovery-mobility" class="toc-link">Recovery & Mobility</a>
-                        <a href="#policy-innovations" class="toc-link">Policy Innovations</a>
-                        <a href="#methodology" class="toc-link">Methodology</a>
-                    </nav>
-                </div>
-            </aside>
-            </div>
-
-            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
-                <a href="chapter-12.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
-                    ← Previous: Scaling Beyond
-                </a>
-                <a href="../index.html" class="bg-part5-research text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-empower-blue transition">
-                    Back to Overview →
-                </a>
             </div>
         </div>
 
+        <!-- Footer -->
         <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
-            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
-            <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            <div class="max-w-7xl mx-auto">
+                <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+                <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            </div>
         </footer>
+
     </main>
 
-    <div class="floating-nav">
-        <a href="chapter-12.html" title="Previous: Scaling Beyond">
+    <!-- Floating Chapter Navigation -->
+    <div class="floating-nav" id="floatingNav">
+        <a href="chapter-14.html" class="text-gray-600 hover:bg-gray-100 rounded-lg p-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
         </a>
-        <a href="../index.html" title="Back to Overview">
+        <a href="../index.html" class="text-gray-600 hover:bg-gray-100 rounded-lg p-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
         </a>
+        <a href="chapter-16.html" class="bg-empower-blue text-white hover:bg-empower-blue/90 rounded-lg px-4 py-2">
+            Next Chapter →
+        </a>
     </div>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <a href="../index.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="chapter-4.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span>Core</span>
+        </a>
+        <a href="chapter-14.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span>Training</span>
+        </a>
+        <button onclick="openSidebar()" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span>Menu</span>
+        </button>
+    </nav>
+
+    <!-- JavaScript -->
     <script>
-        function openSidebar() {
-            document.getElementById('sidebar').classList.add('open');
-            document.getElementById('overlay').classList.add('show');
+        // Reading progress bar
+        function updateProgress() {
+            const content = document.getElementById('chapter-content');
+            const progress = document.getElementById('progress');
+            const scrolled = window.scrollY;
+            const height = content.scrollHeight - window.innerHeight;
+            const percent = Math.min(scrolled / height, 1);
+            progress.style.transform = `scaleX(${percent})`;
+
+            // Show floating nav after scrolling
+            const floatingNav = document.getElementById('floatingNav');
+            if (scrolled > 500) {
+                floatingNav.classList.add('show');
+            } else {
+                floatingNav.classList.remove('show');
+            }
         }
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
 
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
-        }
-
-        window.addEventListener('scroll', function() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('readingProgress').style.width = scrolled + '%';
-        });
-
-        // TOC Active State
+        // TOC active state
         const tocLinks = document.querySelectorAll('.toc-link');
         const sections = document.querySelectorAll('h2[id]');
+
         function updateTOC() {
             let current = '';
             sections.forEach(section => {
@@ -1333,11 +1264,36 @@
         }
         window.addEventListener('scroll', updateTOC);
 
-        document.addEventListener('keydown', function(e) {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            if (e.key === 'ArrowLeft') window.location.href = 'chapter-12.html';
-            else if (e.key === 'ArrowRight') window.location.href = '../index.html';
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeSidebar();
+            if (e.key === 'ArrowLeft') window.location.href = 'chapter-14.html';
+            if (e.key === 'ArrowRight') window.location.href = 'chapter-16.html';
+        });
+
+        // Swipe to close sidebar on mobile
+        let touchStartX = 0;
+        document.getElementById('sidebar').addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        document.getElementById('sidebar').addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) closeSidebar();
         });
     </script>
+
 </body>
 </html>

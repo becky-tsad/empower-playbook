@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 11: Adapting the Model | The Empower Playbook</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind (for utility classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -16,8 +20,9 @@
                         'tps-green': '#a3c520',
                         'tps-dark': '#111111',
                         'empower-blue': '#1e3a5f',
-                        'part3-blue': '#569db7',
-                        'part4-grey': '#545454',
+                        'part3-blue': '#46729d',
+                        'part4-grey': '#2a4571',
+                        'part5-blue': '#545454',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -26,311 +31,165 @@
             }
         }
     </script>
-    <style>
-        html { scroll-behavior: smooth; }
-        body { background: #fafafa; }
 
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: #1e3a5f;
-            color: white;
-            padding: 8px 16px;
-            z-index: 100;
-            transition: top 0.3s;
-        }
-        .skip-link:focus { top: 0; }
-
-        .reading-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #545454, #6b7280);
-            z-index: 100;
-            transition: width 0.1s ease-out;
-        }
-
-        .sidebar {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: #fff;
-            border-right: 1px solid #eee;
-            overflow-y: auto;
-            z-index: 40;
-        }
-        .sidebar::-webkit-scrollbar { width: 3px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 3px; }
-
-        .main-content { margin-left: 280px; }
-
-        .nav-section { padding: 4px 12px; }
-        .nav-section-title {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #999;
-            padding: 12px 12px 6px;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #555;
-            transition: all 0.15s;
-            margin-bottom: 1px;
-        }
-        .nav-item:hover { background: #f5f5f5; color: #111; }
-        .nav-item.active { background: #f3f4f6; color: #545454; font-weight: 500; }
-        .nav-item .num {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .prose h2 {
-            font-size: 1.625rem;
-            font-weight: 700;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            color: #1e3a5f;
-            letter-spacing: -0.025em;
-        }
-        .prose h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-top: 2rem;
-            margin-bottom: 0.75rem;
-            color: #333;
-        }
-        .prose p {
-            margin-bottom: 1.25rem;
-            line-height: 1.8;
-            color: #374151;
-        }
-        .prose ul, .prose ol {
-            margin-bottom: 1.25rem;
-            margin-left: 1.5rem;
-        }
-        .prose ul { list-style-type: disc; }
-        .prose li {
-            margin-bottom: 0.625rem;
-            line-height: 1.7;
-            color: #374151;
-        }
-        .prose blockquote {
-            border-left: 4px solid #545454;
-            padding: 1rem 1.25rem;
-            font-style: italic;
-            color: #4b5563;
-            margin: 1.75rem 0;
-            background: linear-gradient(to right, #f3f4f6, transparent);
-            border-radius: 0 8px 8px 0;
-        }
-        .prose strong { color: #111827; }
-        .prose hr {
-            border: none;
-            border-top: 1px solid #e5e5e5;
-            margin: 2.5rem 0;
-        }
-
-        .prose-lead {
-            font-size: 1.25rem;
-            line-height: 1.75;
-            color: #4b5563;
-        }
-
-        .adaptation-card {
-            background: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.2s;
-        }
-        .adaptation-card:hover {
-            border-color: #a3c520;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-
-        .pdf-download-btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 16px;
-            background: linear-gradient(135deg, #a3c520 0%, #8fb31a 100%);
-            color: #111;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(163, 197, 32, 0.3);
-        }
-        .pdf-download-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(163, 197, 32, 0.4);
-        }
-
-        .floating-nav {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            gap: 0.5rem;
-            z-index: 50;
-        }
-        .floating-nav a {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: white;
-            border: 1px solid #e5e5e5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .floating-nav a:hover {
-            background: #545454;
-            border-color: #545454;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* TOC Styles */
-        .toc { position: sticky; top: 100px; }
-        .toc-link { display: block; padding: 8px 12px; font-size: 13px; color: #666; border-left: 2px solid #eee; transition: all 0.15s; }
-        .toc-link:hover { color: #1e3a5f; border-color: #1e3a5f; }
-        .toc-link.active { color: #1e3a5f; border-color: #a3c520; font-weight: 500; }
-        @media (min-width: 1280px) { .content-with-toc { display: grid; grid-template-columns: 1fr 220px; gap: 48px; } }
-
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-                z-index: 50;
-            }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .mobile-overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0,0,0,0.3);
-                z-index: 45;
-                display: none;
-            }
-            .mobile-overlay.show { display: block; }
-        }
-    </style>
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="../styles/design-system.css">
 </head>
+
 <body class="font-sans text-gray-800 antialiased">
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="reading-progress" id="readingProgress"></div>
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="progress"></div>
+
+    <!-- Skip to content (Accessibility) -->
+    <a href="#chapter-content" class="skip-link">Skip to chapter content</a>
+
+    <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <aside class="sidebar" id="sidebar">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+
+        <!-- Logo -->
         <div class="p-5 border-b border-gray-100">
-            <a href="../index.html" class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-tps-dark rounded-lg flex items-center justify-center">
-                    <span class="text-tps-green font-bold text-sm">E</span>
+            <a href="../index.html" class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-tps-dark to-gray-800 rounded-xl flex items-center justify-center shadow-lg">
+                    <span class="text-tps-green font-bold text-lg">E</span>
                 </div>
                 <div>
-                    <h1 class="font-semibold text-gray-900 text-sm">Empower Playbook</h1>
+                    <h1 class="font-bold text-gray-900 text-sm">Empower Playbook</h1>
                     <p class="text-[10px] text-gray-400">Rural Economic Mobility</p>
                 </div>
             </a>
         </div>
 
+        <!-- Navigation -->
         <nav class="py-4">
+            <!-- Overview -->
             <div class="nav-section">
                 <a href="../index.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
                     Overview
                 </a>
             </div>
 
+            <!-- Part 1: The Case -->
             <p class="nav-section-title">Part 1 — The Case</p>
             <div class="nav-section">
-                <a href="chapter-1.html" class="nav-item"><span class="num bg-empower-blue text-white">1</span>Why Rural Needs Different</a>
-                <a href="chapter-2.html" class="nav-item"><span class="num bg-empower-blue text-white">2</span>The Problem We're Solving</a>
-                <a href="chapter-3.html" class="nav-item"><span class="num bg-empower-blue text-white">3</span>The Proof</a>
+                <a href="chapter-1.html" class="nav-item">
+                    <span class="num part1">1</span>
+                    Why Rural Needs Different
+                </a>
+                <a href="chapter-2.html" class="nav-item">
+                    <span class="num part1">2</span>
+                    The Problem We're Solving
+                </a>
+                <a href="chapter-3.html" class="nav-item">
+                    <span class="num part1">3</span>
+                    The Proof
+                </a>
             </div>
 
+            <!-- Part 2: The Method -->
             <p class="nav-section-title">Part 2 — The Method</p>
             <div class="nav-section">
-                <a href="chapter-4.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">4</span>Four Non-Negotiables</a>
-                <a href="chapter-5.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">5</span>Adaptable Components</a>
-                <a href="chapter-6.html" class="nav-item"><span class="num bg-tps-green text-tps-dark">6</span>Certified Employer Program</a>
+                <a href="chapter-4.html" class="nav-item">
+                    <span class="num part2">4</span>
+                    Four Non-Negotiables
+                </a>
+                <a href="chapter-5.html" class="nav-item">
+                    <span class="num part2">5</span>
+                    Adaptable Components
+                </a>
+                <a href="chapter-6.html" class="nav-item">
+                    <span class="num part2">6</span>
+                    Certified Employer Program
+                </a>
             </div>
 
+            <!-- Part 3: Implementation -->
             <p class="nav-section-title">Part 3 — Implementation</p>
             <div class="nav-section">
-                <a href="chapter-7.html" class="nav-item"><span class="num bg-part3-blue text-white">7</span>The Phased Approach</a>
-                <a href="chapter-8.html" class="nav-item"><span class="num bg-part3-blue text-white">8</span>Building Your Team</a>
-                <a href="chapter-9.html" class="nav-item"><span class="num bg-red-700 text-white">9</span>What Kills Programs</a>
+                <a href="chapter-7.html" class="nav-item">
+                    <span class="num part3">7</span>
+                    The Phased Approach
+                </a>
+                <a href="chapter-8.html" class="nav-item">
+                    <span class="num part3">8</span>
+                    Building Your Team
+                </a>
+                <a href="chapter-9.html" class="nav-item">
+                    <span class="num warning">9</span>
+                    What Kills Programs
+                </a>
             </div>
 
+            <!-- Part 4: Scale -->
             <p class="nav-section-title">Part 4 — Scale</p>
             <div class="nav-section">
-                <a href="chapter-10.html" class="nav-item"><span class="num bg-part4-grey text-white">10</span>Funding</a>
-                <a href="chapter-11.html" class="nav-item active"><span class="num bg-part4-grey text-white">11</span>Adapting the Model</a>
-                <a href="chapter-12.html" class="nav-item"><span class="num bg-part4-grey text-white">12</span>Scaling Beyond</a>
+                <a href="chapter-10.html" class="nav-item">
+                    <span class="num part4">10</span>
+                    Funding & Unit Economics
+                </a>
+                <a href="chapter-11.html" class="nav-item active">
+                    <span class="num part4">11</span>
+                    Adapting the Model
+                </a>
+                <a href="chapter-12.html" class="nav-item">
+                    <span class="num part4">12</span>
+                    Scaling Beyond
+                </a>
             </div>
 
-            <!-- Part 5 - Research -->
+            <!-- Part 5: Research -->
             <p class="nav-section-title">Part 5 — Research</p>
             <div class="nav-section">
                 <a href="chapter-15.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">15</span>
-                    Evidence Foundation
+                    <span class="num part5">15</span>
+                    The Evidence Base
                 </a>
                 <a href="chapter-16.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">16</span>
-                    Benefits Cliff Research
+                    <span class="num part5">16</span>
+                    Competitive Landscape
                 </a>
                 <a href="chapter-17.html" class="nav-item">
-                    <span class="num bg-part4-grey text-white">17</span>
-                    Research Bibliography
+                    <span class="num part5">17</span>
+                    Scaling with Fidelity
                 </a>
             </div>
 
+            <!-- Training Academy -->
             <p class="nav-section-title">Training Academy</p>
             <div class="nav-section">
                 <a href="chapter-14.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                     </svg>
                     Poverty IQ for Employers
                 </a>
                 <a href="chapter-13.html" class="nav-item">
-                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                     Templates & Tools
                 </a>
             </div>
+
+            <!-- Tools -->
+            <p class="nav-section-title">Tools</p>
+            <div class="nav-section">
+                <a href="../tools/employer-roi-calculator.html" class="nav-item">
+                    <svg class="w-5 h-5 mr-2 text-tps-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    Employer ROI Calculator
+                </a>
+            </div>
         </nav>
 
+        <!-- Footer -->
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
             <a href="mailto:info@thepovertysolution.com" class="flex items-center text-xs text-gray-500 hover:text-empower-blue transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -341,1063 +200,1122 @@
         </div>
     </aside>
 
-    <main class="main-content min-h-screen" id="main-content">
-        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-gray-100 px-6 py-3">
-            <div class="flex items-center justify-between">
+    <!-- MAIN CONTENT -->
+    <main class="main-content min-h-screen" id="chapter-content">
+
+        <!-- Top Bar (sticky) -->
+        <header class="top-header">
+            <div class="flex items-center justify-between max-w-7xl mx-auto">
                 <div class="flex items-center space-x-3">
-                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()">
+                    <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()" aria-label="Open navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
                     <span class="text-sm text-gray-400">Part 4 — Scale</span>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs bg-tps-green/20 text-tps-dark px-2 py-1 rounded font-medium">EXPANDED</span>
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs text-gray-400 hide-mobile">18 min read</span>
+                    <span class="badge badge-green">PDF GUIDES INCLUDED</span>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Header -->
-        <div class="bg-gradient-to-br from-[#545454] to-[#374151] text-white px-6 lg:px-12 py-12">
+        <!-- Chapter Header (Hero) - Part 4 Grey -->
+        <div class="chapter-header part4 text-white px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
                 <div class="flex items-center gap-3 mb-4">
-                    <p class="text-white/80 text-sm font-medium">Chapter 11</p>
-                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">18 min read</span>
-                    <span class="text-xs bg-tps-green text-tps-dark px-2 py-1 rounded-full font-semibold">PDF GUIDES INCLUDED</span>
+                    <span class="badge badge-white">Chapter 11</span>
+                    <span class="badge badge-green flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        18 min read
+                    </span>
                 </div>
-                <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight mb-4">
                     Adapting the Model
                 </h1>
-                <p class="text-white/90 text-xl max-w-2xl">
-                    How the Four Non-Negotiables translate to any agency, program, workplace, or school system—with step-by-step implementation guides for each sector.
+                <p class="text-lg text-white/80 max-w-2xl">
+                    The Four Non-Negotiables work anywhere families face poverty. Here's how to deploy them in any agency, workplace, or school system.
                 </p>
             </div>
         </div>
 
+        <!-- Chapter Content -->
         <div class="px-6 lg:px-12 py-10">
-            <div class="max-w-7xl mx-auto content-with-toc">
-            <div class="prose">
+            <div class="max-w-7xl mx-auto">
 
-                <p class="prose-lead mb-8">
-                    The Empower Method isn't locked to TANF populations in rural Tennessee. The Four Non-Negotiables are <strong>systems infrastructure</strong>—they describe HOW you coordinate support, not WHAT support you provide. This makes them adaptable to any organization working with people navigating economic instability, educational barriers, or life transitions.
-                </p>
+                <!-- Content with TOC sidebar -->
+                <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
 
-                <!-- Core Principle Box -->
-                <div class="bg-black p-8 rounded-2xl mb-12 not-prose">
-                    <h3 style="color: #a3c520;" class="font-bold text-xl mb-4">The Universal Truth</h3>
-                    <p style="color: rgba(255,255,255,0.9);" class="text-lg mb-6">The Four Non-Negotiables remain constant. The application adapts to your context:</p>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">1</p>
-                            <p style="color: #ffffff;" class="font-medium">Benefits Cliff Navigation</p>
-                        </div>
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">2</p>
-                            <p style="color: #ffffff;" class="font-medium">Navigator Relationship</p>
-                        </div>
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">3</p>
-                            <p style="color: #ffffff;" class="font-medium">Wraparound Coordination</p>
-                        </div>
-                        <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
-                            <p style="color: #a3c520; font-size: 2.25rem; font-weight: 800;" class="mb-2">4</p>
-                            <p style="color: #ffffff;" class="font-medium">Data Dashboard</p>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Main Prose Content -->
+                    <div class="prose">
 
-                <!-- PDF Guide Notice -->
-                <div class="bg-gradient-to-r from-tps-green/10 to-empower-blue/10 border-2 border-tps-green/30 rounded-2xl p-6 mb-10 not-prose">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-14 h-14 bg-tps-green rounded-xl flex items-center justify-center flex-shrink-0">
-                            <svg class="w-7 h-7 text-tps-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-empower-blue text-lg mb-2">Downloadable Implementation Guides</h3>
-                            <p class="text-gray-600">Each adaptation section below includes a downloadable PDF with step-by-step implementation checklists, timeline templates, and customizable resources. These guides provide the roadmap—for full implementation support with training, technical assistance, and ongoing coaching, partner with The Poverty Solution team.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <h2 id="social-services">11.1 Social Services Agency Adaptations</h2>
-
-                <!-- HRA Adaptation -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-empower-blue text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Community Action</span>
-                                <h3 class="font-bold text-xl">Human Resource Agencies (HRA)</h3>
-                            </div>
-                            <a href="../guides/hra-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download HRA Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">Community Action Agencies and HRAs already serve ALICE populations across multiple program areas. The Empower Method provides the coordination layer they're missing.</p>
-
-                        <h4 class="font-semibold text-gray-900 mb-3">How the Four Non-Negotiables Apply:</h4>
-                        <div class="space-y-4 text-sm mb-6">
-                            <div class="flex items-start">
-                                <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">1</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Benefits Cliff Navigation</p>
-                                    <p class="text-gray-500">Use existing LIHEAP, weatherization, and housing data to map complete benefits picture. Add cliff modeling before employment referrals.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">2</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Navigator Model</p>
-                                    <p class="text-gray-500">Convert existing case managers to navigators. Key shift: same person stays with family across ALL programs.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">3</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Wraparound Coordination</p>
-                                    <p class="text-gray-500">HRAs already touch housing, energy, food. Empower aligns all services toward one goal: livable wage employment.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">4</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Data Dashboard</p>
-                                    <p class="text-gray-500">Unify existing program databases. Create single family view. Track outcomes, not just enrollments.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-tps-green/10 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-tps-dark">Key Insight:</strong> HRAs often have the programs but lack the coordination. Empower provides the "connective tissue" to make existing services work as a system.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Development Districts -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-purple-700 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Regional Planning</span>
-                                <h3 class="font-bold text-xl">Development Districts (DD)</h3>
-                            </div>
-                            <a href="../guides/development-districts-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download DD Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">Development Districts focus on regional economic development and workforce. The Empower Method adds family-level precision to regional strategies.</p>
-
-                        <div class="grid md:grid-cols-2 gap-4 mb-6">
-                            <div class="bg-gray-50 p-4 rounded-xl">
-                                <h5 class="font-semibold text-gray-900 mb-2">What DDs Bring</h5>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• Regional employer relationships</li>
-                                    <li>• Workforce funding streams</li>
-                                    <li>• Training provider networks</li>
-                                    <li>• Economic development expertise</li>
-                                </ul>
-                            </div>
-                            <div class="bg-tps-green/10 p-4 rounded-xl">
-                                <h5 class="font-semibold text-tps-dark mb-2">What Empower Adds</h5>
-                                <ul class="text-sm text-gray-700 space-y-1">
-                                    <li>• Family-level navigation</li>
-                                    <li>• Benefits cliff expertise</li>
-                                    <li>• 18-24 month commitment model</li>
-                                    <li>• Outcomes tracking infrastructure</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="bg-purple-50 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-purple-700">Key Insight:</strong> DDs bring regional employer relationships and workforce funding. Empower adds the family-level navigation that makes placements stick.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recovery Programs -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-teal-600 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Recovery Services</span>
-                                <h3 class="font-bold text-xl">Substance Abuse Recovery Programs</h3>
-                            </div>
-                            <a href="../guides/recovery-programs-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download Recovery Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">"Empower and recovery models are essentially the same work, just at different stages of a person's journey." Recovery stabilizes first; Empower provides the economic mobility pathway that follows.</p>
-
-                        <!-- Recovery Research Box -->
-                        <div style="background: #1a1a1a; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                            <h5 style="color: #a3c520; font-weight: 600; margin-bottom: 12px;">Research: Recovery Employment Evidence</h5>
-                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                                <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
-                                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 4px;">IPS Model</p>
-                                    <p style="color: rgba(255,255,255,0.7); font-size: 0.8125rem;">Most evidence-based employment model for recovery populations</p>
-                                </div>
-                                <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
-                                    <p style="color: #a3c520; font-weight: 700; margin-bottom: 4px;">13.4% to 2.9%</p>
-                                    <p style="color: rgba(255,255,255,0.7); font-size: 0.8125rem;">Uninsured rate drop for opioid hospitalizations in Medicaid expansion states</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-teal-50 p-4 rounded-xl mb-6">
-                            <h5 class="font-semibold text-teal-800 mb-2">Critical Integration Point</h5>
-                            <p class="text-sm text-gray-700">Many in recovery receive Medicaid, SNAP, disability benefits. Cliff navigation prevents employment from triggering benefit loss during the vulnerable transition period—when losing healthcare or housing support could trigger relapse. <strong>Individual Placement and Support (IPS)</strong> is the most evidence-based employment model for recovery populations.</p>
-                        </div>
-
-                        <div class="bg-gray-50 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-teal-700">Key Insight:</strong> Recovery programs focus on stabilization; Empower provides the "what comes next" pathway. In Medicaid expansion states, uninsured rates for opioid-related hospitalizations dropped from 13.4% to 2.9%—demonstrating the critical role of healthcare access in recovery success.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Re-entry Programs -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-[#545454] text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Justice-Involved</span>
-                                <h3 class="font-bold text-xl">Re-Entry Programs (Returning Citizens)</h3>
-                            </div>
-                            <a href="../guides/reentry-programs-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download Re-Entry Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">Returning citizens face all standard barriers plus additional ones: criminal record, supervision requirements, gaps in work history, employer hesitancy. The Empower Method provides structure for this complex navigation.</p>
-
-                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6">
-                            <p class="text-sm text-amber-800"><strong>Why Navigator Model is Critical:</strong> Returning citizens have been failed by institutions repeatedly. Trust-based navigation over 18-24 months is essential. This population needs consistency, not handoffs.</p>
-                        </div>
-
-                        <div class="bg-gray-50 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-gray-700">Key Insight:</strong> Employer certification is especially critical here. Certified employers understand background check navigation and commit to fair-chance hiring practices.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h2 id="education">11.2 Education System Adaptations</h2>
-
-                <p>
-                    Here's the breakthrough: <strong>the same barriers that trap adults in poverty are the same barriers that prevent children from graduating.</strong> Family economic instability directly impacts student attendance, performance, and graduation rates. The Empower Method can transform educational outcomes by wrapping support around the entire family—not just the student.
-                </p>
-
-                <!-- Research Evidence Box for Education -->
-                <div style="background: #1a1a1a; border-radius: 12px; padding: 24px; margin: 24px 0;" class="not-prose">
-                    <h4 style="color: #a3c520; font-weight: 700; margin-bottom: 16px;">Research: Education Wraparound Impact</h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px;">
-                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; text-align: center;">
-                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">82%</p>
-                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Parent certification rate at CAP Tulsa</p>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; text-align: center;">
-                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">38% to 22%</p>
-                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Absenteeism reduction (GA school)</p>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; text-align: center;">
-                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">$15:$1</p>
-                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Community schools ROI</p>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; text-align: center;">
-                            <p style="color: #a3c520; font-size: 1.75rem; font-weight: 700; margin-bottom: 4px;">Substantial</p>
-                            <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">Chronic absence reduction (CAP Tulsa)</p>
-                        </div>
-                    </div>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.875rem; font-style: italic;">CAP Tulsa's CareerAdvance program achieved 82% parent certification rates and substantially reduced chronic absence. A Georgia school implementing wraparound services saw absenteeism drop from 38% to 22%. Community schools research shows $15 return per $1 spent.</p>
-                </div>
-
-                <!-- K-12 Education -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">K-12 Education</span>
-                                <h3 class="font-bold text-xl">Student Success & Graduation Navigator</h3>
-                            </div>
-                            <a href="../guides/k12-education-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download K-12 Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 mb-6">
-                            <h4 class="font-bold text-blue-900 text-lg mb-2">The Hidden Connection</h4>
-                            <p class="text-gray-700">Research shows that <strong>family economic instability is the #1 predictor of dropout risk</strong>—more than academic performance. When parents face eviction, lose childcare for siblings, or work multiple jobs, students miss school, can't focus, and eventually disengage. Addressing family barriers IS addressing student success.</p>
-                        </div>
-
-                        <h4 class="font-semibold text-gray-900 mb-3">How the Four Non-Negotiables Apply to K-12:</h4>
-                        <div class="space-y-4 text-sm mb-6">
-                            <div class="flex items-start">
-                                <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">1</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Benefits Cliff Navigation → Family Stability Planning</p>
-                                    <p class="text-gray-500">When families face benefits cliffs, students face attendance cliffs. Help parents navigate income changes so children don't become collateral damage. Partner with workforce agencies to support parent employment.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">2</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Navigator Model → Family Success Coach</p>
-                                    <p class="text-gray-500">One Family Success Coach per 30-40 at-risk families. Same person for 4+ years (elementary through middle school transition, middle through high school). Builds trust that traditional guidance counselors can't.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">3</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Wraparound Coordination → Community Schools Model</p>
-                                    <p class="text-gray-500">Coordinate all services toward family economic stability: housing, food, healthcare, childcare, transportation—all supporting parents' path to livable wage jobs.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">4</span>
-                                <div>
-                                    <p class="font-semibold text-gray-900">Data Dashboard → Early Warning System</p>
-                                    <p class="text-gray-500">Track: attendance patterns, grade trends, behavior incidents, family stability indicators. Predict dropout risk 2-3 years before it happens. Intervene early.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-4 mb-6">
-                            <div class="bg-green-50 p-4 rounded-xl text-center">
-                                <p style="font-size: 1.875rem; font-weight: 800; color: #15803d;">+23%</p>
-                                <p class="text-sm text-gray-600">Graduation rate improvement with family wraparound</p>
-                            </div>
-                            <div class="bg-blue-50 p-4 rounded-xl text-center">
-                                <p style="font-size: 1.875rem; font-weight: 800; color: #1d4ed8;">-40%</p>
-                                <p class="text-sm text-gray-600">Chronic absenteeism reduction</p>
-                            </div>
-                            <div class="bg-purple-50 p-4 rounded-xl text-center">
-                                <p style="font-size: 1.875rem; font-weight: 800; color: #7e22ce;">2.5x</p>
-                                <p class="text-sm text-gray-600">Higher college enrollment rate</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-5 rounded-xl">
-                            <h5 class="font-bold mb-2">University Pipeline Impact</h5>
-                            <p class="text-blue-100 text-sm">Students whose families receive navigator support are 2.5x more likely to enroll in post-secondary education. By addressing family economic barriers, you're not just improving graduation rates—you're building the pipeline to college and career success.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Early Childhood -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-gradient-to-r from-pink-500 to-rose-600 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Ages 0-5</span>
-                                <h3 class="font-bold text-xl">Early Childhood & Head Start</h3>
-                            </div>
-                            <a href="../guides/early-childhood-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download Early Childhood Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">Head Start already embraces two-generation approaches. The Empower Method provides the economic mobility infrastructure that makes parent services transformational rather than supplemental.</p>
-
-                        <div class="bg-rose-50 p-4 rounded-xl mb-6">
-                            <h5 class="font-semibold text-rose-800 mb-2">The Childcare Cliff Crisis</h5>
-                            <p class="text-sm text-gray-700">Childcare subsidies have some of the steepest benefits cliffs. A $0.50/hour raise can cost a family $8,000+ in childcare benefits. Early childhood programs are perfectly positioned to help families navigate these cliffs BEFORE they lose childcare.</p>
-                        </div>
-
-                        <div class="bg-gray-50 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-rose-600">Key Insight:</strong> When you stabilize the family during ages 0-5, you set the trajectory for K-12 success. Early intervention has the highest ROI of any education investment.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h2 id="government">11.3 Government & Healthcare Adaptations</h2>
-
-                <!-- TANF/DHS -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-gradient-to-r from-emerald-600 to-green-700 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">State Government</span>
-                                <h3 class="font-bold text-xl">TANF & Human Services Departments</h3>
-                            </div>
-                            <a href="../guides/tanf-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download TANF Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">State TANF programs have flexibility to innovate. The Empower Method transforms TANF from compliance-focused welfare to outcomes-focused economic mobility—exactly what federal guidelines now encourage.</p>
-
-                        <div class="bg-emerald-50 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-emerald-700">Key Insight:</strong> TANF flexibility funds can support navigator positions, benefits cliff tools, and data infrastructure. States that adopt the model see higher work participation rates AND better long-term outcomes.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Housing Authorities -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Housing</span>
-                                <h3 class="font-bold text-xl">Public Housing Authorities</h3>
-                            </div>
-                            <a href="../guides/housing-authorities-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download Housing Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">Housing voucher and public housing residents are often ALICE families stuck on waiting lists for years. The Empower Method helps families prepare for—and maintain—housing stability through economic advancement.</p>
-
-                        <!-- Housing First Research -->
-                        <div style="background: #1a1a1a; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
-                            <div style="display: flex; align-items: center; gap: 16px;">
-                                <div style="background: rgba(163,197,32,0.2); padding: 12px 16px; border-radius: 8px; text-align: center;">
-                                    <p style="color: #a3c520; font-size: 1.5rem; font-weight: 700;">$1.44</p>
-                                    <p style="color: rgba(255,255,255,0.7); font-size: 0.75rem;">return per $1</p>
-                                </div>
-                                <p style="color: rgba(255,255,255,0.85); font-size: 0.875rem;"><strong style="color: #a3c520;">Housing First</strong> research demonstrates $1.44 return per $1 invested through reduced emergency services, healthcare costs, and criminal justice involvement.</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-amber-50 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-amber-700">Key Insight:</strong> HUD's Family Self-Sufficiency (FSS) program is a natural fit. Empower's navigator model enhances FSS with benefits cliff navigation and wraparound coordination.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Community Health Centers -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-gradient-to-r from-red-500 to-pink-600 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Healthcare</span>
-                                <h3 class="font-bold text-xl">Community Health Centers (FQHCs)</h3>
-                            </div>
-                            <a href="../guides/fqhc-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download FQHC Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">FQHCs serve ALICE populations and understand social determinants of health. The Empower Method gives Community Health Workers the economic navigation tools to address the root causes of health disparities.</p>
-
-                        <div class="bg-red-50 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-red-700">Key Insight:</strong> Healthcare settings are trusted access points. Patients share information with CHWs they wouldn't share elsewhere. Benefits cliff navigation prevents Medicaid loss that would devastate health outcomes.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Veterans Services -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-gradient-to-r from-slate-700 to-slate-800 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Veterans</span>
-                                <h3 class="font-bold text-xl">Veterans Services Organizations</h3>
-                            </div>
-                            <a href="../guides/veterans-services-implementation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download Veterans Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-gray-600 mb-5">Veterans transitioning to civilian life face unique challenges: translating military skills, navigating VA benefits, addressing service-connected conditions while building careers. The navigator model respects military culture while providing civilian navigation.</p>
-
-                        <div class="bg-slate-100 p-4 rounded-xl">
-                            <p class="text-sm text-gray-700"><strong class="text-slate-700">Key Insight:</strong> Veterans often have access to benefits they don't know about—and face cliffs when VA disability interacts with employment income. Benefits cliff navigation is critical.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <h2 id="workplace">11.4 Workplace Adaptation: Supervisor-as-Navigator</h2>
-
-                <p>
-                    Here's the breakthrough insight: <strong>the Empower Method doesn't require a social service agency to implement.</strong> Any employer with ALICE workers can adopt these principles—with supervisors serving as workplace navigators.
-                </p>
-
-                <div class="bg-empower-blue/5 border-2 border-empower-blue rounded-xl p-6 my-8 not-prose">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-14 h-14 bg-empower-blue rounded-xl flex items-center justify-center flex-shrink-0">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-empower-blue text-xl mb-2">The Business Case</h3>
-                            <p class="text-gray-600">The average cost of turnover for an hourly employee is $3,500-$5,000. If benefits cliffs cause 20% of your ALICE workforce to leave (or refuse promotions), that's massive hidden cost. Supervisor-navigator training pays for itself in reduced turnover.</p>
-                            <a href="../guides/employer-implementation-guide.html" target="_blank" class="pdf-download-btn mt-4 inline-flex">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download Employer Implementation Guide
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <!-- Technical Assistance CTA -->
-                <div class="bg-gradient-to-br from-tps-dark to-gray-900 rounded-2xl p-8 my-12 not-prose relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-tps-green/10 rounded-full blur-3xl"></div>
-                    <div class="absolute bottom-0 left-0 w-48 h-48 bg-empower-blue/10 rounded-full blur-3xl"></div>
-
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-tps-green rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-tps-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                            </div>
-                            <span style="color: #a3c520;" class="text-sm font-semibold uppercase tracking-wide">Full Implementation Support</span>
-                        </div>
-
-                        <h3 style="color: #ffffff;" class="text-3xl font-bold mb-4">Ready to Implement? Partner with The Poverty Solution.</h3>
-
-                        <p style="color: rgba(255,255,255,0.8);" class="text-lg mb-6 max-w-2xl">
-                            The PDF guides provide the roadmap. For full implementation with the highest probability of success, our technical assistance team provides:
+                        <!-- Lead paragraph -->
+                        <p class="text-xl text-gray-500 mb-10 leading-relaxed">
+                            The Empower Method didn't start in rural Tennessee and stop there. The Four Non-Negotiables are <strong>systems infrastructure</strong>. They define HOW you coordinate support, not WHAT support you provide. That makes them portable. Any organization working with families navigating economic instability can use them.
                         </p>
 
-                        <div class="grid md:grid-cols-2 gap-4 mb-8">
-                            <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
-                                <h4 style="color: #a3c520;" class="font-semibold mb-2">Training & Certification</h4>
-                                <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
-                                    <li>• Navigator certification program</li>
-                                    <li>• Leadership alignment workshops</li>
-                                    <li>• Poverty IQ employer training</li>
-                                    <li>• Benefits cliff tool mastery</li>
+                        <!-- Core Principle Box -->
+                        <div class="callout callout-dark">
+                            <h3 class="font-bold text-xl mb-4" style="color: var(--tps-green);">The Universal Truth</h3>
+                            <p style="color: rgba(255,255,255,0.9);" class="text-lg mb-6">The Four Non-Negotiables stay locked. Everything else adapts to your context:</p>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
+                                    <p style="color: var(--tps-green); font-size: 2.25rem; font-weight: 800;" class="mb-2">1</p>
+                                    <p style="color: #ffffff;" class="font-medium">Benefits Cliff Navigation</p>
+                                </div>
+                                <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
+                                    <p style="color: var(--tps-green); font-size: 2.25rem; font-weight: 800;" class="mb-2">2</p>
+                                    <p style="color: #ffffff;" class="font-medium">Navigator Relationship</p>
+                                </div>
+                                <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
+                                    <p style="color: var(--tps-green); font-size: 2.25rem; font-weight: 800;" class="mb-2">3</p>
+                                    <p style="color: #ffffff;" class="font-medium">Wraparound Coordination</p>
+                                </div>
+                                <div style="border: 2px solid rgba(163, 197, 32, 0.6);" class="p-4 rounded-xl">
+                                    <p style="color: var(--tps-green); font-size: 2.25rem; font-weight: 800;" class="mb-2">4</p>
+                                    <p style="color: #ffffff;" class="font-medium">Data Dashboard</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PDF Guide Notice -->
+                        <div class="bg-gradient-to-r from-tps-green/10 to-empower-blue/10 border-2 border-tps-green/30 rounded-2xl p-6 mb-10 not-prose">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-14 h-14 bg-tps-green rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-7 h-7 text-tps-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-empower-blue text-lg mb-2">Downloadable Implementation Guides</h3>
+                                    <p class="text-gray-600">Every adaptation below includes a downloadable PDF with step-by-step checklists, timeline templates, and customizable resources. These guides give you the roadmap. For full implementation support with training and coaching, partner with The Poverty Solution team.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2 id="social-services">11.1 Social Services Agency Adaptations</h2>
+
+                        <!-- HRA Adaptation -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-empower-blue text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Community Action</span>
+                                        <h3 class="font-bold text-xl">Human Resource Agencies (HRA)</h3>
+                                    </div>
+                                    <a href="../guides/hra-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download HRA Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">Community Action Agencies and HRAs already serve ALICE families across multiple programs. They have the pieces. The Empower Method gives them the coordination layer that connects everything.</p>
+
+                                <h4 class="font-semibold text-gray-900 mb-3">How the Four Non-Negotiables Apply:</h4>
+                                <div class="space-y-4 text-sm mb-6">
+                                    <div class="flex items-start">
+                                        <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">1</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Benefits Cliff Navigation</p>
+                                            <p class="text-gray-500">Use existing LIHEAP, weatherization, and housing data to map the full benefits picture. Model the cliff before making any employment referral.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">2</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Navigator Model</p>
+                                            <p class="text-gray-500">Convert case managers into navigators. The key shift: one person stays with the family across ALL programs. No handoffs.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">3</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Wraparound Coordination</p>
+                                            <p class="text-gray-500">HRAs already touch housing, energy, and food. Empower points every service toward one goal: a livable-wage career.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-tps-green text-tps-dark w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">4</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Data Dashboard</p>
+                                            <p class="text-gray-500">Unify program databases. Build a single family view. Track outcomes, not enrollments.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-tps-green/10 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-tps-dark">Key Insight:</strong> HRAs have the programs. They lack the connective tissue. Empower turns a pile of services into a system.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Development Districts -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-purple-700 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Regional Planning</span>
+                                        <h3 class="font-bold text-xl">Development Districts (DD)</h3>
+                                    </div>
+                                    <a href="../guides/development-districts-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download DD Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">Development Districts drive regional economic development and workforce strategy. The Empower Method adds family-level precision to that regional engine.</p>
+
+                                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                                    <div class="bg-gray-50 p-4 rounded-xl">
+                                        <h5 class="font-semibold text-gray-900 mb-2">What DDs Already Have</h5>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• Employer relationships across the region</li>
+                                            <li>• Workforce funding streams</li>
+                                            <li>• Training provider networks</li>
+                                            <li>• Economic development know-how</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-tps-green/10 p-4 rounded-xl">
+                                        <h5 class="font-semibold text-tps-dark mb-2">What Empower Adds</h5>
+                                        <ul class="text-sm text-gray-700 space-y-1">
+                                            <li>• Family-level navigation</li>
+                                            <li>• Benefits cliff expertise</li>
+                                            <li>• 18-24 month commitment model</li>
+                                            <li>• Outcomes tracking infrastructure</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="bg-purple-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-purple-700">Key Insight:</strong> DDs connect employers and funding. Empower adds the family-level navigation that makes job placements stick.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recovery Programs -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-teal-600 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Recovery Services</span>
+                                        <h3 class="font-bold text-xl">Substance Abuse Recovery Programs</h3>
+                                    </div>
+                                    <a href="../guides/recovery-programs-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download Recovery Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">Recovery stabilizes. Empower builds the economic path forward. They're the same work at different stages. Recovery gets families standing. Empower gets them moving.</p>
+
+                                <!-- Recovery Research Box -->
+                                <div class="data-box mb-5">
+                                    <h5 class="font-semibold mb-3" style="color: var(--tps-green);">Research: Recovery + Employment Evidence</h5>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div class="bg-white/5 p-3 rounded-lg">
+                                            <p class="font-bold mb-1" style="color: var(--tps-green);">IPS Model</p>
+                                            <p class="text-sm" style="color: rgba(255,255,255,0.7);">Strongest evidence-based employment model for recovery</p>
+                                        </div>
+                                        <div class="bg-white/5 p-3 rounded-lg">
+                                            <p class="font-bold mb-1" style="color: var(--tps-green);">13.4% to 2.9%</p>
+                                            <p class="text-sm" style="color: rgba(255,255,255,0.7);">Uninsured rate drop for opioid hospitalizations in Medicaid expansion states</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-teal-50 p-4 rounded-xl mb-6">
+                                    <h5 class="font-semibold text-teal-800 mb-2">Critical Integration Point</h5>
+                                    <p class="text-sm text-gray-700">Many families in recovery receive Medicaid, SNAP, and disability benefits. Without benefits cliff navigation, a new job can trigger benefit loss at the worst possible moment. Losing healthcare or housing support during early recovery can trigger relapse. <strong>Individual Placement and Support (IPS)</strong> is the strongest evidence-based employment model for this work.</p>
+                                </div>
+
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-teal-700">Key Insight:</strong> Recovery programs stabilize. Empower provides the "what comes next." In Medicaid expansion states, uninsured rates for opioid-related hospitalizations dropped from 13.4% to 2.9%. Healthcare access during recovery isn't optional. It's the difference between relapse and a livable-wage career.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Re-entry Programs -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-part4-grey text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Justice-Involved</span>
+                                        <h3 class="font-bold text-xl">Re-Entry Programs (Returning Citizens)</h3>
+                                    </div>
+                                    <a href="../guides/reentry-programs-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download Re-Entry Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">Returning citizens face every standard barrier plus more: criminal records, supervision requirements, work history gaps, employer hesitancy. The Empower Method gives navigators a structure for this layered navigation.</p>
+
+                                <div class="callout callout-warning mb-6">
+                                    <p class="text-sm"><strong>Why the Navigator Model is Critical:</strong> These families have been failed by institutions over and over. Trust takes time. One navigator. 18-24 months. No handoffs. Consistency is everything.</p>
+                                </div>
+
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-gray-700">Key Insight:</strong> Certified employers matter most here. They understand background check navigation and commit to fair-chance hiring. Without them, returning citizens hit a wall.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h2 id="education">11.2 Education System Adaptations</h2>
+
+                        <p>
+                            Here's the breakthrough: <strong>the same barriers that trap families in poverty are the same barriers that prevent children from graduating.</strong> When families can't pay rent, kids miss school. When parents lose childcare, teenagers drop out to babysit. The Empower Method transforms educational outcomes by wrapping support around the whole family. Not just the student.
+                        </p>
+
+                        <!-- Research Evidence Box for Education -->
+                        <div class="data-box my-6">
+                            <h4 class="font-bold mb-4" style="color: var(--tps-green);">Research: Family Wraparound Drives School Outcomes</h4>
+                            <div class="grid grid-cols-2 gap-3 mb-4">
+                                <div class="bg-white/5 p-4 rounded-lg text-center">
+                                    <p class="text-2xl font-bold mb-1" style="color: var(--tps-green);">82%</p>
+                                    <p class="text-sm" style="color: rgba(255,255,255,0.7);">Parent certification rate at CAP Tulsa</p>
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-lg text-center">
+                                    <p class="text-2xl font-bold mb-1" style="color: var(--tps-green);">38% to 22%</p>
+                                    <p class="text-sm" style="color: rgba(255,255,255,0.7);">Absenteeism reduction (GA school)</p>
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-lg text-center">
+                                    <p class="text-2xl font-bold mb-1" style="color: var(--tps-green);">$15:$1</p>
+                                    <p class="text-sm" style="color: rgba(255,255,255,0.7);">Community schools ROI</p>
+                                </div>
+                                <div class="bg-white/5 p-4 rounded-lg text-center">
+                                    <p class="text-2xl font-bold mb-1" style="color: var(--tps-green);">Substantial</p>
+                                    <p class="text-sm" style="color: rgba(255,255,255,0.7);">Chronic absence reduction (CAP Tulsa)</p>
+                                </div>
+                            </div>
+                            <p class="text-sm italic" style="color: rgba(255,255,255,0.7);">CAP Tulsa's CareerAdvance program: 82% parent certification rate. Chronic absence dropped substantially. A Georgia school with wraparound services cut absenteeism from 38% to 22%. Community schools return $15 for every $1 spent.</p>
+                        </div>
+
+                        <!-- K-12 Education -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">K-12 Education</span>
+                                        <h3 class="font-bold text-xl">Student Success & Graduation Navigator</h3>
+                                    </div>
+                                    <a href="../guides/k12-education-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download K-12 Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 mb-6">
+                                    <h4 class="font-bold text-blue-900 text-lg mb-2">The Hidden Connection</h4>
+                                    <p class="text-gray-700"><strong>Family economic instability is the #1 predictor of dropout risk</strong>. Not grades. Not test scores. When parents face eviction, lose childcare, or juggle three jobs, kids miss school. They can't focus. They disengage. Fix the family's economic barriers and you fix student success.</p>
+                                </div>
+
+                                <h4 class="font-semibold text-gray-900 mb-3">How the Four Non-Negotiables Apply to K-12:</h4>
+                                <div class="space-y-4 text-sm mb-6">
+                                    <div class="flex items-start">
+                                        <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">1</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Benefits Cliff Navigation → Family Stability Planning</p>
+                                            <p class="text-gray-500">When families hit benefits cliffs, students hit attendance cliffs. Navigate income changes for parents so kids don't become collateral damage. Partner with workforce agencies to drive parent employment.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">2</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Navigator Model → Family Success Coach</p>
+                                            <p class="text-gray-500">One Family Success Coach per 30-40 families. Same person for 4+ years. Elementary through middle school. Middle through high school. Builds trust that guidance counselors rotating every semester never will.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">3</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Wraparound Coordination → Community Schools Model</p>
+                                            <p class="text-gray-500">Coordinate every service toward family economic stability. Housing. Food. Healthcare. Childcare. Transportation. All pointed at one target: parents on a path to livable-wage careers.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="bg-blue-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold mr-3 flex-shrink-0 text-xs">4</span>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">Data Dashboard → Early Warning System</p>
+                                            <p class="text-gray-500">Track attendance patterns, grade trends, behavior incidents, and family stability indicators. Predict dropout risk 2-3 years out. Intervene before the crisis hits.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                                    <div class="bg-green-50 p-4 rounded-xl text-center">
+                                        <p class="text-3xl font-extrabold text-green-700 mb-1">+23%</p>
+                                        <p class="text-sm text-gray-600">Graduation rate jump with family wraparound</p>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-xl text-center">
+                                        <p class="text-3xl font-extrabold text-blue-700 mb-1">-40%</p>
+                                        <p class="text-sm text-gray-600">Drop in chronic absenteeism</p>
+                                    </div>
+                                    <div class="bg-purple-50 p-4 rounded-xl text-center">
+                                        <p class="text-3xl font-extrabold text-purple-700 mb-1">2.5x</p>
+                                        <p class="text-sm text-gray-600">Higher college enrollment rate</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-5 rounded-xl">
+                                    <h5 class="font-bold mb-2">College Pipeline Impact</h5>
+                                    <p class="text-blue-100 text-sm">Families with navigator support produce students 2.5x more likely to enroll in post-secondary education. Address family economic barriers and you don't just improve graduation rates. You build the pipeline to college and livable-wage careers.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Early Childhood -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-gradient-to-r from-pink-500 to-rose-600 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Ages 0-5</span>
+                                        <h3 class="font-bold text-xl">Early Childhood & Head Start</h3>
+                                    </div>
+                                    <a href="../guides/early-childhood-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download Early Childhood Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">Head Start already thinks in two generations. The Empower Method gives that philosophy real economic mobility infrastructure. Parent services stop being supplemental. They become transformational.</p>
+
+                                <div class="bg-rose-50 p-4 rounded-xl mb-6">
+                                    <h5 class="font-semibold text-rose-800 mb-2">The Childcare Cliff Crisis</h5>
+                                    <p class="text-sm text-gray-700">Childcare subsidies have some of the steepest benefits cliffs in the system. A $0.50/hour raise can cost a family $8,000+ in childcare. Early childhood programs sit right at the cliff's edge. They can help families navigate it BEFORE childcare disappears.</p>
+                                </div>
+
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-rose-600">Key Insight:</strong> Stabilize a family during ages 0-5 and you set the trajectory for K-12 success. Early intervention delivers the highest ROI of any education investment. Period.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h2 id="government">11.3 Government & Healthcare Adaptations</h2>
+
+                        <!-- TANF/DHS -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-gradient-to-r from-emerald-600 to-green-700 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">State Government</span>
+                                        <h3 class="font-bold text-xl">TANF & Human Services Departments</h3>
+                                    </div>
+                                    <a href="../guides/tanf-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download TANF Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">State TANF programs have flexibility to innovate. Most don't use it. The Empower Method transforms TANF from compliance-driven welfare into outcomes-driven economic mobility. That's exactly what federal guidelines now push for.</p>
+
+                                <div class="bg-emerald-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-emerald-700">Key Insight:</strong> TANF flexibility funds can pay for navigator positions, benefits cliff tools, and data infrastructure. States that adopt this model see higher work participation rates AND better long-term outcomes.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Housing Authorities -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Housing</span>
+                                        <h3 class="font-bold text-xl">Public Housing Authorities</h3>
+                                    </div>
+                                    <a href="../guides/housing-authorities-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download Housing Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">Housing voucher and public housing residents are ALICE families. Many have waited years for stability. The Empower Method helps families prepare for housing independence and maintain it through economic advancement.</p>
+
+                                <!-- Housing First Research -->
+                                <div class="data-box mb-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-white/10 p-3 rounded-lg text-center">
+                                            <p class="text-2xl font-bold" style="color: var(--tps-green);">$1.44</p>
+                                            <p class="text-xs" style="color: rgba(255,255,255,0.7);">return per $1</p>
+                                        </div>
+                                        <p class="text-sm" style="color: rgba(255,255,255,0.85);"><strong style="color: var(--tps-green);">Housing First</strong> research: $1.44 back for every $1 invested. Reduced ER visits, lower healthcare costs, less criminal justice involvement.</p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-amber-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-amber-700">Key Insight:</strong> HUD's Family Self-Sufficiency (FSS) program is a natural fit. Layer Empower's navigator model on top. Add benefits cliff navigation and wraparound coordination. Now FSS actually moves families to self-sufficiency.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Community Health Centers -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-gradient-to-r from-red-500 to-pink-600 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Healthcare</span>
+                                        <h3 class="font-bold text-xl">Community Health Centers (FQHCs)</h3>
+                                    </div>
+                                    <a href="../guides/fqhc-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download FQHC Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">FQHCs already serve ALICE families. They already understand that health outcomes depend on housing, food, and income. The Empower Method gives Community Health Workers the economic navigation tools to attack root causes, not just symptoms.</p>
+
+                                <div class="bg-red-50 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-red-700">Key Insight:</strong> Healthcare settings are trusted ground. Families share things with CHWs they won't share anywhere else. Benefits cliff navigation prevents Medicaid loss that would wreck health outcomes overnight.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Veterans Services -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-gradient-to-r from-slate-700 to-slate-800 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">Veterans</span>
+                                        <h3 class="font-bold text-xl">Veterans Services Organizations</h3>
+                                    </div>
+                                    <a href="../guides/veterans-services-implementation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download Veterans Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-5">Veterans transitioning to civilian life face distinct barriers: translating military skills, navigating VA benefits, managing service-connected conditions while building careers. The navigator model respects military culture and provides the civilian-side navigation these families need.</p>
+
+                                <div class="bg-slate-100 p-4 rounded-xl">
+                                    <p class="text-sm text-gray-700"><strong class="text-slate-700">Key Insight:</strong> Veterans often qualify for benefits they don't know exist. And they face brutal cliffs when VA disability interacts with employment income. Benefits cliff navigation isn't optional here. It's essential.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h2 id="workplace">11.4 Workplace Adaptation: Supervisor-as-Navigator</h2>
+
+                        <p>
+                            Here's what most people miss: <strong>the Empower Method doesn't require a social service agency.</strong> Any employer with ALICE workers can adopt these principles. Supervisors become workplace navigators.
+                        </p>
+
+                        <div class="bg-empower-blue/5 border-2 border-empower-blue rounded-xl p-6 my-8 not-prose">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-14 h-14 bg-empower-blue rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-empower-blue text-xl mb-2">The Business Case</h3>
+                                    <p class="text-gray-600">Replacing one hourly employee costs $3,500-$5,000. If benefits cliffs push 20% of your ALICE workforce to quit or refuse promotions, that's a massive hidden cost. Supervisor-navigator training pays for itself in reduced turnover. Fast.</p>
+                                    <a href="../guides/employer-implementation-guide.html" target="_blank" class="pdf-download-btn mt-4 inline-flex">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download Employer Implementation Guide
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Technical Assistance CTA -->
+                        <div class="callout callout-dark my-12 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-tps-green/10 rounded-full blur-3xl"></div>
+                            <div class="absolute bottom-0 left-0 w-48 h-48 bg-empower-blue/10 rounded-full blur-3xl"></div>
+
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 bg-tps-green rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-tps-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                        </svg>
+                                    </div>
+                                    <span style="color: var(--tps-green);" class="text-sm font-semibold uppercase tracking-wide">Full Implementation Support</span>
+                                </div>
+
+                                <h3 style="color: #ffffff;" class="text-3xl font-bold mb-4">Ready to Move? Partner with The Poverty Solution.</h3>
+
+                                <p style="color: rgba(255,255,255,0.8);" class="text-lg mb-6 max-w-2xl">
+                                    The PDF guides give you the roadmap. For full implementation with the highest success rate, our team provides:
+                                </p>
+
+                                <div class="grid md:grid-cols-2 gap-4 mb-8">
+                                    <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
+                                        <h4 style="color: var(--tps-green);" class="font-semibold mb-2">Training & Certification</h4>
+                                        <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
+                                            <li>• Navigator certification program</li>
+                                            <li>• Leadership alignment workshops</li>
+                                            <li>• Poverty IQ employer training</li>
+                                            <li>• Benefits cliff tool mastery</li>
+                                        </ul>
+                                    </div>
+                                    <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
+                                        <h4 style="color: var(--tps-green);" class="font-semibold mb-2">Technical Assistance</h4>
+                                        <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
+                                            <li>• Implementation planning & phasing</li>
+                                            <li>• Data dashboard setup</li>
+                                            <li>• Partner coordination protocols</li>
+                                            <li>• Outcomes measurement design</li>
+                                        </ul>
+                                    </div>
+                                    <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
+                                        <h4 style="color: var(--tps-green);" class="font-semibold mb-2">Ongoing Coaching</h4>
+                                        <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
+                                            <li>• Monthly coaching calls</li>
+                                            <li>• Quarterly site visits</li>
+                                            <li>• Peer learning network access</li>
+                                            <li>• Continuous improvement support</li>
+                                        </ul>
+                                    </div>
+                                    <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
+                                        <h4 style="color: var(--tps-green);" class="font-semibold mb-2">Funding Support</h4>
+                                        <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
+                                            <li>• Grant writing assistance</li>
+                                            <li>• Funder presentation support</li>
+                                            <li>• ROI documentation</li>
+                                            <li>• Sustainability planning</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap gap-4">
+                                    <a href="mailto:info@thepovertysolution.com?subject=Implementation%20Partnership%20Inquiry" class="inline-flex items-center px-6 py-3 bg-tps-green text-tps-dark rounded-xl font-semibold hover:bg-white transition">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                        Request Implementation Partnership
+                                    </a>
+                                    <a href="https://thepovertysolution.com" target="_blank" style="color: var(--tps-green);" class="inline-flex items-center px-6 py-3 border border-tps-green/50 rounded-xl font-semibold hover:bg-tps-green/10 transition">
+                                        Learn More About TPS
+                                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h2 id="international">11.5 International Adaptation: Canada and Beyond</h2>
+
+                        <p class="text-xl text-gray-500 mb-8 leading-relaxed">
+                            Benefits cliffs exist everywhere social safety nets exist. The Four Non-Negotiables translate across borders. What changes is the language, agency names, and specific benefit structures. The core approach stays the same.
+                        </p>
+
+                        <!-- Canada Overview -->
+                        <div class="adaptation-card my-8 not-prose">
+                            <div class="bg-gradient-to-r from-red-600 to-red-700 text-white p-5">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div>
+                                        <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">International</span>
+                                        <h3 class="font-bold text-xl">Canada: Provincial Benefits, Federal Opportunity</h3>
+                                    </div>
+                                    <a href="../guides/canada-adaptation-guide.html" target="_blank" class="pdf-download-btn">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        Download Canada Adaptation Guide
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h4 class="font-semibold text-gray-900 mb-4">Why Canada First?</h4>
+                                <p class="text-gray-600 mb-5"><strong>Circles Canada already operates</strong> in Toronto and other communities. The infrastructure exists. What's missing is the economic navigation layer. That's exactly what Empower delivers.</p>
+
+                                <div class="grid md:grid-cols-3 gap-4 mb-6">
+                                    <div class="bg-red-50 p-4 rounded-xl">
+                                        <h5 class="font-semibold text-gray-900 mb-2">Same Problems, Different Names</h5>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• Benefits cliffs (different labels)</li>
+                                            <li>• Fragmented benefit programs</li>
+                                            <li>• Provincial/federal split</li>
+                                            <li>• Workforce boards in place</li>
+                                            <li>• Human services agencies</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-xl">
+                                        <h5 class="font-semibold text-gray-900 mb-2">Canadian Translation</h5>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• Ontario Works = TANF equivalent</li>
+                                            <li>• Disability Support Program = state disability</li>
+                                            <li>• Provincial social services ministries</li>
+                                            <li>• Employment Ontario = workforce system</li>
+                                            <li>• Stronger healthcare coverage baseline</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-amber-50 p-4 rounded-xl">
+                                        <h5 class="font-semibold text-gray-900 mb-2">Why the Timing Works</h5>
+                                        <ul class="text-sm text-gray-600 space-y-1">
+                                            <li>• Federal poverty alleviation focus</li>
+                                            <li>• Government funding priorities align</li>
+                                            <li>• Smaller geography = faster scaling</li>
+                                            <li>• Fewer competing models</li>
+                                            <li>• First-mover advantage</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gray-50 p-4 rounded-xl mb-6">
+                                    <h5 class="font-semibold text-gray-900 mb-3">Critical Research Question</h5>
+                                    <p class="text-sm text-gray-700 mb-3">The US has the Atlanta Fed's CLIFF Dashboard. It maps exactly where benefits cliffs hit in every state. It's public and free.</p>
+                                    <p class="text-sm text-gray-700"><strong class="text-gray-900">Question for Canadian adaptation:</strong> Does Canada have an equivalent tool mapping provincial benefits cliffs? If not, that's an opportunity. Partner with Canadian research institutions to build it first.</p>
+                                </div>
+
+                                <div class="callout callout-warning">
+                                    <h5 class="font-semibold mb-2" style="color: #991b1b;">The Market Insight</h5>
+                                    <p class="text-sm" style="color: #b91c1c;">"Get in the door with Canadian communities now. When federal poverty funding flows, you capture market share that's impossible in the fragmented US system. A proven US model. A Canadian playbook. First-mover wins."</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- International Framework -->
+                        <div class="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-2xl p-6 mb-10 not-prose">
+                            <h3 class="font-bold text-purple-900 text-lg mb-4">How to Adapt for Any Country</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">1</div>
+                                    <div>
+                                        <h5 class="font-semibold text-gray-900 mb-1">Map Local Benefit Structures</h5>
+                                        <p class="text-sm text-gray-600">Map every social safety net program: eligibility thresholds, phase-out rates, cliff points. Learn the local terminology. Benefits have different names everywhere. The cliffs work the same.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">2</div>
+                                    <div>
+                                        <h5 class="font-semibold text-gray-900 mb-1">Find the Local Equivalents</h5>
+                                        <p class="text-sm text-gray-600">Workforce development, social services, housing, healthcare. Every country has them. They're just named differently. Find them. Build relationships with these anchor partners.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">3</div>
+                                    <div>
+                                        <h5 class="font-semibold text-gray-900 mb-1">Swap the Labels, Keep the Principles</h5>
+                                        <p class="text-sm text-gray-600">Ontario Works instead of TANF. Different name, same design problem. Keep the Four Non-Negotiables intact. The navigation approach is universal. Only the program names change.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">4</div>
+                                    <div>
+                                        <h5 class="font-semibold text-gray-900 mb-1">Build on What Exists</h5>
+                                        <p class="text-sm text-gray-600">Find local organizations already doing wraparound work (like Circles Canada). Partner with them. Layer Empower's navigation precision on top of their infrastructure.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600">
+                            The proof point is simple. If this model works with TANF families in rural Tennessee, it works anywhere families face benefits cliffs and fragmented services. Benefits cliff navigation. Navigator relationships. Wraparound coordination. Data-driven decisions. These aren't American ideas. They're universal truths about how poverty works.
+                        </p>
+
+                        <hr>
+
+                        <h2 id="same-vs-adapts">11.6 What Stays the Same vs. What Adapts</h2>
+
+                        <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                            <div class="bg-tps-green/10 border-2 border-tps-green rounded-xl p-6">
+                                <h4 class="font-bold text-tps-dark mb-4 flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                    Non-Negotiable (Never Changes)
+                                </h4>
+                                <ul class="text-sm text-gray-700 space-y-2">
+                                    <li>✓ <strong>Benefits cliff navigation</strong> — Model before every income change</li>
+                                    <li>✓ <strong>Sustained relationship</strong> — One navigator stays through the whole journey</li>
+                                    <li>✓ <strong>Whole-family view</strong> — Address interconnected barriers together</li>
+                                    <li>✓ <strong>Data-driven decisions</strong> — Track outcomes, not activities</li>
+                                    <li>✓ <strong>Self-sufficiency target</strong> — 225% FPL / ALICE threshold</li>
+                                    <li>✓ <strong>Outcomes over outputs</strong> — Measure impact, not referral counts</li>
                                 </ul>
                             </div>
-                            <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
-                                <h4 style="color: #a3c520;" class="font-semibold mb-2">Technical Assistance</h4>
-                                <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
-                                    <li>• Implementation planning & phasing</li>
-                                    <li>• Data dashboard setup</li>
-                                    <li>• Partner coordination protocols</li>
-                                    <li>• Outcomes measurement design</li>
-                                </ul>
-                            </div>
-                            <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
-                                <h4 style="color: #a3c520;" class="font-semibold mb-2">Ongoing Coaching</h4>
-                                <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
-                                    <li>• Monthly coaching calls</li>
-                                    <li>• Quarterly site visits</li>
-                                    <li>• Peer learning network access</li>
-                                    <li>• Continuous improvement support</li>
-                                </ul>
-                            </div>
-                            <div style="border: 1px solid rgba(163, 197, 32, 0.3);" class="p-4 rounded-xl">
-                                <h4 style="color: #a3c520;" class="font-semibold mb-2">Funding Support</h4>
-                                <ul style="color: rgba(255,255,255,0.8);" class="text-sm space-y-1">
-                                    <li>• Grant writing assistance</li>
-                                    <li>• Funder presentation support</li>
-                                    <li>• ROI documentation</li>
-                                    <li>• Sustainability planning</li>
+                            <div class="bg-gray-100 rounded-xl p-6">
+                                <h4 class="font-bold text-gray-700 mb-4 flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                    Adaptable (Context-Specific)
+                                </h4>
+                                <ul class="text-sm text-gray-600 space-y-2">
+                                    <li>• <strong>Who serves as navigator</strong> — Case manager, supervisor, teacher, CHW</li>
+                                    <li>• <strong>Timeline</strong> — 18-24 months standard. Longer for education and recovery.</li>
+                                    <li>• <strong>Specific benefits tracked</strong> — Varies by state and population</li>
+                                    <li>• <strong>Wraparound partners</strong> — Different agencies for every context</li>
+                                    <li>• <strong>Primary outcomes</strong> — Graduation, employment, housing, recovery</li>
+                                    <li>• <strong>Soft skills curriculum</strong> — Tailored to sector and population</li>
                                 </ul>
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap gap-4">
-                            <a href="mailto:info@thepovertysolution.com?subject=Implementation%20Partnership%20Inquiry" class="inline-flex items-center px-6 py-3 bg-tps-green text-tps-dark rounded-xl font-semibold hover:bg-white transition">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                                Request Implementation Partnership
-                            </a>
-                            <a href="https://thepovertysolution.com" target="_blank" style="color: #a3c520;" class="inline-flex items-center px-6 py-3 border border-tps-green/50 rounded-xl font-semibold hover:bg-tps-green/10 transition">
-                                Learn More About TPS
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                </svg>
-                            </a>
+                        <!-- Key Takeaway -->
+                        <div class="key-takeaway">
+                            <span class="badge">Key Takeaway</span>
+                            <p style="color: rgba(255,255,255,0.9);" class="text-lg leading-relaxed mb-6">
+                                The Empower Method was built to adapt. The Four Non-Negotiables are the DNA. They don't change. Everything else flexes to context:
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-3 mb-6">
+                                <div style="color: #ffffff;" class="flex items-center">
+                                    <span style="color: var(--tps-green);" class="mr-2">✓</span>
+                                    <span><span style="color: var(--tps-green); font-weight: bold;">HRAs</span> — Connect existing services into one system</span>
+                                </div>
+                                <div style="color: #ffffff;" class="flex items-center">
+                                    <span style="color: var(--tps-green);" class="mr-2">✓</span>
+                                    <span><span style="color: var(--tps-green); font-weight: bold;">Schools</span> — Graduation and college pipelines</span>
+                                </div>
+                                <div style="color: #ffffff;" class="flex items-center">
+                                    <span style="color: var(--tps-green);" class="mr-2">✓</span>
+                                    <span><span style="color: var(--tps-green); font-weight: bold;">Recovery</span> — Economic path after stabilization</span>
+                                </div>
+                                <div style="color: #ffffff;" class="flex items-center">
+                                    <span style="color: var(--tps-green);" class="mr-2">✓</span>
+                                    <span><span style="color: var(--tps-green); font-weight: bold;">Healthcare</span> — Attack root causes, not symptoms</span>
+                                </div>
+                                <div style="color: #ffffff;" class="flex items-center">
+                                    <span style="color: var(--tps-green);" class="mr-2">✓</span>
+                                    <span><span style="color: var(--tps-green); font-weight: bold;">Re-entry</span> — Multi-barrier navigation for returning citizens</span>
+                                </div>
+                                <div style="color: #ffffff;" class="flex items-center">
+                                    <span style="color: var(--tps-green);" class="mr-2">✓</span>
+                                    <span><span style="color: var(--tps-green); font-weight: bold;">Employers</span> — Supervisor-navigators cut turnover</span>
+                                </div>
+                                <div style="color: #ffffff;" class="flex items-center">
+                                    <span style="color: var(--tps-green);" class="mr-2">✓</span>
+                                    <span><span style="color: var(--tps-green); font-weight: bold;">Canada & Beyond</span> — Benefits cliffs are universal</span>
+                                </div>
+                            </div>
+                            <p class="highlight">
+                                Same DNA. Different context. That's how one model becomes a movement.
+                            </p>
                         </div>
-                    </div>
-                </div>
 
-                <hr>
+                        <!-- Section 11.7: Tennessee-Specific Implementation -->
+                        <h2 id="tennessee">11.7 Tennessee Implementation</h2>
 
-                <h2 id="international">11.5 International Adaptation: Canada and Beyond</h2>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            Tennessee is a distinct environment. No Medicaid expansion. Strict TANF time limits. A strong Development District network. Organizations implementing Empower here need Tennessee-specific guidance. This section delivers it.
+                        </p>
 
-                <p class="prose-lead mb-8">
-                    The Empower Method's power lies in its universal design. Benefits cliffs exist everywhere there are social safety nets. The Four Non-Negotiables translate across borders—what changes is the language, agency names, and specific benefit structures, not the core approach.
-                </p>
-
-                <!-- Canada Overview -->
-                <div class="adaptation-card my-8 not-prose">
-                    <div class="bg-gradient-to-r from-red-600 to-red-700 text-white p-5">
-                        <div class="flex items-center justify-between flex-wrap gap-3">
-                            <div>
-                                <span class="text-xs bg-white/20 px-2 py-1 rounded mb-2 inline-block">International</span>
-                                <h3 class="font-bold text-xl">Canada: Provincial Benefits, Federal Opportunity</h3>
-                            </div>
-                            <a href="../guides/canada-adaptation-guide.html" target="_blank" class="pdf-download-btn">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                                </svg>
-                                Download Canada Adaptation Guide
-                            </a>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="font-semibold text-gray-900 mb-4">Why Canada First?</h4>
-                        <p class="text-gray-600 mb-5"><strong>Circles Canada already operates</strong> in Toronto and other communities—this is proven, fertile ground. The infrastructure exists. What's missing is the economic navigation layer that Empower provides.</p>
-
-                        <div class="grid md:grid-cols-3 gap-4 mb-6">
-                            <div class="bg-red-50 p-4 rounded-xl">
-                                <h5 class="font-semibold text-gray-900 mb-2">What's Similar to US</h5>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• Benefits cliffs (different names)</li>
-                                    <li>• Fragmented benefit programs</li>
-                                    <li>• Provincial/federal split</li>
-                                    <li>• Workforce boards exist</li>
-                                    <li>• Human services agencies</li>
-                                </ul>
-                            </div>
-                            <div class="bg-blue-50 p-4 rounded-xl">
-                                <h5 class="font-semibold text-gray-900 mb-2">Canada-Specific Translation</h5>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• Ontario Works = TANF equivalent</li>
-                                    <li>• Disability Support Program = state disability</li>
-                                    <li>• Provincial social services ministries</li>
-                                    <li>• Employment Ontario = workforce system</li>
-                                    <li>• More healthcare coverage baseline</li>
-                                </ul>
-                            </div>
-                            <div class="bg-amber-50 p-4 rounded-xl">
-                                <h5 class="font-semibold text-gray-900 mb-2">Strategic Advantage</h5>
-                                <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• Federal poverty alleviation focus</li>
-                                    <li>• Liberal governments prioritize funding</li>
-                                    <li>• Smaller geography = faster scaling</li>
-                                    <li>• Fewer competing models</li>
-                                    <li>• First-mover advantage</li>
-                                </ul>
+                        <!-- TennCare Landscape -->
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl mb-8 not-prose">
+                            <h3 class="text-xl font-bold text-empower-blue mb-4">TennCare & Healthcare Navigation</h3>
+                            <p class="text-gray-700 mb-4">
+                                Tennessee runs TennCare, not traditional Medicaid. Navigators need to know these distinctions:
+                            </p>
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                    <p class="font-semibold text-gray-800">Coverage Gaps</p>
+                                    <p class="text-gray-600 text-sm mt-1">Adults 19-64 without dependents generally don't qualify unless disabled. This creates a gap: too much income for TennCare, too little for marketplace subsidies. Navigators must find alternatives. Community health centers. Sliding-scale clinics. Employer coverage pathways.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                    <p class="font-semibold text-gray-800">TennCare Connect</p>
+                                    <p class="text-gray-600 text-sm mt-1">Eligibility runs through TennCare Connect (tenncare.tn.gov). Processing takes 30-45 days. Submit applications early. Have interim healthcare plans ready for families in the gap.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                    <p class="font-semibold text-gray-800">CoverKids</p>
+                                    <p class="text-gray-600 text-sm mt-1">Children's coverage reaches 250% FPL through CoverKids. That's ABOVE the ALICE threshold. Kids keep coverage while parents increase income. This matters for benefits cliff planning.</p>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="bg-gray-50 p-4 rounded-xl mb-6">
-                            <h5 class="font-semibold text-gray-900 mb-3">Critical Research Question</h5>
-                            <p class="text-sm text-gray-700 mb-3">The US has the Atlanta Federal Reserve CLIFF Dashboard—a comprehensive, publicly available tool showing exactly where benefits cliffs occur in every state.</p>
-                            <p class="text-sm text-gray-700"><strong class="text-gray-900">Question for Canadian adaptation:</strong> Does Canada have an equivalent research tool that maps provincial benefit cliffs? If not, this is an opportunity: partnership with Canadian research institutions to build it first.</p>
-                        </div>
-
-                        <div class="bg-red-50 border-l-4 border-red-400 p-4">
-                            <h5 class="font-semibold text-red-900 mb-2">The Market Insight</h5>
-                            <p class="text-sm text-red-800">"If we can get our foot in the door with Canadian communities, once federal funding starts to flow for poverty alleviation, we could capture significant market share in a way that would be impossible in the fragmented US system. We're essentially building a Canadian playbook with a proven US model."</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- International Framework -->
-                <div class="bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-2xl p-6 mb-10 not-prose">
-                    <h3 class="font-bold text-purple-900 text-lg mb-4">Adaptation Playbook for Any Country</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">1</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-900 mb-1">Research Local Benefit Structures</h5>
-                                <p class="text-sm text-gray-600">Map all social safety net programs, eligibility thresholds, phase-out rates. Identify cliff points. Understand the terminology—benefits have different names everywhere.</p>
+                        <!-- TANF Time Limits -->
+                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl mb-8 not-prose">
+                            <h3 class="text-xl font-bold text-empower-blue mb-4">Families First (TANF) Time Limits</h3>
+                            <p class="text-gray-700 mb-4">
+                                Tennessee's TANF program (Families First) has strict time limits. Navigators must plan around them:
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="text-2xl font-extrabold text-amber-600">60 months</p>
+                                    <p class="text-gray-600 text-sm">Lifetime federal limit</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="text-2xl font-extrabold text-amber-600">18 months</p>
+                                    <p class="text-gray-600 text-sm">Continuous receipt limit (requires 3-month break)</p>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border-l-4 border-amber-500">
+                                <p class="font-semibold text-gray-800">Navigator Implication</p>
+                                <p class="text-gray-600 text-sm mt-1">Many families have already burned through much of their lifetime limit. Navigators must check remaining TANF months on day one. Build plans that don't assume continued TANF. The 18-month continuous limit means families cycle on and off. Track carefully or benefit termination blindsides everyone.</p>
+                            </div>
+                            <div class="mt-4 bg-white p-4 rounded-lg border-l-4 border-red-500">
+                                <p class="font-semibold text-gray-800">Work Participation Requirements</p>
+                                <p class="text-gray-600 text-sm mt-1">Tennessee requires 35 hours/week of work activities for single parents (55 for two-parent households). Education alone doesn't count. It must combine with work. Navigators help families structure schedules that meet requirements while pursuing credentials.</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">2</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-900 mb-1">Identify Equivalent Agencies & Partners</h5>
-                                <p class="text-sm text-gray-600">Find the local versions of workforce development, social services, housing, healthcare. They exist—they're just named differently. Build relationships with these anchors.</p>
+
+                        <!-- Development District Context -->
+                        <div class="bg-gradient-to-br from-green-50 to-teal-50 p-8 rounded-2xl mb-8 not-prose">
+                            <h3 class="text-xl font-bold text-empower-blue mb-4">Development District Infrastructure</h3>
+                            <p class="text-gray-700 mb-4">
+                                Tennessee's nine Development Districts are natural partners for implementation. Empower Upper Cumberland runs inside the Upper Cumberland Development District. It's the model for the rest:
+                            </p>
+                            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                                <div class="bg-white p-4 rounded-lg text-center">
+                                    <p class="text-lg font-bold text-green-700">9 Districts</p>
+                                    <p class="text-gray-600 text-sm">Statewide coverage</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg text-center">
+                                    <p class="text-lg font-bold text-green-700">AAA Integration</p>
+                                    <p class="text-gray-600 text-sm">Area Agency on Aging alignment</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg text-center">
+                                    <p class="text-lg font-bold text-green-700">HRA Networks</p>
+                                    <p class="text-gray-600 text-sm">Existing coordination capacity</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 text-sm">
+                                <strong>Regional contacts:</strong> East TN Development District (Knoxville), Southeast TN Development District (Chattanooga), Greater Nashville Regional Council, Southwest TN Development District (Jackson), Northwest TN Development District (Martin), South Central TN Development District (Columbia), Upper Cumberland Development District (Cookeville), First Tennessee Development District (Johnson City), Memphis Area Association of Governments.
+                            </p>
+                        </div>
+
+                        <!-- Tennessee Benefits Cliff Specifics -->
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl mb-8 not-prose">
+                            <h3 class="text-xl font-bold text-empower-blue mb-4">Tennessee-Specific Benefits Cliffs</h3>
+                            <div class="space-y-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-purple-700">Child Care Payment Assistance (CCPA)</p>
+                                    <p class="text-gray-600 text-sm mt-1">Eligible up to 85% State Median Income. Tennessee uses a co-pay structure that rises with income. This is a critical cliff to map. Waiting lists vary by county. Enroll families early.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-purple-700">SNAP (TN)</p>
+                                    <p class="text-gray-600 text-sm mt-1">Tennessee has NOT adopted broad-based categorical eligibility. Stricter income limits than many states. Gross income capped at 130% FPL. ABAWD work requirements apply in most counties.</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-semibold text-purple-700">LIHEAP & Utility Assistance</p>
+                                    <p class="text-gray-600 text-sm mt-1">Low Income Home Energy Assistance runs through HRAs. Seasonal programs. Fall applications for winter heating. Spring for summer cooling. Build this into annual planning cycles.</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">3</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-900 mb-1">Translate Language, Maintain Principles</h5>
-                                <p class="text-sm text-gray-600">Swap terminology (Ontario Works instead of TANF) but keep the core Four Non-Negotiables intact. The navigation approach is universal; the program names change.</p>
+
+                        <!-- State Agency Contacts -->
+                        <div class="bg-gray-100 p-8 rounded-2xl mb-8 not-prose">
+                            <h3 class="text-xl font-bold text-empower-blue mb-4">Key State Agency Contacts</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-bold text-gray-800">TN Dept. of Human Services</p>
+                                    <p class="text-gray-600 text-sm">TANF, SNAP, Child Care</p>
+                                    <p class="text-blue-600 text-sm">tn.gov/humanservices</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-bold text-gray-800">TennCare</p>
+                                    <p class="text-gray-600 text-sm">Healthcare coverage</p>
+                                    <p class="text-blue-600 text-sm">tn.gov/tenncare</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-bold text-gray-800">TN Dept. of Labor & Workforce</p>
+                                    <p class="text-gray-600 text-sm">WIOA, American Job Centers</p>
+                                    <p class="text-blue-600 text-sm">tn.gov/workforce</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-bold text-gray-800">TN Housing Development Agency</p>
+                                    <p class="text-gray-600 text-sm">Housing assistance, THDA programs</p>
+                                    <p class="text-blue-600 text-sm">thda.org</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-bold text-gray-800">TN Commission on Aging & Disability</p>
+                                    <p class="text-gray-600 text-sm">OPTIONS, CHOICES</p>
+                                    <p class="text-blue-600 text-sm">tn.gov/aging</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <p class="font-bold text-gray-800">TN Dept. of Economic & Community Dev.</p>
+                                    <p class="text-gray-600 text-sm">Community development, grants</p>
+                                    <p class="text-blue-600 text-sm">tnecd.com</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 bg-purple-600 text-white rounded-lg flex items-center justify-center font-bold flex-shrink-0">4</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-900 mb-1">Start with Existing Models</h5>
-                                <p class="text-sm text-gray-600">Look for local organizations already doing wraparound work (like Circles Canada). Partner and layer Empower's navigation precision on top of existing infrastructure.</p>
+
+                        <!-- Tennessee Implementation Checklist -->
+                        <div class="callout callout-dark mb-8">
+                            <h3 class="text-xl font-bold text-white mb-4">Tennessee Launch Checklist</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Lock in relationship with your regional Development District</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Connect with local HRA for LIHEAP referrals</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Map American Job Center locations and WIOA access points</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Identify community health centers for uninsured families</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Build CCPA relationships with the DHS county office</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Train navigators on TennCare vs. Marketplace distinctions</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Build a Tennessee-specific benefits cliff calculator (no Medicaid expansion changes everything)</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span style="color: var(--tps-green);" class="text-xl">□</span>
+                                    <p class="text-white text-sm">Partner with local Tennessee College of Applied Technology (TCAT)</p>
+                                </div>
                             </div>
                         </div>
+
                     </div>
+
+                    <!-- Table of Contents (Desktop only) -->
+                    <aside class="hidden xl:block">
+                        <nav class="toc" aria-label="Table of contents">
+                            <p class="toc-title">On this page</p>
+                            <a href="#social-services" class="toc-link active">Social Services</a>
+                            <a href="#education" class="toc-link">Education Systems</a>
+                            <a href="#government" class="toc-link">Government & Healthcare</a>
+                            <a href="#workplace" class="toc-link">Workplace</a>
+                            <a href="#international" class="toc-link">International</a>
+                            <a href="#same-vs-adapts" class="toc-link">Same vs. Adapts</a>
+                            <a href="#tennessee" class="toc-link">Tennessee Guide</a>
+                        </nav>
+                    </aside>
+
                 </div>
 
-                <p class="text-gray-600">
-                    The proof point is simple: if the model works with TANF populations in rural Tennessee, it works anywhere people face benefits cliffs and fragmented services. The Four Non-Negotiables—benefits cliff navigation, navigator relationships, wraparound coordination, and data-driven decisions—are universal truths.
-                </p>
-
-                <hr>
-
-                <h2 id="same-vs-adapts">11.6 What Stays the Same vs. What Adapts</h2>
-
-                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
-                    <div class="bg-tps-green/10 border-2 border-tps-green rounded-xl p-6">
-                        <h4 class="font-bold text-tps-dark mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                            </svg>
-                            Non-Negotiable (Never Changes)
-                        </h4>
-                        <ul class="text-sm text-gray-700 space-y-2">
-                            <li>✓ <strong>Benefits cliff navigation</strong> — Always model before income changes</li>
-                            <li>✓ <strong>Sustained relationship</strong> — One person stays through the journey</li>
-                            <li>✓ <strong>Whole-person view</strong> — Address interconnected barriers</li>
-                            <li>✓ <strong>Data-driven decisions</strong> — Track outcomes, not activities</li>
-                            <li>✓ <strong>Self-sufficiency target</strong> — 225% FPL / ALICE threshold</li>
-                            <li>✓ <strong>Outcomes over outputs</strong> — Measure impact, not referrals</li>
-                        </ul>
-                    </div>
-                    <div class="bg-gray-100 rounded-xl p-6">
-                        <h4 class="font-bold text-gray-700 mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                            Adaptable (Context-Specific)
-                        </h4>
-                        <ul class="text-sm text-gray-600 space-y-2">
-                            <li>• <strong>Who serves as navigator</strong> — Case manager, supervisor, teacher, CHW</li>
-                            <li>• <strong>Timeline</strong> — 18-24 months standard; longer for education/recovery</li>
-                            <li>• <strong>Specific benefits tracked</strong> — Varies by population and state</li>
-                            <li>• <strong>Wraparound partners</strong> — Different agencies per context</li>
-                            <li>• <strong>Primary outcomes</strong> — Graduation, employment, housing, recovery</li>
-                            <li>• <strong>Soft skills curriculum</strong> — Tailored to sector and population</li>
-                        </ul>
-                    </div>
+                <!-- Chapter Navigation -->
+                <div class="chapter-nav">
+                    <a href="chapter-10.html" class="chapter-nav-link">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Previous: Funding
+                    </a>
+                    <a href="chapter-12.html" class="chapter-nav-next">
+                        Next: Scaling Beyond
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
                 </div>
 
-                <!-- Key Takeaway -->
-                <div class="bg-black p-8 rounded-2xl not-prose">
-                    <h3 style="color: #a3c520;" class="font-bold text-2xl mb-4">Key Takeaway</h3>
-                    <p style="color: rgba(255,255,255,0.9);" class="text-lg leading-relaxed mb-6">
-                        The Empower Method is designed for adaptation. The Four Non-Negotiables are the DNA—they don't change. Everything else flexes to context:
-                    </p>
-                    <div class="grid md:grid-cols-2 gap-3 mb-6">
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">HRAs</span> — Coordination infrastructure</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Schools</span> — Graduation & college pipelines</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Recovery</span> — Economic mobility after stabilization</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Healthcare</span> — Address root causes of disparities</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Re-entry</span> — Complex, multi-barrier navigation</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Employers</span> — Supervisor-navigator retention</span>
-                        </div>
-                        <div style="color: #ffffff;" class="flex items-center">
-                            <span style="color: #a3c520;" class="mr-2">✓</span>
-                            <span><span style="color: #a3c520; font-weight: bold;">Canada & Beyond</span> — Universal benefit cliff principles</span>
-                        </div>
-                    </div>
-                    <p style="color: #a3c520;" class="font-bold text-xl">
-                        The core stays the same. The application adapts. That's how one model becomes a movement.
-                    </p>
-                </div>
-
-                <!-- Section 11.7: Tennessee-Specific Implementation -->
-                <h2 id="tennessee" class="text-3xl font-bold text-empower-blue mt-16 mb-8">11.7 Tennessee Implementation</h2>
-
-                <p class="text-gray-600 leading-relaxed mb-6">
-                    Tennessee presents a unique implementation environment. As a state without Medicaid expansion, with specific TANF time limits, and with a strong network of Development Districts, Tennessee-based programs must navigate distinct policy terrain. This section provides Tennessee-specific guidance for organizations implementing the Empower Method.
-                </p>
-
-                <!-- TennCare Landscape -->
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl mb-8">
-                    <h3 class="text-xl font-bold text-empower-blue mb-4">TennCare & Healthcare Navigation</h3>
-                    <p class="text-gray-700 mb-4">
-                        Tennessee operates TennCare, not traditional Medicaid. Key distinctions for navigators:
-                    </p>
-                    <div class="space-y-4">
-                        <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
-                            <p class="font-semibold text-gray-800">Coverage Gaps</p>
-                            <p class="text-gray-600 text-sm mt-1">Adults ages 19-64 without dependents generally don't qualify for TennCare unless disabled. This creates a significant uninsured population earning too much for TennCare but too little for marketplace subsidies. Navigators must identify alternative healthcare access: community health centers, sliding-scale clinics, and employer coverage pathways.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
-                            <p class="font-semibold text-gray-800">TennCare Connect</p>
-                            <p class="text-gray-600 text-sm mt-1">Eligibility determination happens through TennCare Connect (tenncare.tn.gov). Processing typically takes 30-45 days. Navigators should submit applications early and have interim healthcare plans for participants.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
-                            <p class="font-semibold text-gray-800">CoverKids</p>
-                            <p class="text-gray-600 text-sm mt-1">Children's coverage extends to 250% FPL through CoverKids. This is ABOVE the ALICE threshold, meaning children can maintain coverage while parents increase income. Critical for cliff navigation planning.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TANF Time Limits -->
-                <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl mb-8">
-                    <h3 class="text-xl font-bold text-empower-blue mb-4">Families First (TANF) Time Limits</h3>
-                    <p class="text-gray-700 mb-4">
-                        Tennessee's TANF program (Families First) has strict time limits that affect planning horizons:
-                    </p>
-                    <div class="grid md:grid-cols-2 gap-4 mb-4">
-                        <div class="bg-white p-4 rounded-lg">
-                            <p style="font-size: 1.5rem; font-weight: 800; color: #d97706;">60 months</p>
-                            <p class="text-gray-600 text-sm">Lifetime federal limit</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p style="font-size: 1.5rem; font-weight: 800; color: #d97706;">18 months</p>
-                            <p class="text-gray-600 text-sm">Continuous receipt limit (requires 3-month break)</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border-l-4 border-amber-500">
-                        <p class="font-semibold text-gray-800">Navigator Implication</p>
-                        <p class="text-gray-600 text-sm mt-1">Many participants have already used significant portions of their lifetime limit. Navigators must assess remaining TANF months early in engagement and build plans that don't assume continued TANF availability. The 18-month continuous limit means participants cycling on and off TANF—careful tracking prevents unexpected benefit termination.</p>
-                    </div>
-                    <div class="mt-4 bg-white p-4 rounded-lg border-l-4 border-red-500">
-                        <p class="font-semibold text-gray-800">Work Participation Requirements</p>
-                        <p class="text-gray-600 text-sm mt-1">Tennessee requires 35 hours/week of work activities for single parents (55 hours for two-parent households). Education alone doesn't count—must be combined with work. Navigators help participants structure schedules that meet requirements while pursuing credentials.</p>
-                    </div>
-                </div>
-
-                <!-- Development District Context -->
-                <div class="bg-gradient-to-br from-green-50 to-teal-50 p-8 rounded-2xl mb-8">
-                    <h3 class="text-xl font-bold text-empower-blue mb-4">Development District Infrastructure</h3>
-                    <p class="text-gray-700 mb-4">
-                        Tennessee's nine Development Districts are natural implementation partners. Empower Upper Cumberland operates within the Upper Cumberland Development District—a model for others:
-                    </p>
-                    <div class="grid md:grid-cols-3 gap-4 mb-4">
-                        <div class="bg-white p-4 rounded-lg text-center">
-                            <p class="text-lg font-bold text-green-700">9 Districts</p>
-                            <p class="text-gray-600 text-sm">Statewide coverage</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg text-center">
-                            <p class="text-lg font-bold text-green-700">AAA Integration</p>
-                            <p class="text-gray-600 text-sm">Area Agency on Aging synergies</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg text-center">
-                            <p class="text-lg font-bold text-green-700">HRA Networks</p>
-                            <p class="text-gray-600 text-sm">Existing coordination capacity</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 text-sm">
-                        <strong>Key contacts by region:</strong> East TN Development District (Knoxville), Southeast TN Development District (Chattanooga), Greater Nashville Regional Council, Southwest TN Development District (Jackson), Northwest TN Development District (Martin), South Central TN Development District (Columbia), Upper Cumberland Development District (Cookeville), First Tennessee Development District (Johnson City), Memphis Area Association of Governments.
-                    </p>
-                </div>
-
-                <!-- Tennessee Benefits Cliff Specifics -->
-                <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl mb-8">
-                    <h3 class="text-xl font-bold text-empower-blue mb-4">Tennessee-Specific Benefits Cliffs</h3>
-                    <div class="space-y-4">
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-purple-700">Child Care Payment Assistance (CCPA)</p>
-                            <p class="text-gray-600 text-sm mt-1">Income eligibility up to 85% State Median Income. Tennessee uses a co-pay structure that increases with income—critical cliff to map. Waiting lists vary by county. Prioritize enrollment early in participant journey.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-purple-700">SNAP (TN)</p>
-                            <p class="text-gray-600 text-sm mt-1">Tennessee has NOT adopted broad-based categorical eligibility, meaning stricter income limits than some states. Gross income limit at 130% FPL. ABAWD work requirements apply in most counties.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-semibold text-purple-700">LIHEAP & Utility Assistance</p>
-                            <p class="text-gray-600 text-sm mt-1">Low Income Home Energy Assistance through Human Resource Agencies (HRAs). Seasonal programs—fall applications for winter heating, spring for summer cooling. Build into annual planning cycles.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- State Agency Contacts -->
-                <div class="bg-gray-100 p-8 rounded-2xl mb-8">
-                    <h3 class="text-xl font-bold text-empower-blue mb-4">Key State Agency Contacts</h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-bold text-gray-800">TN Dept. of Human Services</p>
-                            <p class="text-gray-600 text-sm">TANF, SNAP, Child Care</p>
-                            <p class="text-blue-600 text-sm">tn.gov/humanservices</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-bold text-gray-800">TennCare</p>
-                            <p class="text-gray-600 text-sm">Healthcare coverage</p>
-                            <p class="text-blue-600 text-sm">tn.gov/tenncare</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-bold text-gray-800">TN Dept. of Labor & Workforce</p>
-                            <p class="text-gray-600 text-sm">WIOA, American Job Centers</p>
-                            <p class="text-blue-600 text-sm">tn.gov/workforce</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-bold text-gray-800">TN Housing Development Agency</p>
-                            <p class="text-gray-600 text-sm">Housing assistance, THDA programs</p>
-                            <p class="text-blue-600 text-sm">thda.org</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-bold text-gray-800">TN Commission on Aging & Disability</p>
-                            <p class="text-gray-600 text-sm">OPTIONS, CHOICES</p>
-                            <p class="text-blue-600 text-sm">tn.gov/aging</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg">
-                            <p class="font-bold text-gray-800">TN Dept. of Economic & Community Dev.</p>
-                            <p class="text-gray-600 text-sm">Community development, grants</p>
-                            <p class="text-blue-600 text-sm">tnecd.com</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tennessee Implementation Checklist -->
-                <div class="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-2xl mb-8">
-                    <h3 class="text-xl font-bold text-white mb-4">Tennessee Launch Checklist</h3>
-                    <div class="space-y-3">
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Establish relationship with regional Development District</p>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Connect with local Human Resource Agency (HRA) for LIHEAP referrals</p>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Map local American Job Center locations and WIOA access points</p>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Identify community health centers for uninsured participants</p>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Build CCPA relationships with DHS county office</p>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Train navigators on TennCare vs. Marketplace distinctions</p>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Create Tennessee-specific benefits cliff calculator reflecting no Medicaid expansion</p>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <span class="text-tps-green text-xl">□</span>
-                            <p class="text-white text-sm">Partner with local Tennessee College of Applied Technology (TCAT)</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- On This Page TOC -->
-            <aside class="hidden xl:block">
-                <div class="toc">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">On This Page</p>
-                    <nav>
-                        <a href="#social-services" class="toc-link active">Social Services</a>
-                        <a href="#education" class="toc-link">Education Systems</a>
-                        <a href="#government" class="toc-link">Government & Healthcare</a>
-                        <a href="#workplace" class="toc-link">Workplace</a>
-                        <a href="#international" class="toc-link">International</a>
-                        <a href="#same-vs-adapts" class="toc-link">Same vs. Adapts</a>
-                        <a href="#tennessee" class="toc-link">Tennessee Guide</a>
-                    </nav>
-                </div>
-            </aside>
-            </div>
-
-            <div class="max-w-7xl mx-auto flex justify-between items-center mt-12 pt-8 border-t border-gray-200">
-                <a href="chapter-10.html" class="text-gray-500 hover:text-empower-blue transition text-sm">
-                    ← Previous: Funding
-                </a>
-                <a href="chapter-12.html" class="bg-[#545454] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#6b7280] transition">
-                    Next: Scaling Beyond →
-                </a>
             </div>
         </div>
 
+        <!-- Footer -->
         <footer class="px-6 lg:px-12 py-8 border-t border-gray-100 mt-8">
-            <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
-            <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            <div class="max-w-7xl mx-auto">
+                <p class="text-sm text-gray-400">© 2026 The Poverty Solution + Empower Upper Cumberland</p>
+                <p class="text-xs text-gray-300">Poverty Alleviation System designed by The Poverty Solution</p>
+            </div>
         </footer>
+
     </main>
 
-    <div class="floating-nav">
-        <a href="chapter-10.html" title="Previous: Funding">
+    <!-- Floating Chapter Navigation -->
+    <div class="floating-nav" id="floatingNav">
+        <a href="chapter-10.html" class="text-gray-600 hover:bg-gray-100 rounded-lg p-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
         </a>
-        <a href="chapter-12.html" title="Next: Scaling Beyond">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
+        <a href="chapter-12.html" class="bg-part4-grey text-white hover:bg-gray-600 rounded-lg px-4 py-2">
+            Next Chapter →
         </a>
     </div>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+        <a href="../index.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="chapter-4.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span>Core</span>
+        </a>
+        <a href="chapter-14.html" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span>Training</span>
+        </a>
+        <button onclick="openSidebar()" class="mobile-nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span>Menu</span>
+        </button>
+    </nav>
+
+    <!-- JavaScript -->
     <script>
-        function openSidebar() {
-            document.getElementById('sidebar').classList.add('open');
-            document.getElementById('overlay').classList.add('show');
+        // Reading progress bar
+        function updateProgress() {
+            const content = document.getElementById('chapter-content');
+            const progress = document.getElementById('progress');
+            const scrolled = window.scrollY;
+            const height = content.scrollHeight - window.innerHeight;
+            const percent = Math.min(scrolled / height, 1);
+            progress.style.transform = `scaleX(${percent})`;
+
+            // Show floating nav after scrolling
+            const floatingNav = document.getElementById('floatingNav');
+            if (scrolled > 500) {
+                floatingNav.classList.add('show');
+            } else {
+                floatingNav.classList.remove('show');
+            }
         }
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
 
-        function closeSidebar() {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
-        }
-
-        window.addEventListener('scroll', function() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('readingProgress').style.width = scrolled + '%';
-        });
-
-        // TOC Active State
+        // TOC active state
         const tocLinks = document.querySelectorAll('.toc-link');
         const sections = document.querySelectorAll('h2[id]');
+
         function updateTOC() {
             let current = '';
             sections.forEach(section => {
@@ -1415,11 +1333,37 @@
         }
         window.addEventListener('scroll', updateTOC);
 
-        document.addEventListener('keydown', function(e) {
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'Escape') closeSidebar();
             if (e.key === 'ArrowLeft') window.location.href = 'chapter-10.html';
-            else if (e.key === 'ArrowRight') window.location.href = 'chapter-12.html';
+            if (e.key === 'ArrowRight') window.location.href = 'chapter-12.html';
+        });
+
+        // Swipe to close sidebar on mobile
+        let touchStartX = 0;
+        document.getElementById('sidebar').addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        document.getElementById('sidebar').addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) closeSidebar();
         });
     </script>
+
 </body>
 </html>

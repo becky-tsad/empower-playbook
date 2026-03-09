@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 1: Why Rural Communities Need a Different Model | The Empower Playbook</title>
+    <title>Chapter X: [Chapter Title] | The Empower Playbook</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,7 +47,10 @@
     <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <!-- SIDEBAR NAVIGATION -->
+    <!-- ============================================
+         SIDEBAR NAVIGATION
+         Copy this exact structure for all chapters
+         ============================================ -->
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
 
         <!-- Logo -->
@@ -78,7 +81,7 @@
             <!-- Part 1: The Case -->
             <p class="nav-section-title">Part 1 — The Case</p>
             <div class="nav-section">
-                <a href="chapter-1.html" class="nav-item active">
+                <a href="chapter-1.html" class="nav-item">
                     <span class="num part1">1</span>
                     Why Rural Needs Different
                 </a>
@@ -200,47 +203,58 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
+    <!-- ============================================
+         MAIN CONTENT
+         ============================================ -->
     <main class="main-content min-h-screen" id="chapter-content">
 
         <!-- Top Bar (sticky) -->
         <header class="top-header">
             <div class="flex items-center justify-between max-w-7xl mx-auto">
                 <div class="flex items-center space-x-3">
+                    <!-- Mobile menu button -->
                     <button class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-100" onclick="openSidebar()" aria-label="Open navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
-                    <span class="text-sm text-gray-400">Part 1 — The Case</span>
+                    <!-- Part indicator - CHANGE FOR EACH CHAPTER -->
+                    <span class="text-sm text-gray-400">Part X — [Part Name]</span>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <span class="text-xs text-gray-400 hide-mobile">5 min read</span>
+                    <!-- Read time -->
+                    <span class="text-xs text-gray-400 hide-mobile">X min read</span>
+                    <!-- Audience badges - USE APPROPRIATE ONES -->
                     <div class="flex items-center space-x-2">
                         <span class="badge badge-executives">E</span>
                         <span class="badge badge-funders">F</span>
+                        <span class="badge badge-implementers">I</span>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Chapter Header (Hero) - Part 1 Blue -->
+        <!-- Chapter Header (Hero) -->
+        <!-- CHANGE class to: part1, part2, part3, part4, or part5 -->
         <div class="chapter-header part1 text-white px-6 lg:px-12">
             <div class="max-w-7xl mx-auto">
+                <!-- Badges -->
                 <div class="flex items-center gap-3 mb-4">
-                    <span class="badge badge-white">Chapter 1</span>
+                    <span class="badge badge-white">Chapter X</span>
                     <span class="badge badge-green flex items-center">
                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        5 min read
+                        X min read
                     </span>
                 </div>
+                <!-- Title -->
                 <h1 class="text-3xl lg:text-5xl font-extrabold leading-tight mb-4">
-                    Why Rural Communities Need a Different Model
+                    [Chapter Title Goes Here]
                 </h1>
+                <!-- Subtitle -->
                 <p class="text-lg text-white/80 max-w-2xl">
-                    Most poverty programs weren't designed for you. They were built for urban density, transplanted to rural areas, and left to fail quietly.
+                    [Brief description of what this chapter covers - 1-2 sentences]
                 </p>
             </div>
         </div>
@@ -249,181 +263,127 @@
         <div class="px-6 lg:px-12 py-10">
             <div class="max-w-7xl mx-auto">
 
-                <!-- Content with TOC sidebar -->
+                <!-- Content with optional TOC sidebar -->
                 <div class="lg:grid lg:grid-cols-[1fr_220px] lg:gap-12">
 
                     <!-- Main Prose Content -->
                     <div class="prose">
 
-                        <!-- Lead paragraph -->
-                        <p class="text-xl text-gray-500 mb-10 leading-relaxed">
-                            The Empower Method exists because rural communities deserve better than recycled urban programs that don't fit their reality.
+                        <!-- OPENING HOOK (Blueprint Step 2) -->
+
+                        <!-- Lead paragraph: 2-3 sentences, larger text, sets up "why this matters" -->
+                        <p class="text-xl text-gray-500 mb-8 leading-relaxed">
+                            [Opening lead paragraph - sets up the chapter context. Why does this matter? What problem does this chapter address?]
                         </p>
 
-                        <!-- Stranded Talent Callout -->
+                        <!-- Framing box: Introduces the chapter's core concept or key question -->
                         <div class="callout callout-dark">
-                            <h4 class="font-bold mb-3" style="color: var(--tps-green);">The People We're Talking About: Stranded Talent</h4>
-                            <p style="color: rgba(255,255,255,0.9);">
-                                When we talk about rural poverty, we're not talking about people who won't work. We're talking about <strong style="color: white;">stranded talent</strong>—working people who are stuck, not in crisis. They're employed, often at multiple jobs, but earn insufficient wages to meet basic needs.
-                            </p>
-                            <p style="color: rgba(255,255,255,0.9); margin-bottom: 0;">
-                                In Tennessee, <strong style="color: var(--tps-green);">44% of households</strong> are ALICE—Asset Limited, Income Constrained, Employed. They earn too much to qualify for assistance but too little to afford housing, childcare, healthcare, and transportation. In rural areas, that percentage climbs even higher.
+                            <h4 class="font-bold mb-2">[Core Concept Title]</h4>
+                            <p class="mb-0">
+                                [2-4 sentences introducing the chapter's thesis or framework. This is the "big idea" of the chapter.]
                             </p>
                         </div>
 
-                        <h2 id="urban-bias">1.1 The Urban Bias Problem</h2>
+                        <!-- ================================
+                             BODY SECTIONS (Blueprint Step 3)
+                             - Number all H2s as X.1, X.2, etc.
+                             - Never go 3+ paragraphs without a visual break
+                             - Each H2 needs at least 1 visual element
+                             - Max 3 H3 subsections per H2
+                             ================================ -->
+
+                        <!-- SECTION HEADING (h2) -->
+                        <h2 id="section-1">X.1 Section Title</h2>
 
                         <p>
-                            Walk into most poverty alleviation programs and you'll find models designed for cities: multiple service providers within walking distance, robust public transportation, dense employer networks, and specialized agencies for every need.
+                            Regular paragraph text goes here. Use <strong>bold for emphasis</strong>
+                            on key terms. The benefits cliff affects families when they...
                         </p>
 
-                        <p>
-                            Now drive 45 minutes through Upper Cumberland, Tennessee—through small towns with limited services, past former manufacturing sites, through communities served by volunteer fire departments. This is where <strong>46 million Americans live</strong>: rural America. And the programs designed for Chicago or Atlanta don't work here.
-                        </p>
+                        <!-- SUBSECTION HEADING (h3) -->
+                        <h3>Subsection Title</h3>
 
-                        <!-- Data Box: Rural Economic Reality -->
-                        <div class="data-box">
-                            <h4>The Rural Economic Reality</h4>
-                            <div class="data-grid">
-                                <div>
-                                    <p class="data-value">52%</p>
-                                    <p class="data-label">of rural households below ALICE threshold</p>
-                                    <p class="data-sublabel">vs. 47% urban</p>
-                                </div>
-                                <div>
-                                    <p class="data-value">9.8%</p>
-                                    <p class="data-label">rural working poor rate</p>
-                                    <p class="data-sublabel">vs. 6.8% urban</p>
-                                </div>
-                                <div>
-                                    <p class="data-value">3 in 5</p>
-                                    <p class="data-label">rural areas are childcare deserts</p>
-                                    <p class="data-sublabel">58% vs. 44% suburban</p>
-                                </div>
-                            </div>
-                            <p style="color: rgba(255,255,255,0.8); font-size: var(--text-sm); margin-top: var(--space-4); text-align: center; font-style: italic;">
-                                Rural people are MORE likely to work and still be poor—the system punishes effort in rural America.
-                            </p>
-                        </div>
+                        <p>More paragraph content here.</p>
 
-                        <h3>Why Urban Models Fail in Rural Areas</h3>
-
+                        <!-- BULLET LIST -->
                         <ul>
-                            <li><strong>Transportation deserts:</strong> When the nearest job center is 30 miles away and there's no bus, "job placement services" become meaningless. A family can get a job offer and lose it because they can't get there reliably. <em>60 million people in rural America lack adequate transportation.</em></li>
-                            <li><strong>Employer scarcity:</strong> Urban programs assume a competitive job market. Rural communities may have one major employer per county. When that factory closes, there's no backup plan.</li>
-                            <li><strong>Thin service networks:</strong> In cities, families navigate between dozens of specialized agencies. In rural areas, one organization might handle housing, employment, benefits, and childcare—if they handle it at all.</li>
-                            <li><strong>Referral treadmills break down:</strong> The urban model of "refer to another agency" assumes another agency exists. In rural communities, the referral often leads to a dead end or a 60-mile drive.</li>
+                            <li><strong>First point:</strong> Explanation of the first point with supporting detail.</li>
+                            <li><strong>Second point:</strong> Explanation with more context.</li>
+                            <li><strong>Third point:</strong> Final supporting point.</li>
                         </ul>
 
-                        <!-- Warning Callout: Infrastructure Gap -->
-                        <div class="callout callout-warning">
-                            <h4>The Infrastructure Gap</h4>
-                            <div class="grid md:grid-cols-2 gap-4 text-sm mt-3">
-                                <div class="flex items-center">
-                                    <span style="color: #dc2626; font-weight: 700; font-size: var(--text-2xl); margin-right: var(--space-3);">65%</span>
-                                    <span style="color: #991b1b;">rural broadband access vs. 97% urban</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span style="color: #dc2626; font-weight: 700; font-size: var(--text-2xl); margin-right: var(--space-3);">1%</span>
-                                    <span style="color: #991b1b;">of 700,000 new businesses (2012-2021) were in rural counties</span>
-                                </div>
-                            </div>
-                            <p style="color: #b91c1c; font-size: var(--text-sm); margin-top: var(--space-4); margin-bottom: 0;">
-                                Rural communities don't just face service gaps—they face fundamental infrastructure gaps that urban-designed programs never consider.
-                            </p>
-                        </div>
+                        <!-- NUMBERED LIST -->
+                        <ol>
+                            <li>First step in the process</li>
+                            <li>Second step builds on the first</li>
+                            <li>Third step completes the sequence</li>
+                        </ol>
 
+                        <!-- BLOCKQUOTE -->
                         <blockquote>
-                            "There's a severe lack of models built for rural communities. There are so many built in urban areas but not much that talks specifically about the unique problems that rural areas face and how to address it."
-                            <footer class="blockquote-author">— Scott C. Miller, Founder of Circles USA, 40+ Years in Poverty Alleviation</footer>
+                            "Quote from an expert or practitioner that reinforces the point being made in this section."
+                            <footer class="blockquote-author">— Person Name, Title/Organization</footer>
                         </blockquote>
 
-                        <h2 id="rural-opportunity">1.2 The Rural Opportunity</h2>
+                        <!-- DATA BOX (Dark background with stats) -->
+                        <div class="data-box">
+                            <h4>The Data at a Glance</h4>
+                            <div class="data-grid">
+                                <div>
+                                    <p class="data-value">XX%</p>
+                                    <p class="data-label">Metric Label</p>
+                                    <p class="data-sublabel">Additional context</p>
+                                </div>
+                                <div>
+                                    <p class="data-value">$X.XM</p>
+                                    <p class="data-label">Another Metric</p>
+                                    <p class="data-sublabel">Comparison note</p>
+                                </div>
+                                <div>
+                                    <p class="data-value">X:1</p>
+                                    <p class="data-label">ROI or Ratio</p>
+                                    <p class="data-sublabel">What this means</p>
+                                </div>
+                            </div>
+                        </div>
 
-                        <p>
-                            Here's what the urban-focused programs miss: rural communities have structural advantages that, when leveraged correctly, create better outcomes than cities ever could.
-                        </p>
+                        <!-- GREEN CALLOUT (for methodology/approach) -->
+                        <div class="callout callout-green">
+                            <h4 class="font-bold text-tps-dark mb-2">The Empower Approach</h4>
+                            <p class="text-gray-700 text-sm mb-0">
+                                Description of how the Empower method addresses this particular challenge differently than traditional approaches.
+                            </p>
+                        </div>
 
-                        <h3>Tight-Knit Communities = Coordination Advantage</h3>
+                        <!-- WARNING CALLOUT (for pitfalls/problems) -->
+                        <div class="callout callout-warning">
+                            <h4>Common Pitfall</h4>
+                            <p class="text-gray-700 text-sm mb-0">
+                                Description of a common mistake or problem to avoid.
+                            </p>
+                        </div>
 
-                        <p>
-                            In a city, getting healthcare providers, employers, childcare centers, and housing authorities to coordinate requires complex coalition-building across competing institutions. In a rural community, the people running these organizations often went to high school together. They attend the same church. Their kids play on the same Little League team.
-                        </p>
+                        <!-- BLUE CALLOUT (for research/evidence) -->
+                        <div class="callout callout-blue">
+                            <h4 class="font-bold text-empower-blue mb-2">Research Note</h4>
+                            <p class="text-gray-700 text-sm mb-0">
+                                Citation or evidence from research that supports the point being made.
+                            </p>
+                        </div>
 
-                        <p>
-                            This social fabric, often dismissed as "small-town limitations," is actually a <strong>coordination superpower</strong>. When you can get the hospital administrator, the major employer, and the childcare director in the same room—and they already trust each other—systems change happens faster.
-                        </p>
+                        <!-- ANOTHER SECTION -->
+                        <h2 id="section-2">X.2 Next Section Title</h2>
 
-                        <h3>Employer Relationships at Scale</h3>
+                        <p>Continue with more content...</p>
 
-                        <p>
-                            Urban workforce programs struggle to build meaningful employer partnerships because there are too many employers to cultivate relationships with. Rural communities can build deep, committed partnerships with every major employer in the region.
-                        </p>
-
-                        <p>
-                            When there are 15 significant employers across 14 counties, you can certify every single one. You can build job pipelines where employers tell you months in advance: "We'll have 5 positions opening." That level of coordination is impossible at urban scale.
-                        </p>
-
-                        <h3>Regional Identity as Unifying Force</h3>
-
-                        <p>
-                            Upper Cumberland isn't just a geographic designation—it's an identity. People are proud to be from these hills. That regional pride creates political will for regional solutions. When one county's families succeed, the whole region takes credit. That's not competition; that's collective investment.
-                        </p>
-
-                        <h2 id="origin-story">1.3 The Empower Origin Story</h2>
-
-                        <h3>Upper Cumberland, Tennessee: 14 Counties, One Mission</h3>
-
-                        <p>
-                            In 2020, Tennessee's Department of Human Services put out a call: Who has a model that can actually move families out of poverty—not manage their poverty, but end it?
-                        </p>
-
-                        <p>
-                            Out of 83 applicants statewide, Empower Upper Cumberland was selected for <strong>$25 million in TANF Opportunity Act funding</strong>. Why? Because they weren't proposing another referral program. They were proposing a fundamentally different architecture.
-                        </p>
-
-                        <h3>From Fragmented Services to Coordinated System</h3>
-
-                        <p>
-                            The founders looked at what wasn't working:
-                        </p>
-
-                        <ul>
-                            <li>Families bouncing between agencies, telling their story over and over</li>
-                            <li>Programs that measured activities (referrals made, workshops attended) instead of outcomes (income increased, benefits cliff avoided)</li>
-                            <li>Case managers who referred but didn't coordinate</li>
-                            <li>Data locked in silos, invisible to the people who needed it</li>
-                        </ul>
-
-                        <p>
-                            And they built the opposite:
-                        </p>
-
-                        <ul>
-                            <li><strong>One navigator, one family, full journey</strong>—18-24 months of relationship, not rotating caseloads</li>
-                            <li><strong>Benefits cliff navigation</strong>—proactively modeling what happens when a family gets a raise, before they accept it</li>
-                            <li><strong>Unified data</strong>—every partner seeing the same information, in real time</li>
-                            <li><strong>Wraparound coordination</strong>—housing, childcare, healthcare all coordinated to clear the path to livable wage employment</li>
-                        </ul>
-
-                        <h3>40+ Years of Methodology Refined</h3>
-
-                        <p>
-                            The Empower model didn't emerge from theory. It evolved from 40+ years of Scott Miller's work (founder of Circles USA) across 100+ communities, refined through The Poverty Solution's technical assistance, and proven in the specific conditions of rural Appalachia.
-                        </p>
-
-                        <p>
-                            It's not experimental. It's not a pilot hoping to prove a concept. It's a mature methodology adapted to the place where it's needed most.
-                        </p>
-
-                        <!-- Key Takeaway -->
+                        <!-- KEY TAKEAWAY BOX (use at end of chapter) -->
                         <div class="key-takeaway">
                             <span class="badge">Key Takeaway</span>
                             <p>
-                                Rural communities don't need urban programs with rural adjustments. They need models designed from the ground up for their realities: limited transportation, fewer employers, thinner service networks, but stronger relationships and regional coordination potential.
+                                Summary of the main point from this chapter that readers should remember.
                             </p>
                             <p class="highlight">
-                                The Empower Method is that model.
+                                The single most important sentence from this chapter.
                             </p>
                         </div>
 
@@ -433,9 +393,9 @@
                     <aside class="hidden xl:block">
                         <nav class="toc" aria-label="Table of contents">
                             <p class="toc-title">On this page</p>
-                            <a href="#urban-bias" class="toc-link active">The Urban Bias Problem</a>
-                            <a href="#rural-opportunity" class="toc-link">The Rural Opportunity</a>
-                            <a href="#origin-story" class="toc-link">The Empower Origin Story</a>
+                            <a href="#section-1" class="toc-link active">Section Title</a>
+                            <a href="#section-2" class="toc-link">Next Section</a>
+                            <!-- Add more TOC links as needed -->
                         </nav>
                     </aside>
 
@@ -443,14 +403,14 @@
 
                 <!-- Chapter Navigation -->
                 <div class="chapter-nav">
-                    <a href="../index.html" class="chapter-nav-link">
+                    <a href="chapter-X.html" class="chapter-nav-link">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                         </svg>
-                        Back to Overview
+                        Previous: [Chapter Name]
                     </a>
-                    <a href="chapter-2.html" class="chapter-nav-next">
-                        Next: The Problem We're Solving
+                    <a href="chapter-X.html" class="chapter-nav-next">
+                        Next: [Chapter Name]
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
@@ -477,7 +437,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
             </svg>
         </a>
-        <a href="chapter-2.html" class="bg-empower-blue text-white hover:bg-empower-blue/90 rounded-lg px-4 py-2">
+        <a href="chapter-X.html" class="bg-empower-blue text-white hover:bg-empower-blue/90 rounded-lg px-4 py-2">
             Next Chapter →
         </a>
     </div>
@@ -510,7 +470,9 @@
         </button>
     </nav>
 
-    <!-- JavaScript -->
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
     <script>
         // Reading progress bar
         function updateProgress() {
@@ -569,7 +531,9 @@
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeSidebar();
-            if (e.key === 'ArrowRight') window.location.href = 'chapter-2.html';
+            // Add arrow key navigation if desired:
+            // if (e.key === 'ArrowRight') window.location.href = 'chapter-X.html';
+            // if (e.key === 'ArrowLeft') window.location.href = 'chapter-X.html';
         });
 
         // Swipe to close sidebar on mobile
